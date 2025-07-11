@@ -1,0 +1,1529 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../power-supply/">
+      
+      
+        <link rel="next" href="../sensors/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+    
+    
+      
+        <title>Communications Subsystem - MDD400 Design Report</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#communications-subsystem" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MDD400 Design Report" class="md-header__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+      
+  <img src="../../assets/images/site_logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MDD400 Design Report
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Communications Subsystem
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MDD400 Design Report" class="md-nav__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+      
+  <img src="../../assets/images/site_logo.svg" alt="logo">
+
+    </a>
+    MDD400 Design Report
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Circuit & PCB
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Circuit & PCB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../power-supply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Power Supply Subsystem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Communications Subsystem
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Communications Subsystem
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#canbus-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      CANBUS Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CANBUS Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#canbus-signal-conditioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      CANBUS Signal Conditioning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power-supply" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Supply
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Power Supply">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ttl-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      TTL I/O
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slope-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slope Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signal-integrity-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Signal Integrity Simulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-serial-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Serial Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Legacy Serial Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interface-conditioning-and-power" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface Conditioning and Power
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Circuit Description
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Circuit Description">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#receiver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Receiver
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transmitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transmitter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seatalk-i-operation-single-wire-rxtx" class="md-nav__link">
+    <span class="md-ellipsis">
+      SeaTalk I Operation (Single Wire, RX/TX)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#324-nmea-0183-operation-rx-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.4 NMEA 0183 Operation (RX Only)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#physical-connector" class="md-nav__link">
+    <span class="md-ellipsis">
+      Physical Connector
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Physical Connector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#power-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Isolation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emc-esd-and-ground" class="md-nav__link">
+    <span class="md-ellipsis">
+      EMC, ESD and Ground
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sensors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    User Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../expansion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Expansion Connectors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../processor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Processor
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mechanical Design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Change Log
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Housing
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Housing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../housing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../housing/mechanical.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mechanical Design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../housing/materials.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Materials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    UX
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            UX
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ux/display.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Display & Touch
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ux/app.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bluetooth & App
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Firmware
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Firmware
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/architecture.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/config.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#canbus-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      CANBUS Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CANBUS Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#canbus-signal-conditioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      CANBUS Signal Conditioning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power-supply" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Supply
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Power Supply">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ttl-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      TTL I/O
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slope-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slope Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signal-integrity-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Signal Integrity Simulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-serial-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Serial Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Legacy Serial Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interface-conditioning-and-power" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface Conditioning and Power
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Circuit Description
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Circuit Description">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#receiver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Receiver
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transmitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transmitter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seatalk-i-operation-single-wire-rxtx" class="md-nav__link">
+    <span class="md-ellipsis">
+      SeaTalk I Operation (Single Wire, RX/TX)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#324-nmea-0183-operation-rx-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.4 NMEA 0183 Operation (RX Only)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#physical-connector" class="md-nav__link">
+    <span class="md-ellipsis">
+      Physical Connector
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Physical Connector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#power-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Isolation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emc-esd-and-ground" class="md-nav__link">
+    <span class="md-ellipsis">
+      EMC, ESD and Ground
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="communications-subsystem">Communications SUBSYSTEM</h1>
+<h2 id="canbus-interface">CANBUS Interface</h2>
+<p>The MDD400 connects to the <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>network via a standard 5-pin DeviceNet A-coded male connector. The CAN interface is isolated and filtered with ESD and surge protection devices to ensure compliance with marine EMC standards. A SN65HVD234DRThe MDD400 connects to the <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>network via a standard 5-pin DeviceNet A-coded male connector. The CAN interface is isolated and filtered with ESD and surge protection devices to ensure compliance with marine EMC standards. A SN65HVD234DR[^12] CAN transceiver interfaces the differential CANBUS signal to the ESP32\'s TWAI® pins. The SN65HVD234DR is a 3.3 V high-speed CAN transceiver rated for data rates up to 1 Mbps. It incorporates several features that improve bus reliability and robustness in harsh environments, including slope control for reduced EMI, a dominant state timeout to prevent bus lockup, and a low-power standby mode. The device is fully compliant with ISO 11898-2 [^19] and is well suited for use in marine and automotive environments where noise immunity is critical. CAN transceiver interfaces the differential CANBUS signal to the ESP32\'s TWAI® pins. The SN65HVD234DR is a 3.3 V high-speed CAN transceiver rated for data rates up to 1 Mbps. It incorporates several features that improve bus reliability and robustness in harsh environments, including slope control for reduced EMI, a dominant state timeout to prevent bus lockup, and a low-power standby mode. The device is fully compliant with ISO 11898-2 [^19] and is well suited for use in marine and automotive environments where noise immunity is critical.</p>
+<h3 id="canbus-signal-conditioning">CANBUS Signal Conditioning</h3>
+<p>The CAN_H and CAN_L signals pass through:</p>
+<ul>
+<li>15 pF ceramic capacitors to local ground (NET-C);</li>
+<li>a 100 pF differential capacitor across the lines;</li>
+<li>
+<ul>
+<li>a common-mode choke (<a href="https://www.murata.com/en-us/products/productdata/8807038415390/QTN0099C.pdf">Murata ACT45B-510-2P-TL003</a>);</li>
+</ul>
+</li>
+<li>a <a href="https://www.onsemi.com/pdf/datasheet/nup2105l-d.pdf">NUP2105LT1G dual TVS array</a>;;</li>
+<li>and a <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234DR CAN transceiver</a>..</li>
+</ul>
+<p>These components form a compact, low-loss CAN filter network designed in accordance with recommendations from <a href="ttps://www.ti.com/lit/ab/snoaaa1/snoaaa1.pdf">Texas Instruments</a> and  <a href="https://www.monolithicpower.com/en/blog/post/from-cold-crank-to-load-dump-a-primer-on-automotive-transients">MPS</a>. </p>
+<p>A 100 pF differential capacitor improves high-frequency noise immunity between CAN_H and CAN_L. The <a href="https://www.murata.com/en-us/products/productdata/8807038415390/QTN0099C.pdf">ACT45B</a> common-mode choke attenuates high-frequency interference without significantly degrading the differential signal.</p>
+<p>The short, direct PCB trace routing between the connector, filter components, and transceiver minimises parasitic inductance and avoids unnecessary layer transitions. The CANH and CANL signals are routed as a tightly coupled differential pair, preserving signal symmetry and maintaining consistent impedance. These layout strategies reduce radiated and conducted emissions and help ensure compliance with <a href="https://www.diodes.com/design/support/cispr-25">CISPR 25</a> and <a href="https://www.iso.org/standard/68557.html">ISO 11452-2</a> in marine and automotive installations.</p>
+<h2 id="power-supply">Power Supply</h2>
+<p>The <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a> is powered from the 3.3 V digital supply rail shared with the ESP32. A three-stage bypass network is implemented at the VCC pin to ensure power integrity across a wide frequency range, consistent with the datasheet:</p>
+<ul>
+<li>a 10 µF ceramic capacitor provides low-frequency bulk decoupling and stabilizes the supply during slower load changes;</li>
+<li>a 100 nF ceramic capacitor is placed close to the VCC pin for general high-frequency bypassing; and</li>
+<li>a 100 pF ceramic capacitor suppresses high frequency noise, e.g. fast transients caused by CAN signal switching.</li>
+</ul>
+<h3 id="ttl-io">TTL I/O</h3>
+<p>The <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a> is powered from the 3.3 V digital supply rail shared with the ESP32. Logic-level CAN communication is implemented through the TX and RX pins:</p>
+<ul>
+<li>[CAN_TX] connects directly to the transceiver's D pin. A 10 kΩ pull-up resistor (R26) is used to ensure a defined idle state and limit noise susceptibility.</li>
+<li>[CAN_RX] is connected to the transceiver's R pin via a 68 Ω series resistor (R25), which limits inrush current, dampens reflections and protects the ESP32 input from voltage spikes or overshoot.</li>
+</ul>
+<p>Neither [CAN_TX] nor [CAN_RX] are strapping pins on the ESP32-S3, ensuring reliable bus behaviour during device flashing, reset or startup.</p>
+<h3 id="slope-control">Slope Control</h3>
+<p>The <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a> features a slope control mechanism on pin 5 (Rs), allowing designers to reduce the signal edge rate to suppress EMI. The slew rate is controlled by an external resistor to ground, and in the MDD400 a 10 kΩ pull-down resistor (R27) is fitted, resulting in a slew rate of approximately 15 V/µs.</p>
+<p>Although the <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>protocol mandates a data rate of 250 kbps, this value does not require a proportional edge rate. In differential signalling, reliable communication depends not only on bit rate but also on timing margins, signal rise/fall symmetry, and the receiver\'s ability to tolerate slower transitions. A slew rate of 15 V/µs is sufficient to support 250 kbps signalling over short drop cables (e.g. 1 m), such as those used to connect the MDD400 to the backbone. In practice, the edge rate limits the effective signalling bandwidth - not the fundamental data rate - so this setting provides ample timing margin
+without compromising protocol compliance.</p>
+<p>Using a 10 kΩ pull-down offers a well-balanced trade-off: it substantially reduces high-frequency emissions (which scale with dV/dt) while remaining compatible with the stub length and impedance environment of a typical <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>network. It also aligns with guidance provided by <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">Texas Instruments</a>, which suggests 10 kΩ as an effective value for slope control in industrial and automotive CAN installations. The use of a resistor instead of an Rs capacitor simplifies the PCB layout and guarantees stable performance over temperature and component tolerances.</p>
+<h3 id="signal-integrity-simulation">Signal Integrity Simulation</h3>
+<p>A signal integrity simulation was conducted, assuming that the MDD400 is intended to connect to the <a href="https://www.nmea.org/nmea-2000.html">NMEA 2000</a> network using a standard 5-pin DeviceNet A-coded male connector, with power and CAN signals provided via a short (1 m) drop cable. The <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>backbone is assumed to comply with the <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>physical layer specification [20], including termination via 120 Ω resistors at the bus extremities.</p>
+<p><img alt="Signal Integrity Simulation of CAN_H and CAN_L" src="../../assets/images/canbus_si_simulation.png" /></p>
+<h2 id="legacy-serial-interface">Legacy Serial Interface</h2>
+<p>The MDD400 supports an optional legacy serial interface designed to receive and/or transmit data compatible with SeaTalk I (single-wire, 12 V open-drain) and NMEA 0183 (12 V single-ended, receive-only). Given the 12 V signaling levels and the lack of galvanic isolation in typical legacy marine installations, the interface was engineered to maintain signal integrity and electromagnetic compatibility (EMC) through robust input filtering, carefully managed ground domains, and multi-stage
+protection.</p>
+<p><img alt="Block Diagram" src="../../assets/images/image005.png" /></p>
+<p>The legacy interface accepts a single bidirectional signal line (ST_SIG), which is filtered and protected before being interfaced with the internal logic domain. SeaTalk operation uses a half-duplex scheme, sharing the line for both transmission and reception. NMEA 0183 operation is receive-only.</p>
+<h3 id="interface-conditioning-and-power">Interface Conditioning and Power</h3>
+<p>Incoming power and signal lines are routed through a multi-stage filter network:</p>
+<ul>
+<li>A common-mode choke (SMCM7060-132T) suppresses high-frequency noise;</li>
+<li>Shunt capacitors (100 pF) to both digital and chassis ground domains provide RF filtering;</li>
+<li>A bi-directional TVS diode (P6SMB15CA) clamps voltage spikes up to ±15 V;</li>
+<li>Additional series resistance and diode clamping stages limit current and prevent latch-up.</li>
+</ul>
+<p>This configuration offers substantial protection against ESD, conducted transients, and radiated EMI, satisfying CE and EN 55035 immunity requirements for the intended use case.</p>
+<p>Internal signal buffering is provided by a two-stage transistor-based receiver. This stage isolates the MCU RX pin from the external signal domain and incorporates a voltage divider to safely shift the 12 V logic signal down to 3.3 V logic levels. The receiver is continuously active and handles both NMEA 0183 and SeaTalk receive functions.</p>
+<p>Transmission is handled by a discrete open-collector driver controlled by the MCU TX pin and gated by a dedicated ST_EN signal. This stage mimics the behavior of legacy SeaTalk talkers by pulling the line low during a logic \'0\' and tri-stating otherwise. Series resistors and RC gate control limit EMI during transitions. An RC gate filter provides slew-rate limiting without affecting low-speed signaling (SeaTalk operates at 4800 bps).</p>
+<p>All circuits are powered from the regulated 5 V domain (VCC), which is isolated from the external 12 V input by a pi filter and diode clamp. The entire legacy port shares a distinct ground domain (NET-C), which is joined to the main logic ground (GNDREF) via a common-mode inductor and local filtering.</p>
+<p>If pre-compliance EMC testing indicates the SeaTalk interface as a source of excessive emissions or susceptibility, an alternative implementation using opto-isolators may be considered. This would allow complete galvanic isolation between the SeaTalk signal and the MDD400 logic domain, simplifying signal reference handling and improving immunity to ground loops or cable-borne transients. This approach would require powering the opto-isolated input side from the SeaTalk 12 V line or a derived source, and is best suited to receive-only applications such as NMEA 0183 listener modes.</p>
+<h3 id="circuit-description">Circuit Description</h3>
+<h4 id="receiver">Receiver</h4>
+<p>The input signal from the external ST_SIG line passes through diode D6A (1N4148) for reverse polarity protection and current limiting via R51. The signal is then applied to a pair of transistors (Q5A and Q5B) forming a differential receiver. These are biased by R47, R48, and R49 to provide signal translation and buffering.</p>
+<p>The output of this stage is fed to [U1_RX], as 3.3 V UART-level serial data. This path is shared between NMEA 0183 and SeaTalk I operation. In both modes, the receiver operates continuously to capture serial input.</p>
+<h4 id="transmitter">Transmitter</h4>
+<p>For SeaTalk I, which uses a single bidirectional wire, the MDD400 must also drive the ST_SIG line during transmission.</p>
+<p>The transmit side employs Q6 (BC817) and Q8A (IMZ1A) as open-collector drivers, selectively enabled by Q7B and Q7A under control of the ST_EN signal. This allows the MDD400 to pull the signal line low while maintaining high impedance when not transmitting. A passive pull-up (R64) to +12 V ensures correct idle line voltage in the absence of an active transmitter.</p>
+<p>[U1_TX] drives the signal logic, with R50 and R55 providing base current limiting and edge shaping.</p>
+<h3 id="seatalk-i-operation-single-wire-rxtx">SeaTalk I Operation (Single Wire, RX/TX)</h3>
+<p>SeaTalk I is a single-wire bus using 12 V signaling, where idle = 12 V, logic 0 = pulled to 0 V. It requires careful coordination between transmit and receive functions. The MDD400 handles this using a half-duplex scheme:</p>
+<ul>
+<li>when not transmitting, the ST_TX line is tri-stated, and the receiver monitors incoming traffic on ST_SIG;</li>
+<li>to transmit, ST_EN is asserted to activate the driver circuitry, pulling ST_SIG low as needed;</li>
+<li>an MCU-controlled TX driver sinks current during transmission and releases the line for receive or idle;</li>
+<li>after transmission, the output drivers are immediately disabled to avoid contention with other devices on the bus; and</li>
+<li>The RX stage remains active continuously and is tolerant of slow signal edges typical of long cable runs.</li>
+</ul>
+<p>Timing and contention avoidance are handled in firmware. The circuit allows for reliable operation, even on long or noisy SeaTalk I networks.</p>
+<h3 id="324-nmea-0183-operation-rx-only">3.2.4 NMEA 0183 Operation (RX Only)</h3>
+<p>For NMEA 0183 sources, the MDD400 operates in receive-only mode. The external talker is typically a GPS, depth sounder, or wind instrument.
+Although the NMEA standard allows for differential signaling (RS-422), most talkers in the marine environment operate in single-ended mode, and are electrically compatible with this circuit. The circuit design is also compatible with RS-422 (differential) data.</p>
+<p>Only the receiver portion of the interface is used in this mode. The isolated, level-shifted signal is passed to [U1_RX]. No transmission is attempted, and the ST_EN signal remains low to ensure the transmitter remains disabled.</p>
+<p>This configuration ensures the MDD400 is compatible with any standard NMEA 0183 talker without introducing noise or signal conflicts.</p>
+<h3 id="physical-connector">Physical Connector</h3>
+<p>The physical interface for legacy serial signals is provided via a 3-pin header:</p>
+<ul>
+<li>Pin 1 (RED): 12 V (power)</li>
+<li>Pin 2 (BLACK): GND</li>
+<li>Pin 3 (YELLOW): SIG (SeaTalk I / NMEA 0183 signal line)</li>
+</ul>
+<p>This layout allows for simple three-wire connectivity using standard SeaTalk I connector.</p>
+<h4 id="power-isolation">Power Isolation</h4>
+<p>In production, the SeaTalk +12 V pin is intentionally left unconnected to the MDD400 internal power supply. This avoids introducing a second power source and the associated risks of conflicting voltage domains or ground loops. As a result, the MDD400 must be powered exclusively from the <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>backbone, and any SeaTalk devices must receive power independently from the SeaTalk bus.</p>
+<p>This isolation is implemented by omitting the polarity protection diode on the SeaTalk power input. For advanced configurations, populating this diode enables power input from the SeaTalk bus. Additionally, a normally
+open solder jumper labeled ST_12V is provided to allow bridging the SeaTalk and <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>power rails. This option is intended for edge cases, such as powering a single connected SeaTalk device that is not attached to a live SeaTalk bus. Use of this jumper should be avoided in typical installations to maintain electrical isolation and CE-compliant power domain separation.</p>
+<h4 id="emc-esd-and-ground">EMC, ESD and Ground</h4>
+<p>The legacy port is exposed via a 3-pin header (12 V, GND, SIG). In this implementation, the +12 V line is left unconnected, and the interface is powered entirely from the internal 5 V rail. The GND pin (SeaTalk shield) is connected to GNDREF through a 1 µH inductor, which provides a low-impedance signal reference path while attenuating high-frequency noise.</p>
+<p>Although the original SeaTalk protocol uses GND as a signal return and implicit shield, this arrangement preserves CE compliance by preventing direct coupling of noisy external grounds into the device ground plane. The use of a separate shield pin was considered, but real-world installations route signal returns through the GND wire, making this unnecessary.</p>
+<p>The input filter and grounding strategy ensure that EMC performance meets CE and FCC Class B requirements for conducted and radiated emissions. Immunity to electrostatic discharge, EFT, and surge is provided by a combination of TVS clamping, series impedance, and low-inductance layout.</p>
+<p>In total, there are six possible wiring permutations of the three legacy interface pins (12V, GND, SIG). These are evaluated in the the table below:</p>
+<p><em>Legacy Connector Wiring Permutations</em></p>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Wiring Order</th>
+      <th>ST_SIG</th>
+      <th>12V_IN</th>
+      <th>GND</th>
+      <th>Outcome</th>
+      <th>Protected?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SIG, 12V, GND</td>
+      <td>ST_SIG</td>
+      <td>12 V</td>
+      <td>GND</td>
+      <td>✅ Correct connection — normal operation</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>12V, SIG, GND</td>
+      <td>12 V</td>
+      <td>ST_SIG</td>
+      <td>GND</td>
+      <td>ST_SIG pulled high — D6A blocks current, input already expects 12 V</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>SIG, GND, 12V</td>
+      <td>ST_SIG</td>
+      <td>GND</td>
+      <td>12 V</td>
+      <td>GND applied to 12V_IN — D8 blocks reverse current</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>GND, 12V, SIG</td>
+      <td>GND</td>
+      <td>12 V</td>
+      <td>ST_SIG</td>
+      <td>GND on ST_SIG — valid electrical state (LOW), no damage</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>12V, GND, SIG</td>
+      <td>12 V</td>
+      <td>GND</td>
+      <td>ST_SIG</td>
+      <td>Same as #2 — signal input sees 12 V, safely blocked by D6A</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>GND, SIG, 12V</td>
+      <td>GND</td>
+      <td>ST_SIG</td>
+      <td>12 V</td>
+      <td>GND to ST_SIG — logic LOW input, 12 V on GND blocked by D8</td>
+      <td>✅</td>
+    </tr>
+  </tbody>
+</table>
+
+<!--  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - -
+  **Wiring       **ST_SIG**   **12V_IN**   **GND**  **Outcome**                  **Protected?**
+  Order**                                                                       
+   -  -  -  - -  -  -  -  -   -  -  -  -   -  -  -   -  -  -  -  -  -  -  -  -   -  -  -  -  - -
+  SIG, 12V, GND    ST_SIG        12 V        GND    ✅ Correct connection  -           ✅
+                                                    normal operation            
+
+  12V, SIG, GND     12 V        ST_SIG       GND    ST_SIG pulled high  -  D6A         ✅
+                                                    blocks current, input       
+                                                    already expects 12 V        
+
+  SIG, GND, 12V    ST_SIG        GND        12 V    GND applied to 12V_IN  -           ✅
+                                                    D8 blocks reverse current   
+
+  GND, 12V, SIG     GND          12 V      ST_SIG   GND on ST_SIG  -  valid            ✅
+                                                    electrical state (LOW), no  
+                                                    damage                      
+
+  12V, GND, SIG     12 V         GND       ST_SIG   Same as #2  -  signal input        ✅
+                                                    sees 12 V, safely blocked   
+                                                    by D6A                      
+
+  GND, SIG, 12V     GND         ST_SIG      12 V    GND to ST_SIG  -  logic LOW        ✅
+                                                    input, 12 V on GND blocked  
+                                                    by D8                       
+   -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - - -->
+
+<p>All six possible wiring permutations are electrically safe. There are no failure modes resulting from any pin swap of the 3-pin legacy connector. While incorrect wiring may prevent the interface from functioning (e.g., no data received), no permanent damage will occur to the MDD400 or connected devices. This level of fault tolerance is particularly valuable for field installations and testing scenarios where connector orientation or labeling may not always be foolproof.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.footnote.tooltips"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      
+    
+  </body>
+</html>

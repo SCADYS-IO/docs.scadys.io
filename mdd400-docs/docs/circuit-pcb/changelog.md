@@ -1,6 +1,7 @@
 <!-- MDD400_Hardware/pcb -->
 
-## v2.6 (2024/11/23)
+## 2.6 AI Design Review 
+*Version date: 2025/07/14*
 
 - Added R-C filter to buzzer.
 - Changed copyright notice on PCB.
@@ -37,7 +38,8 @@
 - Added `50mA` current limiter to wind transducer power.
 - Added short-circuit sensor to wind-transducer power.
 
-## v2.5 (2025/05/13)
+## 2.5 OPT3004 ALS 
+*Version date: 2025/05/13*
 
 - Changed light sensor to Texas Instruments `OPT3004`.
 - Added vias at all signal layer transitions.
@@ -49,7 +51,8 @@
 - Moved 8v power supply to wind transducer circuit.
 
 
-## v2.4 (2025/05/04)
+## 2.4 ESP32-S3 
+*Version date: 2025/05/04*
 
 - Fixed footprint of 8v LDO.
 - CHANGED 8v LDO to `TPSB61` adjustable LDO with EN feature.
@@ -63,7 +66,8 @@
 - Added facility to turn off the SeaTalk circuit via GPIO.
 - Added OpAmp buffers to the wind  x and y circuits.
 
-## v2.3 (2025/04/09)
+## 2.3 Display FPC on Bottom 
+*Version date: 2025/04/09*
 
 - Connected WIND_X to `GPIO34`.
 - Connected WIND_Y to `GPIO35`.
@@ -80,7 +84,8 @@
 - Revised anemometer input to use `LM392` comparator.
 
 
-## v2.2 (2025/03/13)
+## 2.2 SeaTalk and Wind 
+*Version date: 2025/03/13*
 
 - Moved `APDS9306` inboard to 42.5mm from center.
 - Fixed 5v connection to display.
@@ -92,9 +97,10 @@
 - Added Seatalk TX circuit
 
 
-## v2.1 (2025/02/17)
+## 2.1 NO Button 
+*Version date: 2025/02/17*
 
-- Changed (reduced) size of edge cutout for display FPC to match latest.
+- Changed (reduced* size of edge cutout for display FPC to match latest.
 - Changed SMPS controller to `TPS54560DDAR`.
 - Removed button switch and Schmidtt trigger circuit.
 - Moved logo out from under FPC.
@@ -102,10 +108,10 @@
 - Removed DNP components after testing.
 - Increased font size on board file number.
 - Removed UVLO resistors.
-- Changed Utemperature sensor to `TMP112AIDRLR`.
+- Changed temperature sensor to `TMP112AIDRLR`.
 
-
-## v2.0+3 (2024/11/23)
+## 2.0 Single Button 
+*Version date: 2024/11/23*
 
 - Changed to single button.
 - Added SeaTalk RX port.
@@ -118,14 +124,12 @@
 - New `TMP102` temperature sensor.
 - Changed ambient light sensor to `APDS-9306-065`
 
-## 1.1 (2023/05/14)
+## 1.1 Field Trials Prototype 
+*Version date: 2023/05/14*
 
 - Proof-of-concept prototype for field trials
 
-## 1.0 (2023/03/29)
+## 1.0 Proof of concept 
+*Version date: 2023/03/29*
 
-- First prototype for testing
-
-## 0.0
-
-* Initial version.
+- Proof of concept

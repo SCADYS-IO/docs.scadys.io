@@ -1,4 +1,10 @@
 <!-- MDD400_Hardware -->
+
+## 0.0.2
+
+- Created `mkDocs` project.
+- Converted Sections 1 and 2 to markdown.
+
 ## 0.0.1
 
 - Added folders.

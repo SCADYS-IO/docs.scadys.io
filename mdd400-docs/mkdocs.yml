@@ -1,0 +1,42 @@
+site_name: MDD400 Design Report
+
+markdown_extensions:
+  - footnotes
+
+theme:
+  name: material
+  logo: assets/images/site_logo.svg
+  favicon: assets/images/favicon.svg
+  features:
+    - content.footnote.tooltips
+
+nav:
+  - Home: index.md
+  - Circuit & PCB:
+
+nav:
+  - Home: index.md
+  - Circuit & PCB:
+      - Overview: circuit-pcb/index.md
+      - Power Supply Subsystem: circuit-pcb/power-supply.md
+      - Communications Subsystem: circuit-pcb/communications.md
+      - Sensors: circuit-pcb/sensors.md
+      - User Interface: circuit-pcb/ui.md
+      - Expansion Connectors: circuit-pcb/expansion.md
+      - Processor: circuit-pcb/processor.md
+      - Mechanical Design: circuit-pcb/mechanical.md
+      - Appendices: circuit-pcb/appendices.md
+      - Change Log: circuit-pcb/changelog.md
+  - Housing:
+      - Overview: housing/index.md
+      - Mechanical Design: housing/mechanical.md
+      - Materials: housing/materials.md
+  - UX:
+      - Overview: ux/index.md
+      - Display & Touch: ux/display.md
+      - Bluetooth & App: ux/app.md
+  - Firmware:
+      - Overview: firmware/index.md
+      - Architecture: firmware/architecture.md
+      - Configuration: firmware/config.md
+  - References: references.md
