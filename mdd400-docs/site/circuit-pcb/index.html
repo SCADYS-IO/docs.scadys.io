@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Documentation for the MDD400 marine/automotive data display.">
+      
       
       
       
@@ -20,7 +22,7 @@
     
     
       
-        <title>Overview - MDD400 Design Report</title>
+        <title>Overview - MDD400 Documentation</title>
       
     
     
@@ -78,7 +80,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="MDD400 Design Report" class="md-header__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+    <a href=".." title="MDD400 Documentation" class="md-header__button md-logo" aria-label="MDD400 Documentation" data-md-component="logo">
       
   <img src="../assets/images/site_logo.svg" alt="logo">
 
@@ -91,7 +93,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            MDD400 Design Report
+            MDD400 Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -175,12 +177,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="MDD400 Design Report" class="md-nav__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+    <a href=".." title="MDD400 Documentation" class="md-nav__button md-logo" aria-label="MDD400 Documentation" data-md-component="logo">
       
   <img src="../assets/images/site_logo.svg" alt="logo">
 
     </a>
-    MDD400 Design Report
+    MDD400 Documentation
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1173,21 +1175,21 @@
 
 
 <h1 id="introduction">Introduction</h1>
-<p>The MDD400 is a compact data display unit designed for integration with modern marine and recreational vehicle (RV) electrical systems. It is optimised for the NMEA 2000<sup id="fnref:8"><a class="footnote-ref" href="#fn:8">8</a></sup>/CANBUS backbone, displaying data via a serial HMI interface driven over UART. Offloading graphical updates to the display controller allows the onboard microcontroller to focus on interfacing, protocol translation, and data processing, supporting a wide range of sensor and bus configurations.</p>
+<p>The MDD400 is a compact data display unit designed for integration with modern marine and recreational vehicle (RV) electrical systems. It is optimised for the <a href="https://www.nmea.org/nmea-2000.html">NMEA 2000</a>/CANBUS backbone, displaying data via a serial HMI interface driven over UART. Offloading graphical updates to the display controller allows the onboard microcontroller to focus on interfacing, protocol translation, and data processing, supporting a wide range of sensor and bus configurations.</p>
 <h2 id="design-philosophy">Design Philosophy</h2>
-<p>The MDD400 was developed for deployment in marine environments, where electrical systems are exposed to harsh physical conditions and frequent voltage disturbances. However, recognising the similarity between marine and automotive/RV 12 V systems --- particularly in terms of wiring topology, fault conditions, and user expectations --- the MDD400 has been designed with potential future certification for road-going vehicles in mind. </p>
-<p>The overarching philosophy is to design for realistic abuse scenarios, reducing the likelihood of damage in the field and thereby eliminating the need for return-to-base repairs. This strategy supports the planned 24-month, no-questions-asked replacement warranty --- a competitive differentiator intended to rival established marine brands while avoiding the overhead of setting up global repair facilities.</p>
+<p>The MDD400 was developed for deployment in marine environments, where electrical systems are exposed to harsh physical conditions and frequent voltage disturbances. However, recognising the similarity between marine and automotive/RV 12 V systems-particularly in terms of wiring topology, fault conditions, and user expectations-the MDD400 has been designed with potential future certification for road-going vehicles in mind. </p>
+<p>The overarching philosophy is to design for realistic abuse scenarios, reducing the likelihood of damage in the field and thereby eliminating the need for return-to-base repairs. This strategy supports the planned 24-month, no-questions-asked replacement warranty-a competitive differentiator intended to rival established marine brands while avoiding the overhead of setting up global repair facilities.</p>
 <p>This section outlines the design principles, performance goals and safety considerations that inform the entire hardware design.</p>
 <h3 id="environmental-and-electrical-survivability">Environmental and Electrical Survivability</h3>
 <p>The MDD400 must survive common transients found on 12 V DC supply rails, including:</p>
 <ul>
-<li>load dump conditions up to 150 V (per ISO 7637-2<sup id="fnref4:1"><a class="footnote-ref" href="#fn:1">1</a></sup> Pulse 5b);</li>
+<li>load dump conditions up to 150 V (per <a href="https://www.iso.org/standard/50925.html">ISO 7637-2</a> Pulse 5b);</li>
 <li>reverse polarity connection of 12--14 V;</li>
-<li>electrostatic discharge (ESD), following IEC 61000-4-2<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>;</li>
-<li>conducted and radiated emissions (per CISPR 25 / EN 55025<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>);</li>
+<li>electrostatic discharge (ESD), following <a href="https://webstore.iec.ch/en/publication/68954">IEC 61000-4-2</a>;</li>
+<li>conducted and radiated emissions (per <a href="https://www.diodes.com/design/support/cispr-25">CISPR 25</a> / <a href="https://absolute-emc.com/standard/automotive/cispr-25">EN 55025</a>);</li>
 <li>and ground bounce and other anomalies from long DC wiring typical in boats and RVs.</li>
 </ul>
-<p>To ensure compatibility with both marine and automotive domains, protection circuitry has been tested against the most demanding load dump waveforms from ISO 7637-2<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>, and both power supply and communication interfaces have been isolated or filtered to maintain signal integrity and protect sensitive components.</p>
+<p>To ensure compatibility with both marine and automotive domains, protection circuitry has been tested against the most demanding load dump waveforms from <a href="https://www.iso.org/standard/50925.html">ISO 7637-2</a>, and both power supply and communication interfaces have been isolated or filtered to maintain signal integrity and protect sensitive components.</p>
 <h3 id="robust-power-distribution">Robust Power Distribution</h3>
 <p>Four separate power rails are implemented:</p>
 <ul>
@@ -1203,7 +1205,7 @@
 <p>Additionally:</p>
 <ul>
 <li>the device is protected against short-circuits and sustained over-voltage;</li>
-<li>no fuse is required to isolate faults --- the MOSFET protection circuit self-recovers;</li>
+<li>no fuse is required to isolate faults-the MOSFET protection circuit self-recovers;</li>
 <li>dual-input polarity protection ensures that legacy serial and NMEA2000 inputs remain independent.</li>
 </ul>
 <h3 id="electromagnetic-compatibility-emc">Electromagnetic Compatibility (EMC)</h3>
@@ -1214,15 +1216,15 @@
 <li>low-inductance return paths and surface-mount TVS diodes; and</li>
 <li>and shielding/isolation of NMEA2000 and legacy serial connectors.</li>
 </ul>
-<p>The product is designed to meet both CE and FCC Class B emissions limits and includes on-board suppression to meet ISO 11452-2<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup> and ISO 7637-2<sup id="fnref2:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.</p>
+<p>The product is designed to meet both CE and FCC Class B emissions limits and includes on-board suppression to meet <a href="https://www.iso.org/standard/68557.html">ISO 11452-2</a> and <a href="https://www.iso.org/standard/50925.html">ISO 7637-2</a>.</p>
 <h3 id="serviceability-and-field-upgradeability">Serviceability and Field Upgradeability</h3>
-<p>Firmware updates and configuration are supported over Bluetooth/BLE. In production, firmware flashing is performed using a pogo-pin programming jig that interfaces with a 6-pin 0.5 mm pitch header footprint compatible with the ESP-PROG programmer. The 6-pin header, while fitted to prototypes, is not populated in the final assembly. It may be included in a development or open-source variant. Currently, the programming interface includes polarity protection for power pins but lacks further ESD or transient protection --- this will be reviewed in future revisions.</p>
+<p>Firmware updates and configuration are supported over Bluetooth/BLE. In production, firmware flashing is performed using a pogo-pin programming jig that interfaces with a 6-pin 0.5 mm pitch header footprint compatible with the ESP-PROG programmer. The 6-pin header, while fitted to prototypes, is not populated in the final assembly. It may be included in a development or open-source variant. Currently, the programming interface includes polarity protection for power pins but lacks further ESD or transient protection-this will be reviewed in future revisions.</p>
 <p>The internal regulators and protection circuits are designed to handle most common wiring faults gracefully, allowing field servicing with minimal tools or expertise.</p>
 <p>The design is prepared for dual certification paths: marine installations via NMEA2000 guidelines and CE/FCC emissions certification, with provisions for future expansion into the recreational vehicle (RV) space.</p>
 <h2 id="functional-domains">Functional Domains.</h2>
 <p>Key hardware features include:</p>
 <ul>
-<li>CANBUS interface for communicating with the NMEA 2000<sup id="fnref4:8"><a class="footnote-ref" href="#fn:8">8</a></sup> backbone;</li>
+<li>CANBUS interface for communicating with the <a href="https://www.nmea.org/nmea-2000.html">NMEA 2000</a> backbone;</li>
 <li>TFT LCD display with capacitive touch screen connected via high-speed UART;</li>
 <li>ambient light sensor connected to the I²C bus;</li>
 <li>temperature and power sensing systems for protection and diagnostics;</li>
@@ -1234,7 +1236,7 @@
 </ul>
 <p>The hardware is organized into five functional domains (subsystems), as shown in the block diagram:</p>
 <h3 id="power-supply">Power Supply</h3>
-<p>The system is powered from a 12 V source via either the NMEA 2000<sup id="fnref2:8"><a class="footnote-ref" href="#fn:8">8</a></sup> network or the (optional) legacy serial connection. Input power passes through reverse polarity protection, surge and current limiting, and an EMI filter before being regulated to:</p>
+<p>The system is powered from a 12 V source via either the <a href="https://www.nmea.org/nmea-2000.html">NMEA 2000</a> network or the (optional) legacy serial connection. Input power passes through reverse polarity protection, surge and current limiting, and an EMI filter before being regulated to:</p>
 <ul>
 <li>5 V for display and logic circuits (via SMPS);</li>
 <li>3.3 V for the digital domain (via LDO); and</li>
@@ -1242,48 +1244,19 @@
 </ul>
 <p>All three regulators are designed to balance cost, robustness, and efficiency in line with the MDD400's overall mission to survive real-world abuse without requiring repair or user intervention.</p>
 <h3 id="communication-interfaces">Communication Interfaces</h3>
-<p>All versions of the MDD400 are supplied with an industry standard CANBUS interface that is electically compatible with NMEA 2000<sup id="fnref3:8"><a class="footnote-ref" href="#fn:8">8</a></sup> and RV-C backbones. On selected models a RS422 compatible, plug&amp;play interface that accepts legacy marine serial protocols such as NMEA 0183 and SeaTalk® is also provided.</p>
+<p>All versions of the MDD400 are supplied with an industry standard CANBUS interface that is electically compatible with <a href="https://www.nmea.org/nmea-2000.html">NMEA 2000</a> and RV-C backbones. On selected models a RS422 compatible, plug&amp;play interface that accepts legacy marine serial protocols such as NMEA 0183 and SeaTalk® is also provided.</p>
 <h3 id="sensors">Sensors</h3>
 <p>The following sensors are used by the MDD400:</p>
 <ul>
-<li>ESP32-S3<sup id="fnref3:7"><a class="footnote-ref" href="#fn:7">7</a></sup> integrated temperature sensor for diagnostics and protection;</li>
+<li><a href="https://www.espressif.com/en/products/socs/esp32-s3/resources">ESP32-S3</a> integrated temperature sensor for diagnostics and protection;</li>
 <li>analog current and voltage sensors for self-monitoring and diagnostics; and</li>
-<li>Texas Instruments OPT3004<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup> ambient light sensor on the I²C bus for automatic display dimming.</li>
+<li>Texas Instruments <a href="https://www.ti.com/lit/ds/symlink/opt3004.pdf">OPT3004</a> ambient light sensor on the I²C bus for automatic display dimming.</li>
 </ul>
 <p>An analog wind transducer input for analog wind angle and frequency-based wind speed measurement is provided on selected models.</p>
 <h3 id="user-interface">User Interface</h3>
-<p>A custom DWIN DMG48480F040_01WTC<sup id="fnref3:1"><a class="footnote-ref" href="#fn:1">1</a></sup> capacitive touchscreen display is used as user interface. The 4" TFT LCD display has a resolution of 480×480 pixels and communicates with the ESP32-S3<sup id="fnref:7"><a class="footnote-ref" href="#fn:7">7</a></sup> over UART using the DGUS II protocol.</p>
+<p>A custom <a href="https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/">DWIN DMG48480F040_01WTC</a> capacitive touchscreen display is used as user interface. The 4" TFT LCD display has a resolution of 480×480 pixels and communicates with the <a href="https://www.espressif.com/en/products/socs/esp32-s3/resources">ESP32-S3</a> over UART using the DGUS II protocol.</p>
 <h3 id="processing">Processing</h3>
-<p>An Espressif ESP32-S3<sup id="fnref2:7"><a class="footnote-ref" href="#fn:7">7</a></sup> microcontroller module handles all system logic, sensing, and communication. It manages protocol parsing, sensor readings, and updates to the display. The module includes Bluetooth/BLE for configuration and firmware updates, with Wi-Fi reserved for future features.</p>
-<div class="footnote">
-<hr />
-<ol>
-<li id="fn:1">
-<p>ISO 7637-2:2011, <em>Road vehicles — Electrical disturbances from conduction and coupling — Part 2: Electrical transient conduction along supply lines only</em> International Organization for Standardization, 2011*&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref4:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
-<li id="fn:2">
-<p>IEC 61000-4-2:2008, <em>Electromagnetic compatibility (EMC) — Part 4-2: Testing and measurement techniques — Electrostatic discharge immunity test</em>, International Electrotechnical Commission, 2008*&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
-</li>
-<li id="fn:3">
-<p>CISPR 25:2021, <em>Vehicles, boats and internal combustion engines – Radio disturbance characteristics – Limits and methods of measurement for the protection of on-board receivers, International Electrotechnical Commission (IEC), 2021</em>&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
-</li>
-<li id="fn:4">
-<p>ISO 11452-2:2021, <em>Road vehicles — Component test methods for electrical disturbances from narrowband radiated electromagnetic energy — Part 2: Absorber-lined shielded enclosure, International Organization for Standardization, 2021</em>&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
-</li>
-<li id="fn:5">
-<p>Texas Instruments, <a href="https://www.ti.com/lit/ds/symlink/opt3004.pdf"><em>OPT3004 — Ambient Light Sensor</em></a>, Rev. E, Oct. 2020&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
-</li>
-<li id="fn:6">
-<p>DWIN Technology, <a href="https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/"><em>DMG48480F040_01WTC – 4.0 Intelligent Display, COF Series</em></a>&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
-</li>
-<li id="fn:7">
-<p>Espressif Systems, <a href="https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_datasheet_en.pdf"><em>ESP32-S3-WROOM-1/1U/2 Datasheet: Wi-Fi &amp; Bluetooth LE SoC Modules</em></a>, v1.9, 2023&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 7 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:7" title="Jump back to footnote 7 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
-</li>
-<li id="fn:8">
-<p>NMEA,  <em>NMEA 2000® Standard for Serial-Data Networking of Marine Electronic Devices, Version 3.200, National Marine Electronics Association, 2018</em>&#160;<a class="footnote-backref" href="#fnref:8" title="Jump back to footnote 8 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:8" title="Jump back to footnote 8 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:8" title="Jump back to footnote 8 in the text">&#8617;</a><a class="footnote-backref" href="#fnref4:8" title="Jump back to footnote 8 in the text">&#8617;</a></p>
-</li>
-</ol>
-</div>
+<p>An Espressif <a href="https://www.espressif.com/en/products/socs/esp32-s3/resources">ESP32-S3</a> microcontroller module handles all system logic, sensing, and communication. It manages protocol parsing, sensor readings, and updates to the display. The module includes Bluetooth/BLE for configuration and firmware updates, with Wi-Fi reserved for future features.</p>
 
 
 

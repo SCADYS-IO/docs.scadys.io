@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Documentation for the MDD400 marine/automotive data display.">
+      
       
       
       
@@ -20,7 +22,7 @@
     
     
       
-        <title>Communications Subsystem - MDD400 Design Report</title>
+        <title>Communications Subsystem - MDD400 Documentation</title>
       
     
     
@@ -78,7 +80,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="MDD400 Design Report" class="md-header__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+    <a href="../.." title="MDD400 Documentation" class="md-header__button md-logo" aria-label="MDD400 Documentation" data-md-component="logo">
       
   <img src="../../assets/images/site_logo.svg" alt="logo">
 
@@ -91,7 +93,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            MDD400 Design Report
+            MDD400 Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -175,12 +177,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="MDD400 Design Report" class="md-nav__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+    <a href="../.." title="MDD400 Documentation" class="md-nav__button md-logo" aria-label="MDD400 Documentation" data-md-component="logo">
       
   <img src="../../assets/images/site_logo.svg" alt="logo">
 
     </a>
-    MDD400 Design Report
+    MDD400 Documentation
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1288,11 +1290,7 @@
 <ul>
 <li>15 pF ceramic capacitors to local ground (NET-C);</li>
 <li>a 100 pF differential capacitor across the lines;</li>
-<li>
-<ul>
 <li>a common-mode choke (<a href="https://www.murata.com/en-us/products/productdata/8807038415390/QTN0099C.pdf">Murata ACT45B-510-2P-TL003</a>);</li>
-</ul>
-</li>
 <li>a <a href="https://www.onsemi.com/pdf/datasheet/nup2105l-d.pdf">NUP2105LT1G dual TVS array</a>;;</li>
 <li>and a <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234DR CAN transceiver</a>..</li>
 </ul>
@@ -1442,33 +1440,6 @@ open solder jumper labeled ST_12V is provided to allow bridging the SeaTalk and 
     </tr>
   </tbody>
 </table>
-
-<!--  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - -
-  **Wiring       **ST_SIG**   **12V_IN**   **GND**  **Outcome**                  **Protected?**
-  Order**                                                                       
-   -  -  -  - -  -  -  -  -   -  -  -  -   -  -  -   -  -  -  -  -  -  -  -  -   -  -  -  -  - -
-  SIG, 12V, GND    ST_SIG        12 V        GND    ✅ Correct connection  -           ✅
-                                                    normal operation            
-
-  12V, SIG, GND     12 V        ST_SIG       GND    ST_SIG pulled high  -  D6A         ✅
-                                                    blocks current, input       
-                                                    already expects 12 V        
-
-  SIG, GND, 12V    ST_SIG        GND        12 V    GND applied to 12V_IN  -           ✅
-                                                    D8 blocks reverse current   
-
-  GND, 12V, SIG     GND          12 V      ST_SIG   GND on ST_SIG  -  valid            ✅
-                                                    electrical state (LOW), no  
-                                                    damage                      
-
-  12V, GND, SIG     12 V         GND       ST_SIG   Same as #2  -  signal input        ✅
-                                                    sees 12 V, safely blocked   
-                                                    by D6A                      
-
-  GND, SIG, 12V     GND         ST_SIG      12 V    GND to ST_SIG  -  logic LOW        ✅
-                                                    input, 12 V on GND blocked  
-                                                    by D8                       
-   -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - - -->
 
 <p>All six possible wiring permutations are electrically safe. There are no failure modes resulting from any pin swap of the 3-pin legacy connector. While incorrect wiring may prevent the interface from functioning (e.g., no data received), no permanent damage will occur to the MDD400 or connected devices. This level of fault tolerance is particularly valuable for field installations and testing scenarios where connector orientation or labeling may not always be foolproof.</p>
 

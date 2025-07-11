@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Documentation for the MDD400 marine/automotive data display.">
+      
       
       
       
@@ -20,7 +22,7 @@
     
     
       
-        <title>Mechanical Design - MDD400 Design Report</title>
+        <title>Mechanical Design - MDD400 Documentation</title>
       
     
     
@@ -61,6 +63,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#physical-mechanical" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -73,7 +80,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="MDD400 Design Report" class="md-header__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+    <a href="../.." title="MDD400 Documentation" class="md-header__button md-logo" aria-label="MDD400 Documentation" data-md-component="logo">
       
   <img src="../../assets/images/site_logo.svg" alt="logo">
 
@@ -86,7 +93,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            MDD400 Design Report
+            MDD400 Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -170,12 +177,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="MDD400 Design Report" class="md-nav__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+    <a href="../.." title="MDD400 Documentation" class="md-nav__button md-logo" aria-label="MDD400 Documentation" data-md-component="logo">
       
   <img src="../../assets/images/site_logo.svg" alt="logo">
 
     </a>
-    MDD400 Design Report
+    MDD400 Documentation
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -416,6 +423,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Mechanical Design
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -428,6 +450,118 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pcb-layout-and-thermal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      PCB Layout and Thermal Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PCB Layout and Thermal Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#functional-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functional Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#board-stackup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Board Stackup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#earth-planes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Earth Planes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thermal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thermal Design
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mechanical" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mechanical
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mechanical">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connectors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dimensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dimensions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fasteners" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fasteners
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -868,6 +1002,109 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pcb-layout-and-thermal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      PCB Layout and Thermal Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PCB Layout and Thermal Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#functional-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functional Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#board-stackup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Board Stackup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#earth-planes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Earth Planes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thermal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thermal Design
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mechanical" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mechanical
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mechanical">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connectors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dimensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dimensions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fasteners" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fasteners
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -883,9 +1120,16 @@
 
 
 
-  <h1>Mechanical Design</h1>
-
-
+<h1 id="physical-mechanical">Physical / Mechanical</h1>
+<h2 id="pcb-layout-and-thermal-design">PCB Layout and Thermal Design</h2>
+<h3 id="functional-layout">Functional Layout</h3>
+<h3 id="board-stackup">Board Stackup</h3>
+<h3 id="earth-planes">Earth Planes</h3>
+<h3 id="thermal-design">Thermal Design</h3>
+<h2 id="mechanical">Mechanical</h2>
+<h3 id="connectors">Connectors</h3>
+<h3 id="dimensions">Dimensions</h3>
+<h3 id="fasteners">Fasteners</h3>
 
 
 

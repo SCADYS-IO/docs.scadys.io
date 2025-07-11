@@ -1,4 +1,5 @@
-site_name: MDD400 Design Report
+site_name: MDD400 Documentation
+site_description: Documentation for the MDD400 marine/automotive data display.
 
 markdown_extensions:
   - footnotes

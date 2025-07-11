@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Documentation for the MDD400 marine/automotive data display.">
+      
       
       
       
@@ -20,7 +22,7 @@
     
     
       
-        <title>Expansion Connectors - MDD400 Design Report</title>
+        <title>Expansion Connectors - MDD400 Documentation</title>
       
     
     
@@ -78,7 +80,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="MDD400 Design Report" class="md-header__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+    <a href="../.." title="MDD400 Documentation" class="md-header__button md-logo" aria-label="MDD400 Documentation" data-md-component="logo">
       
   <img src="../../assets/images/site_logo.svg" alt="logo">
 
@@ -91,7 +93,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            MDD400 Design Report
+            MDD400 Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -175,12 +177,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="MDD400 Design Report" class="md-nav__button md-logo" aria-label="MDD400 Design Report" data-md-component="logo">
+    <a href="../.." title="MDD400 Documentation" class="md-nav__button md-logo" aria-label="MDD400 Documentation" data-md-component="logo">
       
   <img src="../../assets/images/site_logo.svg" alt="logo">
 
     </a>
-    MDD400 Design Report
+    MDD400 Documentation
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1035,34 +1037,21 @@
 
 
 <h1 id="expansion-connectors">Expansion Connectors</h1>
-<p>Expansion port connectors are not populated on consumer versions of the
-MDD400. Only the MDD400-DEV version gives makers and the open-source
-community access these connectors.</p>
-<p>These connectors expose the microcontroller pins and no protection is
-provided to ensure the maximum utility. The [SDA], [SCL], [EN] and
-[BOOT] pins are pulled up to Vcc by 10k Ω resistors. All other pins
-are not pulled up or down to maximise utility.</p>
+<p>Expansion port connectors are not populated on consumer versions of the MDD400. Only the MDD400-DEV version gives makers and the open-source community access these connectors.</p>
+<p>These connectors expose the microcontroller pins and no protection is provided to ensure the maximum utility. The [SDA], [SCL], [EN] and [BOOT] pins are pulled up to Vcc by 10k Ω resistors. All other pins are not pulled up or down to maximise utility.</p>
 <h2 id="esp-prog">ESP-PROG</h2>
 <p>Describe the ESP-PROG here</p>
 <h3 id="flash-programmer">Flash Programmer</h3>
 <p>Used in production for flashing firmware</p>
-<p>Is a through-hole part. In production a dedicated programmer with pogo
-pins is used to interface to the same footprint</p>
+<p>Is a through-hole part. In production a dedicated programmer with pogo pins is used to interface to the same footprint</p>
 <h3 id="jtag-debugging-port">JTAG Debugging Port</h3>
-<p>The JTAG connector (1.27mm pitch, 2x5 pins) is compatible with the
-ESP-PROG cable.</p>
-<p>It is only populated tin the MDD400-DEV version.</p>
-<p>The connector can be used for expanding four MCU pins to off-PCB
-functions. The connector provides GND and 5v. In addition, 3.3v can also
-be provided (on pin 10 of the connector) by closing the adjacent solder
-jumper.</p>
+<p>The JTAG connector (1.27mm pitch, 2x5 pins) is compatible with the ESP-PROG cable.</p>
+<p>It is only populated in the MDD400-DEV version.</p>
+<p>The connector can be used for expanding four MCU pins to off-PCB functions. The connector provides GND and 5v. In addition, 3.3v can also be provided (on pin 10 of the connector) by closing the adjacent solder jumper.</p>
 <h2 id="i2c">I2C</h2>
-<p>Has a 4 pin, 2.54mm pitch male header, compatible with DuPont
-cable/connectors. Exposes GND, 3v3, [SDA] and [SCL]</p>
+<p>Has a 4 pin, 2.54mm pitch male header, compatible with DuPont cable/connectors. Exposes GND, 3v3, [SDA] and [SCL]</p>
 <h2 id="one-wire">One-Wire</h2>
-<p>The [1-WIRE] pin, GND and 5V is connected to this 3-pin, 2.54mm pitch
-male header compatible with DuPont cable/connectors. Provides an
-interface for industry standard DS18B20 one-wire temperature sensors.</p>
+<p>The [1-WIRE] pin, GND and 5V is connected to this 3-pin, 2.54mm pitch male header compatible with DuPont cable/connectors. Provides an interface for industry standard DS18B20 one-wire temperature sensors.</p>
 
 
 
