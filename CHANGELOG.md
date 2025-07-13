@@ -1,5 +1,11 @@
 <!-- MDD400_Hardware -->
 
+
+
+## 0.0.2
+
+- Working on section 3.
+
 ## 0.0.2
 
 - Created `mkDocs` project.

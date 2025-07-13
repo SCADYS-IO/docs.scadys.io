@@ -370,20 +370,14 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#power-supply" class="md-nav__link">
+          <li class="md-nav__item">
+  <a href="#can-transceiver-power-supply" class="md-nav__link">
     <span class="md-ellipsis">
-      Power Supply
+      CAN Transceiver Power Supply
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Power Supply">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#ttl-io" class="md-nav__link">
@@ -1111,20 +1105,14 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#power-supply" class="md-nav__link">
+          <li class="md-nav__item">
+  <a href="#can-transceiver-power-supply" class="md-nav__link">
     <span class="md-ellipsis">
-      Power Supply
+      CAN Transceiver Power Supply
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Power Supply">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#ttl-io" class="md-nav__link">
@@ -1284,26 +1272,34 @@
 
 <h1 id="communications-subsystem">Communications SUBSYSTEM</h1>
 <h2 id="canbus-interface">CANBUS Interface</h2>
-<p>The MDD400 connects to the <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>network via a standard 5-pin DeviceNet A-coded male connector. The CAN interface is isolated and filtered with ESD and surge protection devices to ensure compliance with marine EMC standards. A SN65HVD234DRThe MDD400 connects to the <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a>network via a standard 5-pin DeviceNet A-coded male connector. The CAN interface is isolated and filtered with ESD and surge protection devices to ensure compliance with marine EMC standards. A SN65HVD234DR[^12] CAN transceiver interfaces the differential CANBUS signal to the ESP32\'s TWAI® pins. The SN65HVD234DR is a 3.3 V high-speed CAN transceiver rated for data rates up to 1 Mbps. It incorporates several features that improve bus reliability and robustness in harsh environments, including slope control for reduced EMI, a dominant state timeout to prevent bus lockup, and a low-power standby mode. The device is fully compliant with ISO 11898-2 [^19] and is well suited for use in marine and automotive environments where noise immunity is critical. CAN transceiver interfaces the differential CANBUS signal to the ESP32\'s TWAI® pins. The SN65HVD234DR is a 3.3 V high-speed CAN transceiver rated for data rates up to 1 Mbps. It incorporates several features that improve bus reliability and robustness in harsh environments, including slope control for reduced EMI, a dominant state timeout to prevent bus lockup, and a low-power standby mode. The device is fully compliant with ISO 11898-2 [^19] and is well suited for use in marine and automotive environments where noise immunity is critical.</p>
+<p>The MDD400 connects to the NMEA 2000 network via a <a href="https://www.maretron.com/wp-content/phpkbv95/article.php?id=443">standard 5-pin A-coded male DeviceNet connector</a>, following the physical layer defined by the NMEA 2000 micro connector specification.</p>
+<p><img alt="NMEA 2000 Micro Connector" src="../../assets/images/n2k_connector.png" /></p>
+<p>To ensure galvanic isolation and compliance with marine EMC and safety standards, the CAN interface includes an isolated transceiver, ESD and surge protection, and a combination of differential and common-mode filters.</p>
+<p>A <a href="https://www.ti.com/lit/ds/symlink/iso1042.pdf">Texas Instruments ISO1042</a> galvanically isolated CAN transceiver provides the physical interface between the differential CAN bus signals and the ESP32’s integrated TWAI® controller. The ISO1042 supports data rates up to 5 Mbps and is compliant with <a href="https://www.iso.org/standard/85120.html">ISO 11898-2</a>, offering reinforced isolation up to 5000 VRMS and integrated failsafe features. These include default-to-recessive logic states on open or shorted inputs, ESD protection, and bus fault tolerance.</p>
+<p>The transceiver is powered from a dedicated, isolated 5 V supply derived from a transformer driver and linear regulator. This configuration eliminates shared ground paths and prevents transients on the CAN side from coupling into the digital domain.</p>
+<p>The design incorporates common-mode and differential-mode filters, a CAN choke, and surge protection components to meet EMC requirements and ensure reliable operation in marine electrical environments.</p>
 <h3 id="canbus-signal-conditioning">CANBUS Signal Conditioning</h3>
-<p>The CAN_H and CAN_L signals pass through:</p>
+<p>The CAN_H and CAN_L signals pass through the following components prior to reaching the transceiver:</p>
 <ul>
-<li>15 pF ceramic capacitors to local ground (NET-C);</li>
-<li>a 100 pF differential capacitor across the lines;</li>
-<li>a common-mode choke (<a href="https://www.murata.com/en-us/products/productdata/8807038415390/QTN0099C.pdf">Murata ACT45B-510-2P-TL003</a>);</li>
-<li>a <a href="https://www.onsemi.com/pdf/datasheet/nup2105l-d.pdf">NUP2105LT1G dual TVS array</a>;;</li>
-<li>and a <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234DR CAN transceiver</a>..</li>
+<li>15 pF capacitors to local CAN ground (NET-C), providing high-frequency common-mode filtering;</li>
+<li>a 100 pF differential capacitor across CAN_H and CAN_L, attenuating differential-mode noise;</li>
+<li>a <a href="https://www.murata.com/en-us/products/productdata/8807038415390/QTN0099C.pdf">Murata ACT45B-510-2P-TL003</a> common-mode choke, used to suppress high-frequency common-mode interference;</li>
+<li>a <a href="https://www.onsemi.com/pdf/datasheet/nup2105l-d.pdf">NUP2105LT1G</a> dual transient voltage suppression (TVS) array, providing protection against differential and common-mode voltage transients;</li>
+<li>and a <a href="https://www.ti.com/lit/ds/symlink/iso1042.pdf">Texas Instruments ISO1042 CAN transceiver</a>, which includes integrated galvanic isolation and failsafe features.</li>
 </ul>
-<p>These components form a compact, low-loss CAN filter network designed in accordance with recommendations from <a href="ttps://www.ti.com/lit/ab/snoaaa1/snoaaa1.pdf">Texas Instruments</a> and  <a href="https://www.monolithicpower.com/en/blog/post/from-cold-crank-to-load-dump-a-primer-on-automotive-transients">MPS</a>. </p>
-<p>A 100 pF differential capacitor improves high-frequency noise immunity between CAN_H and CAN_L. The <a href="https://www.murata.com/en-us/products/productdata/8807038415390/QTN0099C.pdf">ACT45B</a> common-mode choke attenuates high-frequency interference without significantly degrading the differential signal.</p>
-<p>The short, direct PCB trace routing between the connector, filter components, and transceiver minimises parasitic inductance and avoids unnecessary layer transitions. The CANH and CANL signals are routed as a tightly coupled differential pair, preserving signal symmetry and maintaining consistent impedance. These layout strategies reduce radiated and conducted emissions and help ensure compliance with <a href="https://www.diodes.com/design/support/cispr-25">CISPR 25</a> and <a href="https://www.iso.org/standard/68557.html">ISO 11452-2</a> in marine and automotive installations.</p>
-<h2 id="power-supply">Power Supply</h2>
-<p>The <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a> is powered from the 3.3 V digital supply rail shared with the ESP32. A three-stage bypass network is implemented at the VCC pin to ensure power integrity across a wide frequency range, consistent with the datasheet:</p>
-<ul>
-<li>a 10 µF ceramic capacitor provides low-frequency bulk decoupling and stabilizes the supply during slower load changes;</li>
-<li>a 100 nF ceramic capacitor is placed close to the VCC pin for general high-frequency bypassing; and</li>
-<li>a 100 pF ceramic capacitor suppresses high frequency noise, e.g. fast transients caused by CAN signal switching.</li>
-</ul>
+<p>This signal conditioning network is designed following guidance from <a href="https://www.ti.com/lit/ab/snoaaa1/snoaaa1.pdf">Texas Instruments</a> and <a href="https://www.monolithicpower.com/en/blog/post/from-cold-crank-to-load-dump-a-primer-on-automotive-transients">Monolithic Power Systems</a>, and is intended to minimise emissions and maximise immunity to electrical noise.</p>
+<p>The CAN_H and CAN_L signals are routed as a tightly coupled differential pair with controlled impedance. Routing is kept short and direct between the connector, filtering components, and transceiver to minimise parasitic inductance and reduce discontinuities. Layout techniques avoid unnecessary vias or stubs and prioritise symmetry to preserve signal integrity.</p>
+<p>These design measures support compliance with EMC standards such as <a href="https://www.diodes.com/design/support/cispr-25">CISPR 25</a> and <a href="https://www.iso.org/standard/68557.html">ISO 11452-2</a>, which are applicable to automotive and marine CAN networks.</p>
+<p>To maintain galvanic isolation, the CAN transceiver's isolated ground (NET-C) is physically separated from the system ground (GNDREF) using a dedicated ground plane region. A minimum clearance of 2.5–4.0 mm is maintained between the isolated and logic ground planes, consistent with IPC-2221 and marine EMC best practices. This clearance helps ensure the isolation barrier is not compromised by parasitic coupling or leakage currents, and supports the reinforced isolation rating of the ISO1042 transceiver.</p>
+<h3 id="can-transceiver-power-supply">CAN Transceiver Power Supply</h3>
+<p>The ISO1042 CAN transceiver requires an isolated 5 V supply on the CAN-side domain (V<sub>CC2</sub>), referenced to the isolated ground (GND2/NET-C). This power is derived from the internal 5.3 V rail using a transformer-based isolated supply.</p>
+<p>A <a href="../../assets/pdf/VPSC-VPS8702_datasheet.pdf">VPSC VPS8702 transformer driver</a> converts the 5.3 V input into a high-frequency push-pull signal suitable for driving a non-center-tapped isolation transformer. The selected transformer is a 1:1 device (<a href="https://lcsc.com/datasheet/lcsc_datasheet_2108142130_VPSC-VPT87BB-01A_C2846912.pdf">VPT87BB-01A</a>), rated for reinforced isolation up to 3 kV and compatible with the VPS8702 drive topology.</p>
+<p>The transformer's secondary winding is connected to a full-wave rectifier using low forward voltage <a href="https://www.diodes.com/assets/Datasheets/BAT54.pdf">Schottky diodes</a>. The rectified output is smoothed using a combination of ceramic and bulk capacitors to provide a low-ripple DC supply.</p>
+<p>To achieve a regulated 5.0 V output, the filtered voltage is passed through a <a href="https://lcsc.com/datasheet/lcsc_datasheet_2506261414_UMW-Youtai-Semiconductor-Co---Ltd--HT7550-1_C347189.pdf">HT7550-1</a> low-dropout linear regulator. With a typical dropout voltage of approximately 100 mV, the HT7550-1 provides sufficient regulation margin from a nominal 5.3 V input to maintain a stable output under varying load conditions.</p>
+<p>The LDO is bypassed with a 2.2 µF / 25 V ceramic capacitor and a 100 nF / 50 V ceramic capacitor placed in parallel. These are located close to the VOUT and GND pins and provide local bulk storage and high-frequency noise suppression for the ISO1042 transceiver.</p>
+<p>Primary-side filtering on the VPS8702 input includes a 2.2 µF / 25 V ceramic capacitor placed near the VIN pin. The rectified DC output on the isolated side is filtered with a 2.2 µF / 25 V capacitor before feeding the LDO.</p>
+<p>The regulated output supplies the ISO1042’s V<sub>CC2</sub> pin, while the LDO ground and all downstream filtering are referenced to NET-C. The logic-side domain (V<sub>CC1</sub>/GND1) remains isolated and operates from the internal 3.3 V rail.</p>
+<p>Clearance and creepage requirements between the isolated and logic ground planes are maintained according to IPC-2221 and manufacturer recommendations, supporting the 5 kV isolation rating of the <a href="https://www.ti.com/lit/ds/symlink/iso1042.pdf">ISO1042</a>.</p>
 <h3 id="ttl-io">TTL I/O</h3>
 <p>The <a href="https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf">SN65HVD234 transceiver</a> is powered from the 3.3 V digital supply rail shared with the ESP32. Logic-level CAN communication is implemented through the TX and RX pins:</p>
 <ul>
