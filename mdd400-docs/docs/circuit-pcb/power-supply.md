@@ -307,9 +307,23 @@ If you're integrating devices like the MDD400 into an RV-C network, it's advisab
 - consult the RV-C Layer document for any updates or recommendations regarding power management.
 
 The design ensures compatibility with marine and RV networks and prioritises energy efficiency—an important consideration for solar-powered or battery-limited systems such as sailboats.
+
 ### V<sub>PP</sub> - Primary Power Domain (5.3 Volt)
 
-The `VPP` rail provides a regulated 5.33 V output from the unregulated 12 V input rail `VSS` using a high-efficiency synchronous buck converter based on the [Texas Instruments TPS54560B-Q1](https://www.ti.com/lit/ds/symlink/tps54560b-q1.pdf) wide-input switching regulator. This rail supplies the serial LCD display and serves as the intermediate voltage for the 3.3 V LDO. It is designed for continuous output currents up to 1 A, with substantial thermal and electrical margin provided by the 5 A-rated controller and passive components.
+The `VPP` rail provides a regulated 5.33 V output from the unregulated 12 V input rail `VSS` using a high-efficiency synchronous buck converter based on the [Texas Instruments TPS54560B-Q1](https://www.ti.com/lit/ds/symlink/tps54560b-q1.pdf) wide-input switching regulator. Key characteristics of the TPS54560B-Q1 include:
+
+* 4.5 V to 60 V wide input voltage range
+* 5 A continuous output current capability
+* Integrated high-side MOSFET
+* Adjustable switching frequency (100 kHz to 2.5 MHz)
+* Adjustable soft-start and power good indicator
+* Cycle-by-cycle current limit and thermal shutdown
+* Low shutdown IQ (<1 µA typical)
+* Automotive-grade AEC-Q100 qualified
+
+These features make the device well-suited for intermediate voltage regulation in automotive and industrial systems where noise performance, fault protection, and wide input range are critical.
+
+This rail supplies the serial LCD display and serves as the intermediate voltage for the 3.3 V LDO. It is designed for continuous output currents up to 1 A, with substantial thermal and electrical margin provided by the 5 A-rated controller and passive components.
 
 A complete WEBENCH design report for this power stage is included at [smps\_design\_report.pdf](../assets/pdf/smps_design_report.pdf).
 
@@ -322,51 +336,47 @@ The complete `VPP` regulator subsystem consists of three sections: input filter,
 **Input Filter:**
 ![Input filter schematic](../assets/images/vpp_input_filter_sch.png)
 
-The input filter includes bulk and high-frequency ceramic decoupling capacitors to suppress incoming noise and transients, along with a [Murata BLM31KN601SN1L](https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf) 600 Ω @ 100 MHz ferrite bead (FB3) to isolate the SMPS from the system input rail. Input bypassing is provided by a 4.7 µF X7R MLCC (C13), supported by additional bulk capacitance upstream.
+The input filter includes bulk and high-frequency ceramic decoupling capacitors to suppress incoming noise and transients, along with a [Murata BLM31KN601SN1L](https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf) 600 Ω @ 100 MHz ferrite bead to isolate the SMPS from the system input rail. Input bypassing is provided by a 4.7 µF X7R MLCC, supported by additional bulk capacitance upstream.
 
 **Switching Regulator Core:**
 ![Regulator schematic](../assets/images/vpp_regulator_sch.png)
 
-The regulator IC is configured for 600 kHz switching using an 160 kΩ timing resistor (R18). Compensation components (R17, C20, C19) were selected based on WEBENCH simulation to provide excellent phase margin (>60°) and a crossover frequency near 25 kHz. The power stage uses a [Sumida 104CDMCCDS-220MC](https://www.lcsc.com/datasheet/lcsc_datasheet_2410121804/Sumida-104CDMCCDS-220MC_C2638545.pdf) 22 µH shielded inductor with 3.5 A saturation current and 2.4 A thermal current rating.
+The regulator IC is configured for 600 kHz switching using a 160 kΩ timing resistor. Compensation components were selected based on WEBENCH simulation to provide excellent phase margin (>60°) and a crossover frequency near 25 kHz. The power stage uses a [Sumida 104CDMCCDS-220MC](https://www.lcsc.com/datasheet/lcsc_datasheet_2410121804/Sumida-104CDMCCDS-220MC_C2638545.pdf) 22 µH shielded inductor with 3.5 A saturation current and 2.4 A thermal current rating.
 
 **Output Filter:**
 ![Output filter schematic](../assets/images/vpp_output_filter_sch.png)
 
-The output filter uses a [Kyocera AVX TCJB476M010R0070](https://datasheets.kyocera-avx.com/TCJ.pdf) 47 µF tantalum-polymer capacitor (C18) providing a well-damped ESR of \~70 mΩ, paralleled with a 10 µF X7R ceramic capacitor (C14) for high-frequency decoupling. A second ferrite bead (FB4) further suppresses switching noise before handing off to the digital logic rail. The output includes a 100 kΩ bleed resistor (R16) to prevent floating voltages during startup or shutdown.
+The output filter uses a [Kyocera AVX TCJB476M010R0070](https://datasheets.kyocera-avx.com/TCJ.pdf) 47 µF tantalum-polymer capacitor providing a well-damped ESR of \~70mΩ, paralleled with a 10 µF X7R ceramic capacitor for high-frequency decoupling. The ceramic capacitor is isolated by a 100 mΩ series resistor to ensure it does not dominate the total ESR, preserving the phase margin contributed by the tantalum. This hybrid approach delivers low output ripple and fast transient response while maintaining loop stability.
+
+The use of the 47 µF tantalum capacitor is essential to achieving the target ESR recommended in the WEBENCH design. Without it, the regulator would require artificial ESR injection to avoid excessive gain and potential instability. A second ferrite bead further suppresses switching noise before handing off to the digital logic rail. A bleed resistor prevents floating voltages during startup or shutdown.
 
 ---
 
+#### Protection Features
+
+The TPS54560B-Q1 integrates multiple protection mechanisms to ensure safe operation under fault conditions. These include cycle-by-cycle peak current limiting on the high-side switch, thermal shutdown with automatic recovery, and undervoltage lockout (UVLO) on both the input and enable pins. These features protect the regulator and downstream circuitry against short circuits, overheating, and supply brownouts. The built-in soft-start function also prevents inrush current and output overshoot at power-up.
+
 #### Performance
 
-The regulator is simulated for 5.33 V output at 1 A load with an efficiency of 93.5% at nominal 12 V input. Measured inductor ripple is approximately 245 mA (peak-to-peak), and output ripple is estimated at 18 mV, dominated by the effective ESR and layout parasitics. The control loop has a simulated phase margin of 63°, ensuring excellent transient and stability performance.
+The regulator is simulated for 5.33 V output at 1 A load with an efficiency of 93.5% at nominal 12 V input. Measured inductor ripple is approximately 245 mA (peak-to-peak), and output ripple is estimated at 18 mV, dominated by the effective ESR (\~70mΩ) and layout parasitics. The control loop has a simulated phase margin of 63°, ensuring excellent transient and stability performance.
 
 Use of a hybrid output capacitor network (tantalum + ceramic) allows for fast load response while maintaining sufficient loop damping without artificial ESR insertion. Input and output ferrite beads attenuate conducted EMI across the power and ground boundaries, improving system-level EMC.
 
 ---
 
+#### Component Selection
+
+All resistors in this power stage are standard 0603-sized, 0.1 W thin-film types with 1% tolerance unless otherwise specified. This ensures consistent temperature and voltage stability across the regulator's control and feedback network. Capacitors are predominantly 0603 X7R MLCCs for predictable performance across temperature and bias, with exceptions noted where tantalum-polymer types are used for their controlled ESR characteristics.
+
 #### Layout Considerations
 
-The layout is implemented on a 4-layer PCB with dedicated ground and power planes. All SMPS components are placed to minimize the switching current loop area, with the input capacitor (C13) tightly coupled to the regulator VIN and GND pins. The power stage is built on a local copper island tied to the `GNDSMPS` net, which is isolated from the main digital ground plane (`GNDREF`) and stitched via a perimeter ring and single-point connection.
+![SMPS layout copper image](../assets/images/vpp_ground_plane.png)
+
+The layout is implemented on a 4-layer PCB with dedicated ground and power planes. All SMPS components are placed to minimize the switching current loop area, with the input capacitor tightly coupled to the regulator VIN and GND pins. The power stage is built on a local copper island tied to the `GNDSMPS` net, which is isolated from the main digital ground plane (`GNDREF`) and stitched via a perimeter ring and single-point connection.
 
 The high-frequency switching path (VIN → SW → inductor → output caps → GNDSMPS) is kept compact and shielded from signal traces. Additional isolation is provided by splitting the return path of the input and output filters to `GNDREF` and `GNDSMPS` respectively, with appropriate stitching to maintain low impedance at high frequencies.
 
-This layout strategy minimizes radiated EMI and ground bounce while supporting clean analog performance elsewhere in the system.
-
-
-<!-- ### V<SUB>PP</SUB> - Primary Power Domain (5.3 Volt)
-
-The 5.3 Volt `VPP` rail is derived from the unregulated nominal 12 Volt `VSS` rail using a buck-mode switching regulator ([TPS54560B-Q1](https://www.ti.com/lit/ds/symlink/tps54560b-q1.pdf)). It provides up to 5 A peak current and serves as the intermediate supply for the 3.3 V LDO as well as directly powering the serial LCD display. The regulator offers:
-
-- wide input range up to 60 V;
-- integrated high-side MOSFET;
-- thermal shutdown and current limit protection; and
-- adjustable soft-start and switching frequency.
-
-The switching frequency is set to 1.25 MHz. The output is filtered using a 22 µH power inductor and a 47 µF low-ESR ceramic capacitor, with additional bulk capacitance as required. A 600 Ω @ 100 MHz ferrite bead (FB3) on the output further suppresses high-frequency noise.
-
-The SMPS layout closely follows Texas Instruments’ guidelines, with a compact switching loop, tight input/output capacitor placement, and careful separation of power and analog grounds. The SMPS section is isolated by local copper pours, connected to the global ground plane through a high-frequency ferrite.
-
-Display power is gated by a P-channel MOSFET controlled via \[DISP_EN\]. This allows firmware to shut down the 5 Volt power to the display, reducing standby power or resetting the DGUS display controller if required. -->
+This layout strategy minimizes radiated EMI and ground bounce while supporting clean analog performance elsewhere in the system. The image above illustrates the GNDSMPS copper island layout. The switching loop is compact and centered around the regulator IC and output inductor. The ground plane is uninterrupted except under the inductor, where a keep-out is maintained on all layers to reduce capacitive coupling to the switching node. Thermal vias are placed under the regulator and flyback diode to transfer heat efficiently into internal ground planes. A dense via-stitched perimeter isolates the GNDSMPS region, and the single tie to GNDREF via a ferrite bead provides a low-noise star-ground structure.
 
 ### V<sub>CAN</sub> - Isolated CAN Transceiver Power Domain (5.0 Volt)
 
