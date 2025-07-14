@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-mkdocs" class="md-skip">
+        <a href="#mdd400-technical-documentation" class="md-skip">
           Skip to content
         </a>
       
@@ -242,18 +242,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#commands" class="md-nav__link">
+  <a href="#documentation-structure" class="md-nav__link">
     <span class="md-ellipsis">
-      Commands
+      Documentation Structure
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#project-layout" class="md-nav__link">
+  <a href="#scope" class="md-nav__link">
     <span class="md-ellipsis">
-      Project layout
+      Scope
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#standards-and-compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standards and Compliance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-the-mdd400" class="md-nav__link">
+    <span class="md-ellipsis">
+      About the MDD400
     </span>
   </a>
   
@@ -933,18 +951,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#commands" class="md-nav__link">
+  <a href="#documentation-structure" class="md-nav__link">
     <span class="md-ellipsis">
-      Commands
+      Documentation Structure
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#project-layout" class="md-nav__link">
+  <a href="#scope" class="md-nav__link">
     <span class="md-ellipsis">
-      Project layout
+      Scope
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#standards-and-compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standards and Compliance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-the-mdd400" class="md-nav__link">
+    <span class="md-ellipsis">
+      About the MDD400
     </span>
   </a>
   
@@ -966,21 +1002,82 @@
 
 
 
-<h1 id="welcome-to-mkdocs">Welcome to MkDocs</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="commands">Commands</h2>
+<h1 id="mdd400-technical-documentation">MDD400 Technical Documentation</h1>
+<p>This site contains detailed design documentation for the <strong>MDD400</strong>, a marine data display designed for integration into NMEA 2000 and legacy serial systems. The information presented here is intended for engineers and technical stakeholders involved in system integration, product evaluation, and development.</p>
+<p>The MDD400 is a self-contained embedded system with a touchscreen user interface, designed to operate in marine environments. It supports galvanically isolated CANBUS communication, 12 V serial protocols, Bluetooth configuration, and multiple regulated power domains.</p>
+<hr />
+<h2 id="documentation-structure">Documentation Structure</h2>
 <ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
+<li>
+<p><a href="overview/">Overview</a><br />
+  System architecture and high-level design summary</p>
+</li>
+<li>
+<p><a href="circuit-pcb/power-supplies/">Power Supply Design</a><br />
+  Input protection, switching and linear regulators, and power domain allocation</p>
+</li>
+<li>
+<p><a href="circuit-pcb/communications/">Communications Interfaces</a><br />
+  CANBUS (NMEA 2000), legacy serial interface (NMEA 0183-compatible), Bluetooth LE</p>
+</li>
+<li>
+<p><a href="circuit-pcb/">Circuit and PCB Design</a><br />
+  Schematics, layout considerations, and mechanical integration</p>
+</li>
+<li>
+<p><a href="firmware/">Firmware Architecture</a><br />
+  Software design, configuration protocol, and update mechanism</p>
+</li>
+<li>
+<p><a href="peripherals/display/">Display Interface</a><br />
+  UART-connected LCD module and user interface integration</p>
+</li>
+<li>
+<p><a href="testing/">Testing and Validation</a><br />
+  Environmental, electrical, and functional test results</p>
+</li>
 </ul>
-<h2 id="project-layout">Project layout</h2>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage.
-    ...       # Other markdown pages, images and other files.
-</code></pre>
+<p>Each section corresponds to a part of the system and aligns with the subassemblies defined in the schematics and PCB layout.</p>
+<hr />
+<h2 id="scope">Scope</h2>
+<p>This documentation is intended to provide:</p>
+<ul>
+<li>Sufficient detail to understand all major subsystems and their implementation</li>
+<li>Reference material for integration with other onboard electronics</li>
+<li>Technical background for certification, review, or procurement purposes</li>
+<li>Support for licensed developers and partners customizing firmware or extending functionality</li>
+</ul>
+<hr />
+<h2 id="standards-and-compliance">Standards and Compliance</h2>
+<p>The MDD400 is designed with reference to the following technical standards and regulatory requirements:</p>
+<ul>
+<li><strong>CANBUS / NMEA 2000</strong>: Compatible with the ISO 11898-2 physical layer and designed for use with NMEA 2000 marine networks.</li>
+<li><strong>Legacy Serial Protocols</strong>: Supports 12 V serial interfaces, electrically compatible with NMEA 0183 and SeaTalk systems.</li>
+<li><strong>EMC and Safety</strong>: Design practices align with the intent of CE, FCC Part 15B, and UKCA EMC and safety directives. Specific testing for emissions, immunity, and safety is planned for final production units.</li>
+<li><strong>Environmental Protection</strong>: Housing design targets ingress protection rating of <strong>IP65</strong>, suitable for use in exposed marine installations.</li>
+</ul>
+<p>The MDD400 is currently in the pre-production phase. The device will undergo independent testing to verify compliance with <a href="https://ec.europa.eu/growth/single-market/ce-marking_en">CE</a>, <a href="https://www.fcc.gov/engineering-technology/laboratory-division/general/equipment-authorization">FCC Part 15B</a>, and <a href="https://www.gov.uk/guidance/using-the-ukca-marking">UKCA</a> prior to commercial release. </p>
+<hr />
+<h2 id="about-the-mdd400">About the MDD400</h2>
+<p>The MDD400 was developed in a marine operational context, with field testing conducted during a full circumnavigation. Its design reflects the practical requirements of extended offshore deployment, including electrical isolation, redundant protection features, and support for legacy and modern protocols.</p>
+<p>This documentation reflects the current pre-production design revision.</p>
+<!-- # Welcome to MkDocs
+
+For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+
+## Commands
+
+* `mkdocs new [dir-name]` - Create a new project.
+* `mkdocs serve` - Start the live-reloading docs server.
+* `mkdocs build` - Build the documentation site.
+* `mkdocs -h` - Print help message and exit.
+
+## Project layout
+
+    mkdocs.yml    # The configuration file.
+    docs/
+        index.md  # The documentation homepage.
+        ...       # Other markdown pages, images and other files. -->
 
 
 
