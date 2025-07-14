@@ -3,19 +3,33 @@
 
 ## CANBUS Interface
 
+### NMEA 2000 / RV-C /CANBUS Connector
+
 The MDD400 connects to the NMEA 2000 network via a [standard 5-pin A-coded male DeviceNet connector](https://www.maretron.com/wp-content/phpkbv95/article.php?id=443), following the physical layer defined by the NMEA 2000 micro connector specification.
 
-![NMEA 2000 Micro Connector](../assets/images/n2k_connector.png)
+![NMEA 2000 Connector Pins](../assets/images/n2k_connector.png)
 
-To ensure galvanic isolation and compliance with marine EMC and safety standards, the CAN interface includes an isolated transceiver, ESD and surge protection, and a combination of differential and common-mode filters.
+The five pins are assigned as follows:
 
-A [Texas Instruments ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf) galvanically isolated CAN transceiver provides the physical interface between the differential CAN bus signals and the ESP32’s integrated TWAI® controller. The ISO1042 supports data rates up to 5 Mbps and is compliant with [ISO 11898-2](https://www.iso.org/standard/85120.html), offering reinforced isolation up to 5000 VRMS and integrated failsafe features. These include default-to-recessive logic states on open or shorted inputs, ESD protection, and bus fault tolerance.
+* **Pin 1 – Shield**: Connected to the cable shield (drain wire). This pin is *not* connected internally on the MDD400 device; it is left unconnected (floating) to comply with NMEA 2000 and CANBUS best practices, which require the shield to be bonded to vessel ground at a single point—typically where power is injected into the backbone.
+* **Pin 2 – NET-S**: Power supply positive (+12 V nominal), typically fused and supplied by the NMEA 2000 backbone.
+* **Pin 3 – NET-C**: Power supply common (0 V), forming the ground reference for the CAN transceiver and device power input.
+* **Pin 4 – NET-H**: CAN high (CAN\_H), the dominant high-level differential signal on the CANBUS.
+* **Pin 5 – NET-L**: CAN low (CAN\_L), the dominant low-level differential signal on the CANBUS.
 
-The transceiver is powered from a dedicated, isolated 5 V supply derived from a transformer driver and linear regulator. This configuration eliminates shared ground paths and prevents transients on the CAN side from coupling into the digital domain.
+The connector is sealed and keyed to ensure correct mating orientation and environmental protection. The MDD400 device incorporates onboard ESD protection, surge suppression, and filtering for all connector lines, as described in subsequent sections. The ESD protection diode used is the [TPD1E05U06](https://www.ti.com/lit/ds/symlink/tpd1e05u06.pdf).
 
-The design incorporates common-mode and differential-mode filters, a CAN choke, and surge protection components to meet EMC requirements and ensure reliable operation in marine electrical environments.
+The cable shield is routed directly to pin 1 of the connector but is *not connected* to the MDD400 ground plane. A test pad and DNP (do not populate) 0 Ω resistor are provided for bench testing or alternate grounding schemes, but are left open in production units. This ensures immunity to ground loops and preserves compliance with the NMEA 2000 recommendation of single-point shield grounding.
+
+The circuit schematic below shows the shield and connector arrangement.
+
+![NMEA 2000 Shield Circuit](../assets/images/n2k_shield_circuit.png)
 
 ### CANBUS Signal Conditioning
+
+The CAN interface is galvanically isolated and filtered to reduce both emissions and susceptibility to EMI. The filtering stage is shown below.
+
+![CAN Filter Schematic](../assets/images/can_filter_schematic.png)
 
 The CAN\_H and CAN\_L signals pass through the following components prior to reaching the transceiver:
 
@@ -35,45 +49,48 @@ To maintain galvanic isolation, the CAN transceiver's isolated ground (NET-C) is
 
 ### CAN Transceiver Power Supply
 
-The ISO1042 CAN transceiver requires an isolated 5 V supply on the CAN-side domain (V<sub>CC2</sub>), referenced to the isolated ground (GND2/NET-C). This power is derived from the internal 5.3 V rail using a transformer-based isolated supply.
+The ISO1042 CAN transceiver operates from an isolated 5 V supply on the CAN-side domain (VCAN), referenced to the isolated ground (GND\_C). The schematic is shown below.
 
-A [VPSC VPS8702 transformer driver](../assets/pdf/VPSC-VPS8702_datasheet.pdf) converts the 5.3 V input into a high-frequency push-pull signal suitable for driving a non-center-tapped isolation transformer. The selected transformer is a 1:1 device ([VPT87BB-01A](https://lcsc.com/datasheet/lcsc_datasheet_2108142130_VPSC-VPT87BB-01A_C2846912.pdf)), rated for reinforced isolation up to 3 kV and compatible with the VPS8702 drive topology.
+![VCAN Supply Schematic](../assets/images/vcan_schematic.png)
 
-The transformer's secondary winding is connected to a full-wave rectifier using low forward voltage [Schottky diodes](https://www.diodes.com/assets/Datasheets/BAT54.pdf). The rectified output is smoothed using a combination of ceramic and bulk capacitors to provide a low-ripple DC supply.
+Galvanic isolation between the CAN-side and logic-side domains is **recommended** by both the NMEA 2000 and ISO 11898 standards to improve EMC performance, prevent ground loops, and enhance system protection in electrically noisy environments.
 
-To achieve a regulated 5.0 V output, the filtered voltage is passed through a [HT7550-1](https://lcsc.com/datasheet/lcsc_datasheet_2506261414_UMW-Youtai-Semiconductor-Co---Ltd--HT7550-1_C347189.pdf) low-dropout linear regulator. With a typical dropout voltage of approximately 100 mV, the HT7550-1 provides sufficient regulation margin from a nominal 5.3 V input to maintain a stable output under varying load conditions.
+* [NMEA 2000 Appendix A - Physical Layer](https://www.nmea.org/Assets/20230331%20nmea%202000%20appendix%20a%20-%20physical%20layer.pdf)
+* [ISO 11898-2:2016 - High-speed CAN](https://www.iso.org/standard/66340.html)
 
-The LDO is bypassed with a 2.2 µF / 25 V ceramic capacitor and a 100 nF / 50 V ceramic capacitor placed in parallel. These are located close to the VOUT and GND pins and provide local bulk storage and high-frequency noise suppression for the ISO1042 transceiver.
+The power supply architecture and component selection—including the transformer driver, rectifier, linear regulator, bypass capacitors, and ferrite bead—are fully detailed in the [power-supply.md](./power-supply.md) section of this design report. Please refer to that page for a complete description of the isolated power generation circuit used to supply VCAN.
 
-Primary-side filtering on the VPS8702 input includes a 2.2 µF / 25 V ceramic capacitor placed near the VIN pin. The rectified DC output on the isolated side is filtered with a 2.2 µF / 25 V capacitor before feeding the LDO.
-
-The regulated output supplies the ISO1042’s V<sub>CC2</sub> pin, while the LDO ground and all downstream filtering are referenced to NET-C. The logic-side domain (V<sub>CC1</sub>/GND1) remains isolated and operates from the internal 3.3 V rail.
-
-Clearance and creepage requirements between the isolated and logic ground planes are maintained according to IPC-2221 and manufacturer recommendations, supporting the 5 kV isolation rating of the [ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf).
+All isolated-side filtering components are referenced to GND\_C, while the logic-side domain (3.3 V / GNDREF) remains electrically separated to preserve the transceiver's reinforced isolation.
 
 ### TTL I/O
 
-The [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf) is powered from the 3.3 V digital supply rail shared with the ESP32. Logic-level CAN communication is implemented through the TX and RX pins:
+The [Texas Instruments ISO1042 CAN transceiver](https://www.ti.com/lit/ds/symlink/iso1042.pdf) is powered on its logic side from the 3.3 V digital supply rail shared with the ESP32. 
 
-- \[CAN_TX\] connects directly to the transceiver's D pin. A 10 kΩ pull-up resistor (R26) is used to ensure a defined idle state and limit noise susceptibility.
-- \[CAN_RX\] is connected to the transceiver's R pin via a 68 Ω series resistor (R25), which limits inrush current, dampens reflections and protects the ESP32 input from voltage spikes or overshoot.
+Galvanic isolation of the CAN physical layer is achieved using the [ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf) isolated transceiver IC. This device provides 5 kVrms isolation between the controller side and the CAN side. A dedicated 5 V isolated supply, VCAN, is used to power the CAN side.
 
-Neither \[CAN_TX\] nor \[CAN_RX\] are strapping pins on the ESP32-S3, ensuring reliable bus behaviour during device flashing, reset or startup.
+![CAN Transceiver Schematic](../assets/images/can_transceiver_schematic.png)
 
-### Slope Control
+Logic-level CAN communication is implemented through the TX and RX pins:
+
+* CAN\_TX connects to the transceiver’s TXD pin. A 10 kΩ pull-up resistor ensures a defined idle state and reduces noise susceptibility when the MCU pin is high-Z.
+* CAN\_RX is connected to the transceiver’s RXD pin via a 390 Ω series resistor, which limits inrush current, dampens reflections, and protects the ESP32 input from voltage overshoot.
+
+Neither CAN\_TX nor CAN\_RX are strapping pins on the ESP32-S3, ensuring reliable CAN bus behaviour during flashing, reset, and power-up.
+
+<!-- ### Slope Control
 
 The [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf) features a slope control mechanism on pin 5 (Rs), allowing designers to reduce the signal edge rate to suppress EMI. The slew rate is controlled by an external resistor to ground, and in the MDD400 a 10 kΩ pull-down resistor (R27) is fitted, resulting in a slew rate of approximately 15 V/µs.
 
 Although the [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)protocol mandates a data rate of 250 kbps, this value does not require a proportional edge rate. In differential signalling, reliable communication depends not only on bit rate but also on timing margins, signal rise/fall symmetry, and the receiver\'s ability to tolerate slower transitions. A slew rate of 15 V/µs is sufficient to support 250 kbps signalling over short drop cables (e.g. 1 m), such as those used to connect the MDD400 to the backbone. In practice, the edge rate limits the effective signalling bandwidth - not the fundamental data rate - so this setting provides ample timing margin
 without compromising protocol compliance.
 
-Using a 10 kΩ pull-down offers a well-balanced trade-off: it substantially reduces high-frequency emissions (which scale with dV/dt) while remaining compatible with the stub length and impedance environment of a typical [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)network. It also aligns with guidance provided by [Texas Instruments](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf), which suggests 10 kΩ as an effective value for slope control in industrial and automotive CAN installations. The use of a resistor instead of an Rs capacitor simplifies the PCB layout and guarantees stable performance over temperature and component tolerances.
+Using a 10 kΩ pull-down offers a well-balanced trade-off: it substantially reduces high-frequency emissions (which scale with dV/dt) while remaining compatible with the stub length and impedance environment of a typical [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)network. It also aligns with guidance provided by [Texas Instruments](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf), which suggests 10 kΩ as an effective value for slope control in industrial and automotive CAN installations. The use of a resistor instead of an Rs capacitor simplifies the PCB layout and guarantees stable performance over temperature and component tolerances. -->
 
-### Signal Integrity Simulation
+<!-- ### Signal Integrity Simulation
 
 A signal integrity simulation was conducted, assuming that the MDD400 is intended to connect to the [NMEA 2000](https://www.nmea.org/nmea-2000.html) network using a standard 5-pin DeviceNet A-coded male connector, with power and CAN signals provided via a short (1 m) drop cable. The [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)backbone is assumed to comply with the [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)physical layer specification \[20\], including termination via 120 Ω resistors at the bus extremities.
 
-![Signal Integrity Simulation of CAN_H and CAN_L](../assets/images/canbus_si_simulation.png)
+![Signal Integrity Simulation of CAN_H and CAN_L](../assets/images/canbus_si_simulation.png) -->
 
 ## Legacy Serial Interface
 

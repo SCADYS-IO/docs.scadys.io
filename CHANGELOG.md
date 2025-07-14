@@ -2,9 +2,9 @@
 
 
 
-## 0.0.2
+## 0.0.3
 
-- Working on section 3.
+- Working on design documentation.
 
 ## 0.0.2
 
