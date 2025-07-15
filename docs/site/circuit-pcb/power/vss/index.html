@@ -512,6 +512,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Unregulated 12V Domain
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -523,6 +536,34 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#power-summary-across-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Summary across Domains
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2318,6 +2359,28 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License Terms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../references/" class="md-nav__link">
         
   
@@ -2353,6 +2416,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#power-summary-across-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Summary across Domains
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -2368,78 +2448,83 @@
 
 
 <h1 id="unregulated-12-volt-domain-vss">Unregulated 12 Volt Domain (V<SUB>SS</SUB>)</h1>
-<p>The MDD400 is supplied from a nominal 12 V input, which serves as the master power domain for the entire system. This 12 V rail is filtered, protected against load-dump and ESD events, and regulated into three downstream voltage domains:</p>
+<p>The MDD400 is supplied from a nominal 12 V input, which serves as the master power domain for the entire system. This 12 V rail is filtered, protected against load-dump and ESD events, and regulated into four downstream voltage domains:</p>
 <ul>
-<li>5 V SMPS: used primarily for the LCD backlight and as the intermediate supply for the 3.3 V LDO;</li>
-<li>3.3 V LDO: supplies the ESP32 MCU and other digital circuitry;</li>
-<li>8 V LDO: powers the optional analog wind transducer.</li>
+<li><em>5 V SMPS</em>: used primarily for the LCD backlight and as the intermediate supply for the 3.3 V LDO;</li>
+<li><em>3.3 V LDO</em>: supplies the ESP32 MCU and other digital circuitry;</li>
+<li><em>Analog sensor LDO (6.5 V / 8 V)</em>: powers the optional analog wind transducer;</li>
+<li><em>Isolated 5 V LDO</em>: supplies the isolated side of the CAN transceiver.</li>
 </ul>
 <p>Protection features include:</p>
 <ul>
-<li>An over-voltage cutoff at ~18.5 V, implemented by a discrete surge stopper circuit;</li>
-<li>Input current limiting at ~960 mA during short-circuit or overload conditions.</li>
+<li>An over-voltage cutoff at ∼18.5 V, implemented by a discrete surge stopper circuit;</li>
+<li>Input current limiting at ∼960 mA during short-circuit or overload conditions.</li>
 </ul>
 <p>Power consumption was assessed under three scenarios:</p>
 <ul>
-<li>Day – daytime use with the display backlight at 100% and wireless transmitters (Wi-Fi and Bluetooth) off;</li>
-<li>Night – nighttime use with display backlight reduced to 1% and wireless transmitters off;</li>
-<li>Peak – full daytime use with display backlight at 100% and Wi-Fi/Bluetooth active.</li>
+<li><em>Night</em> – nighttime use with display backlight reduced to 1% and wireless transmitters off;</li>
+<li><em>Day</em> – daytime use with the display backlight at 100% and wireless transmitters off;</li>
+<li><em>Peak</em> – full daytime use with display backlight at 100% and Wi-Fi/Bluetooth active.</li>
 </ul>
-<p>The table below summarises the typical and peak 12 V domain power consumption across these three operating conditions.</p>
-<p><em>Power Summary across Domains</em></p>
+<h3 id="power-summary-across-domains">Power Summary across Domains</h3>
 <table border="1" cellpadding="6" cellspacing="0">
   <thead>
     <tr>
-      <th>Domain</th>
-      <th>Night</th>
-      <th>Day</th>
-      <th>Peak</th>
+      <th style="text-align: left">Domain</th>
+      <th style="text-align: center">Night</th>
+      <th style="text-align: center">Day</th>
+      <th style="text-align: center">Peak</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>5 V SMPS (LCD only)</td>
-      <td>92 mA</td>
-      <td>245 mA</td>
-      <td>245 mA</td>
+      <td style="text-align: left">Isolated 5 V LDO (CAN transceiver)</td>
+      <td style="text-align: center">8 mA</td>
+      <td style="text-align: center">8 mA</td>
+      <td style="text-align: center">9 mA</td>
     </tr>
     <tr>
-      <td>3.3 V LDO (digital domain)</td>
-      <td>329 mA</td>
-      <td>328 mA</td>
-      <td>542 mA</td>
+      <td style="text-align: left">5 V SMPS (LCD only)</td>
+      <td style="text-align: center">92 mA</td>
+      <td style="text-align: center">245 mA</td>
+      <td style="text-align: center">245 mA</td>
     </tr>
     <tr>
-      <td>8 V LDO (only with wind transducer)</td>
-      <td>16 mA</td>
-      <td>16 mA</td>
-      <td>18 mA</td>
+      <td style="text-align: left">3.3 V LDO (digital domain)</td>
+      <td style="text-align: center">329 mA</td>
+      <td style="text-align: center">328 mA</td>
+      <td style="text-align: center">542 mA</td>
     </tr>
     <tr>
-      <td><strong>Total current @ 12 V</strong></td>
-      <td><strong>208 mA</strong></td>
-      <td><strong>277 mA</strong></td>
-      <td><strong>376 mA</strong></td>
+      <td style="text-align: left">8 V LDO (only with wind transducer)</td>
+      <td style="text-align: center">16 mA</td>
+      <td style="text-align: center">16 mA</td>
+      <td style="text-align: center">18 mA</td>
     </tr>
     <tr>
-      <td><strong>Power</strong></td>
-      <td><strong>~2.5 W</strong></td>
-      <td><strong>~3.3 W</strong></td>
-      <td><strong>~4.5 W</strong></td>
+      <td style="text-align: left"><strong><em>Total current @ 12 V</em></strong></td>
+      <td style="text-align: center"><strong><em>216 mA</em></strong></td>
+      <td style="text-align: center"><strong><em>285 mA</em></strong></td>
+      <td style="text-align: center"><strong><em>385 mA</em></strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><em>Power</em></strong></td>
+      <td style="text-align: center"><strong><em>∼2.5 W</em></strong></td>
+      <td style="text-align: center"><strong><em>∼3.3 W</em></strong></td>
+      <td style="text-align: center"><strong><em>∼4.5 W</em></strong></td>
     </tr>
   </tbody>
 </table>
 
-<p>Based on these estimates, the MDD400 draws ~85 mA under night-time use and up to ~317 mA under peak conditions. This corresponds to a Load Equivalency Number (LEN) of 2–7, well within the <a href="https://www.nmea.org/nmea-2000.html">NMEA 2000</a> maximum permitted value of LEN = 20. </p>
-<p>The RV-C specification does not impose explicit power consumption limits or standardized power budgeting mechanisms akin to the NMEA2000 specification’s LEN, so there's no inherent protocol-level enforcement to prevent excessive power draw by individual devices. System designers and integrators bear the responsibility of ensuring that the cumulative power consumption of RV-C devices does not exceed the capabilities of the RV's power distribution system.</p>
-<p>In practice, this necessitates careful planning and consideration during the design and integration phases. Manufacturers and installers must assess the power requirements of each RV-C device and ensure that the total load remains within safe and functional limits. This approach helps maintain system stability and prevents potential issues arising from power overconsumption on the network.</p>
-<p>If you're integrating devices like the MDD400 into an RV-C network, it's advisable to:</p>
+<p>Based on these estimates, the MDD400 draws approximately <em>216 mA under night-time use</em> and up to <em>385 mA under peak conditions</em>. This corresponds to a Load Equivalency Number (<em>LEN</em>) of <em>4–9</em>, well within the <a href="https://www.nmea.org/nmea-2000.html">NMEA 2000</a> maximum permitted value of <em>LEN = 20</em>.</p>
+<p>The <em>RV-C specification</em> does not impose explicit power consumption limits or standardized budgeting mechanisms akin to the NMEA 2000 LEN system. Instead, system designers and integrators must ensure that the cumulative load of RV-C devices remains within the capabilities of the RV’s power distribution system.</p>
+<p>In practice, this means:</p>
 <ul>
-<li>review the power consumption specifications of each device.</li>
-<li>ensure that the RV's power distribution system can handle the cumulative load.</li>
-<li>consult the RV-C Layer document for any updates or recommendations regarding power management.</li>
+<li>Reviewing the power consumption specifications of each device;</li>
+<li>Ensuring that the RV’s power system can handle the total load;</li>
+<li>Consulting the latest <em>RV-C Layer documentation</em> for best practices and updates.</li>
 </ul>
-<p>The design ensures compatibility with marine and RV networks and prioritises energy efficiency—an important consideration for solar-powered or battery-limited systems such as sailboats.</p>
+<p>The design of the MDD400 prioritises compatibility with both marine and RV networks while maintaining high energy efficiency — a critical factor for solar-powered or battery-constrained systems such as sailboats.</p>
 
 
 

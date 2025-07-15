@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#vcc-digital-logic-domain-33-volt" class="md-skip">
+        <a href="#vas-analog-sensor-domain" class="md-skip">
           Skip to content
         </a>
       
@@ -601,8 +601,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -634,8 +632,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  
-    
   
   
     <label class="md-nav__title" for="__toc">
@@ -2359,6 +2355,28 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License Terms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../references/" class="md-nav__link">
         
   
@@ -2390,8 +2408,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  
-    
   
   
     <label class="md-nav__title" for="__toc">
@@ -2425,64 +2441,8 @@
 
 
 
-<h1 id="vcc-digital-logic-domain-33-volt">V<SUB>CC</SUB> - Digital Logic Domain (3.3 Volt)</h1>
-<p>The 3.3 V digital logic domain is powered by an <a href="http://www.advanced-monolithic.com/pdf/ds1117.pdf">AMS1117-3.3</a> low-dropout (LDO) linear regulator, using the 5 V rail as its input. This domain powers the <a href="https://www.espressif.com/en/products/socs/esp32-s3/resources">ESP32-S3</a> microcontroller, CAN transceiver, I²C sensors, and analog signal conditioning stages.</p>
-<p>Capacitive filtering on the LDO output includes:</p>
-<ul>
-<li>10 µF local bulk capacitance;</li>
-<li>100 nF decoupling capacitors placed near all major loads; and</li>
-<li>five 10 µF + 100 nF RC pairs at the ESP32, CAN transceiver, and op-amp stages.</li>
-</ul>
-<p>The AMS1117 features internal current limiting and thermal shutdown. Under typical operating conditions, the 3.3 V rail draws approximately 405 mA, with short-term peaks up to 640 mA. These values are distributed across the subsystems as shown in Table 2.</p>
-<p>Thermal dissipation is mitigated through extensive copper pours on all four PCB layers, all tied to the LDO output pin (Pin 2 / Tab). A 3×3 via array connects the top and bottom layers, and a soldermask opening on the bottom layer improves convective cooling. This configuration ensures safe junction temperatures under all expected load conditions. Under peak load conditions of ~640 mA, with a 5 V input and 3.3 V output, the AMS1117 dissipates approximately 1.1 W. Based on a conservative thermal resistance estimate of ~30 °C/W with good copper heatsinking, the resulting temperature rise is under 35 °C. Given a 40 °C ambient environment, the regulator operates well below its 125 °C junction temperature limit. These results confirm that the AMS1117 is adequately specified for both average and peak operating conditions in the MDD400.</p>
-<p><em>Digital Domain (3.3v) Loads</em></p>
-<table border="1" cellpadding="6" cellspacing="0">
-  <thead>
-    <tr>
-      <th>Load Component</th>
-      <th>Typical Current</th>
-      <th>Peak Current</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>ESP32-S3</td>
-      <td>250 mA</td>
-      <td>450 mA<SUP>*</SUP></td>
-    </tr>
-    <tr>
-      <td>Ambient light sensor (OPT3004)</td>
-      <td>0.2 mA</td>
-      <td>0.2 mA</td>
-    </tr>
-    <tr>
-      <td>Dual op-amps (TLV9002IDR ×2)</td>
-      <td>2.6 mA</td>
-      <td>4 mA</td>
-    </tr>
-    <tr>
-      <td>Comparator (LM393DR)</td>
-      <td>1 mA</td>
-      <td>1.5 mA</td>
-    </tr>
-    <tr>
-      <td>CAN transceiver (SN65HVD234)</td>
-      <td>74 mA</td>
-      <td>85 mA</td>
-    </tr>
-    <tr>
-      <td>Pull-up loads</td>
-      <td>1 mA</td>
-      <td>1 mA</td>
-    </tr>
-    <tr>
-      <td><strong>Total</strong></td>
-      <td><strong>329 mA</strong></td>
-      <td><strong>552 mA</strong></td>
-    </tr>
-  </tbody>
-</table>
-<p>* <em>Peak current estimate reflects <a href="https://www.espressif.com/en/products/socs/esp32-s3/resources">ESP32-S3</a> operation with active Wi-Fi transmission at high data rates, based on Espressif datasheet specifications.</em></p>
+  <h1>Analog Sensor Domain</h1>
+
 <h3 id="vas-analog-sensor-domain">V<SUB>AS</SUB> - Analog Sensor Domain</h3>
 <p>The 8 V supply is provided using a linear LDO (<a href="https://www.ti.com/lit/ds/symlink/lp2951.pdf">LP2951-50DR</a>), supplied from the unregulated, protected 12 V rail. The regulator can be disabled if no wind transducer is connected.</p>
 <p>To protect this output against miswiring (such as direct short to ground), a current-limiting circuit is implemented using discrete components, followed by a voltage monitor that informs the microcontroller of fault conditions.</p>

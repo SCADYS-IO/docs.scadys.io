@@ -1,5 +1,12 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.0
+
+- Removed `MDD400-docs`.
+- Completed `Vcc` review and docs.
+- Completed `Vpp` review and docs.
+- Completed `Vss` review and docs. 
+
 ## 0.0.4
 
 - Restructure of all docs.

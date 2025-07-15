@@ -96,4 +96,5 @@ nav:
       - NMEA 2000 Certification: compliance/nmea2000_certification.md
       - Appendices: compliance/appendices.md
       - Change Log: compliance/changelog.md
+  - License Terms: license.md
   - References: references.md

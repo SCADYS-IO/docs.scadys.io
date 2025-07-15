@@ -242,9 +242,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#documentation-structure" class="md-nav__link">
+  <a href="#documentation" class="md-nav__link">
     <span class="md-ellipsis">
-      Documentation Structure
+      Documentation
     </span>
   </a>
   
@@ -2380,6 +2380,28 @@
   
   
     <li class="md-nav__item">
+      <a href="license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License Terms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="references/" class="md-nav__link">
         
   
@@ -2422,9 +2444,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#documentation-structure" class="md-nav__link">
+  <a href="#documentation" class="md-nav__link">
     <span class="md-ellipsis">
-      Documentation Structure
+      Documentation
     </span>
   </a>
   
@@ -2477,39 +2499,15 @@
 <p>This site contains detailed design documentation for the <strong>MDD400</strong>, a marine data display designed for integration into NMEA 2000 and legacy serial systems. The information presented here is intended for engineers and technical stakeholders involved in system integration, product evaluation, and development.</p>
 <p>The MDD400 is a self-contained embedded system with a touchscreen user interface, designed to operate in marine environments. It supports galvanically isolated CANBUS communication, 12 V serial protocols, Bluetooth configuration, and multiple regulated power domains.</p>
 <hr />
-<h2 id="documentation-structure">Documentation Structure</h2>
+<h2 id="documentation">Documentation</h2>
 <ul>
-<li>
-<p><a href="circuit-pcb/">Circuit &amp; PCB</a></p>
-</li>
-<li>
-<p><a href="circuit-pcb/mcu_storage/">MCU and Storage</a></p>
-</li>
-<li><a href="circuit-pcb/power/">Power Supply</a></li>
-<li><a href="circuit-pcb/communications/">Communications Interfaces</a></li>
-<li><a href="circuit-pcb/sensors/">Sensors</a></li>
-<li><a href="circuit-pcb/ui/">User Interface</a></li>
-<li><a href="circuit-pcb/connectors/">Expansion Connectors</a></li>
-<li><a href="circuit-pcb/pcb/">PCB Design</a></li>
-<li><a href="circuit-pcb/appendices/">Appendices</a></li>
-<li>
-<p><a href="circuit-pcb/changelog/">Change Log</a></p>
-</li>
-<li>
-<p><a href="housing/">Housing Design</a></p>
-</li>
-<li>
-<p><a href="ux/">User Experience</a></p>
-</li>
-<li>
-<p><a href="firmware/">Firmware Architecture</a></p>
-</li>
-<li>
-<p><a href="compliance/">Regulatory Compliance</a></p>
-</li>
-<li>
-<p><a href="references/">References</a></p>
-</li>
+<li><em><a href="circuit-pcb/">Circuit &amp; PCB</a></em> – Hardware architecture, schematics, component selection, and PCB layout. This section includes the microcontroller, power supply, communications, sensors, and board design.</li>
+<li><em><a href="housing/">Housing Design</a></em> – The physical enclosure, environmental sealing, and mounting features. Covers front bezel, rear casing, panel overlay, gaskets, and mechanical integration.</li>
+<li><em><a href="ux/">User Experience</a></em> – Describes how users interact with the device, including on-screen navigation, mobile app configuration, and UI behavior in marine conditions.</li>
+<li><em><a href="firmware/">Firmware Architecture</a></em> – The software running on the MDD400. Includes system structure, task scheduling, configuration, and embedded services.</li>
+<li><em><a href="compliance/">Regulatory Compliance</a></em> – Applicable standards and conformity documentation for CE, FCC, RoHS, IP rating, and NMEA 2000 certification.</li>
+<li><em><a href="references/">References</a></em> – Supporting documents, data sheets, and external standards referenced in the design.</li>
+<li><em><a href="license/">License Terms</a></em> – Terms of use, licensing, and intellectual property ownership under which this documentation and associated IP are provided.</li>
 </ul>
 <p>Each section corresponds to a subsystem and follows the hardware and firmware structure defined in the schematics and PCB layout.</p>
 <hr />
@@ -2525,16 +2523,18 @@
 <h2 id="standards-and-compliance">Standards and Compliance</h2>
 <p>The MDD400 is designed with reference to the following technical standards and regulatory requirements:</p>
 <ul>
-<li><strong>CANBUS / NMEA 2000</strong>: Compatible with the ISO 11898-2 physical layer and designed for use with NMEA 2000 marine networks.</li>
-<li><strong>Legacy Serial Protocols</strong>: Supports 12 V serial interfaces, electrically compatible with NMEA 0183 and SeaTalk systems.</li>
-<li><strong>EMC and Safety</strong>: Design practices align with the intent of CE, FCC Part 15B, and UKCA EMC and safety directives. Specific testing for emissions, immunity, and safety is planned for final production units.</li>
-<li><strong>Environmental Protection</strong>: Housing design targets ingress protection rating of <strong>IP65</strong>, suitable for use in exposed marine installations.</li>
+<li><em>CANBUS / NMEA 2000</em>: Compatible with the <a href="https://www.iso.org/standard/66340.html">ISO 11898-2</a> physical layer and designed for use with <a href="https://www.nmea.org/nmea-2000.html">NMEA 2000</a> marine networks.</li>
+<li><em>Legacy Serial Protocols</em>: Supports 12 V serial interfaces, electrically compatible with <a href="https://www.nmea.org/nmea-0183.html">NMEA 0183</a> and SeaTalk systems.</li>
+<li><em>EMC and Safety</em>: Design practices align with the intent of <a href="https://ec.europa.eu/growth/single-market/ce-marking_en">CE</a>, <a href="https://www.fcc.gov/engineering-technology/laboratory-division/general/equipment-authorization">FCC Part 15B</a>, and UKCA EMC and safety directives. Specific testing for emissions, immunity, and safety is planned for final production units.</li>
+<li><em>Environmental Protection</em>: Housing design targets ingress protection rating of <em>IP65</em>, suitable for use in exposed marine installations.</li>
 </ul>
 <p>The MDD400 is currently in the pre-production phase. The device will undergo independent testing to verify compliance with <a href="https://ec.europa.eu/growth/single-market/ce-marking_en">CE</a>, <a href="https://www.fcc.gov/engineering-technology/laboratory-division/general/equipment-authorization">FCC Part 15B</a>, and <a href="https://www.gov.uk/guidance/using-the-ukca-marking">UKCA</a> prior to commercial release.</p>
 <hr />
 <h2 id="about-the-mdd400">About the MDD400</h2>
 <p>The MDD400 was developed in a marine operational context, with field testing conducted during a full circumnavigation. Its design reflects the practical requirements of extended offshore deployment, including electrical isolation, redundant protection features, and support for legacy and modern protocols.</p>
 <p>This documentation reflects the current pre-production design revision.</p>
+<hr />
+<p><strong>See <a href="license/">License Terms</a> for conditions of use and intellectual property rights.</strong></p>
 
 
 
