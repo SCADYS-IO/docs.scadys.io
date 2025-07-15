@@ -1,7 +1,5 @@
 <!-- MDD400_Hardware -->
 
-
-
 ## 0.0.4
 
 - Restructure of all docs.

@@ -1,6 +1,10 @@
 # Prerequisites
 *.d
 
+# Credentials
+.htaccess
+.htpasswd
+
 # Compiled Object files
 *.slo
 *.lo
