@@ -1,34 +1,26 @@
-
-# Communications SUBSYSTEM
-
-## CANBUS Interface
+# Communications Interfaces
 
 
-<!-- ### Slope Control
+On selected models, the MDD400 includes a plug-and-play serial interface that supports legacy marine protocols such as NMEA 0183 and SeaTalk®. The interface is designed to be fault-tolerant and electrically safe in the face of reversed wiring, high-voltage transients, and EMI.
 
-The [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf) features a slope control mechanism on pin 5 (Rs), allowing designers to reduce the signal edge rate to suppress EMI. The slew rate is controlled by an external resistor to ground, and in the MDD400 a 10 kΩ pull-down resistor (R27) is fitted, resulting in a slew rate of approximately 15 V/µs.
+Highlights include:
 
-Although the [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)protocol mandates a data rate of 250 kbps, this value does not require a proportional edge rate. In differential signalling, reliable communication depends not only on bit rate but also on timing margins, signal rise/fall symmetry, and the receiver\'s ability to tolerate slower transitions. A slew rate of 15 V/µs is sufficient to support 250 kbps signalling over short drop cables (e.g. 1 m), such as those used to connect the MDD400 to the backbone. In practice, the edge rate limits the effective signalling bandwidth - not the fundamental data rate - so this setting provides ample timing margin
-without compromising protocol compliance.
+* Receive-only support for NMEA 0183 and RS422 talkers
+* Half-duplex, single-wire support for SeaTalk I
+* Multi-stage input filtering and protection
+* Optional transmission capability with controlled driver gating
+* EMC-compliant design with safe operation under all 3-pin wiring permutations
 
-Using a 10 kΩ pull-down offers a well-balanced trade-off: it substantially reduces high-frequency emissions (which scale with dV/dt) while remaining compatible with the stub length and impedance environment of a typical [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)network. It also aligns with guidance provided by [Texas Instruments](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf), which suggests 10 kΩ as an effective value for slope control in industrial and automotive CAN installations. The use of a resistor instead of an Rs capacitor simplifies the PCB layout and guarantees stable performance over temperature and component tolerances. -->
-
-<!-- ### Signal Integrity Simulation
-
-A signal integrity simulation was conducted, assuming that the MDD400 is intended to connect to the [NMEA 2000](https://www.nmea.org/nmea-2000.html) network using a standard 5-pin DeviceNet A-coded male connector, with power and CAN signals provided via a short (1 m) drop cable. The [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)backbone is assumed to comply with the [SN65HVD234 transceiver](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)physical layer specification \[20\], including termination via 120 Ω resistors at the bus extremities.
-
-![Signal Integrity Simulation of CAN_H and CAN_L](../assets/images/canbus_si_simulation.png) -->
-
-## Legacy Serial Interface
-
-The MDD400 supports an optional legacy serial interface designed to receive and/or transmit data compatible with SeaTalk I (single-wire, 12 V open-drain) and NMEA 0183 (12 V single-ended, receive-only). Given the 12 V signaling levels and the lack of galvanic isolation in typical legacy marine installations, the interface was engineered to maintain signal integrity and electromagnetic compatibility (EMC) through robust input filtering, carefully managed ground domains, and multi-stage
+Given the 12 V signaling levels and the lack of galvanic isolation in typical legacy marine installations, the interface was engineered to maintain signal integrity and electromagnetic compatibility (EMC) through robust input filtering, carefully managed ground domains, and multi-stage
 protection.
 
-![Block Diagram](../assets/images/image005.png)
+![Block Diagram](../../assets/images/image005.png)
 
 The legacy interface accepts a single bidirectional signal line (ST_SIG), which is filtered and protected before being interfaced with the internal logic domain. SeaTalk operation uses a half-duplex scheme, sharing the line for both transmission and reception. NMEA 0183 operation is receive-only.
 
-### Interface Conditioning and Power
+---
+
+## Interface Conditioning and Power
 
 Incoming power and signal lines are routed through a multi-stage filter network:
 
@@ -47,7 +39,9 @@ All circuits are powered from the regulated 5 V domain (VCC), which is isolated 
 
 If pre-compliance EMC testing indicates the SeaTalk interface as a source of excessive emissions or susceptibility, an alternative implementation using opto-isolators may be considered. This would allow complete galvanic isolation between the SeaTalk signal and the MDD400 logic domain, simplifying signal reference handling and improving immunity to ground loops or cable-borne transients. This approach would require powering the opto-isolated input side from the SeaTalk 12 V line or a derived source, and is best suited to receive-only applications such as NMEA 0183 listener modes.
 
-### Circuit Description
+---
+
+## Circuit Description
 
 #### Receiver
 
@@ -63,7 +57,9 @@ The transmit side employs Q6 (BC817) and Q8A (IMZ1A) as open-collector drivers, 
 
 \[U1_TX\] drives the signal logic, with R50 and R55 providing base current limiting and edge shaping.
 
-### SeaTalk I Operation (Single Wire, RX/TX)
+---
+
+## SeaTalk I Operation (Single Wire, RX/TX)
 
 SeaTalk I is a single-wire bus using 12 V signaling, where idle = 12 V, logic 0 = pulled to 0 V. It requires careful coordination between transmit and receive functions. The MDD400 handles this using a half-duplex scheme:
 
@@ -75,7 +71,9 @@ SeaTalk I is a single-wire bus using 12 V signaling, where idle = 12 V, logic 0 
 
 Timing and contention avoidance are handled in firmware. The circuit allows for reliable operation, even on long or noisy SeaTalk I networks.
 
-### 3.2.4 NMEA 0183 Operation (RX Only)
+---
+
+## NMEA 0183 Operation (RX Only)
 
 For NMEA 0183 sources, the MDD400 operates in receive-only mode. The external talker is typically a GPS, depth sounder, or wind instrument.
 Although the NMEA standard allows for differential signaling (RS-422), most talkers in the marine environment operate in single-ended mode, and are electrically compatible with this circuit. The circuit design is also compatible with RS-422 (differential) data.
@@ -84,7 +82,9 @@ Only the receiver portion of the interface is used in this mode. The isolated, l
 
 This configuration ensures the MDD400 is compatible with any standard NMEA 0183 talker without introducing noise or signal conflicts.
 
-### Physical Connector
+---
+
+## Physical Connector
 
 The physical interface for legacy serial signals is provided via a 3-pin header:
 

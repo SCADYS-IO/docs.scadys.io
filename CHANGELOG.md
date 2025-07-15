@@ -2,6 +2,10 @@
 
 
 
+## 0.0.4
+
+- Restructure of all docs.
+
 ## 0.0.3
 
 - Working on design documentation.
