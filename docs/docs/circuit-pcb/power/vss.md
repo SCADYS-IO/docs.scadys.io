@@ -18,8 +18,6 @@ Power consumption was assessed under three scenarios:
 * *Day* – daytime use with the display backlight at 100% and wireless transmitters off;
 * *Peak* – full daytime use with display backlight at 100% and Wi-Fi/Bluetooth active.
 
-### Power Summary across Domains
-
 <table border="1" cellpadding="6" cellspacing="0">
   <thead>
     <tr>
