@@ -2,7 +2,7 @@
 
 The MDD400 power system is structured for marine and RV applications. It supports multiple regulated voltage domains, galvanic isolation, and protection against electrical faults and environmental transients. The subsystem is divided into the following sections:
 
-* *[Power Conditioning](power_conditioning.md)*: Describes the input protection and filtering circuit used to condition the raw 12 V input before distribution. Includes surge suppression (ISO 7637-2), ESD protection, reverse polarity protection, and multi-stage filtering to meet CE/FCC EMC requirements.
+* *[Power Conditioning](power_conditioning/index.md)*: Describes the input protection and filtering circuit used to condition the raw 12 V input before distribution. Includes surge suppression (ISO 7637-2), ESD protection, reverse polarity protection, and multi-stage filtering to meet CE/FCC EMC requirements.
 
 * *[Unregulated 12V Domain (V<sub>SS</sub>)](vss.md)*: The unregulated input domain accepts 12 V power from NMEA 2000 or RV-C sources. This rail supplies all downstream regulators and includes over-voltage and over-current protection, power budgeting, and Load Equivalency Number (LEN) analysis.
 

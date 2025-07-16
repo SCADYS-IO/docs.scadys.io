@@ -26,7 +26,8 @@ nav:
         - Flash Storage: circuit-pcb/mcu_storage/flash_storage.md        
       - Power Supply:
         - Overview: circuit-pcb/power/index.md
-        - Power Conditioning: circuit-pcb/power/power_conditioning.md
+        - Power Conditioning: 
+            - Overview: circuit-pcb/power/power_conditioning/index.md
         - Unregulated 12V Domain: circuit-pcb/power/vss.md
         - Primary 5V Domain: circuit-pcb/power/vpp.md
         - Isolated CAN Domain: circuit-pcb/power/vcan.md

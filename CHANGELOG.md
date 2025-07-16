@@ -1,5 +1,9 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.1
+
+- Completed `Vss` review and docs. 
+
 ## 0.1.0
 
 - Removed `MDD400-docs`.

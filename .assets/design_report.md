@@ -731,7 +731,7 @@ The design ensures compatibility with marine and RV networks and
 prioritises energy efficiency---an important consideration for
 solar-powered or battery-limited systems such as sailboats.
 
-### Primary Power Domain (5.0 Volt)
+### Primary Power Domain (5.0 V)
 
 The 5 V rail is derived from the filtered 12 V input using a buck-mode
 switching regulator (TPS54560B-Q1[^6]). It provides up to 5 A peak
@@ -758,7 +758,7 @@ Display power is gated by a P-channel MOSFET controlled via \[DISP_EN\].
 This allows firmware to shut down the 5 V rail to the display, reducing
 standby power or resetting the DGUS display controller if required.
 
-### Digital Logic Domain (3.3 Volt)
+### Digital Logic Domain (3.3 V)
 
 The 3.3 V digital logic domain is powered by an AMS1117-3.3 \[7\]
 low-dropout (LDO) linear regulator, using the 5 V rail as its input.
@@ -815,7 +815,7 @@ specified for both average and peak operating conditions in the MDD400.
 transmission at high data rates, based on Espressif datasheet
 specifications.
 
-### Analog Sensor Domain (8.0 Volt)
+### Analog Sensor Domain (8.0 V)
 
 #### The 8 V supply is provided using a linear LDO (LP2951-50DR[^22]), supplied from the unregulated, protected 12 V rail. The regulator can be disabled if no wind transducer is connected.
 

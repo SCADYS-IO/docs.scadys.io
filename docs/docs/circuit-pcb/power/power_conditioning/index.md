@@ -71,13 +71,13 @@ Under reverse polarity conditions, the Schottky diode blocks current flow entire
 
 A TVS diode is also placed between the SHIELD pin of the NMEA 2000 connector and chassis ground. This diode is normally unpopulated and included for test and development purposes. It uses the [TPD1E05U06](https://www.ti.com/lit/ds/symlink/tpd1e05u06.pdf), a low-capacitance ESD protection diode with excellent clamping performance.
 
-![NMEA 2000 Connector and Shield](../../assets/images/n2k_shield_circuit.png)
+![NMEA 2000 Connector and Shield](../../../assets/images/n2k_shield_circuit.png)
 
 ## ESD and Load Dump
 
 The schematic below shows the full protection circuit for the NET-S input, including a primary TVS diode, PTC fuse, filtering components, and secondary clamping at the downstream side.
 
-![NET-S Power Protection](../../assets/images/net_s_protection.png)
+![NET-S Power Protection](../../../assets/images/net_s_protection.png)
 
 A [JK-mSMD075-33 resettable fuse (PTC)](https://lcsc.com/datasheet/lcsc_datasheet_2304140030_Jinrui-Electronic-Materials-Co--JK-mSMD075-33_C369169.pdf) is included downstream of the primary TVS diode to protect against sustained overloads and short-circuit faults in downstream components. The PTC is not involved in the suppression of fast transients but fulfills requirements in both NMEA and ISO marine standards that mandate overcurrent protection for device safety. Under fault conditions, it limits current by entering a high-resistance state and automatically resets once the fault is cleared. This device has a hold current of 750 mA and a trip current of approximately 1.5 A, offering effective protection for low-power marine electronics while minimizing nuisance trips.
 
@@ -91,7 +91,7 @@ The TVS diode also contributes to ESD protection, supplementing local filtering 
 
 Simulation of the [SM8S36CA](https://www.smc-diodes.com/propdf/SM8S20CA%20THRU%20SM8S43CA%20N2149%20REV.-.pdf) response to an [ISO 7637-2](https://www.iso.org/standard/50925.html) Pulse 5b event — approximated as a 150 V exponential decay with a time constant of 80 ms — confirms that the diode clamps the downstream voltage to a maximum of 58 V throughout the transient. This provides over 40% margin relative to the 100 V absolute maximum of the surge stopper MOSFET and 65 V rating of the primary SMPS controller. The diode’s power absorption capability exceeds the energy of the test waveform, ensuring robust protection even during worst-case alternator disconnect or overvoltage conditions.
 
-![Power Filter Impedance Model](../../assets/images/power_filter_impedance_model.png)
+![Power Filter Impedance Model](../../../assets/images/power_filter_impedance_model.png)
 
 The simulated energy absorbed by the [SM8S36CA](https://www.smc-diodes.com/propdf/SM8S20CA%20THRU%20SM8S43CA%20N2149%20REV.-.pdf) during a worst-case ISO Pulse 5b event is approximately 16.7 J, well within the capabilities of this device. With a peak pulse power rating of 6600 W (10/1000 µs waveform), the diode offers ample headroom for marine surge events. This safety margin ensures long-term reliability even under repeated transient exposure.
 
@@ -99,7 +99,7 @@ The simulated energy absorbed by the [SM8S36CA](https://www.smc-diodes.com/propd
 
 The over-voltage and current-limiting functionality is implemented using a discrete surge stopper circuit built around a P-channel MOSFET, two bipolar junction transistors (BJTs), and a high-side shunt resistor.
 
-![Current limiter and over-voltage protection](../../assets/images/vss_protection_circuit.png)
+![Current limiter and over-voltage protection](../../../assets/images/vss_protection_circuit.png)
 
 The over-voltage cutoff is defined by a resistive voltage divider connected to the input rail. When the divided voltage exceeds the base-emitter threshold of a monitoring PNP transistor (approximately 0.6–0.7 V), the transistor begins conducting. This pulls the gate of the P-channel MOSFET upward, switching it off and disconnecting the load. The resistor values are selected to yield a trip point of approximately 18.5 V, sufficient to protect all downstream regulators and components from accidental overvoltage conditions.
 
@@ -191,7 +191,7 @@ Careful segregation of analog, digital, and high-current switching grounds helps
 
 The CAN interface is galvanically isolated and filtered to reduce both emissions and susceptibility to EMI. The filtering stage is shown below:
 
-![CAN Filter Schematic](../../assets/images/can_filter_schematic.png)
+![CAN Filter Schematic](../../../assets/images/can_filter_schematic.png)
 
 The CAN filter includes:
 
@@ -206,15 +206,15 @@ This design approach follows the recommendations of [ISO 11898-2](https://www.is
 
 The galvanic isolation of the CAN physical layer is achieved using the [ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf) isolated transceiver IC. This device provides 5 kVrms isolation between the controller side and the CAN side. A dedicated 5 V isolated supply, VCAN, is used to power the CAN side.
 
-![CAN Transceiver Schematic](../../assets/images/can_transceiver_schematic.png)
+![CAN Transceiver Schematic](../../../assets/images/can_transceiver_schematic.png)
 
 ### Isolated VCAN Regulator
 
 The isolated VCAN supply is generated using a push-pull transformer driver and linear post-regulator. The schematic is shown below:
 
-![VCAN Supply Schematic](../../assets/images/vcan_schematic.png)
+![VCAN Supply Schematic](../../../assets/images/vcan_schematic.png)
 
-A [VPSC VPS8702 transformer driver](../../assets/pdf/VPSC-VPS8702_datasheet.pdf) converts the 5.3 V input from the V<sub>PP</sub> into a high-frequency push-pull signal suitable for driving a non-center-tapped isolation transformer. The selected transformer is a 1:1 device ([VPT87BB-01A](https://lcsc.com/datasheet/lcsc_datasheet_2108142130_VPSC-VPT87BB-01A_C2846912.pdf)), rated for reinforced isolation up to 3 kV and compatible with the VPS8702 drive topology.
+A [VPSC VPS8702 transformer driver](../../../assets/pdf/VPSC-VPS8702_datasheet.pdf) converts the 5.3 V input from the V<sub>PP</sub> into a high-frequency push-pull signal suitable for driving a non-center-tapped isolation transformer. The selected transformer is a 1:1 device ([VPT87BB-01A](https://lcsc.com/datasheet/lcsc_datasheet_2108142130_VPSC-VPT87BB-01A_C2846912.pdf)), rated for reinforced isolation up to 3 kV and compatible with the VPS8702 drive topology.
 
 After rectification and filtering, the output is regulated to 5.0 V using an [HT7550-1](https://lcsc.com/datasheet/lcsc_datasheet_2506261414_UMW-Youtai-Semiconductor-Co---Ltd--HT7550-1_C347189.pdf) linear regulator. The transformer winding provides galvanic isolation, and the resulting VCAN domain is fully isolated from GNDREF. This supply powers only the CAN transceiver, helping contain any emissions or transients on the bus.
 
