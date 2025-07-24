@@ -80,7 +80,7 @@ The output filter uses a [Kyocera AVX TCJB476M010R0070](https://datasheets.kyoce
 
 The use of the 47 µF tantalum capacitor is essential to achieving the target ESR recommended in the WEBENCH design. Without it, the regulator would require artificial ESR injection to avoid excessive gain and potential instability. A second ferrite bead further suppresses switching noise before handing off to the digital logic rail. A bleed resistor prevents floating voltages during startup or shutdown.
 
-A complete WEBENCH design report for this power stage is included at [smps\_design\_report.pdf](../../assets/pdf/smps_design_report.pdf).
+A complete WEBENCH design report for this power stage is included at [smps\_design\_report.pdf](../../assets/pdf/5v3_smps_design_report.pdf).
 
 ## Protection
 

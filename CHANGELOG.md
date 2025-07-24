@@ -1,5 +1,12 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.2
+
+- Reviewed galvanic isolation and documented.
+- Reviewed 3.3V SMPS and documented.
+- Reviewed SeaTalk interface and documented.
+- Working on `PCB Design` docs. 
+
 ## 0.1.1
 
 - Completed `Vss` review and docs. 

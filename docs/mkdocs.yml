@@ -19,6 +19,14 @@ nav:
   - Home: index.md
   - Circuit & PCB:
       - Overview: circuit-pcb/index.md
+      - Protection and EMC: 
+        - Overview: circuit-pcb/protection_emc/index.md
+        - Reverse Polarity Protection and Shield: circuit-pcb/protection_emc/polarity_shield.md
+        - ESD and Load Dump Protection: circuit-pcb/protection_emc/esd_load_dump.md
+        - Over-voltage and Current Limiting: circuit-pcb/protection_emc/over_voltage.md
+        - CAN / Digital Domain Power Isolation: circuit-pcb/protection_emc/can_digital_isolation.md
+        - EMC: circuit-pcb/protection_emc/emc.md
+        - Analysis and Failure Modes: circuit-pcb/protection_emc/analysis_failure_mode.md
       - MCU and Storage:
         - Overview: circuit-pcb/mcu_storage/index.md
         - ESP32-S3: circuit-pcb/mcu_storage/esp32_s3.md
@@ -26,11 +34,9 @@ nav:
         - Flash Storage: circuit-pcb/mcu_storage/flash_storage.md        
       - Power Supply:
         - Overview: circuit-pcb/power/index.md
-        - Power Conditioning: 
-            - Overview: circuit-pcb/power/power_conditioning/index.md
-        - Unregulated 12V Domain: circuit-pcb/power/vss.md
+        - Unregulated 12V Domain: circuit-pcb/power/vdc.md
         - Primary 5V Domain: circuit-pcb/power/vpp.md
-        - Isolated CAN Domain: circuit-pcb/power/vcan.md
+        - Isolated 5V Domain: circuit-pcb/power/vss.md
         - Digital Logic Domain: circuit-pcb/power/vcc.md
         - Analog Sensor Domain: circuit-pcb/power/vas.md
       - Communications: 
@@ -56,11 +62,12 @@ nav:
         - 1-Wire: circuit-pcb/connectors/one_wire.md
       - PCB Design:
         - Overview: circuit-pcb/pcb/index.md
-        - Layout: circuit-pcb/pcb/layout.md
-        - Connectors: circuit-pcb/pcb/connectors.md
         - Stackup: circuit-pcb/pcb/stackup.md
+        - Layout: circuit-pcb/pcb/layout.md
         - Earthing: circuit-pcb/pcb/earthing.md
+        - Galvanic Isolation: circuit-pcb/pcb/galvanic_isolation.md
         - Thermal Management: circuit-pcb/pcb/thermal_management.md
+        - Connectors: circuit-pcb/pcb/connectors.md
         - Fasteners: circuit-pcb/pcb/fasteners.md
       - Appendices: circuit-pcb/appendices.md
       - Change Log: circuit-pcb/changelog.md
