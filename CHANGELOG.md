@@ -1,5 +1,9 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.3
+
+- Working on `Thermal Management` docs. 
+
 ## 0.1.2
 
 - Reviewed galvanic isolation and documented.

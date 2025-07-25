@@ -4,7 +4,7 @@ The MDD400 incorporates an ambient light sensor to enable automatic backlight br
 
 ## OPT3004 Digital Ambient Light Sensor
 
-The system uses the OPT3004DNPR, a low-power digital ambient light sensor with high dynamic range and spectral response closely matching the human eye. The sensor communicates with the ESP32-S3 via I²C and is connected to the same bus as the TMP112 temperature sensor (\[SCL\] and \[SDA\] pins). The OPT3004 address is configured via the ADDR pin (connected to GND), setting its I²C address to 0x44.
+The system uses the [OPT3004DNPR](https://www.ti.com/lit/ds/symlink/opt3004.pdf), a low-power digital ambient light sensor with high dynamic range and spectral response closely matching the human eye. The sensor communicates with the ESP32-S3 via I²C and is connected to the same bus as the TMP112 temperature sensor (\[SCL\] and \[SDA\] pins). The OPT3004 address is configured via the ADDR pin (connected to GND), setting its I²C address to `0x44`.
 
 The OPT3004 provides a 16-bit lux measurement over a dynamic range of 0.01 lux to 83,000 lux, automatically scaling via its built-in exponent/mantissa format. This range is ideal for both indoor/dim environments and direct sunlight detection. The sensor includes an interrupt output (INT), which is not used in the current design but is brought out to a test point for future expansion.
 

@@ -30,6 +30,7 @@ nav:
       - MCU and Storage:
         - Overview: circuit-pcb/mcu_storage/index.md
         - ESP32-S3: circuit-pcb/mcu_storage/esp32_s3.md
+        - I2C: circuit-pcb/mcu_storage/i2c.md
         - Memory: circuit-pcb/mcu_storage/memory.md
         - Flash Storage: circuit-pcb/mcu_storage/flash_storage.md        
       - Power Supply:
@@ -47,10 +48,10 @@ nav:
         - Bluetooth: circuit-pcb/communications/bluetooth.md
       - Sensors: 
         - Overview: circuit-pcb/sensors/index.md
-        - Power: circuit-pcb/sensors/power.md
-        - Temperature: circuit-pcb/sensors/temperature.md
-        - Ambient Light: circuit-pcb/sensors/ambient_light.md
-        - Wind Transducer: circuit-pcb/sensors/wind.md      
+        - Power: circuit-pcb/sensors/power_sensor.md
+        - Temperature: circuit-pcb/sensors/temperature_sensor.md
+        - Ambient Light: circuit-pcb/sensors/ambient_light_sensor.md
+        # - Wind Transducer: circuit-pcb/sensors/wind.md      
       - User Interface: 
         - Overview: circuit-pcb/ui/index.md
         - Display: circuit-pcb/ui/display.md 
