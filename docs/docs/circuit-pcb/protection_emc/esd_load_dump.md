@@ -14,3 +14,5 @@ This component was selected specifically for its compatibility with [ISO 7637-2]
 
 The TVS diode also contributes to ESD protection, supplementing local filtering and layout strategies. It is capable of absorbing ±30 kV contact discharges when tested per [IEC 61000-4-2](https://webstore.iec.ch/en/publication/68954), with negligible leakage under normal operating voltages.
 
+A surface mount automotive [V33MLA1206NH](https://lcsc.com/datasheet/lcsc_datasheet_2410121837_Littelfuse-V33MLA1206NH_C187727.pdf) Metal Oxide Varistor (MOV) with a clamping voltage of 75 V is fitted in parallel with the TVS.
+

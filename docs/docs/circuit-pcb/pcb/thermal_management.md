@@ -50,6 +50,40 @@ An [TMP112](https://www.ti.com/lit/ds/symlink/tmp112.pdf) digital temperature se
 
 ## Analysis of Thermal Loads
 
+### 5.5 V DC-DC Converter (TPS54560B-Q1)
+
+The 5.54 V buck regulator based on the [TPS54560B-Q1](https://www.ti.com/lit/ds/symlink/tps54560b-q1.pdf) supplies all downstream logic and interface subsystems. Under worst-case sustained 24 V NET-S input, thermal dissipation remains within safe margins due to low output current and effective copper spreading.
+
+Key operating parameters:
+
+* input voltage: 24 V (worst-case continuous);
+* output voltage: 5.54 V;
+* peak load: 330 mA;
+* typical load: 215 mA;
+* ambient: 60°C (typical) and 85°C (worst-case test);
+* estimated efficiency: 88% at peak load, 91% at typical load.
+
+Estimated power dissipation:
+
+| Load Case        | Output Power | Total Loss | IC Junction Temp (60°C ambient) |
+| ---------------- | ------------ | ---------- | ------------------------------- |
+| Peak (330 mA)    | 1.83 W       | 0.25 W     | \~63 °C                         |
+| Typical (215 mA) | 1.19 W       | 0.12 W     | \~62 °C                         |
+
+The regulator IC's thermal pad is soldered to a top-layer copper pour with a via array to both internal ground planes and the bottom copper layer. Layout analysis confirms:
+
+* compact switching loop and tight coupling between VIN, SW, inductor, and output capacitors;
+* multiple thermal vias under the IC and inductor footprint;
+* isolated GNDSMPS region minimizes noise coupling to digital domains;
+* spread copper for inductor and diode power dissipation.
+
+These measures ensure that both steady-state and transient thermal loads are safely distributed across the board, with no reliance on airflow or external heatsinking.
+
+Even under sustained 24 V operation, no hotspot exceeds 70 °C at 60°C ambient. Margin to the 150 °C absolute maximum rating is >80 °C, validating that the over-voltage disconnection feature may be omitted without thermal risk in this design.
+
+> This converter stage exhibits negligible self-heating under normal operation and remains stable and safe across all expected environmental and input conditions.
+
+
 ### ESP32-S3 MCU
 
 The ESP32-S3 microcontroller (U1) is housed in a 56-pin QFN package with a central exposed thermal pad. This pad is soldered to a grounded copper area on the top layer, with an array of thermal vias connecting directly to the two internal ground planes and to the bottom copper pour. This multilayer structure supports vertical heat flow into the PCB stack and distributes heat across all four layers<SUP>\*</SUP>.
