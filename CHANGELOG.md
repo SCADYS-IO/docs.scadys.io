@@ -1,5 +1,9 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.4
+
+- New SMPS design sections. 
+
 ## 0.1.3
 
 - Working on `Thermal Management` docs. 

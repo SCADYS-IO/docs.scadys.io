@@ -14,7 +14,7 @@
         <link rel="prev" href="../communications/bluetooth/">
       
       
-        <link rel="next" href="power/">
+        <link rel="next" href="power_sensor/">
       
       
       <link rel="icon" href="../../assets/images/favicon.svg">
@@ -570,6 +570,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../mcu_storage/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    I2C
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../mcu_storage/memory/" class="md-nav__link">
         
   
@@ -1042,7 +1065,7 @@
   
   
     <li class="md-nav__item">
-      <a href="power/" class="md-nav__link">
+      <a href="power_sensor/" class="md-nav__link">
         
   
   
@@ -1065,7 +1088,7 @@
   
   
     <li class="md-nav__item">
-      <a href="temperature/" class="md-nav__link">
+      <a href="temperature_sensor/" class="md-nav__link">
         
   
   
@@ -1088,35 +1111,12 @@
   
   
     <li class="md-nav__item">
-      <a href="ambient_light/" class="md-nav__link">
+      <a href="ambient_light_sensor/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     Ambient Light
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="wind/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Wind Transducer
     
   </span>
   
@@ -2599,19 +2599,13 @@
 <h1 id="sensors">Sensors</h1>
 <p>The MDD400 incorporates multiple sensors to monitor operating conditions and interface with the marine environment. Each sensor is integrated with supporting hardware circuits and firmware logic to ensure reliable measurement and reporting under varied conditions.</p>
 <ul>
-<li>
-<p><em><a href="power/">Power</a></em>: Voltage and current sensors track the MDD400's own power usage. These signals are routed through conditioning circuits and digitized via the ESP32-S3's ADC for diagnostics and fault detection.</p>
-</li>
-<li>
-<p><em><a href="temperature/">Temperature</a></em>: The system includes both an internal ESP32 junction temperature sensor and an external TMP112 near the display. This arrangement supports thermal diagnostics and allows mitigation of conditions such as LCD overheating due to sun exposure.</p>
-</li>
-<li>
-<p><em><a href="ambient_light/">Ambient Light</a></em>: A digital ambient light sensor (OPT3004) measures incident light on the display surface to enable automatic backlight brightness adjustment. This reduces power consumption and improves readability.</p>
-</li>
-<li>
-<p><em><a href="wind/">Wind Transducer</a></em>: The analog wind interface supports legacy masthead transducers from Raymarine and B\&amp;G. It includes angle and speed signal conditioning, power regulation, noise filtering, and compatibility mappings to simplify integration with common 6- and 7-wire sensor types.</p>
-</li>
+<li><em><a href="power_sensor/">Power</a></em>: Voltage and current sensors track the MDD400's own power usage. These signals are routed through conditioning circuits and digitized via the ESP32-S3's ADC for diagnostics and fault detection.</li>
+<li><em><a href="temperature_sensor/">Temperature</a></em>: The system includes both an internal ESP32 junction temperature sensor and an external TMP112 near the display. This arrangement supports thermal diagnostics and allows mitigation of conditions such as LCD overheating due to sun exposure.</li>
+<li><em><a href="ambient_light_sensor/">Ambient Light</a></em>: A digital ambient light sensor (OPT3004) measures incident light on the display surface to enable automatic backlight brightness adjustment. This reduces power consumption and improves readability.</li>
 </ul>
+<!-- 
+* *[Wind Transducer](wind.md)*: The analog wind interface supports legacy masthead transducers from Raymarine and B\&G. It includes angle and speed signal conditioning, power regulation, noise filtering, and compatibility mappings to simplify integration with common 6- and 7-wire sensor types. -->
+
 <p>Each sensor type contributes to a specific operational domain—either internal diagnostics or external environmental sensing. The following sections provide full hardware descriptions, signal paths, and implementation notes for each sensor.</p>
 
 

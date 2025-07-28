@@ -582,6 +582,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../mcu_storage/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    I2C
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../mcu_storage/memory/" class="md-nav__link">
         
   
@@ -1042,7 +1065,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sensors/power/" class="md-nav__link">
+      <a href="../../sensors/power_sensor/" class="md-nav__link">
         
   
   
@@ -1065,7 +1088,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sensors/temperature/" class="md-nav__link">
+      <a href="../../sensors/temperature_sensor/" class="md-nav__link">
         
   
   
@@ -1088,35 +1111,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sensors/ambient_light/" class="md-nav__link">
+      <a href="../../sensors/ambient_light_sensor/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     Ambient Light
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../sensors/wind/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Wind Transducer
     
   </span>
   
@@ -2604,6 +2604,7 @@
 <p>This diode begins clamping at approximately 58 V and is rated for 6.6 kW peak pulse power (10/1000 µs waveform). It is bidirectional, allowing it to suppress both positive and negative transients relative to system ground. During a surge event — such as alternator load dump, battery disconnection under load, or inductive spike — the <a href="https://www.smc-diodes.com/propdf/SM8S20CA%20THRU%20SM8S43CA%20N2149%20REV.-.pdf">SM8S36CA</a> diverts energy away from sensitive downstream circuits by rapidly entering avalanche breakdown.</p>
 <p>This component was selected specifically for its compatibility with <a href="https://www.iso.org/standard/50925.html">ISO 7637-2</a> Pulse 5b waveforms, including worst-case unsuppressed load dumps of up to 150 V. Simulation and test confirm that the clamped voltage at the downstream surge stopper FET remains within safe limits during these conditions.</p>
 <p>The TVS diode also contributes to ESD protection, supplementing local filtering and layout strategies. It is capable of absorbing ±30 kV contact discharges when tested per <a href="https://webstore.iec.ch/en/publication/68954">IEC 61000-4-2</a>, with negligible leakage under normal operating voltages.</p>
+<p>A surface mount automotive <a href="https://lcsc.com/datasheet/lcsc_datasheet_2410121837_Littelfuse-V33MLA1206NH_C187727.pdf">V33MLA1206NH</a> Metal Oxide Varistor (MOV) with a clamping voltage of 75 V is fitted in parallel with the TVS.</p>
 
 
 

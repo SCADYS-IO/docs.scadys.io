@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#digital-logic-33-v-domain-vcc" class="md-skip">
+        <a href="#vcc-33-v-domain" class="md-skip">
           Skip to content
         </a>
       
@@ -570,6 +570,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../mcu_storage/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    I2C
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../mcu_storage/memory/" class="md-nav__link">
         
   
@@ -842,9 +865,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#component-selection" class="md-nav__link">
+  <a href="#components" class="md-nav__link">
     <span class="md-ellipsis">
-      Component Selection
+      Components
     </span>
   </a>
   
@@ -854,6 +877,15 @@
   <a href="#pcb-layout" class="md-nav__link">
     <span class="md-ellipsis">
       PCB Layout
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasheets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datasheets
     </span>
   </a>
   
@@ -1128,7 +1160,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sensors/power/" class="md-nav__link">
+      <a href="../../sensors/power_sensor/" class="md-nav__link">
         
   
   
@@ -1151,7 +1183,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sensors/temperature/" class="md-nav__link">
+      <a href="../../sensors/temperature_sensor/" class="md-nav__link">
         
   
   
@@ -1174,35 +1206,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sensors/ambient_light/" class="md-nav__link">
+      <a href="../../sensors/ambient_light_sensor/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     Ambient Light
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../sensors/wind/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Wind Transducer
     
   </span>
   
@@ -2711,9 +2720,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#component-selection" class="md-nav__link">
+  <a href="#components" class="md-nav__link">
     <span class="md-ellipsis">
-      Component Selection
+      Components
     </span>
   </a>
   
@@ -2723,6 +2732,15 @@
   <a href="#pcb-layout" class="md-nav__link">
     <span class="md-ellipsis">
       PCB Layout
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasheets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datasheets
     </span>
   </a>
   
@@ -2744,186 +2762,74 @@
 
 
 
-<h1 id="digital-logic-33-v-domain-vcc">Digital Logic 3.3 V Domain (V<SUB>CC</SUB>)</h1>
-<p>The 3.3 V digital logic domain supplies all microcontroller, sensor, transceiver, and analog processing loads within the MDD400. It is one of the most critical power domains in the system, and supports high-speed digital communications, analog sensing, and protocol interfacing.</p>
+<h1 id="vcc-33-v-domain">V<sub>CC</sub> 3.3 V Domain</h1>
 <h2 id="design-criteria">Design Criteria</h2>
-<p>The following loads are powered from the 3.3 V digital power rail (V<SUB>CC</SUB>):</p>
-<table border="1" cellpadding="6" cellspacing="0" style="width: 100%">
-  <thead>
-    <tr>
-      <th>Load Component</th>
-      <th style="text-align: center;">Typical Current</th>
-      <th style="text-align: center;">Peak Current</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a href="../mcu_storage/esp32_s3.md">Microcontroller (ESP32-S3)</a></td>
-      <td style="text-align: center;">80 mA</td>
-      <td style="text-align: center;">260 mA<sup>*</sup></td>
-    </tr>
-    <tr>
-      <td><a href="../communications/can_bus.md">CAN Transceiver, logic side (ISO1042)</a></td>
-      <td style="text-align: center;">5 mA</td>
-      <td style="text-align: center;">6.5 mA</td>
-    </tr>
-    <tr>
-      <td><a href="../sensors/ambient_light.md">Ambient light sensor (OPT3004)</a></td>
-      <td style="text-align: center;">&lt;1 mA</td>
-      <td style="text-align: center;">&lt;1 mA</td>
-    </tr>
-    <tr>
-      <td><a href="../power/vas.md">Dual op-amps (TLV9002IDR ×2)</a></td>
-      <td style="text-align: center;">2.6 mA</td>
-      <td style="text-align: center;">4 mA</td>
-    </tr>
-    <tr>
-      <td><a href="../power/vas.md">Comparator (LM393DR)</a></td>
-      <td style="text-align: center;">&lt;1 mA</td>
-      <td style="text-align: center;">&lt;1 mA</td>
-    </tr>
-    <tr>
-      <td><strong>Total</strong></td>
-      <td style="text-align: center;"><strong>~90 mA<sup>**</sup></strong></td>
-      <td style="text-align: center;"><strong>~275 mA<sup>**</sup></strong></td>
-    </tr>
-  </tbody>
-</table>
-<p><sub>* Peak current reflects <a href="https://www.espressif.com/en/products/socs/esp32-s3/resources">ESP32-S3</a> operation with Wi-Fi or Bluetooth active at maximum transmit power.</sub><br />
-<sub>** Total rounded up to nearest 5 mA.</sub></p>
-<p>Key design criteria for this domain include:</p>
+<p>The V<sub>CC</sub> domain supplies 3.3 V regulated power to all digital subsystems, including the <a href="https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_datasheet_en.pdf">ESP32-S3</a>, <a href="https://www.ti.com/lit/ds/symlink/opt3004.pdf">OPT3004</a> ambient light sensor, <a href="https://www.ti.com/lit/ds/symlink/tmp112.pdf">TMP112</a> temperature sensor, and the isolated sides of the <a href="https://www.ti.com/lit/ds/symlink/iso1042.pdf">ISO1042</a> and <a href="https://www.ti.com/lit/ds/symlink/iso1541.pdf">ISO1541</a> digital interfaces. It is derived from the 12 V input rail (V<sub>SC</sub>) using a non-synchronous buck converter based on the <a href="https://www.ti.com/lit/ds/symlink/lmr51610.pdf">Texas Instruments LMR51610</a>. Key design requirements include:</p>
 <ul>
-<li>Provide a stable, low-noise 3.3 V output.</li>
-<li>Support continuous operation at 329 mA with headroom for peak loads up to 640 mA.</li>
-<li>Maintain regulation from a +5.0 V input supply derived from the main 5.33 V SMPS output.</li>
-<li>Ensure thermal performance is within acceptable limits for ambient temperatures up to 40 °C.</li>
-<li>Minimize output ripple to support analog signal conditioning stages.</li>
+<li>provide a stable 3.3 V output for digital and isolated logic domains;</li>
+<li>operate reliably across a 9–18 V automotive/RV supply range;</li>
+<li>support peak output current of up to 275 mA during Wi-Fi transmission;</li>
+<li>achieve high efficiency to limit thermal rise in the enclosure; and</li>
+<li>ensure quiet operation compatible with analog and radio subsystems.</li>
 </ul>
+<p>Typical current draw is ~90 mA, with headroom for full-load peaks during burst activity from the ESP32.</p>
 <h2 id="circuit-description">Circuit Description</h2>
-<p>The 3.3 V rail is generated by a <a href="https://www.ti.com/lit/ds/symlink/lm1117.pdf">Texas Instruments LM1117-3.3</a> low-dropout linear regulator, powered from the 5 V rail (after a blocking diode drop from the 5.33 V SMPS output). It supplies the <a href="https://www.espressif.com/en/products/socs/esp32-s3/resources">ESP32-S3</a> microcontroller, CAN transceiver, I²C sensors, and analog front-end components.</p>
-<p><img alt="VCC Regulator Schematic" src="../../../assets/images/vcc_regulator_sch.png" /></p>
-<p>Capacitive filtering includes:</p>
-<ul>
-<li>10 µF local bulk capacitor at the regulator output.</li>
-<li>100 nF decoupling capacitors at all major load inputs.</li>
-<li>Five RC-filtered 10 µF + 100 nF decoupling stages near the ESP32, op-amps, and CAN transceiver.</li>
-</ul>
+<p>The circuit schematic for the 3.3 V DC-DC converter is based on the Texas Instruments <a href="../../../assets/pdf/3v3_smps_design_report.pdf">WEBENCH design</a>.</p>
+<p><img alt="VCC SMPS schematic" src="../../../assets/images/vcc_schematic.png" /></p>
+<p>The input filter includes a 4.7 µF X7R ceramic capacitor (C19) with additional bulk capacitance upstream, a high-frequency 100 nF bypass (C20), and a <a href="https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf">Murata BLM31KN601SN1L</a> ferrite bead (600 Ω @ 100 MHz) to isolate SMPS noise from the upstream supply.</p>
+<p>The main converter is implemented with a <a href="https://www.ti.com/lit/ds/symlink/lmr51610.pdf">LMR51610</a> non-synchronous buck controller. A 22 µH <a href="https://lcsc.com/datasheet/lcsc_datasheet_2410121622_Taiyo-Yuden-NRS6028T220MMGJV_C515357.pdf">Taiyo Yuden NRS6028T220MMGJV</a> inductor with 75 mΩ DCR is used, identical to the 5.25 V rail. The output capacitor is a 22 µF 10 V X7R MLCC.</p>
+<p>The feedback resistor divider is adjusted for a 3.3 V output using 100 kΩ (R15) and 32 kΩ (R17). External compensation and a snubber network footprint are provided, with R56 marked DNP by default.</p>
 <h2 id="protection">Protection</h2>
-<p>The LM1117 includes built-in protection features:</p>
+<p>The LMR51610 includes the following protection mechanisms:</p>
 <ul>
-<li>Internal current limiting to prevent damage under overcurrent conditions.</li>
-<li>Thermal shutdown above 150 °C junction temperature.</li>
-<li>Short-circuit protection.</li>
+<li>cycle-by-cycle peak current limit;</li>
+<li>thermal shutdown at 165 °C junction temperature; and</li>
+<li>input under-voltage lockout (UVLO).</li>
 </ul>
-<p>These protections are sufficient for the low-voltage, high-availability digital domain. No additional external protection is included beyond input and output filtering.</p>
+<p>These features protect the converter and connected subsystems from overload, thermal events, and supply brownout.</p>
 <h2 id="performance">Performance</h2>
-<p>Performance is evaluated against voltage regulation, thermal limits, and load conditions. Total continuous load is ~90 mA, with peak load estimated at ~275 mA.</p>
+<p>Simulated results from the WEBENCH design report indicate the following typical performance at 18 V input and 275 mA peak load:</p>
 <ul>
-<li>Voltage regulation is maintained with &gt;1.1 V headroom at all times (5.0 V input vs. 3.3 V output).</li>
-<li>Ripple is minimized via localized ceramic MLCC filtering and distributed bypassing.</li>
+<li>output voltage: 3.3 V;</li>
+<li>efficiency: 89.0%;</li>
+<li>total power dissipation: 123 mW;</li>
+<li>phase margin: 43.0°;</li>
+<li>gain margin: −9.9 dB; and</li>
+<li>peak inductor ripple current: 313 mA.</li>
 </ul>
-<p>The LM1117 operates well within its thermal limits even under worst-case environmental and load conditions (see <a href="#pcb-layout">PCB Layout below</a>). Power dissipation is calculated as:</p>
+<p>The converter maintains good thermal performance with a predicted junction temperature of 39 °C at 30 °C ambient.</p>
+<h2 id="components">Components</h2>
+<p>The following components were selected to meet performance, cost, and availability constraints, while ensuring reliable operation under all specified conditions:</p>
 <ul>
-<li>90 mA → 0.153 W → ~5 °C rise → Junction temp: ~85 °C.</li>
-<li>275 mA → 0.467 W → ~15 °C rise → Junction temp: ~95 °C.</li>
+<li>regulator IC: <a href="https://www.ti.com/lit/ds/symlink/lmr51610.pdf">Texas Instruments LMR51610</a>, 6-pin SOT-23;</li>
+<li>inductor: <a href="https://lcsc.com/datasheet/lcsc_datasheet_2410121622_Taiyo-Yuden-NRS6028T220MMGJV_C515357.pdf">Taiyo Yuden NRS6028T220MMGJV</a>, 22 µH, 75 mΩ DCR;</li>
+<li>output capacitor: 22 µF X7R MLCC (0805);</li>
+<li>output filtering: <a href="https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf">Murata BLM31KN601SN1L</a> 600 Ω @ 100 MHz ferrite bead; and</li>
+<li>feedback, compensation, and timing components: 0402 thick-film resistors (63–125 mW) and X7R MLCCs.</li>
 </ul>
-<p>These figures assume a worst-case ambient temperature of 80 °C. Junction temperatures remain at least 30 °C below the LM1117’s 125 °C maximum rating, confirming a generous thermal margin.</p>
-<h2 id="component-selection">Component Selection</h2>
-<ul>
-<li>The LM1117-3.3 was selected for availability, simplicity, and predictable dropout voltage (~1.1 V).</li>
-<li>Input and output capacitors follow TI recommendations: 10 µF bulk + 100 nF ceramic MLCC.</li>
-<li>All passives are 0603 size and use X7R dielectric.</li>
-</ul>
-<p>Filtering near high-speed digital and analog nodes includes additional RC-paired decoupling for noise suppression.</p>
 <h2 id="pcb-layout">PCB Layout</h2>
-<p>The following thermal and electrical principles are are implemented in the PCB layout:</p>
+<p>The 3.3 V converter layout is identical to the 5.25 V section, with shared design constraints and stackup:</p>
+<p><img alt="VCC SMPS layout" src="../../../assets/images/vpp_ground_plane.png" /></p>
 <ul>
-<li>The LM1117 regulator’s V<sub>O</sub> pin and tab (Pin 2 and center pad) are connected to copper pours on both the top and bottom PCB layers. </li>
-<li>The output planes are termally connected via a 3×3 via array, allowing heat to dissipate through internal and external copper.</li>
-<li>No thermal reliefs are used in the main power paths to minimize resistance.</li>
-<li>Decoupling caps are placed immediately adjacent to IC power pins.</li>
+<li>tight input and output loop areas with short trace lengths;</li>
+<li>SW node enclosed in a ground moat and surrounded by vias;</li>
+<li>all components placed to minimize EMI and thermal hotspots;</li>
+<li>snubber and compensation footprints accessible for tuning.</li>
 </ul>
-<p><img alt="Thermal Copper Pour for 3.3V LDO" src="../../../assets/images/vcc_pour.png" /></p>
-<p>This layout supports both low-noise operation and effective heat spreading to maintain regulator performance.</p>
-<!-- # Digital Logic 3.3 V Domain (V<SUB>CC</SUB>)
-
-## Digital Domain (3.3 V) Loads
-
-The following loads are powered from the 3.3 V digital power rail (V<SUB>cc</SUB>):
-
-<table border="1" cellpadding="6" cellspacing="0" style="width: 100%">
-  <thead>
-    <tr>
-      <th>Load Component</th>
-      <th>Typical Current</th>
-      <th>Peak Current</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>ESP32-S3</td>
-      <td>250 mA</td>
-      <td>450 mA<SUP>*</SUP></td>
-    </tr>
-    <tr>
-      <td>Ambient light sensor (OPT3004)</td>
-      <td>0.2 mA</td>
-      <td>0.2 mA</td>
-    </tr>
-    <tr>
-      <td>Dual op-amps (TLV9002IDR ×2)</td>
-      <td>2.6 mA</td>
-      <td>4 mA</td>
-    </tr>
-    <tr>
-      <td>Comparator (LM393DR)</td>
-      <td>1 mA</td>
-      <td>1.5 mA</td>
-    </tr>
-    <tr>
-      <td>CAN transceiver (SN65HVD234)</td>
-      <td>74 mA</td>
-      <td>85 mA</td>
-    </tr>
-    <tr>
-      <td>Pull-up loads</td>
-      <td>1 mA</td>
-      <td>1 mA</td>
-    </tr>
-    <tr>
-      <td><strong>Total</strong></td>
-      <td><strong>329 mA</strong></td>
-      <td><strong>552 mA</strong></td>
-    </tr>
-  </tbody>
-</table>
-
-<sub>\*Peak current estimate reflects [ESP32-S3](https://www.espressif.com/en/products/socs/esp32-s3/resources) operation with active Wi-Fi transmission at high data rates, based on Espressif datasheet specifications.</sub>
-
-## Regulator
-
-The 3.3 V digital logic domain is powered by a [Texas Instruments LM1117-3.3](https://www.ti.com/lit/ds/symlink/lm1117.pdf) low-dropout (LDO) linear regulator, using the 5 V rail as its input (designated V<sub>PP</sub>). This domain powers the [ESP32-S3](https://www.espressif.com/en/products/socs/esp32-s3/resources) microcontroller, CAN transceiver, I²C sensors, and analog signal conditioning stages.
-
-![VCC Regulator Schematic](../../assets/images/vcc_regulator_sch.png)
-
-Capacitive filtering on the LDO output includes:
-
-* 10 µF local bulk capacitance near the LDO;
-* 100 nF decoupling capacitors placed near all major loads; and
-* five 10 µF + 100 nF RC pairs at the ESP32, CAN transceiver, and op-amp stages.
-
-The LM1117 features internal current limiting and thermal shutdown. Under typical operating conditions, the 3.3 V rail draws approximately 329 mA, with short-term peaks up to 552–640 mA. These values are distributed across the subsystems as shown in Table 2.
-
-## Performance and Thermal Considerations
-
-With a regulated input of approximately 5.0 V (following a diode drop from the 5.33 V SMPS rail), the LM1117 provides sufficient headroom above its typical dropout voltage of 1.1 V. At peak current levels up to 640 mA, the dropout remains below the available headroom, ensuring stable regulation.
-
-Thermal dissipation is mitigated through extensive copper pours on the top and bottom PCB layers, all tied to the LDO output pin (Pin 2 / Tab). A 3×3 via array connects the thermal pad to the bottom layer, and a soldermask opening improves convective cooling. This layout results in the following thermal performance:
-
-* **At 552 mA load**: 0.938 W dissipation → 30 °C rise → **Junction temp: 70 °C**
-* **At 640 mA load**: 1.088 W dissipation → 35 °C rise → **Junction temp: 75 °C**
-
-Given a 40 °C ambient environment, the regulator operates well below its 125 °C junction temperature limit with ample margin. These results confirm that the LM1117 is appropriately specified for both average and peak operating conditions in the MDD400. -->
+<p>These layout choices support quiet operation, mechanical symmetry, and efficient heat spreading.</p>
+<hr />
+<h2 id="datasheets">Datasheets</h2>
+<ol>
+<li>Texas Instruments, <a href="../../../assets/pdf/3v3_smps_design_report.pdf">WEBENCH Design Report</a></li>
+<li>Espressif, <a href="https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_datasheet_en.pdf">ESP32-S3</a></li>
+<li>Texas Instruments, <a href="https://www.ti.com/lit/ds/symlink/lmr51610.pdf">LMR51610</a></li>
+<li>Taiyo Yuden, <a href="https://lcsc.com/datasheet/lcsc_datasheet_2410121622_Taiyo-Yuden-NRS6028T220MMGJV_C515357.pdf">NRS6028T220MMGJV</a></li>
+<li>Murata, <a href="https://lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf">BLM31KN601SN1L</a></li>
+<li>Texas Instruments, <a href="https://www.ti.com/lit/ds/symlink/opt3004.pdf">OPT3004</a></li>
+<li>Texas Instruments, <a href="https://www.ti.com/lit/ds/symlink/tmp112.pdf">TMP112</a></li>
+<li>Texas Instruments, <a href="https://www.ti.com/lit/ds/symlink/iso1042.pdf">ISO1042</a></li>
+<li>Texas Instruments, <a href="https://www.ti.com/lit/ds/symlink/iso1541.pdf">ISO1541</a></li>
+</ol>
 
 
 

@@ -570,6 +570,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../mcu_storage/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    I2C
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../mcu_storage/memory/" class="md-nav__link">
         
   
@@ -1030,7 +1053,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sensors/power/" class="md-nav__link">
+      <a href="../../sensors/power_sensor/" class="md-nav__link">
         
   
   
@@ -1053,7 +1076,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sensors/temperature/" class="md-nav__link">
+      <a href="../../sensors/temperature_sensor/" class="md-nav__link">
         
   
   
@@ -1076,35 +1099,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sensors/ambient_light/" class="md-nav__link">
+      <a href="../../sensors/ambient_light_sensor/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     Ambient Light
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../sensors/wind/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Wind Transducer
     
   </span>
   
@@ -1628,6 +1628,48 @@
   <a href="#temperature-monitoring" class="md-nav__link">
     <span class="md-ellipsis">
       Temperature Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analysis-of-thermal-loads" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analysis of Thermal Loads
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysis of Thermal Loads">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#55-v-dc-dc-converter-tps54560b-q1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5 V DC-DC Converter (TPS54560B-Q1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esp32-s3-mcu" class="md-nav__link">
+    <span class="md-ellipsis">
+      ESP32-S3 MCU
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sm8s36ca-tvs-diode" class="md-nav__link">
+    <span class="md-ellipsis">
+      SM8S36CA TVS Diode
     </span>
   </a>
   
@@ -2722,6 +2764,48 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#analysis-of-thermal-loads" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analysis of Thermal Loads
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysis of Thermal Loads">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#55-v-dc-dc-converter-tps54560b-q1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5 V DC-DC Converter (TPS54560B-Q1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esp32-s3-mcu" class="md-nav__link">
+    <span class="md-ellipsis">
+      ESP32-S3 MCU
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sm8s36ca-tvs-diode" class="md-nav__link">
+    <span class="md-ellipsis">
+      SM8S36CA TVS Diode
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2752,7 +2836,7 @@
 </ul>
 <p>The 85 °C ambient test condition is used for thermal characterisation and certification, simulating surface heating of a black enclosure exposed to solar radiation. Temperature monitoring via the onboard sensor allows the firmware to implement protective thermal management strategies under such conditions.</p>
 <h3 id="pcb-construction-and-heat-flow">PCB Construction and Heat Flow</h3>
-<p>The MDD400 uses a four-layer PCB as detailed in the <a href="../circuit-pcb/stackup.md">stackup section</a>, with:</p>
+<p>The MDD400 uses a four-layer PCB as detailed in the <a href="../stackup/">stackup section</a>, with:</p>
 <ul>
 <li>top and bottom signal layers containing copper pours for power distribution;</li>
 <li>dual internal ground planes (GNDREF and GNDC) providing low-impedance return paths and shielding;</li>
@@ -2773,6 +2857,164 @@
 <h3 id="temperature-monitoring">Temperature Monitoring</h3>
 <p>An <a href="https://www.ti.com/lit/ds/symlink/tmp112.pdf">TMP112</a> digital temperature sensor is located on the top layer, near the ESP32 and 3.3 V SMPS, and thermally coupled to nearby copper. This sensor enables real-time monitoring of local board temperature and provides data for firmware-driven thermal throttling or alerting if required.</p>
 <p><img alt="Thermal Management" src="../../../assets/images/mdd400_thermal.png" /></p>
+<hr />
+<h2 id="analysis-of-thermal-loads">Analysis of Thermal Loads</h2>
+<h3 id="55-v-dc-dc-converter-tps54560b-q1">5.5 V DC-DC Converter (TPS54560B-Q1)</h3>
+<p>The 5.54 V buck regulator based on the <a href="https://www.ti.com/lit/ds/symlink/tps54560b-q1.pdf">TPS54560B-Q1</a> supplies all downstream logic and interface subsystems. Under worst-case sustained 24 V NET-S input, thermal dissipation remains within safe margins due to low output current and effective copper spreading.</p>
+<p>Key operating parameters:</p>
+<ul>
+<li>input voltage: 24 V (worst-case continuous);</li>
+<li>output voltage: 5.54 V;</li>
+<li>peak load: 330 mA;</li>
+<li>typical load: 215 mA;</li>
+<li>ambient: 60°C (typical) and 85°C (worst-case test);</li>
+<li>estimated efficiency: 88% at peak load, 91% at typical load.</li>
+</ul>
+<p>Estimated power dissipation:</p>
+<table>
+<thead>
+<tr>
+<th>Load Case</th>
+<th>Output Power</th>
+<th>Total Loss</th>
+<th>IC Junction Temp (60°C ambient)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Peak (330 mA)</td>
+<td>1.83 W</td>
+<td>0.25 W</td>
+<td>\~63 °C</td>
+</tr>
+<tr>
+<td>Typical (215 mA)</td>
+<td>1.19 W</td>
+<td>0.12 W</td>
+<td>\~62 °C</td>
+</tr>
+</tbody>
+</table>
+<p>The regulator IC's thermal pad is soldered to a top-layer copper pour with a via array to both internal ground planes and the bottom copper layer. Layout analysis confirms:</p>
+<ul>
+<li>compact switching loop and tight coupling between VIN, SW, inductor, and output capacitors;</li>
+<li>multiple thermal vias under the IC and inductor footprint;</li>
+<li>isolated GNDSMPS region minimizes noise coupling to digital domains;</li>
+<li>spread copper for inductor and diode power dissipation.</li>
+</ul>
+<p>These measures ensure that both steady-state and transient thermal loads are safely distributed across the board, with no reliance on airflow or external heatsinking.</p>
+<p>Even under sustained 24 V operation, no hotspot exceeds 70 °C at 60°C ambient. Margin to the 150 °C absolute maximum rating is &gt;80 °C, validating that the over-voltage disconnection feature may be omitted without thermal risk in this design.</p>
+<blockquote>
+<p>This converter stage exhibits negligible self-heating under normal operation and remains stable and safe across all expected environmental and input conditions.</p>
+</blockquote>
+<h3 id="esp32-s3-mcu">ESP32-S3 MCU</h3>
+<p>The ESP32-S3 microcontroller (U1) is housed in a 56-pin QFN package with a central exposed thermal pad. This pad is soldered to a grounded copper area on the top layer, with an array of thermal vias connecting directly to the two internal ground planes and to the bottom copper pour. This multilayer structure supports vertical heat flow into the PCB stack and distributes heat across all four layers<SUP>*</SUP>.</p>
+<p>Power dissipation<SUP>*</SUP> varies with operating mode:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Core + Digital (mW)</th>
+<th>Radio (mW)</th>
+<th>Total Power (mW)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Typical (idle)</td>
+<td>~80</td>
+<td>0</td>
+<td>~80</td>
+</tr>
+<tr>
+<td>Peak (TX active)</td>
+<td>~120</td>
+<td>~320</td>
+<td>~440</td>
+</tr>
+</tbody>
+</table>
+<p><SUP>*</SUP><em>From <a href="https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf">ESP32-S3 datasheet</a> at 3.3 V supply and ambient 25 °C.</em></p>
+<p>The ESP32-S3 QFN package exhibits the following thermal characteristics:</p>
+<ul>
+<li>junction-to-case thermal resistance (θ JC):  ~10 °C/W (typical);</li>
+<li>junction-to-board thermal resistance (θ JB):  ~20 °C/W (conservative, via-stitched pad to multilayer ground);</li>
+<li>effective thermal resistance to ambient through PCB (estimated): θ JA = 30 °C/W under natural convection.</li>
+</ul>
+<p>Estimated junction temperatures<SUP>*</SUP> for typical and peak power at 60 °C and 85 °C ambient:</p>
+<table>
+<thead>
+<tr>
+<th>Ambient (°C)</th>
+<th>Typical (80 mW)</th>
+<th>Peak (440 mW)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>60</td>
+<td><strong>62.4</strong> °C</td>
+<td><strong>73.2</strong> °C</td>
+</tr>
+<tr>
+<td>85</td>
+<td><strong>87.4</strong> °C</td>
+<td><strong>98.2</strong> °C</td>
+</tr>
+</tbody>
+</table>
+<p><SUP>*</SUP><em>Calculated using Tₑ = Tₘ + (θ JA × P), with θ JA = 30 °C/W.</em></p>
+<p>The peak junction temperature of 98.2 °C is within the ESP32-S3 operating maximum (105 °C), leaving an estimated margin of 6.8 °C. In practice, the device rarely operates at continuous maximum RF output.</p>
+<p>The thermal strategy—anchoring the exposed pad to a low-impedance, via-stitched ground region across multiple layers—provides adequate dissipation even under extended peak load in a 60–85 °C ambient range.</p>
+<blockquote>
+<p>PCB images confirm full copper pad coverage, dense via stitching, and good isolation from adjacent hot zones.</p>
+</blockquote>
+<h3 id="sm8s36ca-tvs-diode">SM8S36CA TVS Diode</h3>
+<p>The <a href="https://www.smc-diodes.com/propdf/SM8S20CA%20THRU%20SM8S43CA%20N2149%20REV.-.pdf">SM8S36CA</a> is a 6.6 kW bidirectional transient voltage suppressor diode located at the NET-S connector, designed to absorb surge energy from high-voltage automotive transients, including ISO 7637-2 Pulse 5b load dumps. It begins clamping at approximately 58 V and is soldered to a dense copper area with direct via connections to the ground plane beneath.</p>
+<p>Thermal performance during surge events is critical due to short-duration high-energy dissipation. The device's thermal response to a worst-case 150 V load dump (ISO 7637-2 Pulse 5b) is estimated below.</p>
+<p>Assumptions:</p>
+<ul>
+<li>pulse width: 400 ms</li>
+<li>peak clamping voltage: 58 V</li>
+<li>absorbed energy: up to 320 mJ (10/1000 µs rating scaled by pulse duration)</li>
+<li>junction-to-case thermal resistance (θ JC): 1.7 °C/W (datasheet)</li>
+<li>junction-to-ambient estimated (PCB mounted with via array): θ JA ≈ 25 °C/W</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Ambient (°C)</th>
+<th>Energy Dissipated (mJ)</th>
+<th>ΔT = (E / t) × θ JA</th>
+<th>Estimated Tₑ (°C)<SUP>*</SUP></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>60</td>
+<td>320</td>
+<td>0.32 J × 25 = <strong>8.0</strong></td>
+<td><strong>68.0</strong></td>
+</tr>
+<tr>
+<td>85</td>
+<td>320</td>
+<td>0.32 J × 25 = <strong>8.0</strong></td>
+<td><strong>93.0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><SUP>*</SUP><em>Conservative estimate based on full energy absorption in a single load dump event with no airflow. Actual peak temperature rise is likely lower due to copper spreading and brief duration.</em></p>
+<p>The PCB layout supports this thermal performance with:</p>
+<ul>
+<li>large cathode/anode pad area with symmetric soldering;</li>
+<li>16 thermal vias beneath the part connecting to a full ground pour on internal and bottom layers;</li>
+<li>minimal thermal resistance between diode and copper mass.</li>
+</ul>
+<p>The TVS is positioned at the board edge, well isolated from temperature-sensitive components and mechanically reinforced by its footprint geometry.</p>
+<blockquote>
+<p>This thermal strategy ensures that the TVS operates well below its maximum junction temperature (150 °C) even during extreme surge conditions.</p>
+</blockquote>
 
 
 

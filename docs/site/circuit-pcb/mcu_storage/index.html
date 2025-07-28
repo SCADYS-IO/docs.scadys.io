@@ -582,6 +582,29 @@
   
   
     <li class="md-nav__item">
+      <a href="i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    I2C
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="memory/" class="md-nav__link">
         
   
@@ -1042,7 +1065,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sensors/power/" class="md-nav__link">
+      <a href="../sensors/power_sensor/" class="md-nav__link">
         
   
   
@@ -1065,7 +1088,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sensors/temperature/" class="md-nav__link">
+      <a href="../sensors/temperature_sensor/" class="md-nav__link">
         
   
   
@@ -1088,35 +1111,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../sensors/ambient_light/" class="md-nav__link">
+      <a href="../sensors/ambient_light_sensor/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     Ambient Light
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../sensors/wind/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Wind Transducer
     
   </span>
   
@@ -2599,15 +2599,10 @@
 <h1 id="mcu-and-storage">MCU and Storage</h1>
 <p>This section describes the digital processing and memory subsystem of the MDD400. It includes the main microcontroller, volatile and non-volatile memory, and storage components used for firmware, configuration, and runtime data.</p>
 <ul>
-<li>
-<p><em><a href="esp32_s3/">ESP32-S3</a></em>: The central microcontroller is an ESP32-S3, which integrates Wi-Fi, Bluetooth Low Energy, and a dual-core Xtensa processor. This section covers pin assignments, bootstrapping configuration, and peripheral connections including UART, I²C, SPI, and ADC.</p>
-</li>
-<li>
-<p><em><a href="memory/">Memory</a></em>: Describes the external SRAM (PSRAM) used for framebuffer storage, buffering, and heap expansion. Connection details and initialization notes are included.</p>
-</li>
-<li>
-<p><em><a href="flash_storage/">Flash Storage</a></em>: Documents the onboard SPI flash memory used to store firmware, user configuration, and data logs. Includes layout considerations and expected memory usage.</p>
-</li>
+<li><em><a href="esp32_s3/">ESP32-S3</a></em>: The central microcontroller is an ESP32-S3, which integrates Wi-Fi, Bluetooth Low Energy, and a dual-core Xtensa processor. This section covers pin assignments, bootstrapping configuration, and peripheral connections including UART, I²C, SPI, and ADC.</li>
+<li><em><a href="i2c/">I2C</a></em>: Describes the inter-ic communication bus and lists the attached devicews and their addresses.</li>
+<li><em><a href="memory/">Memory</a></em>: Describes the external SRAM (PSRAM) used for framebuffer storage, buffering, and heap expansion. Connection details and initialization notes are included.</li>
+<li><em><a href="flash_storage/">Flash Storage</a></em>: Documents the onboard SPI flash memory used to store firmware, user configuration, and data logs. Includes layout considerations and expected memory usage.</li>
 </ul>
 <p>Together, these components form the core digital subsystem responsible for application execution, peripheral control, and user interface logic.</p>
 
