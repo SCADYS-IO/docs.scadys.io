@@ -1,6 +1,10 @@
 # Prerequisites
 *.d
 
+# Archives
+*.zip
+*.rar
+
 # Credentials
 .htaccess
 .htpasswd
