@@ -1,5 +1,10 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.5
+
+- New VCAN design section.
+- Updated SMPS design sections. 
+
 ## 0.1.4
 
 - New SMPS design sections. 

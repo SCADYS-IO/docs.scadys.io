@@ -1,159 +1,59 @@
-# Isolated 5 V CAN Domain (V<SUB>CAN</SUB>)
-
-Galvanic isolation between the CAN-side and logic-side domains is recommended by both the [NMEA 2000](https://www.nmea.org/standards.html) and [ISO 11898](https://www.iso.org/standard/66340.html) standards to improve EMC performance, prevent ground loops, and enhance system protection in electrically noisy environments. The isolated 5 V regulator provides a galvanically isolated power supply for the CAN transceiver (V<SUB>CAN</SUB>), allowing the CAN physical layer to operate on a floating domain independent of system ground.
+# Isolated 5 V CAN Domain (V<sub>CAN</sub>)
 
 ## Design Criteria
 
-The design requirements for the isolated 5 V CAN domain are as follows:
+The V<sub>CAN</sub> domain supplies regulated 5 V power to the isolated side of the CAN and I²C interfaces. This includes the CAN transceiver, isolated I²C buffer, and an isolated current/voltage sensor. All of these devices are referenced to the CAN ground domain (GNDC) and are fully isolated from the digital/MCU domain.
 
-* Provide a regulated 5.0 V output referenced to an isolated ground domain.
-* Operate from the system’s 5.33 V internal DC-DC converter output.
-* Supply sufficient current for the isolated-side [ISO1044 CAN transceiver datasheet](https://ti.com/lit/ds/symlink/iso1042.pdf) (typically 5–6 mA, with headroom for transients).
-* Maintain galvanic isolation between CAN and logic domains to comply with [NMEA 2000](https://www.nmea.org/standards.html) and [ISO 11898](https://www.iso.org/standard/66340.html) standards.
-* Operate reliably in a marine environment with minimal noise, thermal rise, or sensitivity to load variation. 
+The supply is derived from the protected (nominal) 12 V supply from the NMEA 2000 backbone (V<sub>SS</sub>). While the NMEA 2000 standard allows operation to 15 V maximum, the MDD400 will operate normall with a supply between 8 V and 24.8 V. A linear regulator was selected due to the low current draw of the isolated circuitry and the need to avoid switching noise in the CAN domain. Key requirements include:
 
-## Circuit Description
-
-The isolated 5 V CAN domain regulator schematic is shown below.
-
-![V\<SUB>CAN\</SUB> Schematic](../../assets/images/vcan_schematic.png)
-
-The circuit uses a transformer-based push-pull topology, driven by the [VPSC VPS8702 transformer driver](../../assets/pdf/VPSC-VPS8702_datasheet.pdf) and [VPT87BB-01A](https://lcsc.com/datasheet/lcsc_datasheet_2410121942_Nexperia-BAT54C-215_C37704.pdf) transformer. The output is full-wave rectified by a dual Schottky diode ([BAT54C](https://lcsc.com/datasheet/lcsc_datasheet_2410121942_Nexperia-BAT54C-215_C37704.pdf)) and regulated to a clean 5.0 V by a low-dropout linear regulator ([HT7550-1](https://www.holtek.com/webapi/116711/HT75xx-1v280.pdf)).
-
-Power is supplied from the [switch-mode DC-DC converter output (+5.33V)](vcan.md), which maintains sufficient headroom for regulation and rectification losses.
-
-The CAN side of the CAN transceiver will only be powered when 12V power is supplied via the CAN / NMEA 2000 connector's NET-S pin. The CAN Transceiver cannot be powered via the 5V supply from the [ESP-PROG](../connectors/esp_prog.md) programming connector.
-
----
-
-## Protection
-
-The circuit includes integrated protection features within both the transformer driver and LDO:
-
-*VPS8702*
-
-* Overcurrent protection with dynamic clamping.
-* Overtemperature shutdown with automatic delayed recovery.
-* Break-before-make switching with dead-time to prevent cross-conduction.
-* Internal current limiting (~800 mA) and thermal self-protection.
-
-*HT7550-1*
-
-* Internal short-circuit and overtemperature protection.
-* Tight quiescent current control (<6 µA) to minimize power draw.
-
-No external protection components are required due to the light loading and low-energy nature of this isolated rail.
-
----
-
-## Performance
-
-This section evaluates the electrical performance of the isolated 5 V supply under real-world load and startup conditions. It includes efficiency, regulation headroom, ripple, and component behavior such as diode rectification performance.
-
-* Load capability: Designed to supply 5.0 V at up to 100 mA, although the typical load is only 5–6 mA, sourced by the isolated side of the [ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf) CAN transceiver.
-* Efficiency: The push-pull stage achieves ~80–85% conversion efficiency under mid-load. At low loads, total dissipation remains minimal.
-* Dropout: The HT7550-1 operates with just 25 mV dropout at 6 mA, providing excellent regulation from a 5.3 V input.
-* Noise and ripple: The output filter includes 2.2 µF + 100 nF X7R MLCCs for low ripple and clean analog supply performance.
-* Rectification diode performance: The [BAT54C](https://lcsc.com/datasheet/lcsc_datasheet_2410121942_Nexperia-BAT54C-215_C37704.pdf) dual Schottky diode was selected for its low forward voltage drop (~250–300 mV at 6–10 mA) and fast switching speed (5 ns), making it well-suited for high-frequency rectification at 340 kHz. Its low leakage current and compact SOT-23 package also meet thermal and space constraints for this low-current, isolated supply. Although higher-rated diodes could provide additional surge headroom, the BAT54C remains well within specification under all expected load conditions.
-
----
-
-## Component Selection
-
-All active components were selected based on efficiency, isolation performance, and compact footprint. The key ICs, transformer and rectifier diode(s) are referenced in the schematic and described in the circuit description above.
-
-For other passive components, standard guidelines were followed to ensure reliability and consistent performance across environmental conditions:
-
-* X7R dielectric ceramic capacitors for all decoupling and filtering.
-* Capacitors and resistors are 0603 footprint unless otherwise dictated by electrical constraints.
-
-Component selection is guided by the need for low ESR, thermal stability and compatibility with automated assembly processes.
-
----
-
-## PCB Layout
-
-Careful attention was paid to PCB layout for performance and isolation:
-
-* Short traces between U12, transformer, and diode minimize loop area and EMI.
-* Input capacitor (C63) is placed adjacent to U12 for optimal HF bypassing.
-* Primary and secondary grounds are routed as separate planes, with no copper overlap and minimum 3 mm spacing for reinforced isolation.
-* V<SUB>CAN</SUB> domain is fully isolated and routed in its own ground zone (GNDC), used exclusively by the ISO1042 transceiver.
-* No Thermal reliefs used in power paths to reduce resistance and switching loss.
-
-The isolated domain is physically separated and labeled clearly in layout and silkscreen to ensure inspection clarity during assembly and QA.
-
-<!-- # Isolated 5 V Regulator (V<SUB>CAN</SUB>)
-
-Galvanic isolation between the CAN-side and logic-side domains is recommended by both the [NMEA 2000](https://www.nmea.org/standards.html) and [ISO 11898](https://www.iso.org/standard/66340.html) standards to improve EMC performance, prevent ground loops, and enhance system protection in electrically noisy environments. The isolated 5 V regulator provides a galvanically isolated power supply for the CAN transceiver (V<SUB>CAN</SUB>), allowing the CAN physical layer to operate on a floating domain independent of system ground.
+* provide a stable 5.0 V rail for all isolated-side devices;
+* operate over the full V<sub>SS</sub> voltage range (8–24.8 V);
+* maintain low noise suitable for CAN transceivers and I²C analog front-ends; and
+* deliver sufficient thermal margin under worst-case input and ambient conditions.
 
 ## Circuit Description
 
-The isolated 5 V regulator schematic is shown below.
+The regulator is based on the [Texas Instruments TPS7A1650DGNR](https://www.ti.com/lit/ds/symlink/tps7a16.pdf), a 500 mA low-noise, high-voltage linear LDO. It is configured for always-on operation by tying the EN pin directly to VIN. The PG and DELAY pins are left floating, as the regulator is not monitored or sequenced across the isolation barrier.
 
-![V\<SUB>CAN\</SUB> Schematic](../../assets/images/vcan_schematic.png)
+![VCAN LDO schematic](../../assets/images/vcan_schematic.png)
 
-The circuit uses a transformer-based push-pull topology, driven by the [VPSC VPS8702 transformer driver](../../assets/pdf/VPSC-VPS8702_datasheet.pdf) and [VPT87BB-01A](https://lcsc.com/datasheet/lcsc_datasheet_2410121942_Nexperia-BAT54C-215_C37704.pdf) transformer. The output is full-wave rectified by a dual Schottky diode ([BAT54C](https://lcsc.com/datasheet/lcsc_datasheet_2410121942_Nexperia-BAT54C-215_C37704.pdf)) and regulated to a clean 5.0 V by a low-dropout linear regulator ([HT7550-1](https://www.holtek.com/webapi/116711/HT75xx-1v280.pdf)).
+The input filter includes a 2.2 µF 100 V MLCC in parallel with a 22 nF high-frequency bypass capacitor. The output uses a 2.2 µF 25 V MLCC in parallel with a 100 nF bypass, as recommended for low-noise regulation and load stability. All capacitors are ceramic X7R dielectric.
 
-Power is supplied from the switch-mode DC-DC converter output (+5.33V), which maintains sufficient headroom for regulation and rectification losses. 
+No additional protection components are required on the LDO output, as the connected devices do not present any backfeed path or alternate source of power. Output capacitance is low, and the input is fully protected against reverse polarity and transient overvoltage upstream.
 
-The CAN side of the CAN transceiver will only be powered when 12V power is supplied via the CAN / NMEA 2000 connector's NET-S pin. The CAN Transceiver cannot be powered via the 5V supply from the [ESP-PROG](../connectors/esp_prog.md) programming connector.
+## Loads and Current Budget
 
----
+The following isolated devices are supplied by the V<sub>CAN</sub> regulator:
 
-## Protection
+* [ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf) isolated CAN transceiver: max 4.5 mA;
+* [ISO1541](https://www.ti.com/lit/ds/symlink/iso1541.pdf) isolated I²C buffer: max 2.9 mA; and
+* [INA219](https://www.ti.com/lit/ds/symlink/ina219.pdf) current/voltage sensor: max 1 mA.
 
-The circuit includes integrated protection features within both the transformer driver and LDO:
+Total current draw is approximately 5 mA typical, with a maximum of ~9 mA. This is well within the TPS7A1650's rated capacity of 500 mA.
 
-*VPS8702*
+## Thermal Performance
 
-* Overcurrent protection with dynamic clamping.
-* Overtemperature shutdown with automatic delayed recovery.
-* Break-before-make switching with dead-time to prevent cross-conduction.
-* Internal current limiting (~800 mA) and thermal self-protection.
+At worst-case load (9 mA) and maximum input voltage (24.8 V), the power dissipation is 177 mW. The SOT-23 (DGK) package has a thermal resistance of ~127 °C/W, yielding a junction temperature rise of ~22.5 °C. Even at 85 °C ambient, the device operates well within thermal limits.
 
-*HT7550-1*
+## Components
 
-* Internal short-circuit and overtemperature protection.
-* Tight quiescent current control (<6 µA) to minimize power draw.
+The following components were selected to meet performance and thermal requirements:
 
-No external protection components are required due to the light loading and low-energy nature of this isolated rail.
+* regulator IC: [Texas Instruments TPS7A1650DGNR](https://www.ti.com/lit/ds/symlink/tps7a16.pdf), 8 V to 60 V input, 5 V fixed output;
+* input capacitor: 2.2 µF 100 V X7R MLCC + 22 nF 100 V X7R MLCC;
+* output capacitor: 2.2 µF 25 V X7R MLCC + 100 nF 50 V X7R MLCC.
 
----
+## Layout Considerations
 
-## Performance
+The V<sub>CAN</sub> regulator is placed entirely within the isolated CAN domain, referenced to GNDC. Short trace lengths are used for both input and output paths, with a dedicated local ground pour for thermal and electrical performance.
 
-This section evaluates the electrical performance of the isolated 5 V supply under real-world load and startup conditions. It includes efficiency, regulation headroom, ripple, and component behavior such as diode rectification performance.
-
-* *Load capability*: Designed to supply 5.0 V at up to 100 mA, although the typical load is only 5–6 mA, sourced by the isolated side of the [ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf) CAN transceiver.
-* *Efficiency*: The push-pull stage achieves ~80–85% conversion efficiency under mid-load. At low loads, total dissipation remains minimal.
-* *Dropout*: The HT7550-1 operates with just 25 mV dropout at 6 mA, providing excellent regulation from a 5.3 V input.
-* *Noise and ripple*: The output filter includes 2.2 µF + 100 nF X7R MLCCs for low ripple and clean analog supply performance.
-* *Rectification diode performance*: The [BAT54C](https://lcsc.com/datasheet/lcsc_datasheet_2410121942_Nexperia-BAT54C-215_C37704.pdf) dual Schottky diode was selected for its low forward voltage drop (~250–300 mV at 6–10 mA) and fast switching speed (5 ns), making it well-suited for high-frequency rectification at 340 kHz. Its low leakage current and compact SOT-23 package also meet thermal and space constraints for this low-current, isolated supply. Although higher-rated diodes could provide additional surge headroom, the BAT54C remains well within specification under all expected load conditions.
+Minimal output capacitance and tightly coupled input/output return paths ensure low EMI and fast transient settling, supporting reliable operation of the CAN transceiver and analog interfaces.
 
 ---
 
-## Component Selection
+## References
 
-All active components were selected based on efficiency, isolation performance, and compact footprint. The key ICs, transformer and rectifier diode(s) are referenced in the schematic and described in the circuit description above.
-
-For other passive components, standard guidelines were followed to ensure reliability and consistent performance across environmental conditions:
-
-* X7R dielectric ceramic capacitors for all decoupling and filtering.
-* Capacitors and resistors are 0603 footprint unless otherwise dictated by electrical constraints.
-
-Component selection is guided by the need for low ESR, thermal stability and compatibility with automated assembly processes.
-
----
-
-## PCB Layout
-
-Careful attention was paid to PCB layout for performance and isolation:
-
-* Short traces between U12, transformer, and diode minimize loop area and EMI.
-* Input capacitor (C63) is placed adjacent to U12 for optimal HF bypassing.
-* Primary and secondary grounds are routed as separate planes, with *no copper overlap* and minimum 3 mm spacing for reinforced isolation.
-* V<SUB>CAN</SUB> domain is fully isolated and routed in its own ground zone (GNDC), used exclusively by the ISO1042 transceiver.
-* No Thermal reliefs used in power paths to reduce resistance and switching loss.
-
-The isolated domain is physically separated and labeled clearly in layout and silkscreen to ensure inspection clarity during assembly and QA. -->
+1. Texas Instruments, [TPS7A16 Datasheet](https://www.ti.com/lit/ds/symlink/tps7a16.pdf)
+2. Texas Instruments, [ISO1042 Datasheet](https://www.ti.com/lit/ds/symlink/iso1042.pdf)
+3. Texas Instruments, [ISO1541 Datasheet](https://www.ti.com/lit/ds/symlink/iso1541.pdf)
+4. Texas Instruments, [INA219 Datasheet](https://www.ti.com/lit/ds/symlink/ina219.pdf)

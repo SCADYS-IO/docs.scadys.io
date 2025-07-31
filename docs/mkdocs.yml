@@ -36,10 +36,10 @@ nav:
       - Power Supply:
         - Overview: circuit-pcb/power/index.md
         - Unregulated 12V Domain: circuit-pcb/power/vdc.md
+        - Isolated 5V Domain: circuit-pcb/power/vcan.md
         - Primary 5V Domain: circuit-pcb/power/vpp.md
-        - Isolated 5V Domain: circuit-pcb/power/vss.md
         - Digital Logic Domain: circuit-pcb/power/vcc.md
-        - Analog Sensor Domain: circuit-pcb/power/vas.md
+        # - Analog Sensor Domain: circuit-pcb/power/vas.md
       - Communications: 
         - Overview: circuit-pcb/communications/index.md
         - CAN Bus: circuit-pcb/communications/can_bus.md
