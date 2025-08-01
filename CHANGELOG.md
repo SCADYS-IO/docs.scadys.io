@@ -1,5 +1,9 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.6
+
+- Complete re-structure in progress.
+
 ## 0.1.5
 
 - New VCAN design section.

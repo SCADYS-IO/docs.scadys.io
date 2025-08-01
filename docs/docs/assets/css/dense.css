@@ -1,0 +1,28 @@
+
+/* Reduce base font size */
+:root {
+  font-size: 1.2rem;
+}
+
+/* Tighter line height for body text */
+.md-typeset {
+  line-height: 1.25;
+}
+
+/* Reduce spacing between paragraphs */
+.md-typeset p {
+  margin-block-end: 0.5em;
+}
+
+/* Tighten spacing in headings */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  margin-top: 0.6em;
+  margin-bottom: 0.4em;
+}
+
+/* Reduce padding inside content area */
+.md-main__inner {
+  padding: 0.75rem;
+}

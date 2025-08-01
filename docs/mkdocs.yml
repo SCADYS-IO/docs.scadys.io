@@ -1,109 +1,122 @@
-site_name: MDD400 Documentation
-site_description: Documentation for the MDD400 marine/automotive data display.
+site_name: SCADYS.IO Technical Documentation
+site_url: https://docs.scadys.io
+site_description: Documentation for SCADYS.IO.
+
+plugins:
+  - search
 
 markdown_extensions:
   - footnotes
 
+extra_javascript:
+  - https://kit.fontawesome.com/a076d05399.js
+
+
 theme:
   name: material
   logo: assets/images/site_logo.svg
+  custom_dir: overrides
   favicon: assets/images/favicon.svg
   features:
+    - navigation.tabs
+    - navigation.top
     - content.footnote.tooltips
 
-nav:
-  - Home: index.md
-  - Circuit & PCB:
+extra:
+  social:
+    - icon: fontawesome/solid/envelope
+      link: https://scadys.io/contact/
+      name: Contact Us
+
+extra_css:
+  - assets/css/dense.css
+  - assets/css/left_nav.css
+
+# extra_javascript:
+#   - assets/js/hide_empty_sidebar.js
 
 nav:
-  - Home: index.md
-  - Circuit & PCB:
-      - Overview: circuit-pcb/index.md
-      - Protection and EMC: 
-        - Overview: circuit-pcb/protection_emc/index.md
-        - Reverse Polarity Protection and Shield: circuit-pcb/protection_emc/polarity_shield.md
-        - ESD and Load Dump Protection: circuit-pcb/protection_emc/esd_load_dump.md
-        - Over-voltage and Current Limiting: circuit-pcb/protection_emc/over_voltage.md
-        - CAN / Digital Domain Power Isolation: circuit-pcb/protection_emc/can_digital_isolation.md
-        - EMC: circuit-pcb/protection_emc/emc.md
-        - Analysis and Failure Modes: circuit-pcb/protection_emc/analysis_failure_mode.md
-      - MCU and Storage:
-        - Overview: circuit-pcb/mcu_storage/index.md
-        - ESP32-S3: circuit-pcb/mcu_storage/esp32_s3.md
-        - I2C: circuit-pcb/mcu_storage/i2c.md
-        - Memory: circuit-pcb/mcu_storage/memory.md
-        - Flash Storage: circuit-pcb/mcu_storage/flash_storage.md        
-      - Power Supply:
-        - Overview: circuit-pcb/power/index.md
-        - Unregulated 12V Domain: circuit-pcb/power/vdc.md
-        - Isolated 5V Domain: circuit-pcb/power/vcan.md
-        - Primary 5V Domain: circuit-pcb/power/vpp.md
-        - Digital Logic Domain: circuit-pcb/power/vcc.md
-        # - Analog Sensor Domain: circuit-pcb/power/vas.md
-      - Communications: 
-        - Overview: circuit-pcb/communications/index.md
-        - CAN Bus: circuit-pcb/communications/can_bus.md
-        - Serial: circuit-pcb/communications/serial.md
-        - Wi-Fi: circuit-pcb/communications/wifi.md
-        - Bluetooth: circuit-pcb/communications/bluetooth.md
-      - Sensors: 
-        - Overview: circuit-pcb/sensors/index.md
-        - Power: circuit-pcb/sensors/power_sensor.md
-        - Temperature: circuit-pcb/sensors/temperature_sensor.md
-        - Ambient Light: circuit-pcb/sensors/ambient_light_sensor.md
-        # - Wind Transducer: circuit-pcb/sensors/wind.md      
-      - User Interface: 
-        - Overview: circuit-pcb/ui/index.md
-        - Display: circuit-pcb/ui/display.md 
-        - Touch: circuit-pcb/ui/touch.md
-      - Expansion Connectors: 
-        - Overview: circuit-pcb/connectors/index.md
-        - ESP-PROG: circuit-pcb/connectors/esp_prog.md
-        - I2C: circuit-pcb/connectors/i2c.md
-        - 1-Wire: circuit-pcb/connectors/one_wire.md
-      - PCB Design:
-        - Overview: circuit-pcb/pcb/index.md
-        - Stackup: circuit-pcb/pcb/stackup.md
-        - Layout: circuit-pcb/pcb/layout.md
-        - Earthing: circuit-pcb/pcb/earthing.md
-        - Galvanic Isolation: circuit-pcb/pcb/galvanic_isolation.md
-        - Thermal Management: circuit-pcb/pcb/thermal_management.md
-        - Connectors: circuit-pcb/pcb/connectors.md
-        - Fasteners: circuit-pcb/pcb/fasteners.md
-      - Appendices: circuit-pcb/appendices.md
-      - Change Log: circuit-pcb/changelog.md
-  - Housing:
-      - Overview: housing/index.md
-      - Bezel: housing/bezel.md
-      - Back: housing/back.md
-      - Panel Overlay: housing/panel_overlay.md
-      - Gaskets: housing/gaskets.md
-      - Fasteners: housing/fasteners.md
-      - Assembly: housing/assembly.md
-      - Appendices: housing/appendices.md
-      - Change Log: housing/changelog.md
-  - UX:
-      - Overview: ux/index.md
-      - Display & Touch: ux/display.md
-      - Bluetooth & App: ux/app.md
-      - Appendices: ux/appendices.md
-      - Change Log: ux/changelog.md
-  - Firmware:
-      - Overview: firmware/index.md
-      - Architecture: firmware/architecture.md
-      - Configuration: firmware/config.md
-      - Appendices: firmware/appendices.md
-      - Change Log: firmware/changelog.md
-  - Compliance:
-      - Overview: compliance/index.md
-      - CE Marking: compliance/ce_marking.md
-      - FCC Compliance: compliance/fcc_compliance.md
-      - RoHS Compliance: compliance/rohs_compliance.md
-      - WEEE Compliance: compliance/weee_compliance.md
-      - REACH Compliance: compliance/reach_compliance.md
-      - IP Rating: compliance/ip_rating.md
-      - NMEA 2000 Certification: compliance/nmea2000_certification.md
-      - Appendices: compliance/appendices.md
-      - Change Log: compliance/changelog.md
-  - License Terms: license.md
-  - References: references.md
+  - Home:  index.md 
+  - MDD400 Marine Data Display:
+      - MDD400 Home: mdd400/index.md
+      - Quick Reference: mdd400/quick_reference.md
+      - Circuit & PCB: 
+        - Overview: mdd400/circuit-pcb/index.md
+        - CAN Domain:
+          - Overview: mdd400/circuit-pcb/can/index.md
+          - Power Conditioning: mdd400/circuit-pcb/can/power_conditioning.md
+          - Power Sensor: mdd400/circuit-pcb/can/power_sensor.md
+          - CAN Power Supply: mdd400/circuit-pcb/can/vcan.md
+          - CAN Transceiver: mdd400/circuit-pcb/can/can_transceiver.md
+        - SMPS Domain:
+          - Overview: mdd400/circuit-pcb/smps/index.md
+          - 5V SMPS: mdd400/circuit-pcb/smps/vpp.md
+          - 3.3V SMPS: mdd400/circuit-pcb/smps/vcc.md
+        - Digital Domain:
+          - Overview: mdd400/circuit-pcb/digital/index.md
+          - ESP32-S3: mdd400/circuit-pcb/digital/esp32_s3.md
+          - Status LED: mdd400/circuit-pcb/digital/status_led.md
+          - Temperature Sensor: mdd400/circuit-pcb/digital/temperature_sensor.md
+          - Ambient Light Sensor: mdd400/circuit-pcb/digital/ambient_light_sensor.md
+        - Legacy IO Domain:
+          - Overview: mdd400/circuit-pcb/seatalk/index.md
+          - Power and Signal Conditioning: mdd400/circuit-pcb/seatalk/power_signal_conditioning.md
+          - RX Buffer: mdd400/circuit-pcb/seatalk/rx_buffer.md
+          - TX Driver: mdd400/circuit-pcb/seatalk/tx_driver.md
+        - Change Log: mdd400/circuit-pcb/changelog.md
+      - Housing:
+        - Overview: mdd400/housing/index.md
+        - Bezel: mdd400/housing/bezel.md
+        - Back: mdd400/housing/back.md
+        - Panel Overlay: mdd400/housing/panel_overlay.md
+        - Gaskets: mdd400/housing/gaskets.md
+        - Fasteners: mdd400/housing/fasteners.md
+        - Assembly: mdd400/housing/assembly.md
+        - Change Log: mdd400/housing/changelog.md
+      - UX:
+        - Overview: mdd400/ux/index.md
+        - Display & Touch: mdd400/ux/display.md
+        - Bluetooth & App: mdd400/ux/app.md
+        - Change Log: mdd400/ux/changelog.md
+      - Firmware:
+        - Overview: mdd400/firmware/index.md
+        - Architecture: mdd400/firmware/architecture.md
+        - Configuration: mdd400/firmware/config.md
+        - Change Log: mdd400/firmware/changelog.md
+      - Compliance:
+        - Overview: mdd400/compliance/index.md
+        - CE Marking: mdd400/compliance/ce_marking.md
+        - FCC Compliance: mdd400/compliance/fcc_compliance.md
+        - RoHS Compliance: mdd400/compliance/rohs_compliance.md
+        - WEEE Compliance: mdd400/compliance/weee_compliance.md
+        - REACH Compliance: mdd400/compliance/reach_compliance.md
+        - IP Rating: mdd400/compliance/ip_rating.md
+        - NMEA 2000 Certification: mdd400/compliance/nmea2000_certification.md
+        - Change Log: mdd400/compliance/changelog.md
+  - WTI400 Analog Wind Transducer Interface:
+    - WTI400 Home: wti400/index.md
+    - Quick Reference: wti400/quick_reference.md
+    - Circuit & PCB:  
+      - Overview: wti400/circuit-pcb/index.md
+      - CAN Domain:
+        - Overview: wti400/circuit-pcb/can/index.md
+      - Digital Domain:
+        - Overview: wti400/circuit-pcb/digital/index.md
+      - Analog Domain:
+        - Overview: wti400/circuit-pcb/analog/index.md
+    - Housing:
+      - Overview: wti400/housing/index.md
+    - Compliance:
+      - Overview: wti400/compliance/index.md
+    - UX:
+      - Overview: wti400/ux/index.md
+      - Button and Status LED: wti400/ux/button_status.md
+      - Bluetooth & App: wti400/ux/app.md
+      - Change Log: wti400/ux/changelog.md
+    - Firmware:
+      - Overview: wti400/firmware/index.md
+      - Architecture: wti400/firmware/architecture.md
+      - Configuration: wti400/firmware/config.md
+      - Change Log: wti400/firmware/changelog.md
+
+

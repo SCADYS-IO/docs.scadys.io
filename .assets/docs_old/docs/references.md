@@ -1,6 +1,3 @@
-<script>
-  document.documentElement.classList.add("hide-left-nav");
-</script>
 # References
 
 1. ISO 7637-2:2011, [*Road vehicles — Electrical disturbances from conduction and coupling — Part 2: Electrical transient conduction along supply lines only*](https://www.iso.org/standard/50925.html) International Organization for Standardization, 2011*
