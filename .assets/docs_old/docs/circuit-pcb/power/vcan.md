@@ -1,4 +1,4 @@
-# Isolated 5 V CAN Domain (V<sub>CAN</sub>)
+# Isolated 5 V `SMPS` Domain (V<sub>CAN</sub>)
 
 ## Design Criteria
 

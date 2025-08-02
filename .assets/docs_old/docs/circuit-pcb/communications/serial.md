@@ -1,11 +1,11 @@
 # Legacy Serial Interface
 
-On selected models, the MDD400 includes a plug-and-play serial interface that supports legacy marine protocols such as NMEA 0183 and SeaTalk® I. The interface is designed to be fault-tolerant and electrically safe in the face of reversed wiring, high-voltage transients, and EMI.
+On selected models, the MDD400 includes a plug-and-play serial interface that supports legacy marine protocols such as NMEA 0183 and SeaTalk<sup>®</sup> I. The interface is designed to be fault-tolerant and electrically safe in the face of reversed wiring, high-voltage transients, and EMI.
 
 Highlights include:
 
 * receive-only support for NMEA 0183 and RS422 talkers;
-* half-duplex, single-wire support for SeaTalk® I;
+* half-duplex, single-wire support for SeaTalk<sup>®</sup> I;
 * multi-stage input filtering and protection;
 * optional transmission capability with controlled driver gating; and
 * EMC-compliant design with safe operation under all 3-pin wiring permutations.
@@ -14,15 +14,15 @@ Given the 12 V signaling levels and the lack of galvanic isolation in typical le
 
 ![Block Diagram](../../assets/images/seatalk_block diagram.png)
 
-The legacy interface accepts a single bidirectional signal line (ST\_SIG), which is filtered and protected before being interfaced with the internal logic domain. SeaTalk® operation uses a half-duplex scheme, sharing the line for both transmission and reception. NMEA 0183 operation is receive-only.
+The legacy interface accepts a single bidirectional signal line (ST\_SIG), which is filtered and protected before being interfaced with the internal logic domain. SeaTalk<sup>®</sup> operation uses a half-duplex scheme, sharing the line for both transmission and reception. NMEA 0183 operation is receive-only.
 
 ## Operation
 
-The interface can operate either as a half-duplex, single-wire SeaTalk® I node (RX/TX), or in NMEA 0183 listener-only mode. The mode and protocol is selected in firmware.
+The interface can operate either as a half-duplex, single-wire SeaTalk<sup>®</sup> I node (RX/TX), or in NMEA 0183 listener-only mode. The mode and protocol is selected in firmware.
 
-### SeaTalk® I Mode (Single Wire, RX/TX)
+### SeaTalk<sup>®</sup> I Mode (Single Wire, RX/TX)
 
-SeaTalk® I is a single-wire bus using 12 V signaling, where idle = 12 V, logic 0 = pulled to 0 V. It requires careful coordination between transmit and receive functions. The MDD400 handles this using a half-duplex scheme:
+SeaTalk<sup>®</sup> I is a single-wire bus using 12 V signaling, where idle = 12 V, logic 0 = pulled to 0 V. It requires careful coordination between transmit and receive functions. The MDD400 handles this using a half-duplex scheme:
 
 - when not transmitting, the ST_TX line is tri-stated, and the receiver monitors incoming traffic on ST_SIG;
 - to transmit, ST_EN is asserted to activate the driver circuitry, pulling ST_SIG low as needed;
@@ -30,7 +30,7 @@ SeaTalk® I is a single-wire bus using 12 V signaling, where idle = 12 V, logic 
 - after transmission, the output drivers are immediately disabled to avoid contention with other devices on the bus; and
 - The RX stage remains active continuously and is tolerant of slow signal edges typical of long cable runs.
 
-Timing and contention avoidance are handled in firmware. The circuit allows for reliable operation, even on long or noisy SeaTalk® I networks.
+Timing and contention avoidance are handled in firmware. The circuit allows for reliable operation, even on long or noisy SeaTalk<sup>®</sup> I networks.
 
 ### NMEA 0183 Mode (RX-only)
 
@@ -46,15 +46,15 @@ The [opto-isolated receiver circuit](#receiver) draws approximately 4.5 mA fro
 
 ## Interface Conditioning and Power
 
-The SeaTalk® / NMEA 0183 interface is conditioned and protected by a front-end circuit that implements electrical filtering, transient suppression, and galvanic isolation from the system logic.
+The SeaTalk<sup>®</sup> / NMEA 0183 interface is conditioned and protected by a front-end circuit that implements electrical filtering, transient suppression, and galvanic isolation from the system logic.
 
 ![Serial Connector and Filter](../../assets/images/seatalk_connector.png)
 
 ### Isolation
 
-The SeaTalk® / NMEA 0183 domain is referenced to an isolated ground plane (GNDS). This domain is electrically isolated from the main digital ground (GNDREF), with no DC or capacitive coupling on the PCB. This isolation prevents ground loop current and improves immunity to common-mode noise.
+The SeaTalk<sup>®</sup> / NMEA 0183 domain is referenced to an isolated ground plane (GNDS). This domain is electrically isolated from the main digital ground (GNDREF), with no DC or capacitive coupling on the PCB. This isolation prevents ground loop current and improves immunity to common-mode noise.
 
-The SeaTalk® +12 V power is galvanically isolated from the MDD400 internal power supply. This avoids introducing a second power source and the associated risks of conflicting voltage domains or ground loops. As a result, the MDD400 must be powered exclusively from the NMEA 2000 backbone, and any SeaTalk® devices must receive power independently from the SeaTalk® bus.
+The SeaTalk<sup>®</sup> +12 V power is galvanically isolated from the MDD400 internal power supply. This avoids introducing a second power source and the associated risks of conflicting voltage domains or ground loops. As a result, the MDD400 must be powered exclusively from the NMEA 2000 backbone, and any SeaTalk<sup>®</sup> devices must receive power independently from the SeaTalk<sup>®</sup> bus.
 
 There are three connections to the MDD400 microcontroller GPIO pins: UART RX, UART TX and ST_EN (transmit enable). All three connections are galvanically isolated using [TLP2309](https://toshiba.semicon-storage.com/ap-en/semiconductor/product/isolators-solid-state-relays/detail.TLP2309.html) high-speed logic gate opto-isolators.
 
@@ -76,7 +76,7 @@ The signal line from the connector passes through multiple protection and filter
 * a low-pass filter formed by a capacitor and inductor attenuates high-frequency noise; and
 * a second RF bypass capacitor shunts remaining interference to the local isolated ground.
 
-The signal filter has a calculated cutoff frequency of approximately 700 kHz, providing attenuation of RF noise while preserving the signal integrity of serial communication. The low-pass filter introduces negligible rise-time delay relative to bit durations at standard baud rates. SeaTalk® I and NMEA 0183 operate at 4800 or 9600 baud, well below the cutoff frequency. This filtering approach is compatible with multi-device SeaTalk® I bus configurations, where noise coupling and reflections may otherwise degrade signal quality.
+The signal filter has a calculated cutoff frequency of approximately 700 kHz, providing attenuation of RF noise while preserving the signal integrity of serial communication. The low-pass filter introduces negligible rise-time delay relative to bit durations at standard baud rates. SeaTalk<sup>®</sup> I and NMEA 0183 operate at 4800 or 9600 baud, well below the cutoff frequency. This filtering approach is compatible with multi-device SeaTalk<sup>®</sup> I bus configurations, where noise coupling and reflections may otherwise degrade signal quality.
 
 ### Physical Connector
 
@@ -84,9 +84,9 @@ The physical interface for legacy serial signals is provided via a 3-pin header:
 
 - Pin 1 (RED): 12 V (power);
 - Pin 2 (BLACK): GND; and
-- Pin 3 (YELLOW): SIG (SeaTalk® I / NMEA 0183 signal line).
+- Pin 3 (YELLOW): SIG (SeaTalk<sup>®</sup> I / NMEA 0183 signal line).
 
-This layout allows for simple three-wire connectivity using a standard SeaTalk® I connector.
+This layout allows for simple three-wire connectivity using a standard SeaTalk<sup>®</sup> I connector.
 
 In total, there are six possible wiring permutations of the three legacy interface pins (12V, GND, SIG). These are evaluated in the the table below:
 
@@ -160,7 +160,7 @@ All six possible wiring permutations are electrically safe. There are no failure
 
 ## Receiver
 
-The receiver is a non-inverting, opto-isolated buffer compatible with SeaTalk® I, NMEA 0183 and RS232/RS422 protocols, as shown in the schematic below.
+The receiver is a non-inverting, opto-isolated buffer compatible with SeaTalk<sup>®</sup> I, NMEA 0183 and RS232/RS422 protocols, as shown in the schematic below.
 
 ![Serial Receive Buffer](../../assets/images/seatalk_rx.png)
 
@@ -188,13 +188,13 @@ This remains well below the absolute maximum continuous forward current rating o
 
 ## Transmitter
 
-For SeaTalk® I, which uses a single bi-directional wire, the MDD400 must also drive the ST_SIG line during transmission. The transmitter consists of three discrete stages: 
+For SeaTalk<sup>®</sup> I, which uses a single bi-directional wire, the MDD400 must also drive the ST_SIG line during transmission. The transmitter consists of three discrete stages: 
 
 * UART TX isolator;
 * enable (EN) isolator ; and
 * NMOS TX line driver. 
 
-The UART isolator transfers the TX signal from the MCU across the isolation barrier. The EN isolator provides independent gating control, allowing the transmitter to be tri-stated when inactive. These two control signals drive the gate and source of a discrete NMOS transistor, which forms the final line driver. The transistor pulls the signal line low to transmit a logic '0', and is otherwise high-impedance, allowing shared-bus operation with legacy SeaTalk® devices. Slew rate control is implemented via gate resistance and capacitance. 
+The UART isolator transfers the TX signal from the MCU across the isolation barrier. The EN isolator provides independent gating control, allowing the transmitter to be tri-stated when inactive. These two control signals drive the gate and source of a discrete NMOS transistor, which forms the final line driver. The transistor pulls the signal line low to transmit a logic '0', and is otherwise high-impedance, allowing shared-bus operation with legacy SeaTalk<sup>®</sup> devices. Slew rate control is implemented via gate resistance and capacitance. 
 
 The TX circuit is disabled by default on startup (ST_EN is HIGH), and must be explicitly enabled by firmware.
 
@@ -202,7 +202,7 @@ The TX circuit is disabled by default on startup (ST_EN is HIGH), and must be ex
 
 The TX isolator transfers the UART output signal across the isolation barrier using a TLP2309 opto-isolator, as shown in the schematic below.
 
-![SeaTalk® TX Isolator](../../assets/images/seatalk_tx_isolator.png)
+![SeaTalk<sup>®</sup> TX Isolator](../../assets/images/seatalk_tx_isolator.png)
 
 The input to the opto-isolator is driven by the MCU TX line through a 10 kΩ pull-up and a 390 Ω series resistor. The 10 kΩ pull-up ensures that the opto is off by default, avoiding spurious transmissions during startup. The 390 Ω resistor limits the forward current through the internal LED when driven low. The V<sub>CC</sub> rail on the logic side is 3.3 V, resulting in approximately 6.7 mA of forward current, well within the saturation range for the device.
 
@@ -216,7 +216,7 @@ The EN isolator uses a TLP2309 opto-isolator to buffer the ST\_EN signal across 
 
 The EN Isolator is an inverting buffer with default-disable logic. The line driver is disabled unless the microcontroller explicitly enables it by pulling ST\_EN low. This configuration ensures predictable startup behavior and avoids unintended transmissions during boot.
 
-![SeaTalk® TX_EN Isolator](../../assets/images/seatalk_en_isolator.png)
+![SeaTalk<sup>®</sup> TX_EN Isolator](../../assets/images/seatalk_en_isolator.png)
 
 The input side of the isolator is biased by a 10 kΩ pull-up to VCC and driven low by the microcontroller to activate the internal LED. A 390 Ω current-limiting resistor sets the forward current through the LED. This configuration ensures that the opto-isolator remains off by default, unless actively driven by firmware.
 
@@ -224,13 +224,13 @@ The output stage is an open-collector phototransistor with a 2.2 kΩ pull-down
 
 ### NMOS TX Driver
 
-The TX driver circuit implements an isolated, open-drain interface compatible with the SeaTalk® I single-wire serial protocols. It consists of three functional elements:
+The TX driver circuit implements an isolated, open-drain interface compatible with the SeaTalk<sup>®</sup> I single-wire serial protocols. It consists of three functional elements:
 
 * a low-side NMOS transistor (Q9) driven by a two-stage buffer (Q10B and Q11A);
 * a high-side rise-time assist stage using a PNP transistor (Q8) and timing network; and
 * a current-limiting feedback loop using Q11B to protect the gate driver stage.
 
-![SeaTalk® TX Driver](../../assets/images/seatalk_tx_driver.png)
+![SeaTalk<sup>®</sup> TX Driver](../../assets/images/seatalk_tx_driver.png)
 
 The TX driver is enabled by a logic-high level on the EN line. When enabled, the output state is controlled by the TX signal (received from the opto-isolated UART TX line).
 
@@ -249,7 +249,7 @@ To accelerate the rising edge of ST\_SIG during low-to-high transitions, the cir
 
 Q8 sources current from VST through R52 into the ST\_SIG line, providing a sharp rising edge to quickly restore the bus to idle. Once C51 charges, Q8 turns off and the line remains passively pulled up.
 
-The 1 nF capacitor C51 and 12 kΩ discharge path via R50 has a time constant of approximately 12 µs. This ensures the capacitor fully discharges between transitions at baud rates up to around 36 kbps, comfortably supporting SeaTalk® I (4800 bps).
+The 1 nF capacitor C51 and 12 kΩ discharge path via R50 has a time constant of approximately 12 µs. This ensures the capacitor fully discharges between transitions at baud rates up to around 36 kbps, comfortably supporting SeaTalk<sup>®</sup> I (4800 bps).
 
 *Feedback Current Limiting*
 

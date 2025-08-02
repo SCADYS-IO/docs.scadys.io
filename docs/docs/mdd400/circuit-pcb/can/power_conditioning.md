@@ -2,7 +2,7 @@
 
 The NET-S power conditioning circuit is shown below.
 
-![CAN Domain Power Conditioning Schematic](../../assets/images/net-s_filter_schematic.png)
+![`CAN` Domain Power Conditioning Schematic](../../assets/images/net-s_filter_schematic.png)
 
 ## NMEA Shield
 

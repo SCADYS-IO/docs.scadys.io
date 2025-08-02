@@ -4,7 +4,7 @@ The MDD400 supports a range of wired and wireless communication interfaces for i
 
 * *[CAN Bus](can_bus.md)*: All models include a galvanically isolated CANBUS interface compliant with NMEA 2000 and RV-C standards. The physical connection uses a 5-pin A-coded DeviceNet connector. The interface includes filtering, ESD suppression, and differential signal routing designed to CISPR 25 and ISO 11452-2 standards.
 
-* *[Serial](serial.md)*: Selected models offer a single-wire interface compatible with NMEA 0183 and SeaTalk® protocols. It features receive-only support for NMEA 0183 and half-duplex operation for SeaTalk. Input protection, signal level shifting, and fault tolerance are implemented for safe and reliable operation.
+* *[Serial](serial.md)*: Selected models offer a single-wire interface compatible with NMEA 0183 and SeaTalk<sup>®</sup> protocols. It features receive-only support for NMEA 0183 and half-duplex operation for SeaTalk. Input protection, signal level shifting, and fault tolerance are implemented for safe and reliable operation.
 
 * *[Wi-Fi](wifi.md)*: While not currently enabled in production firmware, Wi-Fi hardware is present and reserved for future use. Planned support includes SignalK and OneNet protocols, enabling high-throughput IP-based marine data integration.
 

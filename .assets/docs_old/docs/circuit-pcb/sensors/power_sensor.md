@@ -2,7 +2,7 @@
 
 The MDD400 continuously monitors its own supply voltage and current draw to provide diagnostic data, support fault detection, and enable intelligent power management.
 
-The power sensor circuit (schematic below) uses a [INA219](https://www.ti.com/lit/ds/symlink/ina219.pdf) Current/Power Monitor With I2C Interface, located in the CAN domain. To maintain galvanic isolation from the digital domain, an [ISO1541](https://www.ti.com/lit/ds/symlink/iso1541.pdf) I2C isolator transfers SDA and SCL signals across the galvanic barrier.
+The power sensor circuit (schematic below) uses a [INA219](https://www.ti.com/lit/ds/symlink/ina219.pdf) Current/Power Monitor With I2C Interface, located in the CAN domain. To maintain galvanic isolation from the `DIGITAL` Domain, an [ISO1541](https://www.ti.com/lit/ds/symlink/iso1541.pdf) I2C isolator transfers SDA and SCL signals across the galvanic barrier.
 
 The INA219's A1 and A0 address pins are both tied to ground, setting the address of the sensor on the I2C bus to `0X40`.
 

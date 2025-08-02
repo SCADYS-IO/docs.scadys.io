@@ -1,8 +1,8 @@
-# V<sub>PP</sub> DC-DC Converter (5.0 V)
+# V<sub>DD</sub> DC-DC Converter (5.0 V)
 
 ## Design Criteria
 
-The V<sub>PP</sub> domain supplies intermediate 5.0 V power for the [DWIN TFT LCD display](https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/) and its backlight. It is generated from the 12 V input rail (V<sub>SC</sub>) using a high-efficiency synchronous buck converter based on the [Texas Instruments LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf). Key design requirements include:
+The V<sub>DD</sub> domain supplies intermediate 5.0 V power for the [DWIN TFT LCD display](https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/) and its backlight. It is generated from the 12 V input rail (V<sub>SC</sub>) using a high-efficiency synchronous buck converter based on the [Texas Instruments LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf). Key design requirements include:
 
 * provide a stable 5.0 V output for logic and interface subsystems;
 * operate reliably across a 8 – 24.8 V automotive/RV supply range;
@@ -10,13 +10,13 @@ The V<sub>PP</sub> domain supplies intermediate 5.0 V power for the [DWIN TFT LC
 * achieve high conversion efficiency to minimize thermal dissipation; and
 * suppress switching noise and ripple to meet EMC and analog performance targets.
 
-Only the DWIN LCD display and [Jiangsu Huaneng MLT-8530](https://lcsc.com/datasheet/lcsc_datasheet_2410010301_Jiangsu-Huaneng-Elec-MLT-8530_C94599.pdf) buzzer are powered from V<sub>PP</sub>. Peak current consumption is ~250 mA under full brightness conditions.
+Only the DWIN LCD display and [Jiangsu Huaneng MLT-8530](https://lcsc.com/datasheet/lcsc_datasheet_2410010301_Jiangsu-Huaneng-Elec-MLT-8530_C94599.pdf) buzzer are powered from V<sub>DD</sub>. Peak current consumption is ~250 mA under full brightness conditions.
 
 ## Circuit Description
 
 The circuit schematic for the 5.0 V DC-DC converter is based on the Texas Instruments [WEBENCH design](../../assets/pdf/5v3_smps_design_report.pdf).
 
-![VPP DC-DC schematic](../../assets/images/vpp_schematic.png)
+![VDD DC-DC schematic](../../assets/images/vpp_schematic.png)
 
 The input filter includes bulk and high-frequency ceramic decoupling capacitors to suppress incoming noise and transients, along with a [Murata BLM31KN601SN1L](https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf) 600 Ω @ 100 MHz ferrite bead to isolate the SMPS from the system input rail. Input bypassing is provided by a 4.7 µF X7R MLCC (C20), supported by a 100 nF high-frequency decoupling capacitor (C21).
 

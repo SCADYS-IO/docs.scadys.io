@@ -14,7 +14,7 @@ Each functional block is grouped into a defined physical region of the board:
 * at the top of the PCB are the power supply functions, from left to right: 5.5 V DC-DC converter (VDC to VPP), 5 V isolation transformer(VPP to VSS, across the isolation barrier) and 3.3 V DC-DC converter ( VSS to VCC);
 * the isolated CAN bus transceiver is located directly below the 5 V isolation transformer, also across the isolation barrier;
 * the central area contains the 5 V domain, including the LCD interface and audio buzzer drive;
-* the right-hand side hosts the 3.3 V digital domain, which includes the MCU and sensor interfaces; and
+* the right-hand side hosts the 3.3 V `DIGITAL` Domain, which includes the MCU and sensor interfaces; and
 * the lower right section contains the SeaTalk / NMEA 0183 legacy serial interface.
 
 ## Ground Plane Arrangement

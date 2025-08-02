@@ -68,7 +68,7 @@ No solder mask is applied over the isolation barrier area, ensuring maximum surf
 
 ### Outer Layer Pours
 
-* VCC is poured on the top and bottom layers throughout the digital domain, connected to the internal ground planes via stitching capacitors (10 µF + 100 nF typical).
+* VCC is poured on the top and bottom layers throughout the `DIGITAL` Domain, connected to the internal ground planes via stitching capacitors (10 µF + 100 nF typical).
 * GNDREF is poured on top and bottom in analog and logic regions and connected via via stitching to the ground planes.
 
 The use of signal routing on the outer layers allows placement flexibility and component breakout while maintaining short return paths through the adjacent ground planes. Sensitive analog traces are routed over quiet ground regions with direct via access to the internal plane.

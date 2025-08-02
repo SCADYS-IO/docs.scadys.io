@@ -52,7 +52,7 @@ The sections that follow describe each function in detail.
 - [Reverse Polarity Protection and Shield](polarity_shield.md);
 - [ESD and Load Dump Protection](esd_load_dump.md);
 - [Over-voltage and Current Limiting](over_voltage.md);
-- [CAN / Digital Domain Power Isolation](can_digital_isolation.md); and
+- [CAN / `DIGITAL` Domain Power Isolation](can_digital_isolation.md); and
 - [EMC](emc.md).
 
 Additional failure mode and stress analysis is provided in the [Analysis and Failure Modes](analysis_failure_mode.md) section.

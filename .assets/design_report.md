@@ -159,7 +159,7 @@ through reverse polarity protection, surge and current limiting, and an
 EMI filter before being regulated to:
 
 - 5 V for display and logic circuits (via SMPS);
-- 3.3 V for the digital domain (via LDO); and
+- 3.3 V for the `DIGITAL` Domain (via LDO); and
 - 8 V for the analog wind transducer interface (via LDO) on selected
   models.
 
@@ -171,7 +171,7 @@ real-world abuse without requiring repair or user intervention.
 - NMEA 2000 (CANBUS) via the ESP32-S3's internal TWAI peripheral and
   external CAN transceiver; and, on selected models
 - a RS422 compatible, plug&play interface that accepts legacy marine
-  serial protocols such as NMEA 0183 and SeaTalk®.
+  serial protocols such as NMEA 0183 and SeaTalk<sup>®</sup>.
 
 ### Sensors
 
@@ -683,7 +683,7 @@ consumption across these three operating conditions.
   -------------------------- -------------- -------------- --------------
   5 V SMPS (LCD only)           \~92 mA        \~245mA        \~245 mA
 
-  3.3 V LDO (digital domain)    \~329 mA       \~328mA        \~542 mA
+  3.3 V LDO (`DIGITAL` Domain)    \~329 mA       \~328mA        \~542 mA
 
   8 V LDO (only with wind       \~16 mA        \~16 mA        \~18 mA
   transducer)                                              
@@ -809,7 +809,7 @@ specified for both average and peak operating conditions in the MDD400.
   **Total**                              **\~329 mA**      **\~552 mA**
   -----------------------------------------------------------------------
 
-  : Table 2: Digital Domain (3.3v) Loads
+  : Table 2: `DIGITAL` Domain (3.3v) Loads
 
 \*Peak current estimate reflects ESP32-S3 operation with active Wi-Fi
 transmission at high data rates, based on Espressif datasheet
@@ -964,7 +964,7 @@ The MDD400 connects to the NMEA 2000 network via a standard 5-pin
 DeviceNet A-coded male connector. The CAN interface is isolated and
 filtered with ESD and surge protection devices to ensure compliance with
 marine EMC standards. A SN65HVD234DR[^12] CAN transceiver interfaces
-the differential CANBUS signal to the ESP32\'s TWAI® pins. The
+the differential CANBUS signal to the ESP32\'s TWAI<sup>®</sup> pins. The
 SN65HVD234DR is a 3.3 V high-speed CAN transceiver rated for data rates
 up to 1 Mbps. It incorporates several features that improve bus
 reliability and robustness in harsh environments, including slope

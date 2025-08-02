@@ -19,7 +19,7 @@
 17. Espressif Systems, [*ESP32-S3-WROOM-1/1U/2 Datasheet: Wi-Fi & Bluetooth LE SoC Modules*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_datasheet_en.pdf), v1.9, 2023
 18. CISPR 25:2021, *Vehicles, boats and internal combustion engines – Radio disturbance characteristics – Limits and methods of measurement for the protection of on-board receivers, International Electrotechnical Commission (IEC), 2021*
 19. ISO 11452-2:2021, *Road vehicles — Component test methods for electrical disturbances from narrowband radiated electromagnetic energy — Part 2: Absorber-lined shielded enclosure, International Organization for Standardization, 2021*
-20. NMEA, NMEA 2000® [*Standard for Serial-Data Networking of Marine Electronic Devices, Version 3.200, National Marine Electronics Association, 2018*](https://www.nmea.org/nmea-2000.html)
+20. NMEA, NMEA 2000<sup>®</sup> [*Standard for Serial-Data Networking of Marine Electronic Devices, Version 3.200, National Marine Electronics Association, 2018*](https://www.nmea.org/nmea-2000.html)
 21. RVIA, Recommended [*Practice for RV-C: RV-C Protocol Definition*](https://www.rvia.org), Recreational Vehicle Industry Association (RVIA), 2022
 22. Texas Instruments, [*LP2951 — Micropower Voltage Regulator with Programmable Output*](https://www.ti.com/lit/ds/symlink/lp2951.pdf)
 23. Murata, [*ACT45B-510-2P-TL003 — Common Mode Choke for CAN Bus Applications*](https://www.murata.com/en-us/products/productdata/8807038415390/QTN0099C.pdf), Rev. T, Oct. 2016
