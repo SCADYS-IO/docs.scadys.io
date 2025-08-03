@@ -55,10 +55,11 @@ nav:
         - Digital Domain:
           - Overview: mdd400/circuit-pcb/digital/index.md
           - ESP32-S3: mdd400/circuit-pcb/digital/esp32_s3.md
-          - I2C Bus: mdd400/circuit-pcb/digital/i2c_bus.md
+          - Programming Socket: mdd400/circuit-pcb/digital/esp-prog.md
           - TWAI / CAN: mdd400/circuit-pcb/digital/twai.md
           - TFT Touch Display: mdd400/circuit-pcb/digital/tft_touch_display.md
           - Status LED: mdd400/circuit-pcb/digital/status_led.md
+          - Audio Transducer: mdd400/circuit-pcb/digital/buzzer.md
           - Temperature Sensor: mdd400/circuit-pcb/digital/temperature_sensor.md
           - Ambient Light Sensor: mdd400/circuit-pcb/digital/ambient_light_sensor.md
         - Legacy IO Domain:

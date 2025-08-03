@@ -1,5 +1,9 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.8
+
+- Re-worked buzzer circuit.
+
 ## 0.1.7
 
 - Finished Digital Domain documentation.

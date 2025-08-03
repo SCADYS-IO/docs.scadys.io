@@ -1,7 +1,7 @@
 # TWAI / CAN
 
-All versions of the MDD400 are equipped with an industry-standard [CANBUS interface]((../can/can_transceiver.md)) that is fully compatible with [NMEA 2000](https://www.nmea.org/nmea-2000.html) and RV-C backbones. The interface uses a standard 5-pin A-coded DeviceNet connector and is galvanically isolated for improved EMC performance and system reliability.
-
+All versions of the MDD400 are equipped with an industry-standard [CANBUS interface](../can/can_transceiver.md) that is fully compatible with [NMEA 2000](https://www.nmea.org/nmea-2000.html) and RV-C backbones. The interface uses a standard 5-pin A-coded DeviceNet connector and is galvanically isolated for improved EMC performance and system reliability.
+ith
 Key features:
 
 * galvanically isolated CAN transceiver ([ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf));

@@ -2,10 +2,9 @@
 
 The MDD400 design is based on the [ESP32-S3-WROOM-1-N16R8](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf) module, a fully integrated wireless microcontroller that includes a dual-core Xtensa® LX7 CPU running at up to 240 MHz, 512 KB SRAM, and 8 MB PSRAM. The module supports both Wi-Fi and Bluetooth / BLE, and offers a wide array of digital peripherals including SPI, I²C, UART, PWM, ADC, DAC, and TWAI®. The integrated QSPI flash and PSRAM interface supports external memory for advanced applications such as graphical user interfaces, data logging, and OTA update handling. Enhanced security features include secure boot, flash encryption, and hardware HMAC/RSA modules. The module is fully certified and incorporates an integrated antenna.
 
-
 ## ESP32-S3 GPIO Connections
 
-The following schematic shows the pin allocations on the ESP32-S3 module as implemented in the MDD400 design. Only the connected GPIOs are shown, along with power and decoupling connections to the VCC supply.
+The schematic shows the pin allocations on the ESP32-S3 module as implemented in the MDD400 design. 
 
 ![ESP32-S3 MCU Pin Allocation](../../assets/images/esp32_pin_allocation.png)
 
@@ -15,9 +14,19 @@ The following pull-up resistors and timing capacitors are included on selected G
 * `BOOT` (GPIO0) is pulled up to VCC with 10 kΩ and has a 100 nF capacitor to GNDREF; and
 * I²C lines (`SCL` and `SDA`) are pulled up to VCC with 10 kΩ resistors.
 
-The ESP32-S3-WROOM-1 module includes 48 GPIOs, many of which are multifunctional. The table below summarises the GPIO assignments used in the MDD400 design, including signal labels and usage notes. Strapping pins, reserved functions, and duplicated interfaces are also noted.
+The ESP32-S3-WROOM-1 module includes 48 GPIOs, many of which are multifunctional. The following GPIO assignments are used in the MDD400:
 
-A complete listing of the ESP32-S3 GPIO pin assignments is available at [esp32_s3_pins.md](esp32_s3_pins.md).
+
+
+* the industry-standard [CANBUS interface](twai.md) is accessed via a galvanically isolated CAN transceiver;
+* two environmental sensors: an [ambient light sensor](ambient_light_sensor.md) and [temperature sensor](temperature_sensor.md) are accessed via the I2C bus;
+* a [voltage/current sensor](../can/power_sensor.md), in the isolated [CAN domain](../can/index.md), is accessed via an I2C isolator;
+* the [HMI display](tft_touch_display.md) is addressed via UART and its 5 V power is switched with a MOSFET high-side switch;
+* a single [status LED](status_led.md) is connected to an output pin for diagnostics; 
+* the serial interface in the [`LEGACY IO` domain](../seatalk/index.md) is addressed via three opto-isolators; and
+* a [flash programming header](esp32_s3.md), pin-compatible with Espressif's ESP-Prog programmer's 6-pin IDC connector is connected to UART 0 and the BOOT and EN pins. 
+
+Please refer to the [quick reference](../../quick_reference.md) for a complete listing of the ESP32-S3 GPIO pin assignments, including signal labels, usage, strapping pins and reserved functions.
 
 ## Memory
 
@@ -31,19 +40,6 @@ The ESP-IDF heap allocator is configured to use both internal and external memor
 In the MDD400, PSRAM is reserved primarily for storage of time-series data associated with incoming NMEA traffic. These time series support real-time and historical graphing functions on the LCD display. The PSRAM allows extensive buffering of sampled values across multiple channels without consuming internal SRAM resources.
 
 Additional PSRAM-based buffers may be allocated at runtime for image decoding, OTA staging, or caching depending on future firmware requirements and available heap space.
-
-
-## I²C Bus
-
-The ESP32-S3 communicates with three external peripherals on a shared I²C bus:
-
-* the [TMP112](https://www.ti.com/lit/ds/symlink/tmp112.pdf) temperature sensor, located near the display, is addressed at `0x48`;
-* the [OPT3004](https://www.ti.com/lit/ds/symlink/opt3004.pdf) ambient light sensor, also located on the front panel side of the board, is addressed at `0x44`; and
-* the [INA219](https://www.ti.com/lit/ds/symlink/ina219.pdf) current/voltage monitor, located in the CAN domain and accessed via an I²C isolator, is addressed at `0x40`.
-
-All three devices share the same SDA and SCL signal lines. A single set of 4.7 kΩ pull-up resistors is present on the digital domain side (VCC), and a second set is placed on the CAN domain side (VDD), beyond the I²C isolator. Each device includes local decoupling capacitors as required by its datasheet.
-
-Refer to the [ESP32-S3 datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf) and [ESP-IDF JTAG documentation](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/jtag-debugging/index.html) for reserved pins, internal pull states, and JTAG assignments.
 
 ## Flash Storage
 
@@ -78,37 +74,15 @@ Partitioning and access control within the SPIFFS area is not yet finalised. One
 
 The `coredump` partition is reserved for post-crash diagnostics, allowing firmware to write a memory snapshot for later retrieval via serial or BLE tools.
 
-## ESP-Prog Programming Socket
+## I²C Bus
 
-The ESP-PROG programming header provides serial and boot/reset control signals for firmware upload via UART. It is compatible with [Espressif's ESP-PROG adapter](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html), and supports both development and production programming workflows.
+The ESP32-S3 communicates with three external peripherals on a shared I²C bus:
 
-In prototype builds, this header is populated with a 10-pin IDC male connector. In production, pogo pins in a programming fixture will make contact with the same through-hole pads from below.
+* a [Temperature Sensor](temperature_sensor.md) at address `0x48`;
+* an [Ambient Light Sensor](ambient_light_sensor.md) at address `0x44`; and
+* a [power sensor](../can/power_sensor.md) at address `0x40`, located in the isolated [CAN domain](../can/index.md) is accessed via an I2C isolator.
 
-![ESP-PROG Programming Socket](../../assets/images/esp_prog_schematic.png)
-
-### Signal Connections
-
-The 6-pin subset of the ESP-PROG interface is used:
-
-* `EN`: connected to the ESP32-S3 EN (reset) pin;
-* `BOOT`: connected to GPIO0 to select download mode;
-* `U0_TX` / `U0_RX`: UART0 signals for flashing and serial output.
-
-These are compatible with standard ESP-IDF programming tools.
-
-### Over-voltage Protection
-
-To guard against accidental over-voltage from misconfigured ESP-PROG modules (e.g. 5 V jumper set), an over-voltage protection circuit is included in prototypes. It uses:
-
-* a [PMV240SPR](https://lcsc.com/datasheet/lcsc_datasheet_2410121947_Nexperia-PMV240SPR_C5361354.pdf) NMOS FET (Q2) as a series switch;
-* a [BC807-25](https://lcsc.com/datasheet/lcsc_datasheet_2410121952_onsemi-MMBTA56LT1G_C85394.pdf) PNP transistor (Q3) as a voltage detector;
-* resistor divider (R8/R9) and gate pull-down (R10) to set the trip point at approximately 3.4 V.
-
-When VCC exceeds the turn-on threshold, Q3 conducts, pulling down the gate of Q2 and turning it off, thereby disconnecting the ESP-PROG VCC from the board.
-
-In production, this circuit is not populated. Instead, R5 is fitted (0 Ω) to directly route VCC to the board.
-
-See [ESP-PROG Hardware Guide](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html) for header pinout and interface details.
+All three devices share the same SDA and SCL signal lines. A single set of 4.7 kΩ pull-up resistors is present on the digital domain side (VCC), and a second set is placed on the CAN domain side (VDD), beyond the I²C isolator. Each device includes local decoupling capacitors as required by its datasheet.
 
 ---
 
