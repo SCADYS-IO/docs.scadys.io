@@ -43,7 +43,6 @@ nav:
   - Home: index.md 
   - MDD400 Marine Data Display:
       - MDD400 Home: mdd400/index.md
-      - Compliance: mdd400/compliance.md
       - Quick Reference: mdd400/quick_reference.md
       - Circuit & PCB: 
         - Overview: mdd400/circuit-pcb/index.md

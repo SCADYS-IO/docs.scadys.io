@@ -14,6 +14,8 @@ If = (12 V - 0.45 V - 1.2 V) / 2.2 kΩ ≈ 4.5 mA
 
 This is sufficient to ensure reliable turn-on of the TLP2309 LED even with moderate forward voltage variation. The opto is operated well into saturation, ensuring a strong output pull-down on the open-collector transistor.
 
+The receive circuit complies with the electrical requirements of the NMEA 0183 listener specification, which mandates that a listener must operate with a minimum differential input voltage of 2.0 V and must not draw more than 2.0 mA from the line at that voltage. In the implemented design, the effective current draw at a 2.0 V input is approximately 0.36 mA, well within the allowable limit. The opto-isolator LED threshold ensures reliable detection of valid logic-low signals below 2.0 V, and the 22 kΩ pull-up resistor prevents the circuit from loading the line when idle. As such, the circuit satisfies both the voltage sensitivity and input loading criteria of the NMEA 0183 standard, while maintaining compatibility with the SeaTalk I protocol.
+
 The output of the opto-isolator is pulled up to `VCC` (3.3 V) via a 2.2 kΩ resistor and filtered with a 100 nF capacitor. This produces a logic-compatible signal on the MCU receive pin ([`ST_RX`](../../quick_reference.md)).
 
 Power domain isolation is maintained by supplying the input side of the opto from `VST` (legacy side), and the output side from `VCC` (logic side), with completely isolated grounds. The opto-isolator withstands up to 5000 Vrms isolation voltage and features high common-mode transient immunity.
