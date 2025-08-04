@@ -4,8 +4,6 @@ This page contains detailed design documentation for the **MDD400**, a marine da
 
 The MDD400 is a self-contained embedded system with a touchscreen user interface, designed to operate in marine environments. It supports galvanically isolated CANBUS communication, 12 V serial protocols, Bluetooth configuration, and multiple regulated power domains.
 
----
-
 ## Documentation
 
 * *[Circuit & PCB](circuit-pcb/index.md)* – system architecture, schematics, component selection, and PCB layout. This includes microcontroller, isolated and non-isolated power supplies, CANBUS interface, serial protocols, and sensors;
@@ -16,8 +14,6 @@ The MDD400 is a self-contained embedded system with a touchscreen user interface
 
 Each section corresponds to a functional domain within the product architecture and aligns with the documentation navigation structure.
 
----
-
 ## Scope
 
 This documentation provides:
@@ -26,8 +22,6 @@ This documentation provides:
 * integration material for use with other onboard systems;
 * support for certification, procurement, and engineering review; and
 * guidance for licensed developers extending firmware or hardware functionality.
-
----
 
 ## Standards and Compliance
 
@@ -40,21 +34,15 @@ The MDD400 is designed with reference to the following standards:
 
 The MDD400 is currently in the pre-production stage and will undergo independent testing prior to commercial release.
 
----
-
 ## Background
 
 The MDD400 was developed during a full circumnavigation, with extensive field testing in operational conditions. Its design reflects the requirements of extended offshore use, including electrical isolation, protocol compatibility, and robust packaging.
 
 This documentation reflects the current pre-production design revision.
 
----
-
 See [License Terms](../license.md) for conditions of use and intellectual property ownership.
 
----
-
-## References
+## Datasheets and References
 
 1. ISO, "[ISO 11898-2:2016 - Road vehicles — Controller area network (CAN) — Part 2: High-speed medium access unit](https://www.iso.org/standard/66340.html)"
 2. National Marine Electronics Association, "[NMEA 2000](https://www.nmea.org/nmea-2000.html)"

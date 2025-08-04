@@ -191,10 +191,10 @@ This remains well below the absolute maximum continuous forward current rating o
 For SeaTalk<sup>®</sup> I, which uses a single bi-directional wire, the MDD400 must also drive the ST_SIG line during transmission. The transmitter consists of three discrete stages: 
 
 * UART TX isolator;
-* enable (EN) isolator ; and
+* enable (ST_EN) isolator ; and
 * NMOS TX line driver. 
 
-The UART isolator transfers the TX signal from the MCU across the isolation barrier. The EN isolator provides independent gating control, allowing the transmitter to be tri-stated when inactive. These two control signals drive the gate and source of a discrete NMOS transistor, which forms the final line driver. The transistor pulls the signal line low to transmit a logic '0', and is otherwise high-impedance, allowing shared-bus operation with legacy SeaTalk<sup>®</sup> devices. Slew rate control is implemented via gate resistance and capacitance. 
+The UART isolator transfers the TX signal from the MCU across the isolation barrier. The ST_EN isolator provides independent gating control, allowing the transmitter to be tri-stated when inactive. These two control signals drive the gate and source of a discrete NMOS transistor, which forms the final line driver. The transistor pulls the signal line low to transmit a logic '0', and is otherwise high-impedance, allowing shared-bus operation with legacy SeaTalk<sup>®</sup> devices. Slew rate control is implemented via gate resistance and capacitance. 
 
 The TX circuit is disabled by default on startup (ST_EN is HIGH), and must be explicitly enabled by firmware.
 
@@ -210,17 +210,17 @@ On the output side, the phototransistor pulls down the TX node through its open 
 
 The use of opto-isolation ensures galvanic separation between the MCU and the external interface, preventing ground loop currents and allowing robust operation in marine environments with potentially noisy or poorly referenced grounds.
 
-### EN Isolator
+### ST_EN Isolator
 
-The EN isolator uses a TLP2309 opto-isolator to buffer the ST\_EN signal across the isolation barrier. This allows the microcontroller to enable or disable the line driver while maintaining galvanic isolation.
+The ST_EN isolator uses a TLP2309 opto-isolator to buffer the ST\_EN signal across the isolation barrier. This allows the microcontroller to enable or disable the line driver while maintaining galvanic isolation.
 
-The EN Isolator is an inverting buffer with default-disable logic. The line driver is disabled unless the microcontroller explicitly enables it by pulling ST\_EN low. This configuration ensures predictable startup behavior and avoids unintended transmissions during boot.
+The ST_EN Isolator is an inverting buffer with default-disable logic. The line driver is disabled unless the microcontroller explicitly enables it by pulling ST\_EN low. This configuration ensures predictable startup behavior and avoids unintended transmissions during boot.
 
 ![SeaTalk<sup>®</sup> TX_EN Isolator](../../assets/images/seatalk_en_isolator.png)
 
 The input side of the isolator is biased by a 10 kΩ pull-up to VCC and driven low by the microcontroller to activate the internal LED. A 390 Ω current-limiting resistor sets the forward current through the LED. This configuration ensures that the opto-isolator remains off by default, unless actively driven by firmware.
 
-The output stage is an open-collector phototransistor with a 2.2 kΩ pull-down resistor. When the isolator is off, the EN line is pulled low, disabling the line driver. When the LED is forward biased, the phototransistor conducts, pulling the EN line high toward VST.
+The output stage is an open-collector phototransistor with a 2.2 kΩ pull-down resistor. When the isolator is off, the ST_EN line is pulled low, disabling the line driver. When the LED is forward biased, the phototransistor conducts, pulling the ST_EN line high toward VST.
 
 ### NMOS TX Driver
 
@@ -232,7 +232,7 @@ The TX driver circuit implements an isolated, open-drain interface compatible wi
 
 ![SeaTalk<sup>®</sup> TX Driver](../../assets/images/seatalk_tx_driver.png)
 
-The TX driver is enabled by a logic-high level on the EN line. When enabled, the output state is controlled by the TX signal (received from the opto-isolated UART TX line).
+The TX driver is enabled by a logic-high level on the ST_EN line. When enabled, the output state is controlled by the TX signal (received from the opto-isolated UART TX line).
 
 *Low-Side Gate Driver*
 

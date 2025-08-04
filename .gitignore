@@ -5,6 +5,10 @@
 *.zip
 *.rar
 
+# Mkdocs Site
+site/   
+.assets/docs_old/
+
 # Credentials
 .htaccess
 .htpasswd

@@ -1,0 +1,134 @@
+
+### GPIO Assignment
+<table>
+  <colgroup>
+    <col style="width: 10%;">
+    <col style="width: 10%;">
+    <col style="width: 10%;">
+    <col style="width: 10%;">
+    <col style="width: 100%;">
+  </colgroup>
+    <thead>
+        <tr>
+            <th>Label</th>
+            <th class = "centered">GPIO</th>
+            <th class = "centered">Bias</th>
+            <th class = "centered">Function</th>
+            <th class = "centered">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>AUDIO_PWM</td>
+            <td class = "centered">GPIO10</td>
+            <td class = "centered">GNDREF</td>
+            <td class = "centered">PWM</td>
+            <td>Audio buzzer driver</td>
+        </tr>
+        <tr>
+            <td>DISP_EN</td>
+            <td class = "centered">GPIO21</td>
+            <td class = "centered">GNDREF</td>
+            <td class = "centered">OUTPUT</td>
+            <td>TFT display enable (ENABLE = HIGH)</td>
+        </tr>
+        <tr>
+            <td>DISP_RX</td>
+            <td class = "centered">GPIO48</td>
+            <td class = "centered">float</td>
+            <td class = "centered">UART2</td>
+            <td>From display TX pin</td>
+        </tr>
+        <tr>
+            <td>DISP_TX</td>
+            <td class = "centered">GPIO47</td>
+            <td class = "centered">float</td>
+            <td class = "centered">UART2</td>
+            <td>To display RX pin</td>
+        </tr>
+        <tr>
+            <td>ESP_BOOT</td>
+            <td class = "centered">GPIO0</td>
+            <td class = "centered">VCC</td>
+            <td class = "centered">BOOT</td>
+            <td>ESP_PROG pin 6</td>
+        </tr>
+        <tr>
+            <td>ESP_EN</td>
+            <td class = "centered">EN</td>
+            <td class = "centered">VCC</td>
+            <td class = "centered">BOOT</td>
+            <td>ESP_PROG pin 1</td>
+        </tr>
+        <tr>
+            <td>ESP_RX</td>
+            <td class = "centered">GPIO44</td>
+            <td class = "centered">float</td>
+            <td class = "centered">UART0</td>
+            <td>ESP-PROG pin 5</td>
+        </tr>
+        <tr>
+            <td>ESP_TX</td>
+            <td class = "centered">GPIO43</td>
+            <td class = "centered">float</td>
+            <td class = "centered">UART0</td>
+            <td>ESP-PROG pin 3</td>
+        </tr>
+        <tr>
+            <td>I2C_SCL</td>
+            <td class = "centered">GPIO18</td>
+            <td class = "centered">VCC</td>
+            <td class = "centered">I²C</td>
+            <td>I²C clock line</td>
+        </tr>
+        <tr>
+            <td>I2C_SDA</td>
+            <td class = "centered">GPIO8</td>
+            <td class = "centered">VCC</td>
+            <td class = "centered">I²C</td>
+            <td>I²C data line</td>
+        </tr>
+        <tr>
+            <td>LED_EN</td>
+            <td class = "centered">GPIO12</td>
+            <td class = "centered">GNDREF</td>
+            <td class = "centered">OUTPUT</td>
+            <td>LED enable (ENABLE = LOW)</td>
+        </tr>
+        <tr>
+            <td>ST_EN</td>
+            <td class = "centered">GPIO1</td>
+            <td class = "centered">VCC</td>
+            <td class = "centered">OUTPUT</td>
+            <td>SeaTalk TX enable (ENABLE = LOW)</td>
+        </tr>
+        <tr>
+            <td>ST_RX</td>
+            <td class = "centered">GPIO38</td>
+            <td class = "centered">float</td>
+            <td class = "centered">UART1</td>
+            <td>From SeaTalk/NMEA0183 RX</td>
+        </tr>
+        <tr>
+            <td>ST_TX</td>
+            <td class = "centered">GPIO2</td>
+            <td class = "centered">float</td>
+            <td class = "centered">UART1</td>
+            <td>To SeaTalk TX</td>
+        </tr>
+        <tr>
+            <td>TWAI_RX</td>
+            <td class = "centered">GPIO13</td>
+            <td class = "centered">float</td>
+            <td class = "centered">TWAI</td>
+            <td>From CAN transceiver RXD pin</td>
+        </tr>
+        <tr>
+            <td>TWAI_TX</td>
+            <td class = "centered">GPIO14</td>
+            <td class = "centered">float</td>
+            <td class = "centered">TWAI</td>
+            <td>To CAN transceiver TXD pin</td>
+        </tr>
+    </tbody>
+</table>

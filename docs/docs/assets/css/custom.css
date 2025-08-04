@@ -52,3 +52,41 @@
 .md-main__inner {
   padding: 0.5rem;
 }
+
+/* Reduce spacing in tables */
+.md-typeset table:not([class]) td, .md-typeset table:not([class]) th {
+  line-height: 1;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+/* Center align table cells with class "centered" */
+.md-typeset table:not([class]) td.centered, .md-typeset table:not([class]) th.centered {
+  text-align: center;
+}
+
+/* Center align table cells with class "centered" */
+.md-typeset table:not([class]) td.right-aligned, .md-typeset table:not([class]) th.right-aligned {
+  text-align: right;
+}
+
+.md-typeset__table {
+  margin: 0 auto;
+  width: 100%;
+  /* table-layout: fixed; */
+}
+
+/* Ensure table cells expand and wrap properly */
+.md-typeset__table table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.md-typeset__table td,
+.md-typeset__table th {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: normal;
+}
+

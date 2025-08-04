@@ -3,7 +3,7 @@
 The board implements galvanic isolation between the following domains:
 
 * CAN and DIGITAL domains: via a 5 V push-pull transformer driver and coupled transformer and isolated CAN transceiver;
-* LEGACY INTERFACE and DIGITAL domains: opto-isolated RX, TX and EN signals.
+* LEGACY INTERFACE and DIGITAL domains: opto-isolated RX, TX and ST_EN signals.
 
 These interfaces are electrically and physically separated, ensuring that faults or transients on external wiring do not couple into sensitive control circuitry.
 
@@ -13,7 +13,7 @@ The CAN side includes a local 5.5 V isolated DC-DC converter, which powers the
 
 Data lines cross the isolation boundary via an ISO1042 galvanically isolated CAN transceiver.
 
-The LEGACY INTERFACE domain is also isolated from the `DIGITAL` Domain by three [TLP2309](https://lcsc.com/datasheet/lcsc_datasheet_2410010231_TOSHIBA-TLP2309-TPL-E_C85066.pdf) opto-isolators—used for RX, TX, and TX enable signalling. The opto-isolators are powered according to their respective signal direction: the RX path requires no external power on the legacy side, with the LED side of the opto driven directly by the ST\_SIG line, while the digital side is powered from the 3.3 V (VCC) rail; the TX and EN paths are used only for SeaTalk<sup>®</sup> transmission and are powered from the 12 V supply provided by the SeaTalk<sup>®</sup> I connector.
+The LEGACY INTERFACE domain is also isolated from the `DIGITAL` Domain by three [TLP2309](https://lcsc.com/datasheet/lcsc_datasheet_2410010231_TOSHIBA-TLP2309-TPL-E_C85066.pdf) opto-isolators—used for RX, TX, and TX enable signalling. The opto-isolators are powered according to their respective signal direction: the RX path requires no external power on the legacy side, with the LED side of the opto driven directly by the ST\_SIG line, while the digital side is powered from the 3.3 V (VCC) rail; the TX and ST_EN paths are used only for SeaTalk<sup>®</sup> transmission and are powered from the 12 V supply provided by the SeaTalk<sup>®</sup> I connector.
 
 Further details on the legacy interface circuitry, including receiver and transmitter stages, are provided in the [Serial Interface](../communications/serial.md) section.
 
@@ -40,7 +40,7 @@ The layout strategy ensures:
 The board implements galvanic isolation between the following domains:
 
 * CAN and DIGITAL domains: via a 5 V push-pull transformer driver and coupled transformer and isolated CAN transceiver;
-* LEGACY INTERFACE and DIGITAL domains: opto-isolated RX, TX and EN signals.
+* LEGACY INTERFACE and DIGITAL domains: opto-isolated RX, TX and ST_EN signals.
 
 ![MDD400 Isolation Domains](../../assets/images/mdd400_domains.png)
 

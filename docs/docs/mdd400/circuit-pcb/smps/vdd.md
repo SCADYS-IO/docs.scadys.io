@@ -1,8 +1,8 @@
-# V<sub>DD</sub> DC-DC Converter (5.0 V)
+# _VDD_ DC-DC Converter (5.0 V)
 
 ## Design Criteria
 
-The V<sub>DD</sub> domain supplies intermediate 5.0 V power for the [DWIN TFT LCD display](https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/) and its backlight. It is generated from the 12 V input rail (V<sub>SC</sub>) using a high-efficiency synchronous buck converter based on the [Texas Instruments LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf). Key design requirements include:
+The `VDD` domain supplies intermediate 5.0 V power for the [DWIN TFT LCD display](https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/) and its backlight. It is generated from the 12 V input rail (`VSS`) using a high-efficiency synchronous buck converter based on the [Texas Instruments LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf). Key design requirements include:
 
 * provide a stable 5.0 V output for logic and interface subsystems;
 * operate reliably across a 8 – 24.8 V automotive/RV supply range;
@@ -10,13 +10,13 @@ The V<sub>DD</sub> domain supplies intermediate 5.0 V power for the [DWIN TFT LC
 * achieve high conversion efficiency to minimize thermal dissipation; and
 * suppress switching noise and ripple to meet EMC and analog performance targets.
 
-Only the DWIN LCD display and [Jiangsu Huaneng MLT-8530](https://lcsc.com/datasheet/lcsc_datasheet_2410010301_Jiangsu-Huaneng-Elec-MLT-8530_C94599.pdf) buzzer are powered from V<sub>DD</sub>. Peak current consumption is ~250 mA under full brightness conditions.
+Only the DWIN LCD display and [Jiangsu Huaneng MLT-8530](https://lcsc.com/datasheet/lcsc_datasheet_2410010301_Jiangsu-Huaneng-Elec-MLT-8530_C94599.pdf) buzzer are powered from `VDD`. Peak current consumption is ~250 mA under full brightness conditions.
 
 ## Circuit Description
 
 The circuit schematic for the 5.0 V DC-DC converter is based on the Texas Instruments [WEBENCH design](../../assets/pdf/5v3_smps_design_report.pdf).
 
-![VDD DC-DC schematic](../../assets/images/vpp_schematic.png)
+![`VDD` DC-DC schematic](../../assets/images/vpp_schematic.png)
 
 The input filter includes bulk and high-frequency ceramic decoupling capacitors to suppress incoming noise and transients, along with a [Murata BLM31KN601SN1L](https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf) 600 Ω @ 100 MHz ferrite bead to isolate the SMPS from the system input rail. Input bypassing is provided by a 4.7 µF X7R MLCC (C20), supported by a 100 nF high-frequency decoupling capacitor (C21).
 
@@ -51,17 +51,18 @@ Thermal analysis shows that the SRN5040TA-220M inductor dissipates 9.3 mW at 2
 
 The following components were selected to meet performance, cost, and availability constraints, while ensuring reliable operation under all specified conditions:
 
-* regulator IC: [Texas Instruments LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf), 6-pin SOT-23 (LMR51610XDBVR);
-* inductor: [Bourns SRN5040TA-220M](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5), 22 µH, 110 mΩ DCR;
+* input filter: [*Murata BLM31KN601SN1L*](https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf) 600 Ω @ 100 MHz ferrite bead; 
+* regulator IC: [*Texas Instruments LMR51610*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf), 6-pin SOT-23 (LMR51610XDBVR);
+* inductor: [*Bourns SRN5040TA-220M*](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5), 22 µH, 110 mΩ DCR;
 * output capacitor: 2 × 10 µF X7R MLCCs (0805);
-* output filtering: [Murata BLM31KN601SN1L](https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf) 600 Ω @ 100 MHz ferrite bead; and
+* output filter: [*SMCM7060-102T*](https://lcsc.com/datasheet/lcsc_datasheet_2410121451_SXN-Shun-Xiang-Nuo-Elec-SMCM7060-102T_C381615.pdf) 1 kΩ @ 100MHz common mode line filter; and
 * feedback, compensation, and timing components: 0402 1% thick-film (125 mW) resistors and X7R MLCCs.
 
 ## PCB Layout
 
 ![SMPS layout copper image](../../assets/images/vpp_ground_plane.png)
 
-The SMPS is laid out on a 4-layer board with dedicated GNDSMPS and VSC planes. Layout considerations include:
+The SMPS is laid out on a 4-layer board with dedicated GNDSMPS and `VSS` planes. Layout considerations include:
 
 * tight input loop between VIN, input capacitors, and GND;
 * compact placement of output filter and inductor for minimal VOUT loop area;
@@ -71,16 +72,19 @@ The SMPS is laid out on a 4-layer board with dedicated GNDSMPS and VSC planes. L
 
 These layout choices support low EMI, stable regulation, and safe thermal performance.
 
----
+## Datasheets and References
 
-## References
-
-1. Texas Instruments, [WEBENCH Design Report](../../assets/pdf/5v3_smps_design_report.pdf)
-2. Texas Instruments, [LMR51610 Datasheet](https://www.ti.com/lit/ds/symlink/lmr51610.pdf)
-3. Bourns, [SRN5040TA-220M Datasheet](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5)
-4. Murata, [BLM31KN601SN1L Datasheet](https://lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf)
-5. DWIN, [DMG48480F040\_02WTCZ02COF Datasheet](https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/)
-6. Jiangsu Huaneng, [MLT-8530 Datasheet](https://lcsc.com/datasheet/lcsc_datasheet_2410010301_Jiangsu-Huaneng-Elec-MLT-8530_C94599.pdf)
-7. Texas Instruments, [SLYT465](https://www.ti.com/lit/an/slyt465/slyt465.pdf)
-8. Texas Instruments, [SNVAA73](https://www.ti.com/lit/an/snvaa73/snvaa73.pdf)
+1. Texas Instruments, [*LMR516xx SIMPLE SWITCHER® Power Converter, 4-V to 65-V, 0.6-A/1-A Buck Converter in a SOT-23 Package Datasheet*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf)
+2. Texas Instruments, [*Controlling switch-node ringing in synchronous buck converters*](https://www.ti.com/lit/an/slyt465/slyt465.pdf), Application Note SLYT465
+3. Texas Instruments, [*Design Consideration on Boot Resistor in Buck Converter*](https://www.ti.com/lit/an/snvaa73/snvaa73.pdf), Application Note SNVAA73
+4. Espressif, [*ESP32-S3 32-bit MCU & 2.4 GHz Wi-Fi & Bluetooth 5 (LE) Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf)
+5. Texas Instruments, [*OPT3004 Ambient Light Sensor (ALS) Datashee*t](https://www.ti.com/lit/ds/symlink/opt3004.pdf)
+6. Texas Instruments, [*TMP112 High-Accuracy, Low-Power, Digital Temperature Sensors Datasheet*](https://www.ti.com/lit/ds/symlink/tmp112.pdf)
+7. Texas Instruments, [*ISO1042 Isolated CAN Transceiver Datasheet*](https://www.ti.com/lit/ds/symlink/iso1042.pdf)
+8. Texas Instruments, [*ISO1541 Low-Power Bidirectional I²C Isolators Datasheet*](https://www.ti.com/lit/ds/symlink/iso1541.pdf)
+9. DWIN, [*DMG48480F040_02WTCZ02COF HMI TFT LCD Display with Capacitive Touch Screen Datasheet*](https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/)
+10. Jiangsu Huaneng, [*MLT-8530 Electro-Magnetic Buzzer (SMD Type) Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2410010301_Jiangsu-Huaneng-Elec-MLT-8530_C94599.pdf)
+11. Bourns, [*SRN5040TA-220M Semi-shielded AEC-Q200 Compliant Power Inductors Datasheet*](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5)
+12. SXN, [*SMCM Series (SMCM7060-102T) Common Mode Line Filter Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2410121451_SXN-Shun-Xiang-Nuo-Elec-SMCM7060-102T_C381615.pdf)
+13. Monolithic Power Systems, [*EMI Webinar: Practical Grounding and Layout*](https://www.monolithicpower.com/en/support/videos/emi-2-webinar-early-session.html?srsltid=AfmBOop1N5qpjFNFHkvJIyWCZOyt30Mt_P6bsL53Dz79rUJPYOWXOTq6)
 

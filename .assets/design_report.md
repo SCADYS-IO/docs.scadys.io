@@ -1390,7 +1390,7 @@ affected by external heat sources such as direct sunlight.
 To provide more meaningful thermal data near the display panel, a
 dedicated TMP112AIDRLR temperature sensor is mounted on the main board,
 in close proximity to the rear of the capacitive touch LCD. This sensor
-is connected to the ESP32-S3 via the I²C bus pins \[SCL\] and \[SDA\].
+is connected to the ESP32-S3 via the I²C bus pins \[I2C_SCL\] and \[SDA\].
 The TMP112 device address is configured via the ADD0 pin to 0x48, the
 default address when ADD0 is tied to GND.
 
@@ -1752,8 +1752,8 @@ characteristics include:
 
 The display communicates over UART2, using TTL signal levels:
 
-- TX (MCU → Display): \[U2_TX\] pin; and
-- RX (Display → MCU): \[U2_RX\] pin.
+- TX (MCU → Display): \[`DISP_TX`\] pin; and
+- RX (Display → MCU): \[`DISP_RX`\] pin.
 
 The interface operates using the DGUS II protocol, which abstracts
 screen logic into memory pages, variables, and commands. This approach
@@ -1895,8 +1895,8 @@ MDD400. Only the MDD400-DEV version gives makers and the open-source
 community access these connectors.
 
 These connectors expose the microcontroller pins and no protection is
-provided to ensure the maximum utility. The \[SDA\], \[SCL\], \[EN\] and
-\[BOOT\] pins are pulled up to Vcc by 10k Ω resistors. All other pins
+provided to ensure the maximum utility. The \[SDA\], \[I2C_SCL\], \[EN\] and
+\[`ESP_BOOT`\] pins are pulled up to Vcc by 10k Ω resistors. All other pins
 are not pulled up or down to maximise utility.
 
 ## ESP-PROG
