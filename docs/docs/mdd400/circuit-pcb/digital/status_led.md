@@ -6,7 +6,7 @@ The circuit uses a high-side PNP driver topology to ensure that the LED is lit w
 
 ![Status LED circuit](../../assets/images/status_led.png)
 
-The LED is driven via a [BC807-25](https://assets.nexperia.com/documents/data-sheet/BC807_SER.pdf) PNP transistor. The transistor's emitter is connected to `VCC` through a 100 Ω current-limiting resistor (R6), while its collector sinks current through the amber LED (D1) to `GNDREF`. The transistor base is pulled low by a 10 kΩ resistor (R7), which ensures that the transistor is forward-biased and the LED is lit during system boot or whenever the microcontroller pin is floating.
+The LED is driven via a [BC807-25](https://assets.nexperia.com/documents/data-sheet/BC807_SER.pdf) PNP transistor. The transistor's emitter is connected to `VCC` through a 100 Ω current-limiting resistor , while its collector sinks current through the amber LED to `GNDREF`. The transistor base is pulled low by a 10 kΩ resistor, which ensures that the transistor is forward-biased and the LED is lit during system boot or whenever the microcontroller pin is floating.
 
 The control input, labeled [`LED_EN`](../../quick_reference.md), is connected to a digital output of the ESP32-S3. When the microcontroller drives this pin high (3.3 V), the base-emitter junction is no longer forward biased, and the transistor switches off. This disables the LED. Firmware can use this mechanism to turn off the LED during normal operation, or to flash error codes by toggling the pin.
 

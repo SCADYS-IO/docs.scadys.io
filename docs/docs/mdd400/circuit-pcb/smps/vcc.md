@@ -1,11 +1,19 @@
-# _VCC_ DC-DC Converter (3.3 V)
+# *VCC* DC-DC Converter (3.3 V)
 
 ## Design Criteria
 
-The `VCC` domain supplies 3.3 V regulated power to all digital subsystems, including the [ESP32-S3](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_datasheet_en.pdf), [OPT3004](https://www.ti.com/lit/ds/symlink/opt3004.pdf) ambient light sensor, [TMP112](https://www.ti.com/lit/ds/symlink/tmp112.pdf) temperature sensor, and the microcontroller side of the [ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf) and [ISO1541](https://www.ti.com/lit/ds/symlink/iso1541.pdf) digital interfaces. It is derived from the 12 V input rail (`VSS`) using a synchronous buck converter based on the [Texas Instruments LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf). Key design requirements include:
+The `VCC` domain supplies 3.3 V regulated power to all digital subsystems, including:
+
+* the [ESP32-S3](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_datasheet_en.pdf);
+* the [OPT3004](https://www.ti.com/lit/ds/symlink/opt3004.pdf) ambient light sensor;
+* the [TMP112](https://www.ti.com/lit/ds/symlink/tmp112.pdf) temperature sensor;
+* the logic side of the [ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf) CAN transceiver; and
+* the [ISO1541](https://www.ti.com/lit/ds/symlink/iso1541.pdf) I²C isolator.
+
+It is generated from the 12 V input rail (`VSD`) using a high-efficiency synchronous buck converter based on the [Texas Instruments LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf). Key design requirements include:
 
 * provide a stable 3.3 V output for digital and isolated logic domains;
-* operate reliably across a 9–18 V automotive/RV supply range;
+* operate reliably across a 8 V to 14.8 V automotive/RV supply range;
 * support peak output current of up to 275 mA during Wi-Fi transmission;
 * achieve high efficiency to limit thermal rise in the enclosure; and
 * ensure quiet operation compatible with analog and radio subsystems.
@@ -16,74 +24,63 @@ Typical current draw is ~90 mA, with headroom for full-load peaks during burst
 
 The circuit schematic for the 3.3 V DC-DC converter is based on the Texas Instruments [WEBENCH design](../../assets/pdf/vcc_design_report.pdf).
 
-![`VCC` SMPS schematic](../../assets/images/vcc_schematic.png)
+![VCC DC-DC schematic](../../assets/images/vcc_schematic.png)
 
-The input filter includes a 4.7 µF X7R ceramic capacitor (C24), supported by a high-frequency 100 nF bypass capacitor (C25) and a [Murata BLM31KN601SN1L](https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf) ferrite bead (600 Ω @ 100 MHz) to isolate SMPS noise from the upstream supply.
+The input stage consists of a 10 µF and 100 nF ceramic decoupling capacitor directly after the isolation transformer, without any additional filtering. The upstream over-voltage protection circuit disconnects the supply above 18.6 V, ensuring that the converter operates only within its safe input range. The regulator is a synchronous buck converter implemented with the [LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf), configured for 400 kHz operation (LMR51610XDBVR).
 
-The main converter is implemented with a [LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf) synchronous buck regulator, configured for 400 kHz switching frequency (LMR51610XDBVR). A 22 µH [Bourns SRN5040TA-220M](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5) inductor with 110 mΩ DCR and 1.6 A saturation current is used. Output capacitance is provided by two 10 µF X7R MLCCs, resulting in a simulated ripple voltage of 7.1 mV peak-to-peak under maximum load.
+A 22 µH shielded inductor ([Bourns SRN5040TA-220M](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5)) with 123 mΩ DCR and 1.6 A saturation current is used to balance size, ripple, and thermal performance. Output capacitance consists of two 10 µF X7R MLCCs. A 100 pF feedforward capacitor improves transient response.
 
-The feedback resistor divider (R21/R25) is adjusted to provide a nominal 3.3 V output using 100 kΩ / 32 kΩ. External compensation and snubber networks are not populated by default, but pads are provided for tuning based on layout parasitics, consistent with the guidance in [SLYT465](https://www.ti.com/lit/an/slyt465/slyt465.pdf) and [SNVAA73](https://www.ti.com/lit/an/snvaa73/snvaa73.pdf).
+Voltage feedback is set via a 100 kΩ / 30.9 kΩ divider. Optional snubber components (R23/C30) and a series resistor on the bootstrap capacitor (R19) are included for evaluation and are unpopulated by default.
+
+## Capacitor Selection and EMI Considerations
+
+* bulk input and output capacitors are 1210-size [Murata GRM32ER71H106KA12L](https://search.murata.com/GRM32ER71H106KA12L) 10 µF X7R MLCCs. These provide high effective capacitance at typical bias voltages (12 V in, 3.3 V out) and excellent temperature stability;
+* all other capacitors are Murata 0603 X7R or C0G types where available, selected for minimal ESR and thermal drift;
+* the use of 1210 package capacitors reduces DC bias derating compared to 0805 and 0603 parts, preserving effective capacitance at operating voltage;
+* distributed placement of high-frequency bypass (100 nF) and low-ESL 10 µF MLCCs reduces radiated and conducted EMI;
+* the snubber footprint allows damping of high-frequency ringing on the SW node if required after EMI testing.
+
+This approach minimises voltage ripple and resonance, suppresses switching noise, and ensures low impedance across the switching frequency range.
 
 ## Protection
 
-The LMR51610 includes the following protection mechanisms:
+The LMR51610 integrates multiple protection mechanisms:
 
-* cycle-by-cycle peak current limit;
+* cycle-by-cycle peak current limiting;
 * thermal shutdown at 165 °C junction temperature; and
-* input under-voltage lockout (UVLO) (not implemented).
+* undervoltage lockout (UVLO) on VIN (not used in this configuration).
 
-These features protect the converter and connected subsystems from overload, thermal events, and supply brownout.
+These protect the converter and downstream loads from faults including short circuits, overtemperature, and input brownout.
 
 ## Performance
 
-Simulated results from the WEBENCH design report under worst-case conditions (18 V input, 245 mA load) are as follows:
+Simulated performance (WEBENCH, 18 V input, 245 mA output):
 
-* output voltage: 3.300 V (nominal);
+* output voltage: 3.300 V;
 * efficiency: 88.3%;
-* total power dissipation: 107 mW;
+* power dissipation: 107 mW;
 * phase margin: 47.4°;
 * gain margin: −11.9 dB; and
-* peak inductor ripple current: 313 mA.
+* inductor ripple current: 313 mA peak.
 
-The SRN5040TA-220M inductor dissipates 9.4 mW at 245 mA, resulting in <0.3 °C temperature rise. The converter operates comfortably within thermal limits up to 80 °C ambient.
+Thermal simulation shows inductor dissipation of 9.4 mW and < 0.3 °C rise under full load. Junction temperatures remain within limits at ambient temperatures up to 80 °C.
 
-## Components
+## Layout Notes
 
-The following components were selected to meet performance, cost, and availability constraints:
+* tight VIN-GND-SW input loop;
+* short VOUT loop with output filter capacitors close to and either side of the inductor;
+* SW node enclosed by ground moat with stitching vias to inner plane;
+* provision for snubber at edge of SW copper;
+* decoupling capacitors close to VIN and VOUT pins;
+* shared GNDSMPS inner plane with solid via connection to GND pad.
 
-* input filter: [*Murata BLM31KN601SN1L*](https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730/Murata-Electronics-BLM31KN601SN1L_C668306.pdf) 600 Ω @ 100 MHz ferrite bead; 
-* regulator IC: [*Texas Instruments LMR51610*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf), 6-pin SOT-23 (LMR51610XDBVR);
-* inductor: [*Bourns SRN5040TA-220M*](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5), 22 µH, 110 mΩ DCR;
-* output capacitor: 2 × 10 µF X7R MLCCs (0805);
-* output filter: [*SMCM7060-102T*](https://lcsc.com/datasheet/lcsc_datasheet_2410121451_SXN-Shun-Xiang-Nuo-Elec-SMCM7060-102T_C381615.pdf) 1 kΩ @ 100MHz common mode line filter; and
-* feedback, compensation, and timing components: 0402 thick-film resistors (63–125 mW) and X7R MLCCs.
-
-## PCB Layout
-
-The 3.3 V converter layout is identical to the 5.25 V section, with shared design constraints and stackup:
-
-![`VCC` SMPS layout](../../assets/images/vpp_ground_plane.png)
-
-* tight input and output loop areas with short trace lengths;
-* SW node enclosed in a ground moat and surrounded by vias;
-* all components placed to minimize EMI and thermal hotspots;
-* snubber and compensation footprints accessible for tuning.
-
-These layout choices support quiet operation, mechanical symmetry, and efficient heat spreading.
-
+These practices support low EMI, high efficiency, and robust thermal operation.
 
 ## Datasheets and References
 
-1. Texas Instruments, [*LMR516xx SIMPLE SWITCHER® Power Converter, 4-V to 65-V, 0.6-A/1-A Buck Converter in a SOT-23 Package Datasheet*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf)
-2. Texas Instruments, [*Controlling switch-node ringing in synchronous buck converters*](https://www.ti.com/lit/an/slyt465/slyt465.pdf), Application Note SLYT465
-3. Texas Instruments, [*Design Consideration on Boot Resistor in Buck Converter*](https://www.ti.com/lit/an/snvaa73/snvaa73.pdf), Application Note SNVAA73
-4. Espressif, [*ESP32-S3 32-bit MCU & 2.4 GHz Wi-Fi & Bluetooth 5 (LE) Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf)
-5. Texas Instruments, [*OPT3004 Ambient Light Sensor (ALS) Datashee*t](https://www.ti.com/lit/ds/symlink/opt3004.pdf)
-6. Texas Instruments, [*TMP112 High-Accuracy, Low-Power, Digital Temperature Sensors Datasheet*](https://www.ti.com/lit/ds/symlink/tmp112.pdf)
-7. Texas Instruments, [*ISO1042 Isolated CAN Transceiver Datasheet*](https://www.ti.com/lit/ds/symlink/iso1042.pdf)
-8. Texas Instruments, [*ISO1541 Low-Power Bidirectional I²C Isolators Datasheet*](https://www.ti.com/lit/ds/symlink/iso1541.pdf)
-9. DWIN, [*DMG48480F040_02WTCZ02COF HMI TFT LCD Display with Capacitive Touch Screen Datasheet*](https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/)
-10. Jiangsu Huaneng, [*MLT-8530 Electro-Magnetic Buzzer (SMD Type) Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2410010301_Jiangsu-Huaneng-Elec-MLT-8530_C94599.pdf)
-11. Bourns, [*SRN5040TA-220M Semi-shielded AEC-Q200 Compliant Power Inductors Datasheet*](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5)
-12. SXN, [*SMCM Series (SMCM7060-102T) Common Mode Line Filter Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2410121451_SXN-Shun-Xiang-Nuo-Elec-SMCM7060-102T_C381615.pdf)
-13. Monolithic Power Systems, [*EMI Webinar: Practical Grounding and Layout*](https://www.monolithicpower.com/en/support/videos/emi-2-webinar-early-session.html?srsltid=AfmBOop1N5qpjFNFHkvJIyWCZOyt30Mt_P6bsL53Dz79rUJPYOWXOTq6)
+1. Texas Instruments, [*LMR516xx SIMPLE SWITCHER® Power Converter, 4-V to 65-V, 0.6-A/1-A Buck Converter Datasheet*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf)
+2. Texas Instruments, [*Controlling switch-node ringing in synchronous buck converters*](https://www.ti.com/lit/an/slyt465/slyt465.pdf)
+3. Texas Instruments, [*Design Consideration on Boot Resistor in Buck Converter*](https://www.ti.com/lit/an/snvaa73/snvaa73.pdf)
+4. Murata, [*GRM32ER71H106KA12L 10 µF 1210 X7R Capacitor Datasheet*](https://search.murata.com/GRM32ER71H106KA12L)
+5. Bourns, [*SRN5040TA-220M Power Inductor Datasheet*](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5)
+6. Murata, [*BLM31KN601SN1L Ferrite Bead Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2209271730_Murata-Electronics-BLM31KN601SN1L_C668306.pdf)

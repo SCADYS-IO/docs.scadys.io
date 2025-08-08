@@ -21,13 +21,13 @@ These are compatible with standard ESP-IDF programming tools. Also see the [quic
 
 To guard against accidental over-voltage from misconfigured ESP-PROG modules (e.g. 5 V jumper set), an over-voltage protection circuit is included in prototypes. It uses:
 
-* a [PMV240SPR](https://lcsc.com/datasheet/lcsc_datasheet_2410121947_Nexperia-PMV240SPR_C5361354.pdf) NMOS FET (Q2) as a series switch;
-* a [BC807-25](https://assets.nexperia.com/documents/data-sheet/BC807_SER.pdf) PNP transistor (Q3) as a voltage detector; and
-* resistor divider (R8/R9) and gate pull-down (R10) to set the trip point at approximately 3.4 V.
+* a [PMV240SPR](https://lcsc.com/datasheet/lcsc_datasheet_2410121947_Nexperia-PMV240SPR_C5361354.pdf) NMOS FET as a series switch;
+* a [BC807-25](https://assets.nexperia.com/documents/data-sheet/BC807_SER.pdf) PNP transistor as a voltage detector; and
+* resistor dividerand gate pull-down to set the trip point at approximately 3.4 V.
 
-When `VCC` exceeds the turn-on threshold, Q3 conducts, pulling down the gate of Q2 and turning it off, thereby disconnecting the ESP-PROG `VCC` from the board.
+When `VCC` exceeds the turn-on threshold, the PNP transistor (Q3) conducts, pulling down the gate of the FET (Q2) and turning it off, thereby disconnecting the ESP-PROG `VCC` from the board.
 
-In production, this circuit is not populated. Instead, R5 is fitted (0 Ω) to directly route `VCC` to the board.
+In production, this circuit is not populated. Instead, a 0 Ω bypass resistor (R5) is fitted to directly route `VCC` to the board.
 
 ## Datasheets and References
 

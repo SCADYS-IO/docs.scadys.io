@@ -1,5 +1,9 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.11
+
+- Updated all docs after changes to MDD400_V2.6 schematics.
+
 ## 0.1.10
 
 - New MDD400 Compliance section.

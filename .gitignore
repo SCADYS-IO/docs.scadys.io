@@ -8,6 +8,7 @@
 # Mkdocs Site
 site/   
 .assets/docs_old/
+htpasswd
 
 # Credentials
 .htaccess

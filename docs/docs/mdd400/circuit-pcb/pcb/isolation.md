@@ -2,21 +2,32 @@
 
 The MDD400 implements galvanic isolation between functional domains to suppress conducted noise, block fault currents, and maintain EMC compliance. Isolation boundaries are defined in both circuit topology and PCB layout, with reinforced separation between grounds, signal paths, and copper pours.
 
-![MDD400 Domain Layout](../../assets/images/mdd400_functional_domains.png)
+![MDD400 Domain Layout](../../assets/images/mdd400_isolation_domains.png)
 
 ## Isolation Boundaries
 
-Two primary galvanic isolation boundaries are present in the MDD400 architecture:
+Three primary galvanic isolation boundaries are present in the MDD400 architecture:
 
-* between the `CAN` and `DIGITAL` domains; and
+* between the `CAN` and `SMPS` domains;
+* between the `SMPS` and `Digital` domains; and
 * between the `LEGACY IO` and `DIGITAL` domains.
 
-Each boundary is implemented using domain-specific techniques:
+Each boundary is implemented using domain-specific techniques: 
 
+* the `CAN` to `SMPS` domain interface is galvanically isolated using a [VPS8701B transformer driver](https://www.lcsc.com/datasheet/C552889.pdf) and [VPT87DDF01B 12 V:12 V transformer](https://www.lcsc.com/datasheet/C2846916.pdf);
+* optional components (a common-mode choke and ferrite beads) are also included across the galvanic barrier for test-only population during EMC compliance testing; and
+* the `SMPS` and `DIGITAL` domains are connected via ferrite beads and Y-cap-style capacitive bypass, but remain isolated at the DC level.
 * the `CAN` domain is powered independently from the filtered `VSS` input using a [TPS7A1650DGNR](https://www.ti.com/lit/ds/symlink/tps7a16.pdf) linear regulator, forming the `VCAN` rail referenced to `GNDC`. All communication to the `DIGITAL` domain occurs through the [ISO1042](https://www.ti.com/lit/ds/symlink/iso1042.pdf) isolated CAN transceiver and an [ISO1541](https://www.ti.com/lit/ds/symlink/iso1541.pdf) I²C isolator used for the onboard power sensor (INA219);
 * the `LEGACY IO` domain uses three [TLP2309](https://lcsc.com/datasheet/lcsc_datasheet_2410010231_TOSHIBA-TLP2309-TPL-E_C85066.pdf) opto-isolators to isolate the `ST_RX`, `ST_TX`, and `ST_EN` signal lines. Power for the SeaTalk TX driver in the `LEGACY` domain is drawn directly from the SeaTalk I power line, conditioned locally within the domain. For receive-only operation, the `LEGACY` domain does not require 12 V power.
 
-The `SMPS` domain bridges to the `DIGITAL` domain via two DC-DC converters (`VDD` and `VCC`) and connects through common-mode chokes only. These filters preserve high-frequency isolation without galvanic separation. The `SMPS` domain shares a ground reference (`GNDSMPS`) with the `CAN` domain but is isolated from the `DIGITAL` and `LEGACY IO` domains.
+![Isolation of Power Domains](../../assets/images/power_domains_isolation.png)
+
+* the `CAN` and `SMPS` domains are fully galvanically isolated via a push-pull transformer circuit;
+* two alternative isolation strategies are provided in parallel with the transformer circuit: a common-mode choke and low-impedance ferrite beads, which may be selectively populated during EMC testing;
+* the `SMPS` and `DIGITAL` domains are connected via ferrite beads on both power rails and a 100 pF bypass capacitor across the ground boundary;
+* no DC connection exists between `GNDSMPS` and `GNDREF`, preserving high-impedance isolation across the digital boundary.
+
+This configuration suppresses high-frequency noise propagation between domains, minimises EMI, and protects digital logic from disturbances originating in the CAN interface or power switching stages.
 
 ## Physical Layout and Spacing
 
@@ -34,7 +45,7 @@ The layout supports optional application of conformal coating to further increas
 Power isolation is implemented as follows:
 
 * the `CAN` domain uses a dedicated 5 V linear regulator (`VCAN`) to power the isolated side of the CAN transceiver and INA219 current/voltage sensor. These loads are low current and benefit from the regulator’s low noise performance;
-* the `DIGITAL` domain receives two regulated supplies (`VDD` and `VCC`) from the `SMPS` domain via common-mode chokes, preventing high-frequency coupling without galvanic isolation;
+* the `DIGITAL` domain receives two regulated supplies (`VDD` and `VCC`) from the `SMPS` domain via ferrites and Y-capacitors, preventing high-frequency coupling without galvanic isolation;
 * the `LEGACY IO` domain receives power from the external serial interface. Isolation is provided entirely through opto-isolators on signal paths.
 
 This approach avoids transformer-based power isolation, reducing EMI and component complexity while preserving isolation integrity.

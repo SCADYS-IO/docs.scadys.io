@@ -11,12 +11,12 @@ Functional areas are compartmentalised across the board to maintain isolation bo
 
 Key placement details are as follows:
 
-* the left side, near the NMEA 2000 connector, contains the `CAN` domain, including input protection circuitry on `NET-S`, the isolated CAN transceiver, and power filtering;
-* across the top edge is the `SMPS` domain, housing the 5.3 V and 3.3 V DC-DC converters and the transformer-based 5 V isolated supply for the CAN side;
+* the upper left quadrant, near the NMEA 2000 connector, contains the `CAN` domain, including input protection circuitry on `NET-S`, the isolated CAN transceiver, and power filtering;
+* in the bottom-left quadrant is the `SMPS` domain, housing the 5.3 V and 3.3 V DC-DC converters;
 * the central region is occupied by the `DIGITAL` domain, including the ESP32 MCU, display interface, sensors, buzzer, and associated logic; and
-* the lower right edge is assigned to the `LEGACY IO` domain, which includes opto-isolated circuits for SeaTalk and NMEA 0183 serial communication.
+* the lower right quadrant is assigned to the `LEGACY IO` domain, which includes opto-isolated circuits for SeaTalk and NMEA 0183 serial communication.
 
-Each domain is separated by defined clearance zones and copper pour boundaries. The only electrical connections between domains are via isolated communication channels or filtered power paths.
+Each domain is separated by defined clearance zones and copper pour boundaries. The only electrical connections between domains are via isolated communication channels or filtered / isolated power paths.
 
 ## Connector Placement
 

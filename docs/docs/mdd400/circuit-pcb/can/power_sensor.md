@@ -37,7 +37,9 @@ This comfortably exceeds the 250 mA peak expected load.
 
 The INA219 is located in the `CAN` domain and shares a ground reference (`GNDC`) with other CAN-side components. The I²C signals are passed through an [ISO1541](https://www.ti.com/lit/ds/symlink/iso1541.pdf) digital isolator, with `VCC`1/GND1 referenced to the digital logic domain (`VCC`/`GNDREF`) and `VCC`2/GND2 referenced to the `CAN` domain (`VDD`/`GNDC`).
 
-The I²C isolator supports bidirectional data communication (`I2C_SDA`), with `I2C_SDA` and `I2C_SCL` pull-up resistors (R32 and R33, both 4.7 kΩ) on the isolated side to `VDD`. The digital logic domain already includes pull-up resistors to `VCC`, as noted in the [MCU section](../digital/esp32_s3.md) section.
+The I²C isolator supports bidirectional data communication (`I2C_SDA`), with `I2C_SDA` and `I2C_SCL` pull-up resistors on the isolated side to `VDD`. The digital logic domain already includes pull-up resistors to `VCC`, as noted in the [MCU section](../digital/esp32_s3.md) section.
+
+![I²C Power Sensor](../../assets/images/i2c_isolator.png)
 
 ## Protection Considerations
 

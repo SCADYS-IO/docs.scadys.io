@@ -23,7 +23,7 @@ Power and ground pours are used on the outer layers to reduce impedance and supp
 
 The MDD400 PCB is divided into four isolated functional domains: `CAN`, `SMPS`, `DIGITAL`, and `LEGACY IO`. Each domain uses a tailored layer strategy to balance electrical performance, noise suppression, and manufacturability.
 
-![MDD400 Functional Domains](../../assets/images/mdd400_functional_domains.png)
+![MDD400 Functional Domains](../../assets/images/mdd400_domains.png)
 
 ### _CAN_ Domain
 

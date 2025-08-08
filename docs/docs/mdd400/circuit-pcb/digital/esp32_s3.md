@@ -12,7 +12,7 @@ The ESP32-S3 module is connected to the following peripherals:
 * the [HMI display](tft_touch_display.md) is addressed via UART and its 5 V power is switched with a MOSFET high-side switch;
 * a single [status LED](status_led.md) is connected to an [output pin](../../quick_reference.md) for diagnostics; 
 * the serial interface in the [`LEGACY IO` domain](../seatalk/index.md) is addressed via three opto-isolators; and
-* a [flash programming header](esp32_s3.md), pin-compatible with Espressif's ESP-Prog programmer's 6-pin IDC connector is connected to UART 0 and the [`ESP_BOOT`](../../quick_reference.md) and [`ESP_EN`(../../quick_reference.md)] pins. 
+* a [flash programming header](esp32_s3.md), pin-compatible with Espressif's ESP-Prog programmer's 6-pin IDC connector is connected to UART 0 and the [`ESP_BOOT`](../../quick_reference.md) and [`ESP_EN`](../../quick_reference.md) pins. 
 
 The schematic shows the pin allocations on the ESP32-S3 module as implemented in the MDD400 design. 
 
@@ -28,14 +28,12 @@ The ESP32-S3-WROOM-1 module includes [48 GPIOs](https://docs.espressif.com/proje
 
 {% include-markdown "../../assets/include/table_1_gpio_assignments.html" %}
 
-Please refer to the [quick reference](../../quick_reference.md) for a complete listing of the ESP32-S3 GPIO pin assignments, including signal labels, usage, strapping pins and reserved functions.
-
 ## Memory
 
 The ESP32-S3 module includes two types of RAM:
 
-* **SRAM**: 512 kB internal static RAM, used by default for stack, heap, and program data;
-* **PSRAM**: 8 MB of external pseudo-static RAM, accessible via the memory-mapped SPI interface.
+* *SRAM*: 512 kB internal static RAM, used by default for stack, heap, and program data;
+* *PSRAM*: 8 MB of external pseudo-static RAM, accessible via the memory-mapped SPI interface.
 
 The ESP-IDF heap allocator is configured to use both internal and external memory. Internal SRAM provides low-latency access and is prioritized for timing-sensitive operations, while external PSRAM is used for large buffers and dynamic structures.
 

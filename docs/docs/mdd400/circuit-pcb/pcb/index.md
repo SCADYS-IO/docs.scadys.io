@@ -18,9 +18,9 @@ These strategies ensure that noise, ground loops, or transients from external in
 
 The MDD400 uses a four-layer PCB structure optimized for signal integrity, EMI performance, and manufacturability. The stackup includes:
 
-* two internal ground planes (`GNDREF`, `GNDC`, `GNDSMPS`, `GNDST`) to provide low-inductance return paths;
+* four isolated ground planes (`GNDREF`, `GNDC`, `GNDSMPS`, `GNDST`) to provide low-inductance return paths;
 * top and bottom signal layers, including domain-specific power pours and controlled impedance routing; and
-* embedded capacitance in the `DIGITAL` domain via top and bottom `VCC` pours coupled to the internal `GNDREF` plane.
+* embedded capacitance in the `DIGITAL` domain via top and bottom `VCC` and `VDD` pours coupled to the internal `GNDREF` plane.
 
 All domains are defined by their own copper regions, with isolation gaps of at least 6 mm maintained on all layers.
 
@@ -28,9 +28,9 @@ All domains are defined by their own copper regions, with isolation gaps of at l
 
 Functional areas are compartmentalised to prevent coupling between noisy and sensitive sections. Highlights include:
 
-* high-frequency switching elements (e.g. DC-DC converters) confined to the top edge (`SMPS` domain);
+* high-frequency switching elements (e.g. DC-DC converters) confined to the bottom left quadrant (`SMPS` domain);
 * analog and digital components grouped centrally in the `DIGITAL` domain;
-* legacy and CAN interface components placed at opposite board edges, maintaining isolation spacing; and
+* legacy and CAN interface components placed at opposite (left and right) board edges, maintaining isolation spacing; and
 * return paths kept short and local, with via stitching around high-current and high-speed devices.
 
 All inter-domain signal paths are routed through isolators. Ground and power planes are never shared between isolated domains.
@@ -39,7 +39,7 @@ All inter-domain signal paths are routed through isolators. Ground and power pla
 
 Each external interface is associated with a single domain. The following connectors are used:
 
-{% include-markdown "mdd400/assets/include/table\_5\_connectors.html" %}
+{% include-markdown "mdd400/assets/include/table_5_connectors.html" %}
 
 Routing from these connectors into the circuit is carefully managed to preserve isolation and minimize noise injection.
 
