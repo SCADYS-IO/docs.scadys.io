@@ -1,5 +1,10 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.12
+
+- Added empty CANBench Duo product pages.
+- Restructured navigation
+
 ## 0.1.11
 
 - Updated all docs after changes to MDD400_V2.6 schematics.
