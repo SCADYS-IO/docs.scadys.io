@@ -1,4 +1,71 @@
-# Dual-Channel LISN + CAN CDN Build Guide
+# Conducted Emissions
+
+<h3>Conducted Emissions Standards – CANBench Duo Focus</h3>
+<table>
+  <colgroup>
+    <col style="width: 25%;">
+    <col style="width: 15%;">
+    <col style="width: 15%;">
+    <col style="width: 15%;">
+    <col style="width: 15%;">
+    <col style="width: 15%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Standard / Reference</th>
+      <th>Frequency Start</th>
+      <th>Frequency End</th>
+      <th>LISN Inductance</th>
+      <th>LISN Impedance</th>
+      <th>Port(s) Measured</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://webstore.iec.ch/publication/2402" target="_blank">CISPR&nbsp;25</a> (Automotive)</td>
+      <td>150&nbsp;kHz</td>
+      <td>108&nbsp;MHz</td>
+      <td>5&nbsp;µH ±5%</td>
+      <td>50&nbsp;Ω (to ground)</td>
+      <td>V<sub>+</sub> and V<sub>−</sub> separately</td>
+    </tr>
+    <tr>
+      <td><a href="https://webstore.iec.ch/publication/2212" target="_blank">EN&nbsp;60945</a> (Marine EMC)</td>
+      <td>150&nbsp;kHz</td>
+      <td>30&nbsp;MHz*</td>
+      <td>5&nbsp;µH ±5%</td>
+      <td>50&nbsp;Ω (to ground)</td>
+      <td>DC supply line(s)</td>
+    </tr>
+    <tr>
+      <td><a href="https://webstore.iec.ch/publication/2728" target="_blank">IEC&nbsp;61000-6-4</a> (Industrial generic)</td>
+      <td>150&nbsp;kHz</td>
+      <td>30&nbsp;MHz</td>
+      <td>5&nbsp;µH ±5% (DC ports)<br>50&nbsp;µH ±20% (AC mains)</td>
+      <td>50&nbsp;Ω (to ground)</td>
+      <td>DC supply port</td>
+    </tr>
+    <tr>
+      <td><a href="https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15" target="_blank">FCC&nbsp;Part&nbsp;15B</a> (Conducted)</td>
+      <td>150&nbsp;kHz</td>
+      <td>30&nbsp;MHz</td>
+      <td>5&nbsp;µH ±5% (DC LISN for DC-powered devices)</td>
+      <td>50&nbsp;Ω (to ground)</td>
+      <td>Power port</td>
+    </tr>
+    <tr>
+      <td><a href="https://infostore.saiglobal.com/en-au/Standards/AS-NZS-CISPR-32-2015-117441_SAIG_AS_AS_246378/" target="_blank">AS/NZS&nbsp;CISPR&nbsp;32</a> (Multimedia)</td>
+      <td>150&nbsp;kHz</td>
+      <td>30&nbsp;MHz</td>
+      <td>5&nbsp;µH ±5% (DC LISN for DC ports)</td>
+      <td>50&nbsp;Ω (to ground)</td>
+      <td>DC power input</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>* EN 60945 specifies 150 kHz to 30 MHz for conducted emissions, but many marine EMC test houses extend scans to 108 MHz to align with CISPR 25 practices when testing NMEA 2000 equipment.</p>
+
 
 This page documents the design, bill of materials, and build procedure for a custom dual-channel Line Impedance Stabilization Network (LISN) with integrated CAN Common-Mode Disturbance Network (CDN), suitable for in-line use with NMEA 2000 networks during conducted emissions pre-compliance testing.
 

@@ -60,7 +60,7 @@ The combined LISN + CDN provides:
                      |             |
                      +-- Bulk C --> 50 Ω --> SMA #2 (NET-C)
 
-
+```
 ## Build Procedure
 
 1. **Prepare PCB:** Verify PCB fabrication meets impedance and layout requirements. Clean copper contact areas for chassis bonds.
@@ -70,3 +70,8 @@ The combined LISN + CDN provides:
 5. **Enclosure fit-up:** Install PCB into conductive enclosure, ensuring multiple low-impedance bonds between PCB ground and enclosure.
 6. **Final assembly:** Fit endplates, secure fly leads, and check for mechanical strain relief.
 
+## References
+
+FesZ Electronics, [*EMC tutorials - [1/3] Building an LISN*](https://www.youtube.com/watch?app=desktop&v=OEvkRW5vZNA)
+Tekbox, [*LISN Basics*](https://www.tekbox.com/product/LISN_Basics_and_Overview.pdf)
+EEV Blog, [*CM-DM Seperator for Dual LISNs*](https://www.eevblog.com/forum/projects/diy-dm-cm-seperator-for-emc-lisn-mate/)
