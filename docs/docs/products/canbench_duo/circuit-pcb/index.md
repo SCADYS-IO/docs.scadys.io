@@ -72,6 +72,6 @@ The combined LISN + CDN provides:
 
 ## References
 
-FesZ Electronics, [*EMC tutorials - [1/3] Building an LISN*](https://www.youtube.com/watch?app=desktop&v=OEvkRW5vZNA)
-Tekbox, [*LISN Basics*](https://www.tekbox.com/product/LISN_Basics_and_Overview.pdf)
-EEV Blog, [*CM-DM Seperator for Dual LISNs*](https://www.eevblog.com/forum/projects/diy-dm-cm-seperator-for-emc-lisn-mate/)
+* FesZ Electronics, [*EMC tutorials - [1/3] Building an LISN*](https://www.youtube.com/watch?app=desktop&v=OEvkRW5vZNA)
+* Tekbox, [*LISN Basics*](https://www.tekbox.com/product/LISN_Basics_and_Overview.pdf)
+* EEV Blog, [*CM-DM Seperator for Dual LISNs*](https://www.eevblog.com/forum/projects/diy-dm-cm-seperator-for-emc-lisn-mate/)

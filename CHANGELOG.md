@@ -1,5 +1,10 @@
 <!-- MDD400_Hardware -->
 
+## 0.1.13
+
+- Completed CANBench Duo DC Supply Path design docs.
+- Uploaded to docs.scadys.io
+
 ## 0.1.12
 
 - Added empty CANBench Duo product pages.

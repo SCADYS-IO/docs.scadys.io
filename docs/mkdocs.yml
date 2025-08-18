@@ -139,8 +139,9 @@ nav:
     - Quick Reference: products/canbench_duo/quick_reference.md
     - Circuit & PCB: 
       - Overview: products/canbench_duo/circuit-pcb/index.md
-      - LISN: products/canbench_duo/circuit-pcb/lisn.md
-      - CAN Common Mode Monitor: products/canbench_duo/circuit-pcb/cm_monitor.md 
+      - DC Supply Path: products/canbench_duo/circuit-pcb/dc_supply_path.md
+      - LISN RF Measurement Port: products/canbench_duo/circuit-pcb/lisn_rf.md
+      - CAN RF Measurement Port: products/canbench_duo/circuit-pcb/can_rf.md 
     - Housing: 
       - Overview: products/canbench_duo/housing/index.md
       - Enclosure: products/canbench_duo/housing/enclosure.md
