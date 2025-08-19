@@ -72,6 +72,17 @@ The combined LISN + CDN provides:
 
 ## References
 
-* FesZ Electronics, [*EMC tutorials - [1/3] Building an LISN*](https://www.youtube.com/watch?app=desktop&v=OEvkRW5vZNA)
-* Tekbox, [*LISN Basics*](https://www.tekbox.com/product/LISN_Basics_and_Overview.pdf)
-* EEV Blog, [*CM-DM Seperator for Dual LISNs*](https://www.eevblog.com/forum/projects/diy-dm-cm-seperator-for-emc-lisn-mate/)
+1. FesZ Electronics, [*EMC tutorials Building an LISN (1/3)*](https://www.youtube.com/watch?app=desktop&v=OEvkRW5vZNA)
+2. Tekbox, [*LISN Basics*](https://www.tekbox.com/product/LISN_Basics_and_Overview.pdf)
+3. Tekbox, [*Conducted emission measurement using the Tekbox 5μH LISN TBOH01*](../assets/pdf/AN_Conducted_Noise_Measurement_TekboxLISN_TBOH01_EMCview.pdf)
+4. EEV Blog, [*CM-DM Seperator for Dual LISNs*](https://www.eevblog.com/forum/projects/diy-dm-cm-seperator-for-emc-lisn-mate/)
+5. EEV Blog, [*5uH LISN for Spectrum Analyzer EMC/EMI work*](https://www.eevblog.com/forum/projects/5uh-lisn-for-spectrum-analyzer-emcemi-work/25/) 
+6. EEV Blog, [*DIY DM /CM Seperator for EMC - LISN Mate*](https://www.eevblog.com/forum/projects/diy-dm-cm-seperator-for-emc-lisn-mate/) 
+7. Agilent Technologies[*11947A Transient Limiter, Operation and Service Manual*](../assets/pdf/9018-07901.pdf)
+8. Würth / Rohde & Schwarz, [*D-LISN Dual 5 µH DIY DC LISN, Schematics, BOM and PCB*](../assets/pdf/D-LISN_DUAL_V010.PDF)
+9. Würth / Rohde & Schwarz, [*D-LISN Dual 5 µH DIY DC LISN, User Guide*](../assets/pdf/User%20guide%20-%20Dual%20DC%20LISN.pdf)
+10. Electronic Design, [*CISPR 25 Class 5: Evaluating EMI in Automotive Applications*](https://www.electronicdesign.com/technologies/power/article/21274517/)  
+11. Compliance Magazine, [*Automotive EMC Testing: CISPR 25, ISO 11452-2 and Equivalent Standards*](https://incompliancemag.com/automotive-emc-testing-cispr-25-iso-11452-2-and-equivalent-standards-part-1/)  
+12. IEC, [*CISPR 25: Vehicles, boats and internal combustion engines – Radio disturbance characteristics – Limits and methods of measurement for the protection of on-board receivers*](https://webstore.iec.ch/publication/7077)  
+13. ISO, [*ISO 7637-2: Road vehicles – Electrical disturbances from conduction and coupling – Part 2: Electrical transient conduction along supply lines only*](https://www.iso.org/standard/71201.html)
+
