@@ -1,12 +1,13 @@
-site_name: SCADYS.IO Technical Documentation
-site_url: https://docs.scadys.io
-site_description: Documentation for SCADYS.IO.
+site_name: SCADYS.io Technical Documentation
+site_url: https://docs.SCADYS.io
+site_description: Documentation for SCADYS.io.
 
 plugins:
   - search
   - include-markdown
 
 markdown_extensions:
+  - admonition
   - footnotes
   # - attr_list
   # - pymdownx.linktarget:
@@ -32,7 +33,7 @@ theme:
 extra:
   social:
     - icon: fontawesome/solid/envelope
-      link: https://scadys.io/contact/
+      link: https://SCADYS.io/contact/
       name: Contact Us
 
 extra_css:
@@ -134,22 +135,35 @@ nav:
       - Architecture: products/wti400/firmware/architecture.md
       - Configuration: products/wti400/firmware/config.md
       - Change Log: products/wti400/firmware/changelog.md
-  - CANBench Duo:
-    - CANBench Duo Home: products/canbench_duo/index.md
-    - Quick Reference: products/canbench_duo/quick_reference.md
+  - EMCBench CAN-LISN:
+    - EMCBench CAN-LISN Home: products/emcbench_can_lisn/index.md
+    - Quick Reference: products/emcbench_can_lisn/quick_reference.md
     - Circuit & PCB: 
-      - Overview: products/canbench_duo/circuit-pcb/index.md
-      - DC Supply Path: products/canbench_duo/circuit-pcb/dc_supply_path.md
-      - LISN RF Measurement Port: products/canbench_duo/circuit-pcb/lisn_rf.md
-      - CAN RF Measurement Port: products/canbench_duo/circuit-pcb/can_rf.md 
+      - Overview: products/emcbench_can_lisn/circuit-pcb/index.md
+      - DC Supply Path: products/emcbench_can_lisn/circuit-pcb/dc_supply_path.md
+      - LISN RF Measurement Port: products/emcbench_can_lisn/circuit-pcb/lisn_rf.md
+      - CAN RF Measurement Port: products/emcbench_can_lisn/circuit-pcb/can_rf.md 
+    - Compliance:
+      - Overview: products/emcbench_can_lisn/compliance/index.md
+      - CE Mark: products/emcbench_can_lisn/compliance/ce_mark.md
+      - UKCA Mark: products/emcbench_can_lisn/compliance/ukca_mark.md
+      - FCC Compliance: products/emcbench_can_lisn/compliance/fcc_compliance.md
+      - WEEE Compliance: products/emcbench_can_lisn/compliance/weee_compliance.md
+      - REACH Compliance: products/emcbench_can_lisn/compliance/reach_compliance.md
+      - RoHS (EU/UK): products/emcbench_can_lisn/compliance/rohs_eu_uk.md
+      - RoHS (China): products/emcbench_can_lisn/compliance/rohs_china.md
+      - RoHS Korea: products/emcbench_can_lisn/compliance/rohs_korea.md
+      - California Prop 65 warning: products/emcbench_can_lisn/compliance/prop65_warning.md
+      - EU/UK packaging EPR & labelling: products/emcbench_can_lisn/compliance/eu_uk_packaging_epr.md
     - Housing: 
-      - Overview: products/canbench_duo/housing/index.md
-      - Enclosure: products/canbench_duo/housing/enclosure.md
-      - Connectors: products/canbench_duo/housing/connectors.md
-      - Panel Overlays: products/canbench_duo/housing/overlays.md
-      - Assembly: products/canbench_duo/housing/assembly.md
-    - Using the CANBench Duo: products/canbench_duo/usage.md
-    - Bill of Materials: products/canbench_duo/bom.md
+      - Overview: products/emcbench_can_lisn/housing/index.md
+      - Enclosure: products/emcbench_can_lisn/housing/enclosure.md
+      - Connectors: products/emcbench_can_lisn/housing/connectors.md
+      - Panel Overlays: products/emcbench_can_lisn/housing/overlays.md
+      - Assembly: products/emcbench_can_lisn/housing/assembly.md
+    - Using the EMCBench CAN-LISN: products/emcbench_can_lisn/usage.md
+    - Bill of Materials: products/emcbench_can_lisn/bom.md
+    - Change Log: products/emcbench_can_lisn/changelog.md
 - Prototyping and Testing:
     - Overview: prototyping/index.md
     - Equipment:
@@ -158,7 +172,7 @@ nav:
         - Radios (Immunity Tools): prototyping/equipment/radios.md
         - RF & EMC Accessories:
           - Overview: prototyping/equipment/rf_emc_accessories/index.md
-          - LISN/CDN (CANBench Duo): prototyping/equipment/rf_emc_accessories/canbench_duo.md        
+          - LISN/CDN (EMCBench CAN-LISN): prototyping/equipment/rf_emc_accessories/emcbench_can_lisn.md        
         - PCB Assembly:
             - Overview: prototyping/equipment/pcb_assembly/index.md
             - Microscope (Vevor): prototyping/equipment/pcb_assembly/microscope.md
@@ -189,12 +203,40 @@ nav:
     - Templates:
       - Compliance Test Plan: assets\markdown\compliance_test_plan_template.md
       - Test Strategy Template: assets\markdown\test_strategy_template.md
-- About:
-  - About SCADYS.IO: about/index.md
-  - Contact Us: about/contact.md
-  - Privacy Policy: about/privacy_policy.md
-  - License: about/license.md
-  - Code of Conduct: about/code_of_conduct.md
-  - Contributing: about/contributing.md
-
+- Governance:
+  - About SCADYS.io: governance/index.md
+  - Product Tiers: governance/product_tiers.md
+  - Contact Us: governance/contact.md
+  - Privacy Policy: governance/privacy_policy.md
+  - License: governance/license.md
+  - Code of Conduct: governance/code_of_conduct.md
+  - Contributing: governance/contributing.md
+  - Compliance:
+    - Overview: governance/compliance/index.md
+    - Automotive E-mark (UNECE R10): governance/compliance/unece_r10.md
+    - California Prop 65 Warning: governance/compliance/prop65_warning.md
+    - CE Mark: governance/compliance/ce_mark.md
+    - CISPR 25 (Automotive Emissions): governance/compliance/cispr25_automotive.md
+    - Declaration of Conformity & Technical File: governance/compliance/doc_tech_file.md
+    - EN 60945 (Marine Equipment): governance/compliance/en_60945_marine.md
+    - EU/UK Packaging EPR & Labelling: governance/compliance/eu_uk_packaging_epr.md
+    - External Power Supply Compliance: governance/compliance/external_psu_compliance.md
+    - Factory Calibration – ISO/IEC 17025: governance/compliance/iso_17025_calibration.md
+    - FCC Compliance: governance/compliance/fcc_compliance.md
+    - IEC 61000-6-2 (Generic Immunity): governance/compliance/iec_61000_6_2.md
+    - IEC 61000-6-4 (Generic Emissions): governance/compliance/iec_61000_6_4.md
+    - Ingress Protection – IEC 60529: governance/compliance/iec_60529_ip.md
+    - ISED Canada (ICES-003 / ICES-001): governance/compliance/ised_compliance.md
+    - ISO 11452-4 (BCI Immunity): governance/compliance/iso_11452_4.md
+    - ISO 7637-2 (Supply Transients): governance/compliance/iso_7637_2.md
+    - Quality Management – ISO 9001: governance/compliance/iso_9001_qms.md
+    - Radio Equipment Directive (RED): governance/compliance/red_compliance.md
+    - RCM (Australia/New Zealand EMC): governance/compliance/rcm_emc.md
+    - REACH (EU Chemical): governance/compliance/reach_compliance.md
+    - RoHS (China SJ/T 11364): governance/compliance/rohs_china.md
+    - RoHS (EU/UK): governance/compliance/rohs_eu_uk.md
+    - RoHS (Korea K-RoHS): governance/compliance/rohs_korea.md
+    - Safety – IEC/EN/UL 61010-1: governance/compliance/safety_61010_1.md
+    - UKCA Mark: governance/compliance/ukca_mark.md
+    - WEEE (EU): governance/compliance/weee_compliance.md
 

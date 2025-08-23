@@ -19,4 +19,4 @@ A generalized plan to sequence bench reconnaissance, immunity spot‑checks, and
 
 This matrix outlines common standards and tests typically applicable to NMEA 2000 devices. Adapt per product.
 
-{% include-markdown "assets/html/compliance_matrix.html" %}
+{% include-markdown "assets/include/compliance_matrix_n2k.html" %}

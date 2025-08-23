@@ -83,10 +83,21 @@
   table-layout: fixed;
 }
 
+/* Ensure table cells expand and wrap properly */
 .md-typeset__table td,
 .md-typeset__table th {
   overflow-wrap: break-word;
   word-wrap: break-word;
   white-space: normal;
+}
+
+/* Footnote styling for compliance tables */
+.md-typeset span.footnote {
+  display: block;
+  font-size: 0.85em;
+  color: var(--md-default-fg-color--light);
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+  line-height: 1.3;
 }
 

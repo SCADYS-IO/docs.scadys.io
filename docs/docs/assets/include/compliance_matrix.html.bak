@@ -1,0 +1,145 @@
+<table>
+  <colgroup>
+    <col style="width:40%">
+    <col style="width:20%">
+    <col style="width:20%">
+    <col style="width:20%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Requirement</th>
+      <th class="centered">Retail Products (Passive)</th>
+      <th class="centered">Retail Products (RF Radiators)<sup>*</sup></th>
+      <th class="centered">DIY Kits and PCBs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://eur-lex.europa.eu/eli/dir/2014/30/oj">EU CE – EMC Directive 2014/30/EU</a> (EN/IEC 61326‑1)</td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://www.gov.uk/guidance/emc-regulations-2016">UKCA – UK EMC Regulations 2016</a> (EN/IEC 61326‑1)</td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15/subpart-B">US FCC Part 15B SDoC</a> (unintentional radiator)</td>
+      <td class="centered">❌</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://ised-isde.canada.ca/site/spectrum-management-telecommunications/en/devices-and-equipment/interference-causing-equipment-standards-ices/ices-003-information-technology-equipment-including-digital-apparatus">Canada ISED ICES‑003/ICES‑001</a></td>
+      <td class="centered">❌</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://www.acma.gov.au/industry/supplier-compliance/regulatory-compliance-mark-rcm">AU/NZ RCM (EMC)</a> – Supplier Declaration</td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://webstore.iec.ch/publication/1283">Safety to IEC/EN/UL 61010‑1</a></td>
+      <td class="centered">❌</td><td class="centered">❌</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td>US/CA NRTL/CB safety listing to <a href="https://webstore.iec.ch/publication/1283">61010‑1</a></td>
+      <td class="centered">❌</td><td class="centered">❌</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://eur-lex.europa.eu/eli/dir/2011/65/oj">EU RoHS</a> / <a href="https://www.gov.uk/guidance/rohs-compliance-and-guidance">UK RoHS</a></td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://environment.ec.europa.eu/topics/waste-and-recycling/waste-electrical-and-electronic-equipment-weee_en">WEEE producer obligations (EU/UK)</a></td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://echa.europa.eu/regulations/reach/authorisation/reach-authorisation-process">REACH Art. 33 SVHC communication</a> (EU/EEA)</td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">✅</td>
+    </tr>
+    <tr>
+      <td><a href="https://standards.globalspec.com/std/14383091/sj-t-11364">China RoHS labelling (SJ/T 11364)</a></td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://www.kats.go.kr/en/kats/statutes/view.do?seq=53">K‑RoHS (Korea)</a> &amp; related EPR</td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td>EU/UK packaging <a href="https://environment.ec.europa.eu/topics/waste-and-recycling/packaging-and-packaging-waste_en">EPR &amp; labelling</a></td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">✅</td>
+    </tr>
+    <tr>
+      <td><a href="https://oehha.ca.gov/proposition-65">California Prop 65 warning</a> (if exposure)</td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">✅</td>
+    </tr>
+    <tr>
+      <td>EU/UK <a href="https://ec.europa.eu/docsroom/documents/45705">DoC &amp; Technical File</a> (EMC, RoHS, etc.)</td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://www.iso.org/standard/66912.html">ISO/IEC 17025</a>‑traceable factory calibration</td>
+      <td class="centered">❌</td><td class="centered">❌</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td>Manufacturer QMS (<a href="https://www.iso.org/iso-9001-quality-management.html">ISO 9001</a>)</td>
+      <td class="centered">❌</td><td class="centered">❌</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td>External AC/DC PSU compliance (if supplied) – <a href="https://webstore.iec.ch/publication/7574">IEC/EN 62368‑1</a> or <a href="https://webstore.iec.ch/publication/150">IEC/EN 61558</a></td>
+      <td class="centered">✅</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://unece.org/transport/vehicle-regulations/un-regulation-no-10-electromagnetic-compatibility">Automotive E‑mark (UNECE R10)</a></td>
+      <td class="centered">❌</td><td class="centered">❌</td><td class="centered">N/A</td>
+    </tr>
+    <tr>
+      <td><a href="https://eur-lex.europa.eu/eli/dir/2014/53/oj">Radio Equipment Directive (RED)</a> / UK radio – only if wireless added</td>
+      <td class="centered">❌</td><td class="centered">✅</td><td class="centered">N/A</td>
+    </tr>
+ <tr>
+  <td><a href="https://webstore.iec.ch/publication/2212">EN 60945</a> (Marine equipment)</td>
+  <td class="centered">✅</td>
+  <td class="centered">✅</td>
+  <td class="centered">N/A</td>
+</tr>
+<tr>
+  <td><a href="https://webstore.iec.ch/publication/2402">CISPR 25</a> (Automotive components)</td>
+  <td class="centered">✅</td>
+  <td class="centered">✅</td>
+  <td class="centered">N/A</td>
+</tr>
+<tr>
+  <td><a href="https://www.iso.org/standard/38464.html">ISO 7637-2</a> (Automotive supply transients)</td>
+  <td class="centered">✅</td>
+  <td class="centered">✅</td>
+  <td class="centered">N/A</td>
+</tr>
+<tr>
+  <td><a href="https://www.iso.org/standard/51395.html">ISO 11452-4</a> (Automotive BCI immunity)</td>
+  <td class="centered">✅</td>
+  <td class="centered">✅</td>
+  <td class="centered">N/A</td>
+</tr>
+<tr>
+  <td><a href="https://webstore.iec.ch/publication/2728">IEC 61000-6-4</a> (Generic industrial emissions)</td>
+  <td class="centered">✅</td>
+  <td class="centered">✅</td>
+  <td class="centered">N/A</td>
+</tr>
+<tr>
+  <td><a href="https://webstore.iec.ch/publication/2727">IEC 61000-6-2<sup>†</sup></a> (Generic industrial immunity)</td>
+  <td class="centered">✅</td>
+  <td class="centered">✅</td>
+  <td class="centered">N/A</td>
+</tr>
+<tr>
+  <td><a href="https://webstore.iec.ch/publication/2452">IEC 60529</a> (IP ingress protection)</td>
+  <td class="centered">✅</td>
+  <td class="centered">✅</td>
+  <td class="centered">N/A</td>
+</tr>
+  </tbody>
+</table>
+<span class="footnote"><sup>*</sup> RF Radiators include radio transmitters and digital apparatus (unintentional radiators)</span>
+<span class="footnote"><sup>†</sup> IEC 61000‑6‑2/‑6‑4 apply when no product‑family EMC standard (e.g. EN 61326‑1, EN 60945) is applicable.</span>
+<span class="footnote">✅ this requirement applies to the product category.</span>
+<span class="footnote">❌ requirement does not apply to this category or current design.</span>
+<span class="footnote">N/A requirement not applicable at point of sale because the product is not supplied as a finished apparatus; compliance obligations attach to the assembler of the finished equipment.</span>

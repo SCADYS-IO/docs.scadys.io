@@ -1,9 +1,14 @@
-<!-- DOCS.SCADYS.IO -->
+<!-- DOCS.SCADYS.io -->
+
+## 0.1.14
+
+- Renamed CANBench Duo to EMCBench CAN-LISN.
+- Added generic compliance section
 
 ## 0.1.13
 
 - Completed CANBench Duo DC Supply Path design docs.
-- Uploaded to docs.scadys.io
+- Uploaded to docs.SCADYS.io
 
 ## 0.1.12
 
