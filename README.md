@@ -1,2 +1,2 @@
-# MDD400_Hardware
-Design and production of the MDD400's PCB, display and housing
+# docs.scadys.io
+Detailed engineering reference for the SCADYS.IO product family
