@@ -1,5 +1,9 @@
 <!-- DOCS.SCADYS.io -->
 
+## 0.1.15
+
+- Added some WTI400 documentation.
+
 ## 0.1.14
 
 - Renamed CANBench Duo to EMCBench CAN-LISN.

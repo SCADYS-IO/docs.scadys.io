@@ -40,7 +40,7 @@ The MDD400 was developed during a full circumnavigation, with extensive field te
 
 This documentation reflects the current pre-production design revision.
 
-See [License Terms](../../governance/license.md) for conditions of use and intellectual property ownership.
+See [License Terms](../../about/license.md) for conditions of use and intellectual property ownership.
 
 ## Datasheets and References
 

@@ -57,4 +57,4 @@ The operating philosophy is to treat per-line LISN outputs as the truth for pre-
 2. Compliance Magazine, [*Automotive EMC Testing: CISPR 25, ISO 11452-2 and Equivalent Standards*](https://incompliancemag.com/automotive-emc-testing-cispr-25-iso-11452-2-and-equivalent-standards-part-1/)  
 3. IEC, [*CISPR 25: Vehicles, boats and internal combustion engines – Radio disturbance characteristics – Limits and methods of measurement for the protection of on-board receivers*](https://webstore.iec.ch/publication/7077)  
 4. ISO, [*ISO 7637-2: Road vehicles – Electrical disturbances from conduction and coupling – Part 2: Electrical transient conduction along supply lines only*](https://www.iso.org/standard/71201.html)
-5. YONGU Enclosure, [*YONGU DIY Aluminum Split Junction Box H10C 88*38mm*](https://www.yg-enclosure.com/product/yongu-diy-aluminum-split-junction-box-h10c-88-38mm.html)
+5. YONGU Enclosure, [*YONGU Split Aluminum Handheld Enclosure H06 63*35mm*](https://www.yg-enclosure.com/product/yongu-split-aluminum-handheld-enclosure-h06-63-35mm.html)
