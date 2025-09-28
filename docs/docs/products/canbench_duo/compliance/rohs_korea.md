@@ -35,7 +35,7 @@ South Korea regulates hazardous substances in electrical and electronic equipmen
 
 ## Why it applies
 
-The EMCBench CAN-LISN, when supplied as a finished unit in Korea, falls under the scope of K-RoHS. The regulation limits the same set of hazardous substances as EU RoHS, at the same thresholds. Kits and PCB assemblies are not considered finished products at the point of sale, so obligations transfer to the assembler.
+The CANBench Duo, when supplied as a finished unit in Korea, falls under the scope of K-RoHS. The regulation limits the same set of hazardous substances as EU RoHS, at the same thresholds. Kits and PCB assemblies are not considered finished products at the point of sale, so obligations transfer to the assembler.
 
 ## Achieving compliance
 

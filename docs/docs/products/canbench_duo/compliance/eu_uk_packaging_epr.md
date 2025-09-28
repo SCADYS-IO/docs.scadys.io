@@ -35,7 +35,7 @@ The European Union regulates packaging under [*Directive 94/62/EC on packaging a
 
 ## Why it applies
 
-All versions of the EMCBench CAN-LISN include packaging when supplied to customers, whether as a finished unit or kit. Therefore, packaging placed on the EU or UK market is subject to EPR obligations. Producers are required to register, report packaging placed on the market, and finance recovery and recycling through national compliance schemes.
+All versions of the CANBench Duo include packaging when supplied to customers, whether as a finished unit or kit. Therefore, packaging placed on the EU or UK market is subject to EPR obligations. Producers are required to register, report packaging placed on the market, and finance recovery and recycling through national compliance schemes.
 
 ## Achieving compliance
 

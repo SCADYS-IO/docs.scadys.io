@@ -35,7 +35,7 @@ China regulates hazardous substances in electrical and electronic products under
 
 ## Why it applies
 
-Finished units of the EMCBench CAN-LISN placed on the Chinese market are considered electronic products and must comply with China RoHS requirements. This includes the presence of hazardous substances above permitted limits and the declaration of an EPUP. Kits and PCB assemblies are not finished products and therefore do not fall under the regulation at the point of sale.
+Finished units of the CANBench Duo placed on the Chinese market are considered electronic products and must comply with China RoHS requirements. This includes the presence of hazardous substances above permitted limits and the declaration of an EPUP. Kits and PCB assemblies are not finished products and therefore do not fall under the regulation at the point of sale.
 
 ## Achieving compliance
 

@@ -1,10 +1,10 @@
-# EMCBench CAN-LISN
+# CANBench Duo
 
-The EMCBench CAN-LISN is a dual-line DC LISN with integrated CAN common-mode monitor.
+The CANBench Duo is a dual-line DC LISN with integrated CAN common-mode monitor.
 
 ## Functional Specification
 
-The EMCBench CAN-LISN follows the principle that a pre-compliance fixture should emulate laboratory test conditions as closely as possible, while remaining accessible and inexpensive for developers. The design philosophy is to provide per-line accuracy for pre-compliance testing and additional diagnostic tools that support practical debugging, all in a compact, open-hardware package.
+The CANBench Duo follows the principle that a pre-compliance fixture should emulate laboratory test conditions as closely as possible, while remaining accessible and inexpensive for developers. The design philosophy is to provide per-line accuracy for pre-compliance testing and additional diagnostic tools that support practical debugging, all in a compact, open-hardware package.
 
 It integrates:
 
@@ -14,9 +14,9 @@ It integrates:
 
 ## Use Case
 
-The EMCBench CAN-LISN is designed with the philosophy that inexpensive tools such as the [TinySA](https://tinysa.org/wiki/) spectrum analyzer can still provide meaningful insights if connected through a well-defined and repeatable measurement fixture. By using SMA outputs, the fixture interfaces directly with such analyzers. Likewise, many CAN devices in marine and industrial settings use A-coded Micro-C 5-pin connectors, which are therefore adopted here.
+The CANBench Duo is designed with the philosophy that inexpensive tools such as the [TinySA](https://tinysa.org/wiki/) spectrum analyzer can still provide meaningful insights if connected through a well-defined and repeatable measurement fixture. By using SMA outputs, the fixture interfaces directly with such analyzers. Likewise, many CAN devices in marine and industrial settings use A-coded Micro-C 5-pin connectors, which are therefore adopted here.
 
-The EMCBench CAN-LISN is intended for conducted emissions pre-compliance testing of DC-powered CANbus devices, including NMEA 2000 marine electronics and other automotive or industrial control systems. Typical applications include:
+The CANBench Duo is intended for conducted emissions pre-compliance testing of DC-powered CANbus devices, including NMEA 2000 marine electronics and other automotive or industrial control systems. Typical applications include:
 
 - verifying conducted emissions performance during development;
 - screening for compliance before third-party lab testing; and
@@ -24,7 +24,7 @@ The EMCBench CAN-LISN is intended for conducted emissions pre-compliance testing
 
 ## Connections
 
-The connection philosophy is to make the EMCBench CAN-LISN simple, familiar, and interoperable with both laboratory and field equipment. CAN devices often rely on standardized connectors, while test equipment relies on banana sockets and SMA ports. The fixture reflects this by providing each style of connection in parallel.
+The connection philosophy is to make the CANBench Duo simple, familiar, and interoperable with both laboratory and field equipment. CAN devices often rely on standardized connectors, while test equipment relies on banana sockets and SMA ports. The fixture reflects this by providing each style of connection in parallel.
 
 ### DeviceNet M12 (5-pin A-coded)
 

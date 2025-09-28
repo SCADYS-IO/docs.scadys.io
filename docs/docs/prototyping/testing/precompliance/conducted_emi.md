@@ -1,6 +1,6 @@
 # Conducted Emissions
 
-<h3>Conducted Emissions Standards – EMCBench CAN-LISN Focus</h3>
+<h3>Conducted Emissions Standards – CANBench Duo Focus</h3>
 <table>
   <colgroup>
     <col style="width: 25%;">

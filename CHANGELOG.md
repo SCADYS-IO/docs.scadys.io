@@ -6,7 +6,7 @@
 
 ## 0.1.14
 
-- Renamed CANBench Duo to EMCBench CAN-LISN.
+- Renamed CANBench Duo to CANBench Duo.
 - Added generic compliance section
 
 ## 0.1.13

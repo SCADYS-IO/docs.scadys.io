@@ -35,7 +35,7 @@ The European Union regulates end-of-life management of electrical and electronic
 
 ## Why it applies
 
-When the EMCBench CAN-LISN is supplied as a finished product (Lab Grade or Pre-compliance Grade), it qualifies as electrical and electronic equipment under WEEE. This means the manufacturer is responsible for registering as a producer, marking the product, and financing collection, recycling, and environmentally sound disposal of units placed on the market. Kits and PCB assemblies are not finished apparatus and therefore do not fall under WEEE at the point of sale.
+When the CANBench Duo is supplied as a finished product (Lab Grade or Pre-compliance Grade), it qualifies as electrical and electronic equipment under WEEE. This means the manufacturer is responsible for registering as a producer, marking the product, and financing collection, recycling, and environmentally sound disposal of units placed on the market. Kits and PCB assemblies are not finished apparatus and therefore do not fall under WEEE at the point of sale.
 
 ## Achieving compliance
 

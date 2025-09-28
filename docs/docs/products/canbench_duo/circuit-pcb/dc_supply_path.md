@@ -1,6 +1,6 @@
 # DC Supply Path
 
-This page explains the DC supply path used in *EMCBench CAN-LISN*: from the front‑panel supply posts, through polarity protection and a compact PSU pre‑filter, into the dual‑line 5 µH LISN ladder that feeds the DUT. The intent is to survive common lab mishaps (reverse battery, ESD/benign surges), keep the bench supply’s RF hash out of the measurement ground, and present the stable impedance expected of a CISPR 25 artificial network when making conducted‑emission measurements.
+This page explains the DC supply path used in *CANBench Duo*: from the front‑panel supply posts, through polarity protection and a compact PSU pre‑filter, into the dual‑line 5 µH LISN ladder that feeds the DUT. The intent is to survive common lab mishaps (reverse battery, ESD/benign surges), keep the bench supply’s RF hash out of the measurement ground, and present the stable impedance expected of a CISPR 25 artificial network when making conducted‑emission measurements.
 
 ![DC Supply Path Block Diagram](../assets/images/dc_supply_path.png)
 

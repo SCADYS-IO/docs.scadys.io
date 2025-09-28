@@ -34,7 +34,7 @@
 The European Union’s electromagnetic compatibility framework is set by [*Directive 2014/30/EU on electromagnetic compatibility (EMC)*](https://eur-lex.europa.eu/eli/dir/2014/30/oj). A finished unit placed on the EU market must meet essential requirements on emissions and immunity and bear the CE marking. For laboratory and measurement equipment, the typical harmonised standard is [*EN/IEC 61326-1*](https://webstore.iec.ch/publication/4232) (emissions via CISPR 11; immunity via IEC 61000-4-x).
 
 ## Why it applies
-The EMCBench CAN-LISN, when supplied as a finished unit, is apparatus intended for laboratory use. Even without digital clocks above 9 kHz, a finished instrument with internal power distribution, cabling, and connectors can emit or be affected by electromagnetic disturbance in normal use. As a result, the EMC Directive applies to ensure acceptable emissions and adequate immunity in the intended environment.
+The CANBench Duo, when supplied as a finished unit, is apparatus intended for laboratory use. Even without digital clocks above 9 kHz, a finished instrument with internal power distribution, cabling, and connectors can emit or be affected by electromagnetic disturbance in normal use. As a result, the EMC Directive applies to ensure acceptable emissions and adequate immunity in the intended environment.
 
 ## Achieving compliance
 

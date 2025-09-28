@@ -33,7 +33,7 @@ The sub-circuit elements of the RF measurement ports are shown in the block diag
 
 The RF measurement ports form the final stage of the dual 5 µH LISN channels and provide analyzer-safe outputs for conducted emissions testing. In accordance with [CISPR 25](https://webstore.iec.ch/publication/7077) and [ISO 7637-2](https://www.iso.org/standard/71201.html), the ports must transfer the noise present on each DC conductor while preventing DC bias, transients, and over-voltage from reaching the spectrum analyzer. 
 
-The EMCBench CAN-LISN is intended as a pre-compliance fixture. The design therefore prioritises fidelity of measurement, predictable impedance, and protection of external equipment, while remaining practical in terms of size, cost, and assembly:
+The CANBench Duo is intended as a pre-compliance fixture. The design therefore prioritises fidelity of measurement, predictable impedance, and protection of external equipment, while remaining practical in terms of size, cost, and assembly:
 
 * the per-line LISN outputs are the compliance-relevant measurement points;
 * diagnostic ports such as common-mode or differential-mode monitors are used only for comparative troubleshooting;

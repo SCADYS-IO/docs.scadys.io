@@ -35,7 +35,7 @@ The European Union regulates restrictions on certain hazardous substances under 
 
 ## Why it applies
 
-When the EMCBench CAN-LISN is supplied as a finished unit, it is classed as electrical and electronic equipment and must comply with RoHS substance restrictions. This ensures that hazardous materials are minimised in solder, connectors, cables, and other components. Kits and PCB assemblies are not finished apparatus at the point of sale, so the compliance obligation transfers to the assembler when the unit is completed.
+When the CANBench Duo is supplied as a finished unit, it is classed as electrical and electronic equipment and must comply with RoHS substance restrictions. This ensures that hazardous materials are minimised in solder, connectors, cables, and other components. Kits and PCB assemblies are not finished apparatus at the point of sale, so the compliance obligation transfers to the assembler when the unit is completed.
 
 ## Achieving compliance
 

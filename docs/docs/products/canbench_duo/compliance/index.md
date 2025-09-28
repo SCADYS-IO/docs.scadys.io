@@ -1,7 +1,7 @@
 # Compliance
 
 ## Product functional specification
-The EMCBench CAN-LISN is a measurement fixture used for electromagnetic compatibility pre-compliance testing of DC-powered CAN devices. It integrates dual 5 µH DC line impedance stabilization networks on the supply conductors and an AC-coupled monitor for common-mode noise on the CAN lines. All outputs are provided on 50 Ω SMA connectors for analyzer input.
+The CANBench Duo is a measurement fixture used for electromagnetic compatibility pre-compliance testing of DC-powered CAN devices. It integrates dual 5 µH DC line impedance stabilization networks on the supply conductors and an AC-coupled monitor for common-mode noise on the CAN lines. All outputs are provided on 50 Ω SMA connectors for analyzer input.
 
 ## Target markets
 The product is intended for use in:
@@ -16,7 +16,7 @@ The product is intended for use in:
 - PCB with THT components kit (PCB pre-populated with SMD components only).  
 
 ## Compliance overview
-Regulatory requirements depend on the form in which the product is supplied and the market of sale. When placed on the market as a finished unit, the EMCBench CAN-LISN must meet electromagnetic compatibility and product safety standards, as well as regional substance restriction and waste regulations. Kits and PCB assemblies shift compliance obligations to the assembler, except for substance disclosure and packaging responsibilities. The matrix below summarizes which requirements apply to each product option.
+Regulatory requirements depend on the form in which the product is supplied and the market of sale. When placed on the market as a finished unit, the CANBench Duo must meet electromagnetic compatibility and product safety standards, as well as regional substance restriction and waste regulations. Kits and PCB assemblies shift compliance obligations to the assembler, except for substance disclosure and packaging responsibilities. The matrix below summarizes which requirements apply to each product option.
 
 {% include-markdown "../assets/include/compliance_matrix.html" %}
 

@@ -35,7 +35,7 @@ The State of California regulates chemical exposure warnings under [*Proposition
 
 ## Why it applies
 
-All versions of the EMCBench CAN-LISN may contain components, solder, plastics, or finishes that could include trace amounts of Proposition 65-listed substances. Even when the product complies with EU RoHS and REACH restrictions, Proposition 65 obligations can still apply because its scope is broader and includes chemicals at very low thresholds. The duty is on businesses selling into California to provide clear and reasonable warnings if exposures exceed safe-harbor levels.
+All versions of the CANBench Duo may contain components, solder, plastics, or finishes that could include trace amounts of Proposition 65-listed substances. Even when the product complies with EU RoHS and REACH restrictions, Proposition 65 obligations can still apply because its scope is broader and includes chemicals at very low thresholds. The duty is on businesses selling into California to provide clear and reasonable warnings if exposures exceed safe-harbor levels.
 
 ## Achieving compliance
 

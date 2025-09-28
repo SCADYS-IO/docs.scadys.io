@@ -31,11 +31,11 @@
 
 ## Scope
 
-The European Union regulates the use of chemicals in articles under [*Regulation (EC) No 1907/2006 on the Registration, Evaluation, Authorisation and Restriction of Chemicals (REACH)*](https://echa.europa.eu/regulations/reach/authorisation/reach-authorisation-process). The relevant duty for equipment such as the EMCBench CAN-LISN is Article 33, which requires communication of information about substances of very high concern (SVHCs) when present above 0.1 % weight by weight in any article.
+The European Union regulates the use of chemicals in articles under [*Regulation (EC) No 1907/2006 on the Registration, Evaluation, Authorisation and Restriction of Chemicals (REACH)*](https://echa.europa.eu/regulations/reach/authorisation/reach-authorisation-process). The relevant duty for equipment such as the CANBench Duo is Article 33, which requires communication of information about substances of very high concern (SVHCs) when present above 0.1 % weight by weight in any article.
 
 ## Why it applies
 
-All forms of the EMCBench CAN-LISN, including finished units, kits, and PCB assemblies, are considered articles under REACH. Therefore, the duty to communicate SVHC information applies regardless of the sales format. The requirement ensures that downstream users and consumers are informed about the presence of hazardous substances in components, connectors, PCBs, or enclosures.
+All forms of the CANBench Duo, including finished units, kits, and PCB assemblies, are considered articles under REACH. Therefore, the duty to communicate SVHC information applies regardless of the sales format. The requirement ensures that downstream users and consumers are informed about the presence of hazardous substances in components, connectors, PCBs, or enclosures.
 
 ## Achieving compliance
 

@@ -1,6 +1,5 @@
 # Contributing
 
-
 ## Global Documentation Style & Formatting Guidelines
 
 The following guidelines should be followed when writing documentation:
@@ -79,7 +78,7 @@ And this is the result in the web page:
 
 ### Structure and navigation
 - documentation organized according to MkDocs nav structures defined for each product  
-- consistency with canonical `mkdocs.yml` structure across products (e.g. MDD400, WTI400, EMCBench CAN-LISN)  
+- consistency with canonical `mkdocs.yml` structure across products (e.g. MDD400, WTI400, CANBench Duo)  
 
 ### Tables
 - use `<colgroup>` and `class="centered"` for alignment  
@@ -105,5 +104,5 @@ And this is the result in the web page:
 - `assets/include/` for reusable HTML/MD snippets  
 
 ### Navigation
-- follow canonical `mkdocs.yml` structure for each product (MDD400, WTI400, EMCBench CAN-LISN)  
+- follow canonical `mkdocs.yml` structure for each product (MDD400, WTI400, CANBench Duo)  
 

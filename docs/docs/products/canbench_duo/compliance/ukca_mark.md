@@ -35,7 +35,7 @@ The United Kingdom regulates electromagnetic compatibility under the [*Electroma
 
 ## Why it applies
 
-The EMCBench CAN-LISN, when supplied as a finished unit, is classed as apparatus under the UK EMC Regulations. Even though no digital circuits above 9 kHz are present, the assembly can generate or be affected by electromagnetic disturbance. The EMC framework ensures emissions are limited and immunity is sufficient for use in laboratory environments.
+The CANBench Duo, when supplied as a finished unit, is classed as apparatus under the UK EMC Regulations. Even though no digital circuits above 9 kHz are present, the assembly can generate or be affected by electromagnetic disturbance. The EMC framework ensures emissions are limited and immunity is sufficient for use in laboratory environments.
 
 ## Achieving compliance
 

@@ -15,7 +15,7 @@ Every product variant is assigned a unique SKU code—also referred to as the *V
 The format is `[ProductCode]-v[Major].[Minor]-[FeatureCode]-[ColorCode]-[TierCode]`.
 
 !!! example "`03-v1.0-CAN-BLK-P`"  
-    - Product:        EMCBench DC‑LISN (`03`)    
+    - Product:        CANBench Duo (`03`)    
     - Version:        1.0    
     - Feature set:    CAN-enabled   
     - Colour:         Satin Black    
@@ -29,7 +29,7 @@ Individual units are assigned sequential serial numbers during production. The f
 
 !!! example "`001578-0825-03-v1.0-CAN-BLK-P`"   
     
-    This identifies a black EMCBench DC-LISN with the CAN option, serial #1578, assembled as a prototype in August 2025.
+    This identifies a black CANBench DC-LISN with the CAN option, serial #1578, assembled as a prototype in August 2025.
 
 Serial numbers appear on:
 
