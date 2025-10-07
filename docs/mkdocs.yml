@@ -173,32 +173,10 @@ nav:
     - Change Log: products/canbench_duo/changelog.md
   - CANBench TrueZ:
     - CANBench TrueZ Home: products/canbench_truez/index.md
-    # - Quick Reference: products/canbench_truez/quick_reference.md
-    # - Circuit & PCB:
-    #   - Overview: products/canbench_truez/circuit-pcb/index.md
-    #   - DC Supply Path: products/canbench_truez/circuit-pcb/dc_supply_path.md
-    #   - TrueZ Measurement Port: products/canbench_truez/circuit-pcb/truez_measurement_port.md
-    # - Compliance:
-    #   - Overview: products/canbench_truez/compliance/index.md
-    #   - CE Mark: products/canbench_truez/compliance/ce_mark.md
-    #   - UKCA Mark: products/canbench_truez/compliance/ukca_mark.md
-    #   - FCC Compliance: products/canbench_truez/compliance/fcc_compliance.md
-    #   - WEEE Compliance: products/canbench_truez/compliance/weee_compliance.md
-    #   - REACH Compliance: products/canbench_truez/compliance/reach_compliance.md
-    #   - RoHS (EU/UK): products/canbench_truez/compliance/rohs_eu_uk.md
-    #   - RoHS (China): products/canbench_truez/compliance/rohs_china.md
-    #   - RoHS Korea: products/canbench_truez/compliance/rohs_korea.md
-    #   - California Prop 65 warning: products/canbench_truez/compliance/prop65_warning.md
-    #   - EU/UK packaging EPR & labelling: products/canbench_truez/compliance/eu_uk_packaging_epr.md
-    # - Housing:
-    #   - Overview: products/canbench_truez/housing/index.md
-    #   - Enclosure: products/canbench_truez/housing/enclosure.md
-    #   - Connectors: products/canbench_truez/housing/connectors.md
-    #   - Panel Overlays: products/canbench_truez/housing/overlays.md
-    #   - Assembly: products/canbench_truez/housing/assembly.md
-    # - Using the CANBench TrueZ: products/canbench_truez/usage.md
-    # - Bill of Materials: products/canbench_truez/bom.md
-    # - Change Log: products/canbench_truez/changelog.md
+    - Circuit & PCB: products/canbench_truez/circuit_pcb.md
+    - Compliance: products/canbench_truez/compliance.md
+    - Enclosure: products/canbench_truez/enclosure.md
+    - Using the CANBench TrueZ: products/canbench_truez/usage.md
 - Prototyping and Testing:
     - Overview: prototyping/index.md
     - Equipment:
