@@ -1,5 +1,9 @@
 <!-- DOCS.SCADYS.io -->
 
+## 0.1.16 
+
+* CANBench TrueZ docs added.
+
 ## 0.1.15
 
 - Added some WTI400 documentation.
