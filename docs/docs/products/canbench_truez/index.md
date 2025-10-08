@@ -1,7 +1,11 @@
 
 # CANBench TrueZ
 
-The CANBench TrueZ is a compact common‑mode / differential‑mode (CM/DM) noise separator for conducted‑emissions diagnostics on DC‑powered CANbus devices, including NMEA 2000 equipment. It is a companion to the CANBench Duo DC LISN, providing mode separation after the LISN’s RF measurement port to support fast A/B testing, troubleshooting, and pre‑compliance checks before formal lab work. The device follows the separator topology described by [Wang, Lee, and Odendaal](assets/pdf/ieee_cps_cm_dm.pdf), which yields real‑world, repeatable results with simple 50 Ω test gear when built and terminated correctly. Refer to the *Wang, Lee & Odendaal* paper for the method, assumptions, and limits.
+The CANBench TrueZ is a compact common‑mode / differential‑mode (CM/DM) noise separator for conducted‑emissions diagnostics on DC‑powered CANbus devices, including NMEA 2000 equipment. 
+
+![CANBench TrueZ](assets/images/canbench_truez_render.png)
+
+It is a companion to the CANBench Duo DC LISN, providing mode separation after the LISN’s RF measurement port to support fast A/B testing, troubleshooting, and pre‑compliance checks before formal lab work. The device follows the separator topology described by [Wang, Lee, and Odendaal](assets/pdf/ieee_cps_cm_dm.pdf), which yields real‑world, repeatable results with simple 50 Ω test gear when built and terminated correctly. Refer to the *Wang, Lee & Odendaal* paper for the method, assumptions, and limits.
 
 ## Functional specification
 

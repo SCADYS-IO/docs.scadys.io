@@ -1,60 +1,125 @@
-# CANBench Duo
+# Enclosure
 
-The CANBench Duo is a dual-line DC LISN with integrated CAN common-mode monitor.
+This page describes the CANBench TrueZ mechanical design, materials and finish. It also details the assembly sequence and the external markings applied to the product.
 
-## Functional Specification
+## Design
 
-The CANBench Duo follows the principle that a pre-compliance fixture should emulate laboratory test conditions as closely as possible, while remaining accessible and inexpensive for developers. The design philosophy is to provide per-line accuracy for pre-compliance testing and additional diagnostic tools that support practical debugging, all in a compact, open-hardware package.
+The enclosure is a compact split‑extrusion with removable end plates, supplied by Yongu (YONGU Industrial). It was selected to provide a rigid RF reference for the SMA shells while keeping the assembly simple and repeatable. Dimensions are based on the manufacturer’s [drawing for the YONGU H06 series](assets/pdf/YG-H06_Drawings.pdf) and should be verified against the latest revision when ordering.
 
-It integrates:
+The two halves of the enclosure are 6063‑T5 extruded aluminium. The end plates are 5052‑H32 aluminium sheet. Countersunk assembly screws are *M2.5 × 6* per GB‑T 819.1.
 
-- dual 5 µH DC LISN channels, compliant with [CISPR 25](https://webstore.iec.ch/publication/7077) / [ISO 7637](https://www.iso.org/standard/71201.html) impedance requirements, for measuring conducted emissions on both the positive (`NET-S`) and negative (`NET-C`) supply conductors;
-- a high-impedance, AC-coupled CAN common-mode monitor for measuring noise on the CANH/CANL pair without disrupting communication; and
-- analyzer-safe outputs with SMA connectors for each LISN channel and the common-mode monitor, suitable for 50 Ω measurement equipment.
+The body and plates use a black anodized finish. Product identification, I/O labels and compliance marks are laser‑etched on the plates. The anodizing is removed (laser-etched) around the drilled openings for the SMA connectors to ensure a low impedance contact with the connectors and their saw-tooth washers.
 
-## Use Case
+The following dimensions were taken from the [drawing](assets/pdf/YG-H06_Drawings.pdf):
 
-The CANBench Duo is designed with the philosophy that inexpensive tools such as the [TinySA](https://tinysa.org/wiki/) spectrum analyzer can still provide meaningful insights if connected through a well-defined and repeatable measurement fixture. By using SMA outputs, the fixture interfaces directly with such analyzers. Likewise, many CAN devices in marine and industrial settings use A-coded Micro-C 5-pin connectors, which are therefore adopted here.
+* outside body dimensions are 78 mm x 63 mm x 25 mm (L x W x H);
+* internal slide length that accepts the PCB is 75 mm (± 0.1 mm) 
+* faceplates are attached with four countersunk M2.5 screws in a 60 mm x 12.5 mm pattern; and
+* the inner rail spacing is 57 ± 0.1 mm. 
 
-The CANBench Duo is intended for conducted emissions pre-compliance testing of DC-powered CANbus devices, including NMEA 2000 marine electronics and other automotive or industrial control systems. Typical applications include:
+## Assembly
 
-- verifying conducted emissions performance during development;
-- screening for compliance before third-party lab testing; and
-- diagnosing and troubleshooting noise issues in CANbus devices.
+!!! warning
+    The PCB is intentionally supplied without the edge-launch SMA connectors fitted. These are supplied separately and must be soldered to the PCB following the sequence below.
 
-## Connections
+    The PCB and the two SMA flange faces together are 0.35 mm shorter than the internal slide length (75 mm) to allow for manufacturing tolerances. The sequence below ensures the SMA connector flanges sit perfectly flush with the faceplates before soldering, preventing residual stress that could distort the faceplates.
 
-The connection philosophy is to make the CANBench Duo simple, familiar, and interoperable with both laboratory and field equipment. CAN devices often rely on standardized connectors, while test equipment relies on banana sockets and SMA ports. The fixture reflects this by providing each style of connection in parallel.
+Begin with the enclosure disassembled and the end plates free of hardware. 
 
-### DeviceNet M12 (5-pin A-coded)
+![Exploded enclosure](assets/images/assembly_step_0.png)
 
-- DUT side: 150 mm fly lead with female M12 connector  
-- backbone/power side: 150 mm fly lead with male M12 connector  
+### STEP 1: Fit SMA connectors to the end plates.
 
-### Banana sockets (4 mm)
+Install the bulkhead SMA connectors into the faceplates with the supplied nuts and saw-tooth washers. The *teeth of the washers must face inward (toward the faceplate)*. Set the nuts finger‑tight only. Check the orientation of the solder pins so that the center and ground pins will be aligned with the PCB pads when the board is in place. 
 
-- in parallel with M12 connections for both `NET-S` and `NET-C` lines, enabling lab-style connection to DC supplies and DUTs  
+!!!note
+    Ensure the SMA connectors are oriented as shown in the image below, otherwise the center pin will not be on the correct (top) side of the PCB and/or the PCB may be upside down after assembly. The nuts should be finger-tight only to allow minor re-alignment during assembly/soldering
 
-### SMA connectors
+![Fit SMAs to plates](assets/images/assembly_step_1.png)
 
-- SMA #1: LISN positive line (`NET-S`) for per-line absolute measurements  
-- SMA #2: LISN negative line (`NET-C`) for per-line absolute measurements  
-- SMA #3: differential-mode (DM) diagnostic port  
-- SMA #4: common-mode (CM) diagnostic port  
+### STEP 2: Attach the faceplates to the top extrusion
 
-## Notes
+Use the small countersunk screws to mount both plates to the **TOP** half only. Again, confirm the pin orientations; the pins should be level and pointing inward.
 
-The operating philosophy is to treat per-line LISN outputs as the truth for pre-compliance work, while CM/DM outputs are provided as diagnostic aids. The DM and CM ports are intended to guide mitigation strategies such as shielding, chokes, or filtering, but do not replace individual per-line results, which remain the compliance-relevant measurement.
+![Faceplates on top extrusion](assets/images/assembly_step_2.png)
 
-- the device is for measurement use only and is not intended for permanent installation  
-- use on a bonded conductive ground plane in a shielded test area for best repeatability  
-- observe current and voltage ratings when connecting DUT and power source  
-- note that CM/DM diagnostic ports do not always maintain the strict 25 Ω (CM) and 100 Ω (DM) source impedances defined in [CISPR 25](https://webstore.iec.ch/publication/7077). They are intended for relative diagnostics only and should not be used as substitutes for the per-line compliance measurements  
+### STEP 3: Slide PCB into position. 
+
+Place the enclosure face down on a soft, non-scratching surface. Slide the PCB into position until the SMA pins align with their pads on the PCB. The board should sit between the SMA connector flanges without forcing either faceplate.
+
+![Slide PCB into position](assets/images/assembly_step_3.png)
+
+### STEP 4: Solder SMA ground pins 
+
+Solder the SMA ground tabs to the bottom copper first. This locks the board to the mechanical reference provided by the faceplates. Inspect all solder joints for full wetting to the pad edges.
+
+![Solder ground pins (bottom)](assets/images/assembly_step_4.png)
+
+### STEP 5: Fit bottom extrusion, remove top extrusion
+
+Fit the bottom half extrusion to the faceplates with four M2.5 screws, then remove the four screws that secure the top extrusion and remove the extrusion to expose the top side of the PCB that carries the components.
+
+![Fit bottom, remove top](assets/images/assembly_step_5.png)
+
+### STEP 6: Solder top pins
+
+Solder the remaining SMA connector tabs and center pins from the top side and inspect all joints for full wetting to the pad edges.
+
+![Solder top pins](assets/images/assembly_step_6.png)
+
+### STEP 7: Reassemble the enclosure
+
+!!!tip
+    It is good practice to disassemble the unit after soldering is complete and clean all flux residue with isopropyl alcohol. Reassemble after cleaning.
+
+Refit the top extrusion using the four M2.5 screws and tighten the SMA nuts to approximately 0.3 N·m.
+
+![Final assembly](assets/images/assembly_step_7.png)
+
+This procedure aligns the SMA shells to the plates first, then fixes the board, so the plates remain flat and stress‑free after tightening.
+
+## Markings
+
+Both end plates are laser engraved for clear connection and traceability. The input plate carries the LISN connections and the output plate carries the common-mode and differential-mode analyzer ports.
+
+### Input labels
+
+The LISN side is marked LISN+ and LISN− adjacent to the two bulkhead SMAs so the short RF jumper leads from the `CANBench Duo` LISN are unambiguous.
+
+![LISN faceplate](assets/images/faceplate_inputs.png)
+
+### Output labels
+
+The analyzer/output side is marked DM‑100 Ω and CM‑25 Ω to reflect the effective terminations used by the separator method.
+  
+The DM port has 49.9 Ω in series and the CM port has 49.9 Ω shunt in parallel. This ensures unity transfer with a 50 Ω spectrum analyzer and a real 50 Ω seen by the LISN.
+
+!!!info
+    The labels assume a 50 Ω instrument input. Using a high-impedance scope without a 50 Ω feed-through, or an analyzer set to high-Z, breaks the 25 Ω/100 Ω unity transfer condition.
+
+![Analyzer faceplate](assets/images/faceplate_outputs.png)
+
+### Product labels
+
+!!!TODO
+
+    The QR code and product label/barcode shown in the early renders are NOT correct. These are placeholders and must be updated for production release.
+
+The bottom of the enclosure carries the product name, logo and traceability marks:
+
+* the QR code links to the [CANBench TrueZ technical documentation](https://docs.scadys.io/products/canbench_truez); 
+* a bar code encodes the product code; and
+* Compliance marks (CE/UKCA on a RoHS basis). 
+
+Prototypes are clearly marked "*PROTOTYPE - NOT FOR RESALE*" and are also identified by the "-T" suffix in the product code.
+
+![Bottom markings](assets/images/enclosure_bottom.png)
+
+Keep plate artwork and the QR/Bar‑code data in the mechanical source repository. When the product code or URL changes, regenerate the laser files and update this page.
 
 ## References
 
-1. Electronic Design, [*CISPR 25 Class 5: Evaluating EMI in Automotive Applications*](https://www.electronicdesign.com/technologies/power/article/21274517/)  
-2. Compliance Magazine, [*Automotive EMC Testing: CISPR 25, ISO 11452-2 and Equivalent Standards*](https://incompliancemag.com/automotive-emc-testing-cispr-25-iso-11452-2-and-equivalent-standards-part-1/)  
-3. IEC, [*CISPR 25: Vehicles, boats and internal combustion engines – Radio disturbance characteristics – Limits and methods of measurement for the protection of on-board receivers*](https://webstore.iec.ch/publication/7077)  
-4. ISO, [*ISO 7637-2: Road vehicles – Electrical disturbances from conduction and coupling – Part 2: Electrical transient conduction along supply lines only*](https://www.iso.org/standard/71201.html)
-5. YONGU Enclosure, [*YONGU Split Aluminum Handheld Enclosure H06 63*35mm*](https://www.yg-enclosure.com/product/yongu-split-aluminum-handheld-enclosure-h06-63-35mm.html)
+1. YONGU, 2020, [*Drawing YG-H06A-0000-00X, YONGU H06 Series*](assets/pdf/YG-H06_Drawings.pdf), Rev A1, Yongu Industrial, 11/05/2020
+2. YONGU, 2024, [*Split Aluminum Handheld Enclosure H06 63×35 mm*](https://www.yg-enclosure.com/product/yongu-split-aluminum-handheld-enclosure-h06-63-35mm.html), YONGU Industrial, 2024.
+3. EEVblog Forum, [*CM‑DM Separator for Dual LISNs*](https://www.eevblog.com/forum/projects/diy-dm-cm-seperator-for-emc-lisn-mate/), accessed 2025.
+4. J. Wang, F. C. Lee, and W. Odendaal, [*Characterization, Evaluation, and Design of Noise Separator for Conducted EMI Noise Diagnosis*](assets/pdf/ieee_cps_cm_dm.pdf), IEEE Transactions on Power Electronics, vol. 20, no. 4, 2005.
