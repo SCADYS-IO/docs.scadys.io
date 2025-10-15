@@ -10,9 +10,12 @@ The `DIGITAL` domain includes all logic and user interface components directly a
 * the serial interface in the [`LEGACY IO` domain](../seatalk/index.md) is addressed via three opto-isolators; and
 * a [flash programming header](esp32_s3.md), pin-compatible with [Espressif's ESP-Prog](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html) programmer's 6-pin IDC connector is connected to UART 0 and the `ESP_BOOT` and `ESP_EN` pins. 
 
-The `DIGITAL` domain is powered from regulated 3.3 V and 5.0 V supplies derived from the isolated [`SMPS` domain](../smps/index.md). All circuits in the `DIGITAL` domain share a common ground reference `GNDREF`, isolated from the `CAN`, `SMPS` and `LEGACY IO` domain grounds
+The `DIGITAL` domain is powered from regulated 3.3 V and 5.0 V supplies derived from the isolated [`SMPS` domain](../smps/index.md). All circuits in the `DIGITAL` domain share a common ground reference `GNDREF`, isolated from the `CAN`, `SMPS` and `LEGACY IO` domain grounds.
 
-## Datasheets and References
+!!! note
+    Refer to the [MDD400 quick reference](../../quick_reference.md) for GPIO assignments, flash partitioning, I2C bus address assignments, board stackup and connector details.
 
-1.  Espressif, [`Introduction to the ESP-Prog Board`](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html)
-2.  Espressif, [`ESP-Prog User Guide`](https://documentation.espressif.com/espressif-esp-dev-kits/en/latest/other/esp-prog/user_guide.html?q=esp-prog)
+
+## References
+
+{% include-markdown "products/assets/pages/references/esp32_s3.md" %}

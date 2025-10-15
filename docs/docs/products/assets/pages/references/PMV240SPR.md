@@ -1,0 +1,1 @@
+* Nexperia, [*PMV240SPR P-Channel MOSFET Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2410121947_Nexperia-PMV240SPR_C5361354.pdf)

@@ -1,0 +1,70 @@
+### Partition Table
+<table>
+  <colgroup>
+    <col style="width: 100%;">
+    <col style="width: 10%;">
+    <col style="width: 10%;">
+    <col style="width: 10%;">
+    <col style="width: 10%;">
+  </colgroup>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th class="centered">Type</th>
+            <th class="centered">SubType</th>
+            <th class="right-aligned">Offset</th>
+            <th class="right-aligned">Size</th>
+            <th class="right-aligned">Flags</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>nvs</td>
+            <td class="centered">data</td>
+            <td class="centered">nvs</td>
+            <td class="right-aligned">0x9000</td>
+            <td class="right-aligned">0x5000</td>
+            <td class="right-aligned">——</td>
+        </tr>
+        <tr>
+            <td>otadata</td>
+            <td class="centered">data</td>
+            <td class="centered">ota</td>
+            <td class="right-aligned">0xe000</td>
+            <td class="right-aligned">0x2000</td>
+            <td class="right-aligned">——</td>
+        </tr>
+        <tr>
+            <td>app0</td>
+            <td class="centered">app</td>
+            <td class="centered">ota_0</td>
+            <td class="right-aligned">0x10000</td>
+            <td class="right-aligned">0x500000</td>
+            <td class="right-aligned">——</td>
+        </tr>
+        <tr>
+            <td>app1</td>
+            <td class="centered">app</td>
+            <td class="centered">ota_1</td>
+            <td class="right-aligned">——</td>
+            <td class="right-aligned">0x500000</td>
+            <td class="right-aligned">——</td>
+        </tr>
+        <tr>
+            <td>spiffs</td>
+            <td class="centered">data</td>
+            <td class="centered">spiffs</td>
+            <td class="right-aligned">——</td>
+            <td class="right-aligned">0x5e0000</td>
+            <td class="right-aligned">——</td>
+        </tr>
+        <tr>
+            <td>coredump</td>
+            <td class="centered">data</td>
+            <td class="centered">coredump</td>
+            <td class="right-aligned">——</td>
+            <td class="right-aligned">0x10000</td>
+            <td class="right-aligned">——</td>
+        </tr>
+    </tbody>
+</table>

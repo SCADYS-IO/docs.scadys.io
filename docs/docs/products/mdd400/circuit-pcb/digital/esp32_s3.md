@@ -30,46 +30,15 @@ The ESP32-S3-WROOM-1 module includes [48 GPIOs](https://docs.espressif.com/proje
 
 ## Memory
 
-The ESP32-S3 module includes two types of RAM:
-
-* *SRAM*: 512 kB internal static RAM, used by default for stack, heap, and program data;
-* *PSRAM*: 8 MB of external pseudo-static RAM, accessible via the memory-mapped SPI interface.
-
-The ESP-IDF heap allocator is configured to use both internal and external memory. Internal SRAM provides low-latency access and is prioritized for timing-sensitive operations, while external PSRAM is used for large buffers and dynamic structures.
-
-In the MDD400, PSRAM is reserved primarily for storage of time-series data associated with incoming NMEA traffic. These time series support real-time and historical graphing functions on the LCD display. The PSRAM allows extensive buffering of sampled values across multiple channels without consuming internal SRAM resources.
-
-Additional PSRAM-based buffers may be allocated at runtime for image decoding, OTA staging, or caching depending on future firmware requirements and available heap space.
+{% include-markdown "products/assets/pages/digital/esp32_memory.md" %}
 
 ## Flash Storage
 
-The ESP32-S3 module in the MDD400 includes 16 MB of external QSPI flash. Flash is divided into multiple regions as shown in the [partition table](../../quick_reference.md).
-
-{% include-markdown "../../assets/include/table_2_partition_table.html" %}
-
-### Application Regions
-
-Two 5 MB OTA slots are defined (`app0` and `app1`), allowing firmware to be updated via Bluetooth or serial without overwriting the running image. OTA updates are managed by the ESP-IDF OTA subsystem using a dual-bank approach.
-
-### Non-volatile Data
-
-The [`nvs` partition](../../quick_reference.md) stores key-value pairs for configuration and calibration data, while `otadata` tracks OTA image states.
-
-### SPIFFS Usage
-
-The [`spiffs` partition](../../quick_reference.md) is used as a general-purpose filesystem. During OTA update via BLE, this region serves as a temporary staging area for update payloads, including display image resources and configuration files, which the firmware subsequently writes to the DWIN display over UART.
-
-In normal operation, the SPIFFS partition stores history and diagnostic data, including time-series records of incoming NMEA data. These may include environmental trends, fault logs, or usage statistics.
-
-Partitioning and access control within the SPIFFS area is not yet finalised. One approach could involve prefix-based file organisation (e.g. `/ota/`, `/hist/`, `/diag/`), or maintaining a metadata index to track file type and source.
-
-### Core Dumps
-
-The `coredump` partition is reserved for post-crash diagnostics, allowing firmware to write a memory snapshot for later retrieval via serial or BLE tools.
+{% include-markdown "products/assets/pages/digital/esp32_flash_storage.md" %}
 
 ## I²C Bus
 
-The ESP32-S3 communicates with three external peripherals on a shared I²C bus:
+The ESP32-S3 communicates with three external peripherals on a shared I²C bus.
 
 {% include-markdown "products/mdd400/assets/include/table_3_i2c_device_list.html" %}
 
@@ -77,14 +46,10 @@ All three devices share the same [`I2C_SDA`](../../quick_reference.md) and [`I2C
 
 ## Datasheets and References
 
-1. Espressif, [*ESP32-S3-WROOM-1 & WROOM-1U Module Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf)
-2. Espressif, [*API Reference | Peripherals API | GPIO & RTC GPIO*](https://docs.espressif.com/projects/esp-idf/en/v5.5/esp32s3/api-reference/peripherals/gpio.html)
-3. Espressif, [*ESP-IDF JTAG Debugging Guide*](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/jtag-debugging/index.html)
-4. Espressif, [*ESP-PROG Hardware Guide*](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html)
-5. Texas Instruments, [*TMP112 Low-Power Digital Temperature Sensor Datasheet*](https://www.ti.com/lit/ds/symlink/tmp112.pdf)
-6. Texas Instruments, [*OPT3004 Ambient Light Sensor Datasheet*](https://www.ti.com/lit/ds/symlink/opt3004.pdf)
-7. Texas Instruments, [*INA219 Current/Power Monitor With I²C Interface Datasheet*](https://www.ti.com/lit/ds/symlink/ina219.pdf)
-8. Nexperia, [*PMV240SPR P-Channel MOSFET Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2410121947_Nexperia-PMV240SPR_C5361354.pdf)
-9.  Nexperia, [*BC807-25 C807 series 45 V, 500 mA PNP general-purpose transistors datasheet*](https://assets.nexperia.com/documents/data-sheet/BC807_SER.pdf)
+{% include-markdown "products/assets/pages/references/esp32_s3.md" %}
+{% include-markdown "products/assets/pages/references/tmp112.md" %}
+{% include-markdown "products/assets/pages/references/opt3004.md" %}
+{% include-markdown "products/assets/pages/references/ina219.md" %}
+
 
 

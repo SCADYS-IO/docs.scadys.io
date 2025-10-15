@@ -1,0 +1,1 @@
+* Xinglight, [*XL-1608UOC-06 Amber 0603 SMD LED Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2504101957_XINGLIGHT-XL-1608UOC-06_C965800.pdf)

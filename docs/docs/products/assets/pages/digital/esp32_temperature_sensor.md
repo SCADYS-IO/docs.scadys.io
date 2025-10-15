@@ -1,0 +1,5 @@
+The ESP32-S3 microcontroller includes an [integrated temperature sensor](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-reference/peripherals/temp_sensor.html), which is sampled periodically by firmware. This sensor provides an estimate of the chip's internal junction temperature and is useful for monitoring system-level heating caused by sustained processor load, ambient temperature rise, or enclosure heat buildup.
+
+While not calibrated for precision use, this internal sensor allows early detection of abnormal heating, and supports thermal diagnostics across a typical range of --20 °C to +125 °C. Measured values are exposed via the system's diagnostics interface and may be used in conjunction with voltage and current data to identify thermal trends.
+
+Due to its location within the silicon die, this sensor does not reflect the temperature of nearby components - particularly those affected by external heat sources such as direct sunlight.

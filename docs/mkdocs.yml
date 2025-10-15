@@ -1,5 +1,6 @@
 site_name: SCADYS.io Technical Documentation
-site_url: https://scadys.io/docs/
+site_url: https://docs.scadys.io
+# use_directory_urls: true
 site_description: Documentation for SCADYS.io.
 
 plugins:
@@ -71,7 +72,7 @@ nav:
         - Audio Transducer: products/mdd400/circuit-pcb/digital/buzzer.md
         - Temperature Sensor: products/mdd400/circuit-pcb/digital/temperature_sensor.md
         - Ambient Light Sensor: products/mdd400/circuit-pcb/digital/ambient_light_sensor.md
-        - Power Sensor: products/mdd400/circuit-pcb/can/power_sensor.md
+        - Power Sensor: products/mdd400/circuit-pcb/digital/power_sensor.md
       - Legacy IO Domain:
         - Overview: products/mdd400/circuit-pcb/seatalk/index.md
         - Power and Signal Conditioning: products/mdd400/circuit-pcb/seatalk/power_signal_conditioning.md
@@ -119,15 +120,31 @@ nav:
       - Overview: products/wti400/circuit-pcb/index.md
       - CAN Domain:
         - Overview: products/wti400/circuit-pcb/can/index.md
+        - Power Conditioning: products/wti400/circuit-pcb/can/power_conditioning.md
+        - CAN Power Supply: products/wti400/circuit-pcb/can/vcan.md
+        - CAN Transceiver: products/wti400/circuit-pcb/can/can_transceiver.md
       - Power Domain:
         - Overview: products/wti400/circuit-pcb/power/index.md
         - 3.3V SMPS: products/wti400/circuit-pcb/power/vcc.md
         - 8/6.5 V LDO: products/wti400/circuit-pcb/power/vas.md
       - Digital Domain:
         - Overview: products/wti400/circuit-pcb/digital/index.md
+        - ESP32-S3: products/wti400/circuit-pcb/digital/esp32_s3.md
+        - Programming Socket: products/wti400/circuit-pcb/digital/esp-prog.md
+        - TWAI / CAN: products/wti400/circuit-pcb/digital/twai.md
+        # - TFT Touch Display: products/wti400/circuit-pcb/digital/tft_touch_display.md
         - Status LED: products/wti400/circuit-pcb/digital/status_led.md
+        # - Audio Transducer: products/wti400/circuit-pcb/digital/buzzer.md
+        - Temperature Sensor: products/wti400/circuit-pcb/digital/temperature_sensor.md
+        # - Ambient Light Sensor: products/wti400/circuit-pcb/digital/ambient_light_sensor.md
+        # - Power Sensor: products/wti400/circuit-pcb/digital/power_sensor.md
       - Analog Domain:
         - Overview: products/wti400/circuit-pcb/analog/index.md
+      - Legacy IO Domain:
+        - Overview: products/wti400/circuit-pcb/seatalk/index.md
+        - Power and Signal Conditioning: products/wti400/circuit-pcb/seatalk/power_signal_conditioning.md
+        - RX Buffer: products/wti400/circuit-pcb/seatalk/rx_buffer.md
+        - TX Driver: products/wti400/circuit-pcb/seatalk/tx_driver.md
     - Housing:
       - Overview: products/wti400/housing/index.md
     - Compliance:

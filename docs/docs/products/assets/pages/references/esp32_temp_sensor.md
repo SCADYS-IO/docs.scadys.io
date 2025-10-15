@@ -1,0 +1,1 @@
+* Espressif, [*ESP32-S3 Technical Reference Manual: Temperature Sensor API*](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-reference/peripherals/temp_sensor.html)

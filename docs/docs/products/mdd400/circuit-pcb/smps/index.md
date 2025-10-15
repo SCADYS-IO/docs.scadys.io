@@ -64,23 +64,23 @@ This configuration suppresses high-frequency noise propagation between domains, 
 
 ## Datasheets and References
 
-1. Texas Instruments, [*LMR516xx SIMPLE SWITCHER® Power Converter, 4-V to 65-V, 0.6-A/1-A Buck Converter in a SOT-23 Package Datasheet*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf)
-2. Murata Electronics, [*BLM31KN601SN1L Ferrite Bead Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2209271730_Murata-Electronics-BLM31KN601SN1L_C668306.pdf)
-3. Texas Instruments, [*Controlling switch-node ringing in synchronous buck converters*](https://www.ti.com/lit/an/slyt465/slyt465.pdf), Application Note SLYT465
-4. Texas Instruments, [*Design Consideration on Boot Resistor in Buck Converter*](https://www.ti.com/lit/an/snvaa73/snvaa73.pdf), Application Note SNVAA73
-5. Espressif, [*ESP32-S3 32-bit MCU & 2.4 GHz Wi-Fi & Bluetooth 5 (LE) Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf)
-6. Texas Instruments, [*OPT3004 Ambient Light Sensor (ALS) Datasheet*](https://www.ti.com/lit/ds/symlink/opt3004.pdf)
-7. Texas Instruments, [*TMP112 High-Accuracy, Low-Power, Digital Temperature Sensors Datasheet*](https://www.ti.com/lit/ds/symlink/tmp112.pdf)
-8. Texas Instruments, [*ISO1042 Isolated CAN Transceiver Datasheet*](https://www.ti.com/lit/ds/symlink/iso1042.pdf)
-9. Texas Instruments, [*ISO1541 Low-Power Bidirectional I²C Isolators Datasheet*](https://www.ti.com/lit/ds/symlink/iso1541.pdf)
-10. DWIN, [*DMG48480F040_02WTCZ02COF HMI TFT LCD Display with Capacitive Touch Screen Datasheet*](https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/)
-11. Jiangsu Huaneng, [*MLT-8530 Electro-Magnetic Buzzer (SMD Type) Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2410010301_Jiangsu-Huaneng-Elec-MLT-8530_C94599.pdf)
-12. Bourns, [*SRN5040TA-220M Semi-shielded AEC-Q200 Compliant Power Inductors Datasheet*](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5)
-13. SXN, [*SMCM Series (SMCM7060-102T) Common Mode Line Filter Datasheet*](https://lcsc.com/datasheet/C5189123.pdf)
-14. Nexperia, [*PMEG4005CT Dual Schottky Rectifier Datasheet*](https://www.lcsc.com/datasheet/C1692757.pdf)
-15. VPSC, [*VPS8701B Push-Pull Transformer Driver Datasheet*](https://www.lcsc.com/datasheet/C552889.pdf)
-16. VPSC, [*VPT87DDF01B 12 V:12 V Transformer Datasheet*](https://www.lcsc.com/datasheet/C2846916.pdf)
-17. Monolithic Power Systems, [*EMI Webinar: Practical Grounding and Layout*](https://www.monolithicpower.com/en/support/videos/emi-2-webinar-early-session.html?srsltid=AfmBOop1N5qpjFNFHkvJIyWCZOyt30Mt_P6bsL53Dz79rUJPYOWXOTq6)
+* Texas Instruments, [*LMR516xx SIMPLE SWITCHER® Power Converter, 4-V to 65-V, 0.6-A/1-A Buck Converter in a SOT-23 Package Datasheet*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf)
+* Murata Electronics, [*BLM31KN601SN1L Ferrite Bead Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2209271730_Murata-Electronics-BLM31KN601SN1L_C668306.pdf)
+* Texas Instruments, [*Controlling switch-node ringing in synchronous buck converters*](https://www.ti.com/lit/an/slyt465/slyt465.pdf), Application Note SLYT465
+* Texas Instruments, [*Design Consideration on Boot Resistor in Buck Converter*](https://www.ti.com/lit/an/snvaa73/snvaa73.pdf), Application Note SNVAA73
+* Espressif, [*ESP32-S3 32-bit MCU & 2.4 GHz Wi-Fi & Bluetooth 5 (LE) Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf)
+* Texas Instruments, [*OPT3004 Ambient Light Sensor (ALS) Datasheet*](https://www.ti.com/lit/ds/symlink/opt3004.pdf)
+* Texas Instruments, [*TMP112 High-Accuracy, Low-Power, Digital Temperature Sensors Datasheet*](https://www.ti.com/lit/ds/symlink/tmp112.pdf)
+* Texas Instruments, [*ISO1042 Isolated CAN Transceiver Datasheet*](https://www.ti.com/lit/ds/symlink/iso1042.pdf)
+* Texas Instruments, [*ISO1541 Low-Power Bidirectional I²C Isolators Datasheet*](https://www.ti.com/lit/ds/symlink/iso1541.pdf)
+* DWIN, [*DMG48480F040_02WTCZ02COF HMI TFT LCD Display with Capacitive Touch Screen Datasheet*](https://www.dwin-global.com/4-0-inch-intelligent-display-model-dmg48480f040_02wtcz02cof-series-product/)
+* Jiangsu Huaneng, [*MLT-8530 Electro-Magnetic Buzzer (SMD Type) Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2410010301_Jiangsu-Huaneng-Elec-MLT-8530_C94599.pdf)
+* Bourns, [*SRN5040TA-220M Semi-shielded AEC-Q200 Compliant Power Inductors Datasheet*](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf?sfvrsn=df477df6_5)
+* SXN, [*SMCM Series (SMCM7060-102T) Common Mode Line Filter Datasheet*](https://lcsc.com/datasheet/C5189123.pdf)
+* Nexperia, [*PMEG4005CT Dual Schottky Rectifier Datasheet*](https://www.lcsc.com/datasheet/C1692757.pdf)
+* VPSC, [*VPS8701B Push-Pull Transformer Driver Datasheet*](https://www.lcsc.com/datasheet/C552889.pdf)
+* VPSC, [*VPT87DDF01B 12 V:12 V Transformer Datasheet*](https://www.lcsc.com/datasheet/C2846916.pdf)
+* Monolithic Power Systems, [*EMI Webinar: Practical Grounding and Layout*](https://www.monolithicpower.com/en/support/videos/emi-2-webinar-early-session.html?srsltid=AfmBOop1N5qpjFNFHkvJIyWCZOyt30Mt_P6bsL53Dz79rUJPYOWXOTq6)
 
 
 <!-- # _SMPS_ Domain
