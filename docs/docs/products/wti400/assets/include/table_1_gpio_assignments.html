@@ -19,33 +19,33 @@
     </thead>
     <tbody>
         <tr>
-            <td>AUDIO_PWM</td>
-            <td class = "centered">GPIO21</td>
-            <td class = "centered">GNDREF</td>
-            <td class = "centered">PWM</td>
-            <td>Audio buzzer driver</td>
-        </tr>
-        <tr>
-            <td>DISP_EN</td>
+            <td>WIND_SPD</td>
             <td class = "centered">GPIO11</td>
-            <td class = "centered">GNDREF</td>
-            <td class = "centered">OUTPUT</td>
-            <td>TFT display enable (ENABLE = HIGH)</td>
-        </tr>
-        <tr>
-            <td>DISP_RX</td>
-            <td class = "centered">GPIO47</td>
             <td class = "centered">float</td>
-            <td class = "centered">UART2</td>
-            <td>From display TX pin</td>
+            <td class = "centered">INPUT</td>
+            <td>Pulse input</td>
         </tr>
         <tr>
+            <td>WIND_X</td>
+            <td class = "centered">GPIO14</td>
+            <td class = "centered">float</td>
+            <td class = "centered">ADC</td>
+            <td>Syncro input X</td>
+        </tr>
+        <tr>
+            <td>WIND_Y</td>
+            <td class = "centered">GPIO21</td>
+            <td class = "centered">float</td>
+            <td class = "centered">ADC</td>
+            <td>Syncro input Y</td>
+        </tr>
+        <!-- <tr>
             <td>DISP_TX</td>
             <td class = "centered">GPIO48</td>
             <td class = "centered">float</td>
             <td class = "centered">UART2</td>
             <td>To display RX pin</td>
-        </tr>
+        </tr> -->
         <tr>
             <td>ESP_BOOT</td>
             <td class = "centered">GPIO0</td>
@@ -76,21 +76,35 @@
         </tr>
         <tr>
             <td>I2C_SCL</td>
-            <td class = "centered">GPIO18</td>
+            <td class = "centered">GPIO10</td>
             <td class = "centered">VCC</td>
             <td class = "centered">I²C</td>
             <td>I²C clock line</td>
         </tr>
         <tr>
             <td>I2C_SDA</td>
-            <td class = "centered">GPIO8</td>
+            <td class = "centered">GPIO9</td>
             <td class = "centered">VCC</td>
             <td class = "centered">I²C</td>
             <td>I²C data line</td>
         </tr>
         <tr>
-            <td>LED_EN</td>
-            <td class = "centered">GPIO14</td>
+            <td>LED_RED</td>
+            <td class = "centered">GPIO08</td>
+            <td class = "centered">GNDREF</td>
+            <td class = "centered">OUTPUT</td>
+            <td>LED enable (ENABLE = LOW)</td>
+        </tr>
+        <tr>
+            <td>LED_GRN</td>
+            <td class = "centered">GPIO19</td>
+            <td class = "centered">GNDREF</td>
+            <td class = "centered">OUTPUT</td>
+            <td>LED enable (ENABLE = LOW)</td>
+        </tr>
+        <tr>
+            <td>LED_EBLU</td>
+            <td class = "centered">GPIO20</td>
             <td class = "centered">GNDREF</td>
             <td class = "centered">OUTPUT</td>
             <td>LED enable (ENABLE = LOW)</td>
