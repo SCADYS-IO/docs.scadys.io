@@ -1,43 +1,46 @@
-The ESP-PROG programming header provides serial and boot/reset control signals for firmware upload via UART. It is compatible with [Espressif's ESP-PROG adapter](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html), and supports both development and production programming workflows.
+The ESP-PROG programming header provides UART and control signals for firmware upload and recovery via the ESP32-S3 ROM bootloader. The interface is compatible with Espressif’s ESP-PROG adapter and supports both development and fixture-based programming workflows.
 
-!!!warning
-    The **over-voltage protection circuit is only populated in prototype and developer [tiers](../../../product_tiers.md)**. In all other versions/tiers, the protection circuit is left unpopulated and bypassed by a 0Ω resistor connecting `V_PROG` and `VCC`. Accidentally connecting 5V instead of 3.3V to the power pin of the ESP-PROG connector (e.g. not setting the DIL jumper on the ESP-PROG correctly) is likely to destroy the ESP32-S3. 
-
-    The **UART0, BOOT and EN pins of the ESP32-S3 are unprotected**. Incorrect wiring of the ESP-PROG connector may damage the ESP32-S3 microcontroller. Use of programmers that do not conform to the [Espressif ESP-PROG](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html) reference design is not supported. Doing so will void any warranty.
-
-In [prototype/developer tier](../../../product_tiers.md) builds, this header is populated with a 6-pin IDC male box connector. In production, pogo pins in a programming fixture will make contact with the same through-hole pads from below.
+A 6-pin, 2×3, 2.54 mm header footprint is provided. In prototype and development builds this footprint may be populated with a boxed IDC header and the associated programming power conditioning components. In standard production units, the ESP-PROG header, LDO, diodes, and all associated passives are omitted, with only the 0 Ω link between `V_PROG` and *VCC* populated. In this configuration, the board is programmed using a pogo-pin fixture that mates with the unpopulated through-hole pads of the header footprint and relies on the system *VCC* supply rather than a programming-supplied voltage.
 
 ![ESP-PROG Programming Socket](../../images/esp_prog_render.png)
 
 ## Signal Connections
 
-The 6-pin subset of the ESP-PROG interface is used:
+The following ESP-PROG signals are implemented:
 
-* `ESP_EN`: connected to the ESP32-S3 `ESP_EN` (reset) pin;
-* `ESP_BOOT`: connected to `GPIO0` to select download mode; and
-* `ESP_TX` / `ESP_RX`: UART0 signals for flashing and serial output.
+* `ESP_EN`: connected to the ESP32-S3 enable (reset) pin;
+* `ESP_BOOT`: connected to `GPIO0` to select ROM download mode during reset; and
+* `ESP_TX` / `ESP_RX`: UART0 transmit and receive signals used for flashing and console output.
 
-These are compatible with standard ESP-IDF programming tools.
+These signals follow the standard ESP32-S3 programming convention and are compatible with ESP-IDF tooling and Espressif reference programmers.
 
-## Over-voltage Protection
+## Programming Power Interface
 
-The ESP-PROG power input uses a low-dropout linear regulator (LDO) for over-voltage protection and conditioning. The LDO circuit can be bypassed by populating the 0R0 resistor between VCC and V-PROG.
+The ESP-PROG connector includes a power input (`V_PROG`) intended to accept a nominal 5 V supply from the programmer. This input is locally conditioned and regulated before being allowed to power the 3.3 V digital domain.
+
+Over-voltage protection and regulation are implemented using a low-dropout linear regulator stage, shown below.
 
 ![ESP-PROG Programming Socket](../../images/esp_prog_schematic.png)
 
-The LDO uses a [UMW HT7833](https://www.lcsc.com/datasheet/C347195.pdf) regulator, which provides a regulated 3.3 V output for the ESP32-S3 module. Input power from the ESP-PROG header (*V_PROG*) passes through a [1N5819WS](https://www.lcsc.com/datasheet/C2927280.pdf) Schottky diode before entering the regulator, protecting against reverse-polarity connection. A second diode isolates the regulated *VCC* rail from backfeed when external power is applied to the board.
+The regulation and protection network operates as follows:
 
-The regulation stage includes the following filtering components:
+* `V_PROG` is fed through a Schottky diode to provide reverse-polarity protection and to decouple the programming supply from the rest of the board;
+* the protected input is regulated down to 3.3 V using an HT7833 low-dropout regulator;
+* the regulator output is connected to the main *VCC* rail through a second Schottky diode, preventing back-feeding of the programmer when the board is externally powered; and
+* an additional diode from the local *VDD* rail to `V_PROG` clamps excessive negative or transient differentials during hot-plug events.
 
-* 100 nF and 10 µF input capacitors for stability and transient suppression;
-* 10 µF and 100 nF output capacitors for load stability and noise reduction; and
-* reverse current protection diode between *VDD* and *V_PROG*.
+The LDO stage is supported by local input and output decoupling capacitors:
 
-This configuration ensures safe and stable operation during programming, even if the ESP-PROG module supplies voltages slightly above 3.3 V. The LDO provides continuous regulation within its rated limits rather than a hard cutoff, simplifying the design and improving reliability for both prototype and production use.
+* 100 nF and 10 µF capacitors on the regulator input for stability and transient suppression; and
+* 10 µF and 100 nF capacitors on the regulator output for load stability and noise reduction.
+
+This arrangement ensures that an ESP-PROG supplying 5 V cannot directly overstress the 3.3 V rail, while still allowing normal operation when the board is already powered from its primary supply. The use of diode isolation avoids contention between the programming supply and the system power source.
+
+No level shifting or buffering is provided on the UART, BOOT, or EN signals. Correct orientation and configuration of the programming adapter is therefore required.
 
 ## References
 
-* Espressif, [*Introduction to the ESP-Prog Board*](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html)
-* Espressif, [*ESP-Prog User Guide*](https://documentation.espressif.com/espressif-esp-dev-kits/en/latest/other/esp-prog/user_guide.html?q=esp-prog)
-* UMW, [*HT78xx Series LDO Regulator Datasheet*](https://www.lcsc.com/datasheet/C347195.pdf)
-* JSMICRO Semiconductor, [*1N5819WS 40 V 1 A Schottky Barrier Rectifier Datasheet*](https://www.lcsc.com/datasheet/C2927280.pdf)
+1. Espressif, *Introduction to the ESP-Prog Board*, [https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html).
+2. Espressif, *ESP-Prog User Guide*, [https://documentation.espressif.com/espressif-esp-dev-kits/en/latest/other/esp-prog/user_guide.html](https://documentation.espressif.com/espressif-esp-dev-kits/en/latest/other/esp-prog/user_guide.html).
+3. UMW, *HT78xx Series Low Dropout Regulator Datasheet*, [https://www.lcsc.com/datasheet/C347195.pdf](https://www.lcsc.com/datasheet/C347195.pdf).
+4. JSMICRO Semiconductor, *1N5819WS 40 V 1 A Schottky Barrier Rectifier Datasheet*, [https://www.lcsc.com/datasheet/C2927280.pdf](https://www.lcsc.com/datasheet/C2927280.pdf).

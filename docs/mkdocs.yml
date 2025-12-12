@@ -52,21 +52,16 @@ nav:
     - Quick Reference: products/mdd400/quick_reference.md
     - Circuit & PCB:
       - Overview: products/mdd400/circuit-pcb/index.md
-      - CAN Domain:
-        - Overview: products/mdd400/circuit-pcb/can/index.md
-        - Power Conditioning: products/mdd400/circuit-pcb/can/power_conditioning.md
-        - Power Sensor: products/mdd400/circuit-pcb/can/power_sensor.md
-        - CAN Power Supply: products/mdd400/circuit-pcb/can/vcan.md
-        - CAN Transceiver: products/mdd400/circuit-pcb/can/can_transceiver.md
-      - SMPS Domain:
-        - Overview: products/mdd400/circuit-pcb/smps/index.md
-        - 5V SMPS: products/mdd400/circuit-pcb/smps/vdd.md
-        - 3.3V SMPS: products/mdd400/circuit-pcb/smps/vcc.md
+      - Power Domain:
+        - Overview: products/mdd400/circuit-pcb/power/index.md
+        - Power Conditioning: products/mdd400/circuit-pcb/power/power_conditioning.md
+        - 5V SMPS: products/mdd400/circuit-pcb/power/vdd.md
+        - 3.3V SMPS: products/mdd400/circuit-pcb/power/vcc.md
       - Digital Domain:
         - Overview: products/mdd400/circuit-pcb/digital/index.md
         - ESP32-S3: products/mdd400/circuit-pcb/digital/esp32_s3.md
         - Programming Socket: products/mdd400/circuit-pcb/digital/esp-prog.md
-        - TWAI / CAN: products/mdd400/circuit-pcb/digital/twai.md
+        - CAN Transceiver: products/mdd400/circuit-pcb/digital/can_transceiver.md
         - TFT Touch Display: products/mdd400/circuit-pcb/digital/tft_touch_display.md
         - Status LED: products/mdd400/circuit-pcb/digital/status_led.md
         - Audio Transducer: products/mdd400/circuit-pcb/digital/buzzer.md
@@ -118,11 +113,6 @@ nav:
     - Quick Reference: products/wti400/quick_reference.md
     - Circuit & PCB:
       - Overview: products/wti400/circuit-pcb/index.md
-      - CAN Domain:
-        - Overview: products/wti400/circuit-pcb/can/index.md
-        - Power Conditioning: products/wti400/circuit-pcb/can/power_conditioning.md
-        - CAN Power Supply: products/wti400/circuit-pcb/can/vcan.md
-        - CAN Transceiver: products/wti400/circuit-pcb/can/can_transceiver.md
       - Power Domain:
         - Overview: products/wti400/circuit-pcb/power/index.md
         - 3.3V SMPS: products/wti400/circuit-pcb/power/vcc.md
@@ -131,13 +121,9 @@ nav:
         - Overview: products/wti400/circuit-pcb/digital/index.md
         - ESP32-S3: products/wti400/circuit-pcb/digital/esp32_s3.md
         - Programming Socket: products/wti400/circuit-pcb/digital/esp-prog.md
-        - TWAI / CAN: products/wti400/circuit-pcb/digital/twai.md
-        # - TFT Touch Display: products/wti400/circuit-pcb/digital/tft_touch_display.md
+        - CAN Transceiver: products/wti400/circuit-pcb/digital/can_transceiver.md
         - Status LED: products/wti400/circuit-pcb/digital/status_led.md
-        # - Audio Transducer: products/wti400/circuit-pcb/digital/buzzer.md
         - Temperature Sensor: products/wti400/circuit-pcb/digital/temperature_sensor.md
-        # - Ambient Light Sensor: products/wti400/circuit-pcb/digital/ambient_light_sensor.md
-        # - Power Sensor: products/wti400/circuit-pcb/digital/power_sensor.md
       - Analog Domain:
         - Overview: products/wti400/circuit-pcb/analog/index.md
       - Legacy IO Domain:

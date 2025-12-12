@@ -6,17 +6,14 @@ The WTI400 design is based on the [ESP32-S3-WROOM-1-N16R8](https://www.espressif
 
 The ESP32-S3 module is connected to the following peripherals:
 
-* the [CANBUS interface](twai.md) is accessed via a galvanically isolated CAN transceiver;
-* two environmental sensors: an [ambient light sensor](ambient_light_sensor.md) and [temperature sensor](temperature_sensor.md) are accessed via the I²C bus;
-* an I²C [voltage/current sensor](../can/power_sensor.md), in the isolated [`CAN` domain](../can/index.md), is accessed via an I²C isolator;
-* the [HMI display](tft_touch_display.md) is addressed via UART and its 5 V power is switched with a MOSFET high-side switch;
-* a single [status LED](status_led.md) is connected to an [output pin](../../quick_reference.md) for diagnostics; 
+* The TWAI peripheral is connected to a Texas Instruments [SN65HVD234](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf) 3.3 V high-speed CAN transceiver;
+* a RGB [status LED](status_led.md) is connected to an [three output pins](../../quick_reference.md) for diagnostics; 
 * the serial interface in the [`LEGACY IO` domain](../seatalk/index.md) is addressed via three opto-isolators; and
 * a [flash programming header](esp32_s3.md), pin-compatible with Espressif's ESP-Prog programmer's 6-pin IDC connector is connected to UART 0 and the [`ESP_BOOT`](../../quick_reference.md) and [`ESP_EN`](../../quick_reference.md) pins. 
 
-The schematic shows the pin allocations on the ESP32-S3 module as implemented in the WTI400 design. 
+<!-- The schematic shows the pin allocations on the ESP32-S3 module as implemented in the WTI400 design. 
 
-![ESP32-S3 MCU Pin Allocation](../../assets/images/esp32_pin_allocation.png)
+![ESP32-S3 MCU Pin Allocation](../../assets/images/esp32_pin_allocation.png) -->
 
 The following pull-up resistors and timing capacitors are included on selected GPIOs to ensure correct startup behaviour and stable logic levels:
 

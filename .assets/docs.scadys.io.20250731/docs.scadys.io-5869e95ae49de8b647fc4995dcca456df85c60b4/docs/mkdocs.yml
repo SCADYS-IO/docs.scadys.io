@@ -1,0 +1,109 @@
+site_name: MDD400 Documentation
+site_description: Documentation for the MDD400 marine/automotive data display.
+
+markdown_extensions:
+  - footnotes
+
+theme:
+  name: material
+  logo: assets/images/site_logo.svg
+  favicon: assets/images/favicon.svg
+  features:
+    - content.footnote.tooltips
+
+nav:
+  - Home: index.md
+  - Circuit & PCB:
+
+nav:
+  - Home: index.md
+  - Circuit & PCB:
+      - Overview: circuit-pcb/index.md
+      - Protection and EMC: 
+        - Overview: circuit-pcb/protection_emc/index.md
+        - Reverse Polarity Protection and Shield: circuit-pcb/protection_emc/polarity_shield.md
+        - ESD and Load Dump Protection: circuit-pcb/protection_emc/esd_load_dump.md
+        - Over-voltage and Current Limiting: circuit-pcb/protection_emc/over_voltage.md
+        - CAN / Digital Domain Power Isolation: circuit-pcb/protection_emc/can_digital_isolation.md
+        - EMC: circuit-pcb/protection_emc/emc.md
+        - Analysis and Failure Modes: circuit-pcb/protection_emc/analysis_failure_mode.md
+      - MCU and Storage:
+        - Overview: circuit-pcb/mcu_storage/index.md
+        - ESP32-S3: circuit-pcb/mcu_storage/esp32_s3.md
+        - I2C: circuit-pcb/mcu_storage/i2c.md
+        - Memory: circuit-pcb/mcu_storage/memory.md
+        - Flash Storage: circuit-pcb/mcu_storage/flash_storage.md        
+      - Power Supply:
+        - Overview: circuit-pcb/power/index.md
+        - Unregulated 12V Domain: circuit-pcb/power/vdc.md
+        - Isolated 5V Domain: circuit-pcb/power/vcan.md
+        - Primary 5V Domain: circuit-pcb/power/vpp.md
+        - Digital Logic Domain: circuit-pcb/power/vcc.md
+        # - Analog Sensor Domain: circuit-pcb/power/vas.md
+      - Communications: 
+        - Overview: circuit-pcb/communications/index.md
+        - CAN Bus: circuit-pcb/communications/can_bus.md
+        - Serial: circuit-pcb/communications/serial.md
+        - Wi-Fi: circuit-pcb/communications/wifi.md
+        - Bluetooth: circuit-pcb/communications/bluetooth.md
+      - Sensors: 
+        - Overview: circuit-pcb/sensors/index.md
+        - Power: circuit-pcb/sensors/power_sensor.md
+        - Temperature: circuit-pcb/sensors/temperature_sensor.md
+        - Ambient Light: circuit-pcb/sensors/ambient_light_sensor.md
+        # - Wind Transducer: circuit-pcb/sensors/wind.md      
+      - User Interface: 
+        - Overview: circuit-pcb/ui/index.md
+        - Display: circuit-pcb/ui/display.md 
+        - Touch: circuit-pcb/ui/touch.md
+      - Expansion Connectors: 
+        - Overview: circuit-pcb/connectors/index.md
+        - ESP-PROG: circuit-pcb/connectors/esp_prog.md
+        - I2C: circuit-pcb/connectors/i2c.md
+        - 1-Wire: circuit-pcb/connectors/one_wire.md
+      - PCB Design:
+        - Overview: circuit-pcb/pcb/index.md
+        - Stackup: circuit-pcb/pcb/stackup.md
+        - Layout: circuit-pcb/pcb/layout.md
+        - Earthing: circuit-pcb/pcb/earthing.md
+        - Galvanic Isolation: circuit-pcb/pcb/galvanic_isolation.md
+        - Thermal Management: circuit-pcb/pcb/thermal_management.md
+        - Connectors: circuit-pcb/pcb/connectors.md
+        - Fasteners: circuit-pcb/pcb/fasteners.md
+      - Appendices: circuit-pcb/appendices.md
+      - Change Log: circuit-pcb/changelog.md
+  - Housing:
+      - Overview: housing/index.md
+      - Bezel: housing/bezel.md
+      - Back: housing/back.md
+      - Panel Overlay: housing/panel_overlay.md
+      - Gaskets: housing/gaskets.md
+      - Fasteners: housing/fasteners.md
+      - Assembly: housing/assembly.md
+      - Appendices: housing/appendices.md
+      - Change Log: housing/changelog.md
+  - UX:
+      - Overview: ux/index.md
+      - Display & Touch: ux/display.md
+      - Bluetooth & App: ux/app.md
+      - Appendices: ux/appendices.md
+      - Change Log: ux/changelog.md
+  - Firmware:
+      - Overview: firmware/index.md
+      - Architecture: firmware/architecture.md
+      - Configuration: firmware/config.md
+      - Appendices: firmware/appendices.md
+      - Change Log: firmware/changelog.md
+  - Compliance:
+      - Overview: compliance/index.md
+      - CE Marking: compliance/ce_marking.md
+      - FCC Compliance: compliance/fcc_compliance.md
+      - RoHS Compliance: compliance/rohs_compliance.md
+      - WEEE Compliance: compliance/weee_compliance.md
+      - REACH Compliance: compliance/reach_compliance.md
+      - IP Rating: compliance/ip_rating.md
+      - NMEA 2000 Certification: compliance/nmea2000_certification.md
+      - Appendices: compliance/appendices.md
+      - Change Log: compliance/changelog.md
+  - License Terms: license.md
+  - References: references.md

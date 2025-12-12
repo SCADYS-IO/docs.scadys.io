@@ -22,5 +22,5 @@ This brightness level is suitable for visibility through a rear panel aperture i
 
 ## Datasheets and References
 
-{% include-markdown "products/assets/pages/references/BC807-25.md" %}
-{% include-markdown "products/assets/pages/references/xl1608uoc.md" %}
+* Nexperia, [*BC807-25 C807 series 45 V, 500 mA PNP general-purpose transistors datasheet*](https://assets.nexperia.com/documents/data-sheet/BC807_SER.pdf)
+* Xinglight, [*XL-1608UOC-06 Amber 0603 SMD LED Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2504101957_XINGLIGHT-XL-1608UOC-06_C965800.pdf)

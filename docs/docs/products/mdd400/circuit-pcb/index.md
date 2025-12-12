@@ -3,7 +3,7 @@
 This section provides an overview of the MDD400 circuit architecture and PCB layout, structured according to four electrical domains within the device: `CAN`, `SMPS`, `Digital`, and `LEGACY IO`. 
 
 !!! note
-    Refer to the [MDD400 quick reference](../../quick_reference.md) for GPIO assignments, flash partitioning, I2C bus address assignments, board stackup and connector details.
+    Refer to the [MDD400 quick reference](../quick_reference.md) for GPIO assignments, flash partitioning, I2C bus address assignments, board stackup and connector details.
 
 ## Functional Domains
 

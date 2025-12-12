@@ -25,4 +25,4 @@ The use of a dedicated ambient light sensor improves user experience and provide
 
 ## Datasheets and References
 
-{% include-markdown "products/assets/pages/references/opt3004.md" %}
+* Texas Instruments, [*OPT3004 Ambient Light Sensor Datasheet*](https://www.ti.com/lit/ds/symlink/opt3004.pdf)
