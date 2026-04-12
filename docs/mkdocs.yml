@@ -217,8 +217,8 @@ nav:
             - Conducted EMI Measurement: prototyping/testing/precompliance/conducted_emi.md
             - Shed Test Protocol: prototyping/testing/precompliance/shed_test_protocol.md
     - Templates:
-      - Compliance Test Plan: assets\markdown\compliance_test_plan_template.md
-      - Test Strategy Template: assets\markdown\test_strategy_template.md
+      - Compliance Test Plan: assets/markdown/compliance_test_plan_template.md
+      - Test Strategy Template: assets/markdown/test_strategy_template.md
 - About:
   - About SCADYS.io: about/index.md
   - Contact Us: about/contact.md
