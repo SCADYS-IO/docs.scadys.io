@@ -1,8 +1,0 @@
-.hide-left-nav .md-sidebar {
-  display: none;
-  height: 0;
-}
-
-.hide-left-nav .md-main__inner {
-  grid-template-columns: 1fr auto;
-}

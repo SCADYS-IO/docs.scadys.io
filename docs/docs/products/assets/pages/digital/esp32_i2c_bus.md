@@ -1,1 +1,0 @@
-The ESP32-S3 communicates with external peripherals on a shared I²C bus. All devices share the same `I2C_SDA` and `I2C_SCL` signal lines. A single set of 4.7 kΩ pull-up resistors is present on the `DIGITAL` domain side (`VCC`).

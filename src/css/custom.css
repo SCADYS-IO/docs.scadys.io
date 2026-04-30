@@ -1,0 +1,49 @@
+/**
+ * Scadys brand colors:
+ *   Navy   #02235B  — navbar, hero backgrounds
+ *   Orange #DE3707  — primary interactive (links, buttons, active states)
+ */
+
+:root {
+  --ifm-color-primary: #DE3707;
+  --ifm-color-primary-dark: #c83206;
+  --ifm-color-primary-darker: #bd2f06;
+  --ifm-color-primary-darkest: #9c2705;
+  --ifm-color-primary-light: #e44b1e;
+  --ifm-color-primary-lighter: #e65527;
+  --ifm-color-primary-lightest: #ea6f47;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --scadys-navy: #02235B;
+}
+
+/* Navbar — navy background, white links */
+.navbar {
+  background-color: var(--scadys-navy);
+}
+
+.navbar__brand,
+.navbar__link,
+.navbar__link:hover {
+  color: #fff;
+}
+
+.navbar__link--active {
+  color: #fff;
+  font-weight: 600;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #f0613a;
+  --ifm-color-primary-dark: #ee4e24;
+  --ifm-color-primary-darker: #ed4419;
+  --ifm-color-primary-darkest: #c93715;
+  --ifm-color-primary-light: #f27454;
+  --ifm-color-primary-lighter: #f37e61;
+  --ifm-color-primary-lightest: #f69780;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .navbar {
+  background-color: #011438;
+}

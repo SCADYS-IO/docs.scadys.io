@@ -2,12 +2,17 @@
 *.d
 
 # Archives
-*.zip
-*.rar
+# *.zip
+# *.rar
 
-# Mkdocs Site
-site/   
+# MkDocs
+site/
 .assets/docs_old/
+
+# Docusaurus
+node_modules/
+build/
+.docusaurus/
 htpasswd
 
 # Credentials
