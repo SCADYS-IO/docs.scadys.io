@@ -5,4 +5,4 @@ title: About
 
 # About Scadys
 
-For enquiries and contact information, see the [Contact](contact) page.
+For enquiries and contact information, see the [Contact](/about/contact) page.
