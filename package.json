@@ -1,7 +1,7 @@
 {
-  "name": "docs-scaffold",
-  "version": "0.0.0",
-  "private": true,
+  "name": "docs.scadys.io",
+  "version": "0.1.0",
+  "private": false,
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
