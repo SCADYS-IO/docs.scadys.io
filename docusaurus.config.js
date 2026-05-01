@@ -50,7 +50,7 @@ const config = {
         id: 'mdd400',
         path: 'mdd400',
         routeBasePath: 'mdd400',
-        sidebarPath: './sidebars.js',
+        sidebarPath: './sidebars-mdd400.js',
       },
     ],
     [
