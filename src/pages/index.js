@@ -6,8 +6,8 @@ const products = [
   {
     name: 'MDD400',
     full: 'Marine Data Display',
-    description: 'NMEA 2000 and SeaTalk data display for marine applications.',
-    to: '/mdd400',
+    description: 'NMEA 2000 and Legacy Serial data display for marine applications.',
+    to: '/mdd400/v2.9',
     hero: true,
   },
   {

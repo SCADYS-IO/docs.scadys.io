@@ -47,10 +47,10 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'mdd400',
-        path: 'mdd400',
-        routeBasePath: 'mdd400',
-        sidebarPath: './sidebars-mdd400.js',
+        id: 'mdd400-v29',
+        path: 'mdd400-v2.9',
+        routeBasePath: 'mdd400/v2.9',
+        sidebarPath: './sidebars-mdd400-v2.9.js',
       },
     ],
     [
@@ -105,7 +105,7 @@ const config = {
           src: 'img/logo.svg',
         },
         items: [
-          {label: 'MDD400', to: '/mdd400', position: 'left'},
+          {label: 'MDD400', to: '/mdd400/v2.9', position: 'left'},
           {label: 'WTI400', to: '/wti400', position: 'left'},
           {label: 'CANBench Duo', to: '/canbench-duo', position: 'left'},
           {label: 'CANBench TrueZ', to: '/canbench-truez', position: 'left'},
