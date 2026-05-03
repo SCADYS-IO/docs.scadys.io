@@ -7,7 +7,7 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/legacy_serial_rx.svg" alt="Legacy Serial RX schematic" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/legacy_serial_rx_734f7a0d.svg" alt="Legacy Serial RX schematic" />
 
 :::note Hardware version
 MDD400 **v2.9** — Fabricated prototype — testing phase

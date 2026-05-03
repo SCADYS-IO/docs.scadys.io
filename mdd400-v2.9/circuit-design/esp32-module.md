@@ -7,7 +7,7 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module.svg" alt="ESP32 Module schematic" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_5c6d30e0.svg" alt="ESP32 Module schematic" />
 
 :::note Hardware version
 MDD400 **v2.9** — Fabricated prototype — testing phase
