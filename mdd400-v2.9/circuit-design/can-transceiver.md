@@ -7,7 +7,7 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/can_transceiver_5a125230.svg" alt="CAN Transceiver schematic" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/can_transceiver_7c76562e.svg" alt="CAN Transceiver schematic" />
 
 :::note Hardware version
 MDD400 **v2.9** — Fabricated prototype — testing phase

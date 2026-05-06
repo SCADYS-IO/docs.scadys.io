@@ -69,11 +69,6 @@ const sidebars = {
               "label": "Legacy Serial TX"
             }
           ]
-        },
-        {
-          "type": "doc",
-          "id": "circuit-design/pcb-markings",
-          "label": "PCB Markings & Compliance"
         }
       ]
     },

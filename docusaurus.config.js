@@ -117,7 +117,7 @@ const config = {
       footer: {
         style: 'dark',
         links: [],
-        copyright: `Copyright © ${new Date().getFullYear()} Scadys · Documentation generated and maintained with AI assistance — verify critical values against source schematics · <a href="https://github.com/SCADYS-IO/docs.scadys.io/discussions" style="color:inherit;text-decoration:underline">Submit feedback or corrections</a>`,
+        copyright: `Documentation generated and maintained with AI assistance — verify critical values against source schematics · <a href="https://github.com/SCADYS-IO/docs.scadys.io/discussions" style="color:inherit;text-decoration:underline">Submit feedback or corrections</a><br/>Copyright © ${new Date().getFullYear()} GM Consolidated Holdings Pty Ltd. All rights reserved.`,
       },
       prism: {
         theme: prismThemes.github,

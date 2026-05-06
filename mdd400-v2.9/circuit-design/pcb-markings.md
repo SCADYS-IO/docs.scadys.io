@@ -7,7 +7,7 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c56d44de.svg" alt="PCB Markings schematic" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_1b3751c0.svg" alt="PCB Markings schematic" />
 
 :::note Hardware version
 MDD400 **v2.9** — Fabricated prototype — testing phase
