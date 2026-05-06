@@ -116,18 +116,8 @@ const config = {
       },
       footer: {
         style: 'dark',
-        links: [
-          {
-            title: 'Feedback',
-            items: [
-              {
-                label: 'Submit feedback or corrections',
-                href: 'https://github.com/SCADYS-IO/docs.scadys.io/discussions',
-              },
-            ],
-          },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} Scadys · Documentation generated and maintained with AI assistance — verify critical values against source schematics`,
+        links: [],
+        copyright: `Copyright © ${new Date().getFullYear()} Scadys · Documentation generated and maintained with AI assistance — verify critical values against source schematics · <a href="https://github.com/SCADYS-IO/docs.scadys.io/discussions" style="color:inherit;text-decoration:underline">Submit feedback or corrections</a>`,
       },
       prism: {
         theme: prismThemes.github,
