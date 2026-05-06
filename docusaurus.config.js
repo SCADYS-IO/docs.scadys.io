@@ -96,7 +96,9 @@ const config = {
     ({
       image: 'img/logo.svg',
       colorMode: {
-        respectPrefersColorScheme: true,
+        defaultMode: 'light',
+        disableSwitch: true,
+        respectPrefersColorScheme: false,
       },
       navbar: {
         title: 'SCADYS.IO',

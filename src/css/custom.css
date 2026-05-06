@@ -1,7 +1,9 @@
 /**
  * Scadys brand colors:
- *   Navy   #02235B  — navbar, hero backgrounds
+ *   Navy   #02235B  — navbar, footer
  *   Orange #DE3707  — primary interactive (links, buttons, active states)
+ *
+ * Site is locked to light mode — no dark theme.
  */
 
 :root {
@@ -12,6 +14,8 @@
   --ifm-color-primary-light: #e44b1e;
   --ifm-color-primary-lighter: #e65527;
   --ifm-color-primary-lightest: #ea6f47;
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #ffffff;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --scadys-navy: #02235B;
@@ -33,17 +37,7 @@
   font-weight: 600;
 }
 
-[data-theme='dark'] {
-  --ifm-color-primary: #f0613a;
-  --ifm-color-primary-dark: #ee4e24;
-  --ifm-color-primary-darker: #ed4419;
-  --ifm-color-primary-darkest: #c93715;
-  --ifm-color-primary-light: #f27454;
-  --ifm-color-primary-lighter: #f37e61;
-  --ifm-color-primary-lightest: #f69780;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-}
-
-[data-theme='dark'] .navbar {
-  background-color: #011438;
+/* Footer — navy background */
+.footer {
+  background-color: var(--scadys-navy);
 }
