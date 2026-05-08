@@ -56,10 +56,10 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'wti400',
-        path: 'wti400',
-        routeBasePath: 'wti400',
-        sidebarPath: './sidebars.js',
+        id: 'wti400-v12',
+        path: 'wti400-v1.2',
+        routeBasePath: 'wti400/v1.2',
+        sidebarPath: './sidebars-wti400-v1.2.js',
       },
     ],
     [
@@ -108,7 +108,7 @@ const config = {
         },
         items: [
           {label: 'MDD400', to: '/mdd400/v2.9', position: 'left'},
-          {label: 'WTI400', to: '/wti400', position: 'left'},
+          {label: 'WTI400', to: '/wti400/v1.2', position: 'left'},
           {label: 'CANBench Duo', to: '/canbench-duo', position: 'left'},
           {label: 'CANBench TrueZ', to: '/canbench-truez', position: 'left'},
           {label: 'About', to: '/about', position: 'right'},

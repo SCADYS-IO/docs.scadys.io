@@ -14,7 +14,7 @@ const products = [
     name: 'WTI400',
     full: 'Analog Wind Transducer Interface',
     description: 'Converts analog wind transducer signals to NMEA 2000.',
-    to: '/wti400',
+    to: '/wti400/v1.2',
   },
   {
     name: 'CANBench Duo',
