@@ -2,15 +2,17 @@
 title: Legacy Serial RX
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_73020a10.svg" alt="Legacy Serial RX schematic" />
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel *Sunny Spells*
+:::note[Hardware version]
+
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## Components
@@ -146,7 +148,9 @@ Input loading at 2.0 V differential: ≈ 0.36 mA (< 2.0 mA NMEA 0183 listener li
 
 ---
 
-:::caution Verification required — In service
+:::caution
+
+Verification required — In service
 
 **Before next production run:**
 - **C49/C50 schematic Datasheet URL:** Fix URL in `legacy_serial_rx.kicad_sch` from GRM188R71H104KA93D (100 nF, wrong) to GRM1885C1H101JA01D (100 pF, correct). Metadata-only; BOM value is unaffected. *(performance_review Gap 1)*

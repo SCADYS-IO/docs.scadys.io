@@ -2,15 +2,17 @@
 title: Power Supplies
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_a4e708c6.svg" alt="Power Supplies schematic" />
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel Sunny Spells
+:::note[Hardware version]
+
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## Components
@@ -47,15 +49,21 @@ WTI400 **v1.2** — In service — installed on test vessel Sunny Spells
 
 ## How It Works
 
-The power supplies sheet implements two conversion stages and a set of domain boundary filters serving three distinct power rails: VCC (3.3 V logic), VAS (adjustable wind transducer supply), and VSD (unregulated CAN bus rail, sourced from the `can_bus_power` sheet).
+The power supplies sheet implements two conversion stages and a set of domain boundary filters serving two distinct power rails: 
+* VCC (3.3 V logic), and 
+* VAS (adjustable wind transducer supply).
+
+VSD, the unregulated CAN bus rail (sourced from the `can_bus_power` sheet), provides protected and filtered DC input to both conversion stages.
 
 **VCC 3.3 V buck converter.** U2 (LMR51610XDBVR) is a 400 kHz synchronous buck converter powered from VSD (nominally 12 V). C2 (10 µF bulk) and C4 (100 nF HF bypass) decouple the VIN pin. The switching node (SW) is connected to L1 (FNR5040S220MT, 22 µH) via a wide copper pour. C14 and C15 (each 10 µF X7R 1210) form the output filter, placed symmetrically either side of L1. The output voltage is set by R2 (100 kΩ) and R1 (32 kΩ): Vout = 0.8 × (1 + 100/32) = 3.300 V exactly. C9 (1 pF C0G) is the feedforward capacitor across R2; C11 (100 nF) is the bootstrap capacitor from CB to SW. The regulated 3v3 net passes through FB1 (BLM31KN601SN1L) before becoming VCC in the digital domain. A DNP snubber (R13 + C10) is available at the SW node edge for post-bring-up population if ringing is observed.
 
+FB1 is the sole path between the SMPS 3v3 copper and the VCC digital domain — no bypass connections exist across it.
+
 **VAS wind transducer LDO.** U13 (LP2951-50DR) is a 100 mA adjustable LDO powered from VSC — VSD filtered through FB2 (BLM31KN601SN1L). The output voltage is set by R72 (120 kΩ upper) with either R78 alone (20 kΩ) or R78 + R77 (26.2 kΩ total) as the lower leg, selectable via JP1 or assembly link R79. This produces either 8.65 V (Raymarine / Legacy Serial Protocol instruments) or 6.89 V (B&G wind instruments). C52 (10 µF X7R 0805) is the sole VAS output capacitor. C48 (100 pF C0G) is the TI-recommended feedforward capacitor (CFF) from OUT to FB, improving transient response and PSRR — particularly important at large output voltages where feedback divider ratios are high. D16 (RBR3MM60BTR) is wired anode = VAS, cathode = VSC as a Vout-to-Vin protection diode: normally reverse-biased, it prevents output capacitor charge from back-driving the LP2951 during power-down. It is not in the VAS load current path and does not affect the output setpoint.
 
-**Firmware control and fault handling.** The LP2951 SHUTDOWN pin is active-HIGH (regulator off when SHUTDOWN is high). R55 (39 kΩ) pulls SHUTDOWN to VCC at boot, holding VAS off until the ESP32 is ready. After boot completes, the ESP32 drives WND_EN low, enabling VAS. If no transducer signal is detected on the analog inputs, the firmware releases WND_EN — R55 returns SHUTDOWN high, VAS disables, and an error code is flashed on the RGB status LED. The LP2951 ERROR pin (open-drain, active-low) is monitored via WND_ERR through R65 (10 kΩ pull-up). On an overcurrent or output undervoltage fault, the LP2951 asserts ERROR → WND_ERR goes low → firmware releases WND_EN → VAS shuts down → RGB LED flashes fault code.
+The LP2951 SHUTDOWN pin is active-HIGH (regulator off when SHUTDOWN is high). R55 (39 kΩ) pulls SHUTDOWN to VCC at boot, holding VAS off until the ESP32 is ready. After boot completes, the ESP32 drives WND_EN low, enabling VAS. If no transducer signal is detected on the analog inputs, the firmware releases WND_EN — R55 returns SHUTDOWN high, VAS disables, and an error code is flashed on the RGB status LED. The LP2951 ERROR pin (open-drain, active-low) is monitored via WND_ERR through R65 (10 kΩ pull-up). On an overcurrent or output undervoltage fault, the LP2951 asserts ERROR → WND_ERR goes low → firmware releases WND_EN → VAS shuts down → RGB LED flashes fault code.
 
-**Domain boundaries.** FB1 is the sole path between the SMPS 3v3 copper and the VCC digital domain — no bypass connections exist across it. FB2 similarly isolates VSD from VSC at the LDO input. R74 (39 kΩ) provides a gentle bleed on VAS, ensuring the rail discharges cleanly when the LDO is disabled.
+FB2 similarly isolates VSD from VSC at the LDO input. R74 (39 kΩ) provides a gentle bleed on VAS, ensuring the rail discharges cleanly when the LDO is disabled.
 
 ## Design Rationale
 
@@ -63,11 +71,13 @@ The power supplies sheet implements two conversion stages and a set of domain bo
 
 **LP2951 adjustable LDO for dual-transducer support.** The WTI400 must support both Raymarine/Legacy Serial Protocol instruments (~8 V, ≤25 mA) and B&G 213 instruments (nominally 6.5 V, 25–30 mA). A single adjustable LDO with a two-position feedback divider (JP1 or assembly link R79) avoids stocking two board variants. JP1 allows field reconfiguration; R79 allows factory-fixed builds for known transducer installations. The three assembly configurations are: JP1 fitted + R79 DNP (field-configurable); R79 fitted + JP1 DNP (factory 8.65 V / Raymarine); both DNP (factory 6.89 V / B&G).
 
-**LP2951 new chip (CSO: RFB) and C52 ESR.** TI ships LP2951-50DR from two die revisions. The new chip (CSO: RFB) specifies an output capacitor ESR window of 0–2 Ω and explicitly recommends X7R MLCCs. C52 (10 µF X7R 0805, ESR ~5–50 mΩ) meets this requirement. The legacy chip (CSO: SHE) requires 0.5–10 Ω ESR and is incompatible with C52 — a tantalum or a series resistor would be needed. The CSO code must be confirmed on the procurement reel label before U13 is populated.
+TI ships LP2951-50DR from two die revisions. The new chip (CSO: RFB) specifies an output capacitor ESR window of 0–2 Ω and explicitly recommends X7R MLCCs. C52 (10 µF X7R 0805, ESR ~5–50 mΩ) meets this requirement. The legacy chip (CSO: SHE) requires 0.5–10 Ω ESR and is incompatible with C52 — a tantalum or a series resistor would be needed. *The CSO code must be confirmed on the procurement reel label before U13 is populated.*
 
 ## PCB Layout
 
-C14 and C15 are placed symmetrically on opposite sides of L1, each 4.12 mm from the inductor centre, at the same Y coordinate. This flanking arrangement minimises the output ripple current loop area — current flows from L1 pad directly into each cap without a long detour — and the caps provide radiated EMI shielding around the inductor body. The SW node is implemented as a filled copper pour (priority 50) running from the U2 SW pin to the L1 input pad; no narrow routed trace exists on this path. The full-board In1.Cu GNDREF plane (35 µm, 1 oz) underlies all power supply components, with 132 GNDREF vias (0.3 mm drill) stitching the SMPS F.Cu fills to the inner plane.
+*Synchronous buck at 400 kHz:* C14 and C15 are placed symmetrically on opposite sides of L1, each 4.12 mm from the inductor centre, at the same Y coordinate. This flanking arrangement minimises the output ripple current loop area — current flows from L1 pad directly into each cap without a long detour — and the caps provide radiated EMI shielding around the inductor body. The SW node is implemented as a filled copper pour (priority 50) running from the U2 SW pin to the L1 input pad; no narrow routed trace exists on this path. 
+
+*LP2951 adjustable LDO:* The full-board In1.Cu GNDREF plane (35 µm, 1 oz) underlies all power supply components, with GNDREF vias (0.3 mm drill) stitching the SMPS F.Cu fills to the inner plane.
 
 | Requirement | Status | Evidence |
 |-------------|--------|----------|
@@ -108,7 +118,9 @@ C14 and C15 are placed symmetrically on opposite sides of L1, each 4.12 mm from 
 
 The B&G worst-case spec (30 mA at 6.89 V, VSD = 14.8 V) sits at the 10°C thermal margin boundary at 85°C ambient. Actual VAS current must be measured at bring-up; flag any instrument drawing more than 30 mA on the 6v8 setpoint.
 
-:::caution Verification required — In service — installed on test vessel Sunny Spells
+:::caution
+
+Verification required — In service — installed on test vessel
 
 **Before next production run:**
 - **LP2951-50DR CSO code**: Confirm reel label shows CSO: RFB (new chip) before populating U13. If CSO: SHE (legacy chip) is received, C52 must be replaced with a tantalum capacitor (ESR 0.5–5 Ω) or a 1–3.3 Ω resistor added in series before bring-up. Source: TI LP2951 datasheet §7.2.1.1.2.
@@ -120,6 +132,7 @@ The B&G worst-case spec (30 mA at 6.89 V, VSD = 14.8 V) sits at the 10°C therma
 - **LP2951 stability**: Apply 5→35 mA load steps at both setpoints with a 12–20 m representative cable. Confirm no sustained oscillation. If instability is observed, increase C48 from 100 pF toward 150–220 pF.
 - **U13 thermal soak**: Run 30 minutes at VSD = 14.8 V, 30 mA, 6v8 setpoint; record U13 package temperature. Expected Tj < 115°C at 85°C ambient.
 - **Actual transducer current**: Measure IVAS with each target instrument type (Raymarine E22078/9, B&G 213). Flag if any instrument draws > 30 mA on the 6v8 setpoint.
+
 :::
 
 ## References

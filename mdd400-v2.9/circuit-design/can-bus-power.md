@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_0f210798.svg" alt="CAN Bus Power Protection schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Components
@@ -166,7 +168,9 @@ Combined attenuation: >60 dB at 10 MHz, >100 dB above 100 MHz (simulation from o
 | PTC hold (500 mA) | 500 mA | **6.0 LEN** |
 | Limit | — | 8 LEN |
 
-:::caution Testing & Verification — Fabricated prototype — testing phase
+:::caution
+
+Testing & Verification — Fabricated prototype — testing phase
 
 **Before next production run:**
 - Update `can_bus_power.kicad_sch` title block rev from "2.8" to "2.9" to match the enclosing hardware version.
@@ -182,6 +186,7 @@ Combined attenuation: >60 dB at 10 MHz, >100 dB above 100 MHz (simulation from o
 - **R33 Kelvin routing**: Route INA219 IN+ and IN− sense traces from the inner edges of R33 pad 1 and pad 2 respectively, separate from the main VS+/VSC power traces. Current routing is acceptable but not optimal for current measurement accuracy.
 - **C41 and D8 proximity** (nice-to-have): Tighten C41 to within 2 mm of Q7 base pin (currently 3.6 mm) and D8 to within 2 mm of Q6 gate/source (currently 3.0 mm). Both deviations are functionally benign at OVP µs timescales.
 - **EMI filter simulation source**: Add LTspice `.asc` source file to `design-docs/` using V2.9 component values to replace the untraced old-docs attenuation figures.
+
 :::
 
 ## References

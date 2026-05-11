@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/legacy_serial_rx_ab1b2330.svg" alt="Legacy Serial RX schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Components
@@ -139,7 +141,9 @@ Input loading at 2.0 V differential: ≈ 0.36 mA (< 2.0 mA NMEA 0183 listener li
 | TLP2309 isolation voltage | — | 3750 Vrms |
 | Common-mode transient immunity | — | ±15 kV/µs |
 
-:::caution Verification required — Fabricated prototype
+:::caution
+
+Verification required — Fabricated prototype
 
 **Verify during bring-up:**
 - **Legacy Serial I protocol compatibility at 4800 bps:** Connect to a real Legacy Serial I device; verify ST_RX waveform framing, bit timing, and idle HIGH level on oscilloscope.
@@ -155,6 +159,7 @@ Input loading at 2.0 V differential: ≈ 0.36 mA (< 2.0 mA NMEA 0183 listener li
 - **Front-end protection proximity to J3:** D13, D14, C49 are 20–23 mm from J3 due to the connector's large physical footprint. Assess whether rear-side placement of the signal protection cluster is practical in V2.10. *(pcb_review Gap P2a/P2b)*
 - **Dedicated VCC decoupling at U7 LED supply:** Add a 100 nF bypass cap close to U7 pin 1 (VST/LED side). C53 is in the U11 cluster (40 mm from U7); R32 (2.2 kΩ) partially compensates. *(pcb_review Gap D2)*
 - **Guard ring around U7 isolation gap:** No guard ring identified in PCB data. Recommended for marine environments where ionic contamination is a risk. *(pcb_review Gap G4)*
+
 :::
 
 ## References

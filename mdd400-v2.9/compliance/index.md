@@ -6,8 +6,10 @@ hw_status_label: "Fabricated prototype — testing phase"
 sidebar_label: Compliance
 ---
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 The MDD400 is designed with reference to the standards and directives listed below. The device is currently in the prototype and pre-certification phase — independent testing will be conducted prior to commercial release.

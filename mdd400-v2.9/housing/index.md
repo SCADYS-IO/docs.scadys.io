@@ -6,8 +6,10 @@ hw_status_label: "Fabricated prototype — testing phase"
 sidebar_label: Housing
 ---
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 The MDD400 enclosure is designed for flush or surface mounting in cockpit and helm panel installations. It targets IP65 ingress protection — fully dust-tight and protected against water jets from any direction. The PCB is 95.2 × 95.2 mm (four-layer FR4, ENIG finish).

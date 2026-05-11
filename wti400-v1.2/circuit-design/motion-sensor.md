@@ -2,15 +2,17 @@
 title: Motion Sensor
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/motion_sensor_39308430.svg" alt="Motion Sensor schematic" />
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel *Sunny Spells*
+:::note[Hardware version]
+
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## Components
@@ -79,7 +81,9 @@ All four components are on F.Cu. U1 is placed approximately 50 mm from the neare
 
 ---
 
-:::caution Verification required — In service
+:::caution
+
+Verification required — In service
 
 **Verify during bring-up:**
 - **VDD ripple:** Measure VDD at U1 with a 100 MHz oscilloscope under normal I2C polling load. Target: < 50 mV peak-to-peak. C5 and C6 are at the courtyard-constrained minimum distance from U1 VDD pin. *(performance_review Gap 5)*

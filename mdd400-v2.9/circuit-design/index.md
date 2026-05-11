@@ -6,8 +6,10 @@ hw_status_label: "Fabricated prototype — testing phase"
 sidebar_label: Overview
 ---
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## System Architecture

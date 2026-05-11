@@ -2,15 +2,17 @@
 title: CAN Transceiver
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_92a44bba.svg" alt="CAN Transceiver schematic" />
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel Sunny Spells
+:::note[Hardware version]
+
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## Components
@@ -82,7 +84,9 @@ All CAN transceiver components are on F.Cu in a compact strip (X ≈ 83–92 mm,
 | U9 V_clamp vs. U5 bus fault spec | V_clamp = 40 V @ 5 A; spec = ±36 V | ⚠️ 40 V clamp > 36 V spec — see Testing |
 | NUP2105LT1G junction capacitance loading | 30 pF per line; ISO 11898-2 budget = 100 pF per node | **60 pF total** — within budget ✓ |
 
-:::caution Verification required — In service — installed on test vessel Sunny Spells
+:::caution
+
+Verification required — In service — installed on test vessel
 
 **Verify during bring-up:**
 - **EMC scan — CAN bus (CISPR 25 Class 5 / ISO 11452-2)**: Include NET-H, NET-L, TWAI_TX, and TWAI_RX in the full-board conducted and radiated emissions scan. Two-stage common-mode filter and pre-CMC TVS topology designed for CISPR 25 Class 5 compliance, but no formal measurement has been performed. Required before CE marking or MED certification. *(performance_review Gap 1)*
@@ -96,6 +100,7 @@ All CAN transceiver components are on F.Cu in a compact strip (X ≈ 83–92 mm,
 - **Evaluate post-CMC TVS** *(conditional on EMC test result)*: If CISPR 25 or ISO 11452-2 testing reveals susceptibility, add a post-CMC TVS (e.g., PESD15VL1BA) between FL1 and U5. *(performance_review Gap 3)*
 - **Relocate R14/R15; move C18/C19 adjacent to U5 Pin 3**: Reduces VCC bypass trace from ~2.5 mm (courtyard-limited) to ≤ 0.5 mm per SN65HVD234 §12. *(pcb_review F1)*
 - **Confirm 24 V operation not approved**: Document explicitly in product specification. U9 V_RWM = 24 V is adequate for 12 V NMEA 2000 only. *(schema_review Gap 8)*
+
 :::
 
 ## References

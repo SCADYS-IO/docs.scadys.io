@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/legacy_serial_tx_3119b6b9.svg" alt="Legacy Serial TX schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Components
@@ -92,7 +94,9 @@ All components are on F.Cu, arranged in an elongated column with the opto-isolat
 | D9 clamp headroom at nominal VST | 15 V − 12 V | **3 V** — D9 does not conduct at nominal bus voltage ✓ |
 | TLP2309 isolation voltage | Per datasheet | **5000 Vrms** — well above marine environment requirement ✓ |
 
-:::caution Verification required — Fabricated prototype — testing phase
+:::caution
+
+Verification required — Fabricated prototype — testing phase
 
 **Verify during bring-up:**
 - **Protocol compatibility at 4800 bps**: Connect to a real SeaTalk or Legacy Serial I device and verify correct framing, bit timing, and bus levels at 4800 bps. Confirm rising edges (Q12 rise-time assist) are within timing margins. *(performance_review — protocol compliance)*
@@ -103,6 +107,7 @@ All components are on F.Cu, arranged in an elongated column with the opto-isolat
 **For next version:**
 - **LCSC URLs in schematic**: Replace LCSC property URLs for U8/U9, Q9, Q12, D9, D11 in `legacy_serial_tx.kicad_sch` with manufacturer URLs. *(v2.10-improvements)*
 - **D9 TVS upgrade** *(conditional)*: If testing shows D9 conducts at VST = 15–16 V, replace with a bidirectional TVS with V_RWM ≥ 16 V to add margin. *(v2.10-improvements)*
+
 :::
 
 ## References

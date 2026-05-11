@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_1b3751c0.svg" alt="PCB Markings schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Board Specification
@@ -87,12 +89,15 @@ All marks listed below are silkscreen (non-copper) unless noted.
 
 The two inner copper planes (In1.Cu, In2.Cu) carry the primary power distribution for the board's isolated voltage domains. Signal routing is confined to F.Cu and B.Cu. The 4-layer stack provides low-impedance power delivery and a ground return plane for controlled-impedance signal traces.
 
-:::caution Verification required — Fabricated prototype — testing phase
+:::caution
+
+Verification required — Fabricated prototype — testing phase
 
 **Verify during bring-up:**
 - **QR code URL**: Confirm the QR code (S6) resolves to the correct live documentation URL (`docs.scadys.io/mdd400/v2.9`). The schematic lists `docs.scadys.com/mdd400` — verify the redirect or the printed URL is correct before mass production.
 - **Copyright year**: S8 reads "© 2025" on a board dated 2026-05-04. Confirm whether the year should be updated before the next PCB fabrication run.
 - **Fiducial recognition**: Confirm pick-and-place machine vision correctly recognises FID1–FID4 at (71.0, 47.0) and (157.0, 133.0) on both F.Cu and B.Cu before full production assembly.
+
 :::
 
 ## References

@@ -2,21 +2,28 @@
 title: Circuit Design
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 sidebar_label: Overview
 ---
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel *Sunny Spells*
+:::note[Hardware version]
+
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## System Architecture
 
-The WTI400 is a marine wind transducer interface that bridges analogue wind sensors to NMEA 2000 networks. It accepts a standard sine-wave wind transducer (Raymarine E22078/ST60 or B&G 213) and outputs calibrated True Wind Speed and True Wind Angle as PGN 130306 messages on the vessel CAN bus. Vessel motion data from an onboard 6DoF IMU is used to apply heel, pitch, and dynamic correction to the raw transducer signals.
+The WTI400 is a marine wind transducer interface that bridges analog wind sensors to NMEA 2000 networks. It accepts a standard sine-wave wind transducer (e.g. Raymarine E22078/E22079 or B&G 213) and outputs calibrated Apparent Wind Speed and Apparent Wind Angle as PGN 130306 messages on the vessel CAN bus. Vessel motion data from an onboard 6DoF IMU is used to apply heel, pitch, and dynamic correction to the raw transducer signals.
 
-Power enters on the NMEA 2000 backbone (9–16 V DC) via the M12 5-pin connector. An overvoltage protection cell clamps the input and feeds a switching regulator (VCC, 3.3 V) and a precision linear regulator (VAS, 8.4 V or 6.8 V selectable) for the wind transducer supply. The ESP32-S3 module acts as the system controller: it samples the two wind sine channels through unity-gain buffers and ADCs, polls the IMU over I²C, and transmits CAN frames via the SN65HVD234 transceiver. A UART channel receives legacy serial wind data when a compatible transducer is in use, and a separate transmit path echoes processed data back to legacy chart plotters.
+Power enters on the NMEA 2000 backbone (9–16 V DC) via the M12 5-pin connector. An overvoltage protection cell clamps the input and feeds a switching regulator (VCC, 3.3 V) and a precision linear regulator (VAS, 8 V or 6.5 V selectable) for the wind transducer supply. The ESP32-S3 module acts as the system controller: 
+* samples the two wind sine channels through unity-gain buffers and ADCs, 
+* counts speed pulses from the anemometer, 
+* polls the IMU over I²C and 
+* transmits CAN frames via the SN65HVD234 transceiver. 
+An optional legacy serial interface transmits wind data (e.g. SeaTalk™ or NMEA0183) for backwards compatibility with older systems.
 
-All signal processing runs on the ESP32-S3-WROOM-1-N16R8 (16 MB flash, 8 MB PSRAM). Firmware communicates with the IMU at 52 Hz over I²C, reads the two wind ADC channels at the ESP32's native sample rate, and publishes CAN frames at 1 Hz (True Wind) with a 10 Hz motion data overlay. A single RGB LED and tactile button provide status indication and mode selection without requiring a display.
+All signal processing runs on the ESP32-S3-WROOM-1-N16R8 (16 MB flash, 8 MB PSRAM). Firmware communicates with the IMU at 52 Hz over I²C, reads the two wind ADC channels at the ESP32's native sample rate, counts speed pulses from the anemometer and publishes CAN frames at 1 Hz (True Wind). A single RGB LED and tactile button provide status indication and mode selection without requiring a display.
 
 ---
 
@@ -69,4 +76,4 @@ Two galvanic isolation boundaries are maintained on the PCB:
 
 ### EMC Layout Philosophy
 
-Switching nodes (LMR51610 in the power_supplies section) are confined to the west of the board (x < 88 mm). The ESP32 module, IMU, and analogue wind buffers occupy the eastern half. I²C traces (I2C_SCL, I2C_SDA) run northward from the IMU to the ESP32 module without crossing any switching power domain. CAN differential traces (NET-H, NET-L) are routed as a matched pair with the common-mode filter immediately at the M12 connector. The WIND_X and WIND_Y analogue traces are separated by 5 mm with a GNDREF copper fill between them; no deliberate shielding is required at the operating signal frequencies (< 5 Hz wind sine wave).
+Switching nodes (LMR51610 in the power_supplies section) are confined to the west of the board (x < 88 mm). The ESP32 module, IMU, and analog wind buffers occupy the eastern half. I²C traces (I2C_SCL, I2C_SDA) run northward from the IMU to the ESP32 module without crossing any switching power domain. CAN differential traces (NET-H, NET-L) are routed as a matched pair with the common-mode filter immediately at the M12 connector. The WIND_X and WIND_Y analog traces are separated by 5 mm with a GNDREF copper fill between them; no deliberate shielding is required at the operating signal frequencies (< 5 Hz wind sine wave).

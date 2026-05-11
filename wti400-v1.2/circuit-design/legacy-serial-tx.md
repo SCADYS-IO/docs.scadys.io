@@ -2,15 +2,17 @@
 title: Legacy Serial TX
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_tx_ea52b8b5.svg" alt="Legacy Serial TX schematic" />
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel *Sunny Spells*
+:::note[Hardware version]
+
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## Components
@@ -109,7 +111,9 @@ ST_SIG crosses to B.Cu via a via at (148.0, 86.75) and runs 17.3 mm on B.Cu befo
 
 ---
 
-:::caution Verification required — In service
+:::caution
+
+Verification required — In service
 
 **Verify during bring-up:**
 - **D8 static current at high bus voltage:** At VST = 15–16 V (top of NMEA 2000 range), D8 (V_Z = 15 V) begins to conduct. Measure zener/leakage current at VST = 16 V. Confirm dissipation is within the 200 mW continuous rating and bus logic is unaffected. *(performance_review Gap 1)*

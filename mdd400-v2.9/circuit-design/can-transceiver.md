@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/can_transceiver_7c76562e.svg" alt="CAN Transceiver schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Components
@@ -81,7 +83,9 @@ All CAN transceiver components are on F.Cu. The circuit occupies a 11.5 × 27 mm
 | Bus edge rise time at Rs = 10 kΩ (TI SLLS557H Fig. 39) | 50–100 ns | 1.25–2.5% of NMEA 2000 bit period (4 µs @ 250 kbps) ✓ |
 | NUP2105LT1G clamp voltage vs. SN65HVD234 bus fault spec | V_clamp = 40 V @ 5 A; spec = ±36 V | ⚠️ 40 V clamp > 36 V fault spec — see Testing |
 
-:::caution Verification required — Fabricated prototype — testing phase
+:::caution
+
+Verification required — Fabricated prototype — testing phase
 
 **Verify during bring-up:**
 - **EMC scan — CAN bus (CISPR 25 Class 5 / ISO 11452-2)**: Include NET-H, NET-L, TWAI_TX, and TWAI_RX in the full-board conducted and radiated emissions scan. The two-stage common-mode filter and differential filter are designed to meet CISPR 25 Class 5, but no formal measurement has been performed on the V2.9 prototype. *(performance_review Gap 1)*
@@ -90,6 +94,7 @@ All CAN transceiver components are on F.Cu. The circuit occupies a 11.5 × 27 mm
 **For next version:**
 - **CAN filter simulation**: Add LTspice `.asc` simulation of the two-stage common-mode filter (C35/C34 + FL1 + C28/C27) and differential filter (C36) to `design-docs/`. Target: attenuation vs. frequency plot for CISPR 25 Class 5 pre-compliance assessment. *(performance_review Gap 3)*
 - **C18 proximity**: Tighten C18 (10 µF bulk bypass) placement to within 3 mm pad-to-pad of U5 VCC. Current centre-to-centre distance is 5.6 mm. *(pcb_review Gap 3)*
+
 :::
 
 ## References

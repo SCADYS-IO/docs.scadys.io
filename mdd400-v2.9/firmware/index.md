@@ -6,8 +6,12 @@ hw_status_label: "Fabricated prototype — testing phase"
 sidebar_label: Firmware
 ---
 
-:::note Hardware version
+:::note
+
+Hardware version
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 The MDD400 firmware runs on the ESP32-S3-WROOM-1-N16R8 module (dual-core Xtensa LX7, 16 MB flash, 8 MB PSRAM). It is developed using the ESP-IDF framework and handles all real-time communication, sensor management, display control, and network connectivity.

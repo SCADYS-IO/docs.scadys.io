@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/i2c_sensors_1d63f1bd.svg" alt="I²C Sensors schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Components
@@ -80,7 +82,9 @@ The three sensor ICs and their local decoupling occupy a 15 × 20 mm cluster (X:
 | OPT3004 dynamic range | Auto-range, 16-bit mantissa/exponent | **0.01 to 83,000 lux** |
 | I²C SCL rise time (R1 = 10 kΩ, C_bus ≈ 50 pF) | τ = 10 kΩ × 50 pF = 500 ns | Standard Mode (100 kHz), within I²C spec |
 
-:::caution Verification required — Fabricated prototype — testing phase
+:::caution
+
+Verification required — Fabricated prototype — testing phase
 
 **Verify during bring-up:**
 - **INA219 PGA setting**: Confirm firmware sets PGA = /4 (CONFIG register PG1:PG0 = 0b10, ±160 mV full-scale). If PGA = /2 (±80 mV) is used, peak measurable current drops to ~242 mA — below the 250 mA expected peak load. *(performance_review Gap 1)*
@@ -90,6 +94,7 @@ The three sensor ICs and their local decoupling occupy a 15 × 20 mm cluster (X:
 **For next version:**
 - **TMP112 decoupling**: Add 100 nF bypass capacitor at U13 VCC in parallel with C57 (100 pF). TMP112 datasheet recommends 100 nF minimum; the 100 pF C57 is below this guideline. *(v2.10-improvements)*
 - **Shorten INA219 sense traces**: Reduce the ~60 mm IN+/IN− sense path by moving U2 closer to R33 or routing the traces on an inner PCB layer away from SMPS switching activity. *(pcb_review Gap 2)*
+
 :::
 
 ## References

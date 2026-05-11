@@ -2,15 +2,17 @@
 title: Button & LED
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/button_led_a6421fe1.svg" alt="Button & LED schematic" />
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel *Sunny Spells*
+:::note[Hardware version]
+
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## Components
@@ -93,7 +95,9 @@ LED_GRN and LED_BLU each traverse ~40 mm on B.Cu (long-haul between the pull-up 
 
 ---
 
-:::caution Verification required — In service
+:::caution
+
+Verification required — In service
 
 **Verify during bring-up:**
 - LED colour balance: red runs at 0.74 mA vs 1.36 mA for green/blue (ratio ≈ 1 : 1.8). Verify perceived balance for status indication at firmware default PWM duty cycles; adjust duty in firmware if red appears dim relative to green/blue.

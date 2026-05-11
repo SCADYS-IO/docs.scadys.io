@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_6662fb7b.svg" alt="ESP32 Module schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Components
@@ -104,7 +106,9 @@ With LED_EN = low (Q1 on):
 
 ESP32-S3-WROOM-1-N16R8 carries FCC ID 2AC7Z-ESP32S3WROOM1 and CE (RED 2014/53/EU) pre-certification. PCB antenna keep-out clearance (≥ 6.3 mm, all layers) exceeds the required 3 mm minimum.
 
-:::caution Verification required — Fabricated prototype — testing phase
+:::caution
+
+Verification required — Fabricated prototype — testing phase
 
 **Verify during bring-up:**
 - **U4 junction temperature (developer/kit builds):** Measure T_j under sustained Wi-Fi TX load (~300 mA). Estimated T_j = 100.6 °C at 70 °C ambient with R_θJA_eff ≈ 60 °C/W. If measured T_j exceeds 110 °C, expand the F.Cu pour or increase via count in V2.10. *(performance_review Gap 1)*
@@ -112,6 +116,7 @@ ESP32-S3-WROOM-1-N16R8 carries FCC ID 2AC7Z-ESP32S3WROOM1 and CE (RED 2014/53/EU
 **For next version:**
 - **UART series damping resistors:** Add 22–33 Ω at the transmitter output for all UART TX lines with routed trace lengths ≥ 50 mm (ESP_TX, DISP_TX, and corresponding RX lines). Measure trace lengths in KiCAD PCB editor first; add resistors only where length ≥ 50 mm. *(schema_review Gap 6)*
 - **ESP_TX/RX trace lengths:** Confirm routed trace lengths from U3 to J1 THT pads (straight-line ≈ 29.5 mm). If routed length exceeds 50 mm, include in the UART damping action above. *(pcb_review Gap 3)*
+
 :::
 
 ## References

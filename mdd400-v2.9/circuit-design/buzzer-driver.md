@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/buzzer_driver_12f77fec.svg" alt="Buzzer Driver schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Components
@@ -74,13 +76,16 @@ All driver components are placed on the F.Cu (top) layer in a compact 16.9 × 7.
 
 The Q3 base drive is well within S8050 ratings: I_B = (3.3 V − 0.7 V) / 2.2 kΩ ≈ 1.2 mA, which at hFE~170 supports I_C up to ~200 mA — sufficient to pull the Q2 gate to within millivolts of GND via Q3 saturation.
 
-:::caution Verification required — Fabricated prototype — testing phase
+:::caution
+
+Verification required — Fabricated prototype — testing phase
 
 **Verify during bring-up:**
 - **EMI scan — buzzer PWM path**: Include the buzzer drive net in the CISPR 32 conducted-emission scan of the prototype. The R10/C12/R9 filter is calculated to attenuate harmonics above 7.2 kHz, but no measurement has been performed. *(performance_review Gap 1)*
 
 **For next version:**
 - **Buzzer filter simulation**: Re-run the PWM filter simulation with V2.9 component values (R10 4.7 Ω / C12 4.7 µF / R9 10 Ω) and record operating conditions (PWM frequency, duty cycle, load impedance). Add simulation source file to `design-docs/`. Current waveform images originate from V2.8 old-docs with unrecorded conditions. *(performance_review Gap 2)*
+
 :::
 
 ## References

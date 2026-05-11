@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_0eeb927d.svg" alt="Power Supplies schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Components
@@ -132,7 +134,9 @@ Murata BLM31KN601SN1L — 1206, 600 Ω @ 100 MHz, DCR = 80 mΩ.
 
 FB4 carries the summed input current for both converters. At 525 mA the 22 mW dissipation is within the 1206 package rating — no thermal flag.
 
-:::caution Verification required — Fabricated prototype — testing phase
+:::caution
+
+Verification required — Fabricated prototype — testing phase
 
 **Before next production run:**
 - C24, R7, R23: set `(attr smd dnp)` in the PCB file to match schematic DNP designation; only C9 is currently marked DNP.
@@ -143,6 +147,7 @@ FB4 carries the summed input current for both converters. At 525 mA the 22 mW di
 - Loop stability (phase margin / gain margin): values from old evidence file cannot be traced to a verified source; re-run WEBENCH with full Bode plot export, or measure on bench.
 - BST hold cap trace length (C10, C25): both caps are at x≈80.8 mm, approximately 9 mm from the VSD strip pour; check BST pin waveform at first bring-up to confirm bootstrap charging is unaffected.
 - Thermal model: θJA = 200 °C/W used for Tj calculations is from training knowledge; verify against LMR51610 datasheet Section 7.4 (DBV package).
+
 :::
 
 ## References

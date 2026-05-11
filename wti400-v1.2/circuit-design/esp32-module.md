@@ -2,15 +2,17 @@
 title: ESP32 Module
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_5df19389.svg" alt="ESP32 Module schematic" />
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel Sunny Spells
+:::note[Hardware version]
+
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## Components
@@ -92,7 +94,9 @@ All esp32_module components are on F.Cu. U3 is placed in the upper-right corner 
 | I2C t_r at C_bus = 50 pF | 424 ns | Passes Standard mode (≤ 1000 ns); fails Fast mode (≤ 300 ns) |
 | Max C_bus for Fast mode (10 kΩ) | 35 pF | Threshold for 400 kHz with current pull-up values |
 
-:::caution Verification required — In service — installed on test vessel Sunny Spells
+:::caution
+
+Verification required — In service — installed on test vessel
 
 **Verify during bring-up:**
 - **I2C Fast-mode capability**: Current firmware uses Standard mode (100 kHz) — confirmed compliant with 10 kΩ pull-ups for C_bus ≤ 118 pF. If firmware is upgraded to Fast mode (400 kHz), verify C_bus ≤ 35 pF with a logic analyser and measure SCL/SDA rise times. Reduce R3/R4 to 4.7 kΩ if C_bus > 35 pF before enabling 400 kHz.

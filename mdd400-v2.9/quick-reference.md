@@ -7,8 +7,10 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Pin Assignments
@@ -164,9 +166,9 @@ MDD400 **v2.9** — Fabricated prototype — testing phase
 |---|---|---|---|
 | L1 (F.Cu) | Outer copper 0.5 oz | 0.0175 | Plated to 1 oz |
 | Prepreg | 7628 RC46%, DK 4.74 | 0.1855 (laminated) | |
-| L2 (In1.Cu) | Inner copper 1 oz | 0.035 | Ground plane |
+| L2 (In1.Cu) | Inner copper 1 oz | 0.035 | GNDREF solid ground plane (return path) for top layer |
 | Core | FR4, DK 4.6 | 1.1 (with Cu) | |
-| L3 (In2.Cu) | Inner copper 1 oz | 0.035 | Power plane |
+| L3 (In2.Cu) | Inner copper 1 oz | 0.035 | GNDREF solid ground plane (return path) for bottom layer |
 | Prepreg | 7628 RC46%, DK 4.74 | 0.1855 (laminated) | |
 | L4 (B.Cu) | Outer copper 0.5 oz | 0.0175 | Plated to 1 oz |
 | Solder mask | Epoxy, dark blue | 0.012 each side | Tented vias (front and back) |

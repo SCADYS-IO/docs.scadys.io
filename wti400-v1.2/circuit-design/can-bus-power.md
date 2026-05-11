@@ -2,15 +2,16 @@
 title: CAN Bus Power
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/can_bus_power_0819808b.svg" alt="CAN Bus Power schematic" />
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel Sunny Spells
+:::note[Hardware version]
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## Components
@@ -146,7 +147,9 @@ Practical attenuation at 1 MHz:    ~−60 to −80 dB (parasitics-limited)
 
 At NMEA 2000 minimum bus voltage (9.0 V): **VSC_min ≈ 8.54 V**. The LP2951 in the 8v4 variant (Raymarine) requires ~8.95 V minimum input; it will lose regulation at absolute minimum bus voltage under full transducer load. The 6v8 variant (B&G) passes with 1.35 V margin. This is an accepted design constraint — typical bus voltage is 12–13 V.
 
-:::caution Verification required — Prototype
+:::caution
+
+Verification required — Prototype
 
 **Verify during bring-up:**
 - OVP trip point: confirm VSC disconnects at 18.0–19.5 V with no oscillation at threshold
@@ -158,6 +161,7 @@ At NMEA 2000 minimum bus voltage (9.0 V): **VSC_min ≈ 8.54 V**. The LP2951 in 
 - Increase R28 to 2.7 kΩ: raises OVP threshold at 85 °C from 15.1 V to 17.4 V, providing 2.6 V margin vs NMEA max charging voltage
 - Increase L2/L3 spacing by 0.1 mm to satisfy 2 mm body-edge keepout
 - Replace D11 with Littelfuse or STMicro qualified SM8S36CA equivalent for CE/ABYC production
+
 :::
 
 ## References

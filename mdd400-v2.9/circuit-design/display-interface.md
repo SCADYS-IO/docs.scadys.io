@@ -9,8 +9,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/display_interface_680ac725.svg" alt="Display Interface schematic" />
 
-:::note Hardware version
+:::note[Hardware version]
+
 MDD400 **v2.9** — Fabricated prototype — testing phase
+
 :::
 
 ## Components
@@ -73,7 +75,9 @@ All power switch components occupy a compact cluster on F.Cu; J4 is on B.Cu at t
 | FB3 current margin | (3.0 A − 0.4 A) / 3.0 A | **86.7%** ✓ |
 | C37 voltage stress | 5.0 V / 25 V rated | **20%** — well within 50% derating guideline ✓ |
 
-:::caution Verification required — Fabricated prototype — testing phase
+:::caution
+
+Verification required — Fabricated prototype — testing phase
 
 **Verify during bring-up:**
 - **Display operating current**: Measure VDSP current at startup and under sustained backlight load. Performance review uses 400 mA as a conservative estimate — actual current may differ. Confirm within Q4 and FB3 ratings. *(performance_review Gap 1)*
@@ -83,6 +87,7 @@ All power switch components occupy a compact cluster on F.Cu; J4 is on B.Cu at t
 **For next version:**
 - **C37 MPN dielectric confirmation**: Confirm actual temperature characteristic of GRM21BZ71E106KE15L ("BZ" series code). If dielectric is Y5V or Z5U, effective capacitance at 5 V DC bias may be substantially less than 10 µF — consider replacing with an X5R-rated part if effective capacitance is < 4.7 µF. *(v2.10-improvements)*
 - **LCSC URLs in schematic**: Replace LCSC property URLs on C37 and C38 in `display_interface.kicad_sch` with Murata manufacturer URLs. *(v2.10-improvements)*
+
 :::
 
 ## References

@@ -2,15 +2,17 @@
 title: Wind Interface
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel Sunny Spells"
+hw_status_label: "In service — installed on test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_fc409790.svg" alt="Wind Interface schematic" />
 
-:::note Hardware version
-WTI400 **v1.2** — In service — installed on test vessel *Sunny Spells*
+:::note[Hardware version]
+
+WTI400 **v1.2** — In service — installed on test vessel
+
 :::
 
 ## Components
@@ -19,8 +21,8 @@ WTI400 **v1.2** — In service — installed on test vessel *Sunny Spells*
 |-----|-------|-------------|-----------|
 | J4 | 1211 | Keystone 1211 solder tab — WIND_SHLD (cable shield) | [Keystone 1211](https://www.keyelco.com/product.cfm/product_id/10085) |
 | J5 | 1211 | Keystone 1211 solder tab — WIND_8V (transducer supply) | [Keystone 1211](https://www.keyelco.com/product.cfm/product_id/10085) |
-| J6 | 1211 | Keystone 1211 solder tab — X analogue signal | [Keystone 1211](https://www.keyelco.com/product.cfm/product_id/10085) |
-| J7 | 1211 | Keystone 1211 solder tab — Y analogue signal | [Keystone 1211](https://www.keyelco.com/product.cfm/product_id/10085) |
+| J6 | 1211 | Keystone 1211 solder tab — X analog signal | [Keystone 1211](https://www.keyelco.com/product.cfm/product_id/10085) |
+| J7 | 1211 | Keystone 1211 solder tab — Y analog signal | [Keystone 1211](https://www.keyelco.com/product.cfm/product_id/10085) |
 | J8 | 1211 | Keystone 1211 solder tab — P (speed pulse) | [Keystone 1211](https://www.keyelco.com/product.cfm/product_id/10085) |
 | J9 | 1211 | Keystone 1211 solder tab — GND_WIND return | [Keystone 1211](https://www.keyelco.com/product.cfm/product_id/10085) |
 | U12 | TLV9002IDR | TI dual RRIO op-amp, 1 MHz GBW, 5 pA I_b, SOIC-8 — X and Y non-inverting amplifiers | [TLV9002](https://www.ti.com/lit/ds/symlink/tlv9002.pdf) |
@@ -29,8 +31,8 @@ WTI400 **v1.2** — In service — installed on test vessel *Sunny Spells*
 | D17 | BAT54J,115 | Nexperia Schottky diode, V_f ≈ 0.35 V @ 25 mA, SOD-323F — series reverse-current block | [BAT54 series](https://assets.nexperia.com/documents/data-sheet/BAT54_SER.pdf) |
 | D18 | SD09C-7 | Diodes Inc. bidirectional TVS, 9 V standoff, 400 W (8/20 µs), SOD-323F — WIND_8V clamp | [SD09C](https://www.diodes.com/assets/Datasheets/SD09C.pdf) |
 | D19 | PESD15VL1BA | Nexperia bidirectional TVS, 15 V standoff, 200 W (8/20 µs), SOD-323 — cable shield clamp | [PESD15VL1BA](https://assets.nexperia.com/documents/data-sheet/PESD15VL1BA.pdf) |
-| D20 | SD09C-7 | Diodes Inc. bidirectional TVS, 9 V standoff, 400 W — X analogue line clamp | [SD09C](https://www.diodes.com/assets/Datasheets/SD09C.pdf) |
-| D21 | SD09C-7 | Diodes Inc. bidirectional TVS, 9 V standoff, 400 W — Y analogue line clamp | [SD09C](https://www.diodes.com/assets/Datasheets/SD09C.pdf) |
+| D20 | SD09C-7 | Diodes Inc. bidirectional TVS, 9 V standoff, 400 W — X analog line clamp | [SD09C](https://www.diodes.com/assets/Datasheets/SD09C.pdf) |
+| D21 | SD09C-7 | Diodes Inc. bidirectional TVS, 9 V standoff, 400 W — Y analog line clamp | [SD09C](https://www.diodes.com/assets/Datasheets/SD09C.pdf) |
 | D22 | SD09C-7 | Diodes Inc. bidirectional TVS, 9 V standoff, 400 W — speed pulse (P) line clamp | [SD09C](https://www.diodes.com/assets/Datasheets/SD09C.pdf) |
 | D10 | BZT52C3V6S | Vishay zener, 3.6 V, 200 mW, SOD-323 — U11 input clamp | [BZT52C series](https://www.vishay.com/docs/85816/bzt52c.pdf) |
 | L4 | 1 µH | Murata LQM18FN1R0M00D, 150 mA, 260 mΩ DCR, 0603 — RF choke on X line | [LQM18FN1R0M00D](https://www.murata.com/en-us/products/productdetail?partno=LQM18FN1R0M00D) |
@@ -58,11 +60,11 @@ WTI400 **v1.2** — In service — installed on test vessel *Sunny Spells*
 
 ### Transducer connector and supply path
 
-The transducer cable connects via six Keystone 1211 quick-connect solder tabs (J4–J9): J4 = cable shield (WIND_SHLD), J5 = transducer supply (WIND_8V), J6 = X analogue angle signal, J7 = Y analogue angle signal, J8 = speed pulse (P), J9 = GND_WIND return. The supply to the transducer is derived from the VAS global rail produced by LP2951 U13 on the power_supplies sheet. JP1 on that sheet selects either 8.65 V (JP1 8v4, Raymarine mode) or 6.89 V (JP1 6v8, B&G mode). D17 (BAT54 Schottky) sits in series in the supply path — anode to VAS, cathode to FL2 pin 3 — and serves as a reverse-current blocker: it prevents back-EMF from the transducer reaching the VAS rail. Its forward drop (~0.35 V at 25 mA) reduces the connector voltage to WIND_8V = 8.30 V at JP1 8v4 and 6.54 V at JP1 6v8. FL2 (SXN SMCM7060-132T, 4-pin common-mode filter) follows D17: winding 1 carries the supply (FL2 pin 3 → pin 2, i.e. WIND_8V), winding 2 carries the ground return (GNDREF pin 4 → GND_WIND pin 1). FL2 suppresses common-mode EMI and conducted spikes from the mast cable, protecting the VAS regulator and board ground reference. At the connector side of FL2, C55 (100 nF) and C56 (15 pF) provide broadband decoupling on WIND_8V, and TVS D18 (SD09C-7, 9 V standoff) clamps the supply line against surges.
+The transducer cable connects via six Keystone 1211 quick-connect solder tabs (J4–J9): J4 = cable shield (WIND_SHLD), J5 = transducer supply (WIND_8V), J6 = X analog angle signal, J7 = Y analog angle signal, J8 = speed pulse (P), J9 = GND_WIND return. The supply to the transducer is derived from the VAS global rail produced by LP2951 U13 on the power_supplies sheet. JP1 on that sheet selects either 8.65 V (JP1 8v4, Raymarine mode) or 6.89 V (JP1 6v8, B&G mode). D17 (BAT54 Schottky) sits in series in the supply path — anode to VAS, cathode to FL2 pin 3 — and serves as a reverse-current blocker: it prevents back-EMF from the transducer reaching the VAS rail. Its forward drop (~0.35 V at 25 mA) reduces the connector voltage to WIND_8V = 8.30 V at JP1 8v4 and 6.54 V at JP1 6v8. FL2 (SXN SMCM7060-132T, 4-pin common-mode filter) follows D17: winding 1 carries the supply (FL2 pin 3 → pin 2, i.e. WIND_8V), winding 2 carries the ground return (GNDREF pin 4 → GND_WIND pin 1). FL2 suppresses common-mode EMI and conducted spikes from the mast cable, protecting the VAS regulator and board ground reference. At the connector side of FL2, C55 (100 nF) and C56 (15 pF) provide broadband decoupling on WIND_8V, and TVS D18 (SD09C-7, 9 V standoff) clamps the supply line against surges.
 
-### X and Y analogue angle signal chains
+### X and Y analog angle signal chains
 
-Both wind angle channels use identical signal chains built around U12 (TI TLV9002IDR, dual RRIO op-amp, VCC = 3.3 V). Taking the X channel as representative: D20 (SD09C-7, 9 V standoff TVS to GND_WIND) is the first protection element at J6, placed within 3 mm of the connector pad. L4 (1 µH) and C44 (1 nF C0G) form a 5 MHz LC low-pass filter that attenuates conducted RF from the mast cable before the analogue input. The filtered signal then enters U12A's non-inverting input through a ÷2 voltage divider: R58 (56 kΩ series) and R59 (56 kΩ shunt to GNDREF) yield V_plus = V_signal / 2.
+Both wind angle channels use identical signal chains built around U12 (TI TLV9002IDR, dual RRIO op-amp, VCC = 3.3 V). Taking the X channel as representative: D20 (SD09C-7, 9 V standoff TVS to GND_WIND) is the first protection element at J6, placed within 3 mm of the connector pad. L4 (1 µH) and C44 (1 nF C0G) form a 5 MHz LC low-pass filter that attenuates conducted RF from the mast cable before the analog input. The filtered signal then enters U12A's non-inverting input through a ÷2 voltage divider: R58 (56 kΩ series) and R59 (56 kΩ shunt to GNDREF) yield V_plus = V_signal / 2.
 
 The amplifier's DC operating point is set by a bias network at the inverting input: R47 (22 kΩ, VCC to bias junction) and R48 (68 kΩ, junction to GNDREF) generate V_bias = 2.49 V. R49 (56 kΩ, Rg) connects this bias point to U12A's inverting input; R50 (62 kΩ, Rf) feeds back from the WIND_X output. The resulting gain is 1 + R50/R49 = 2.107× and the complete transfer function is:
 
@@ -78,7 +80,7 @@ D22 (SD09C-7, 9 V standoff) clamps the P net at J8. L7 (10 µH) is a series RF c
 
 ### Ground domain isolation and cable shield
 
-Two isolated ground domains are maintained throughout the circuit. GND_WIND is the transducer cable return domain, bounded to the connector/TVS row area. GNDREF is the board analogue/digital ground. The only electrical connection between them is through FL2 winding 2 (GNDREF pin 4 → GND_WIND pin 1) — a single star point. All TVS cathodes (D18–D22), the R75 shield bleed, and C57 shield bypass reference GND_WIND. The signal processing section — U12 divider lower legs (R59, R60), op-amp GND pin, VSENSE lower leg (R62), and all decoupling caps — references GNDREF. Cable shield conditioning at J4 consists of D19 (PESD15VL1BA, 15 V standoff TVS to GND_WIND), R75 (1 MΩ DC bleed to GND_WIND), and C57 (1 nF HF bypass to GND_WIND), which together prevent the shield from floating while clamping transients arriving via the cable outer conductor.
+Two isolated ground domains are maintained throughout the circuit. GND_WIND is the transducer cable return domain, bounded to the connector/TVS row area. GNDREF is the board analog/digital ground. The only electrical connection between them is through FL2 winding 2 (GNDREF pin 4 → GND_WIND pin 1) — a single star point. All TVS cathodes (D18–D22), the R75 shield bleed, and C57 shield bypass reference GND_WIND. The signal processing section — U12 divider lower legs (R59, R60), op-amp GND pin, VSENSE lower leg (R62), and all decoupling caps — references GNDREF. Cable shield conditioning at J4 consists of D19 (PESD15VL1BA, 15 V standoff TVS to GND_WIND), R75 (1 MΩ DC bleed to GND_WIND), and C57 (1 nF HF bypass to GND_WIND), which together prevent the shield from floating while clamping transients arriving via the cable outer conductor.
 
 ---
 
@@ -86,7 +88,7 @@ Two isolated ground domains are maintained throughout the circuit. GND_WIND is t
 
 **Non-inverting amplifier with input attenuation.** A plain unity-gain buffer would deliver the Raymarine Hall sensor output (2.5–6.0 V measured at 8 V supply) directly to the ESP32 ADC — clipping both extremes against the 3.3 V rail. The ÷2 input attenuator (R58/R59) halves the signal swing to 1.25–3.0 V, then the non-inverting gain of 2.107× and the 2.49 V bias offset re-expand it to a range centred around the ADC mid-scale (~1.6 V). This arrangement converts the level-shifted, rail-to-rail Hall sensor output into an ADC-compatible range without AC coupling — preserving the DC bias information needed for correct atan2 reconstruction. Both X and Y channels use identical resistor networks to ensure matched gain and offset, which is critical for azimuth accuracy.
 
-**Separate ground domains.** The transducer sits at the top of the mast on a long cable that acts as an antenna. Conducting mast-cable ground currents directly onto the board analogue ground would introduce common-mode noise into the Hall sensor measurement. By isolating GND_WIND from GNDREF and connecting them only through the common-mode filter FL2, high-frequency and common-mode interference arriving via the cable is blocked from the signal processing section. The star point inside FL2 is the only permitted path for DC and low-frequency return current.
+**Separate ground domains.** The transducer sits at the top of the mast on a long cable that acts as an antenna. Conducting mast-cable ground currents directly onto the board analog ground would introduce common-mode noise into the Hall sensor measurement. By isolating GND_WIND from GNDREF and connecting them only through the common-mode filter FL2, high-frequency and common-mode interference arriving via the cable is blocked from the signal processing section. The star point inside FL2 is the only permitted path for DC and low-frequency return current.
 
 **JP1 supply selector — V1.2 limitation.** JP1 correctly selects WIND_8V for each supported transducer family: 8.30 V for Raymarine, 6.54 V for B&G 213. However, the U12 bias network (R47/R48) is referenced to the fixed VCC = 3.3 V rail, not to WIND_8V. V_bias = 2.49 V is therefore constant across JP1 settings. At JP1 6v8 the B&G 213 Hall mid-point drops to ~3.27 V and the U12 output mid shifts to 0.69 V — the negative half-wave clips to 0 V and atan2 reconstruction fails. **The WTI400 V1.2 supports Raymarine ST60/E22078 at JP1 8v4 only.** The V2.0 fix is to tie R48 to WIND_8V rather than VCC so that the bias tracks the JP1 setpoint.
 
@@ -94,7 +96,7 @@ Two isolated ground domains are maintained throughout the circuit. GND_WIND is t
 
 ## PCB Layout
 
-The board uses three horizontal rows in the wind interface area: connector tabs (J4–J9) at y ≈ 116 mm, protection and power conditioning (TVS row, FL2, D17) at y ≈ 121–122 mm, and signal processing (L4/L5, divider networks, U12, U11) at y ≈ 103–106 mm. This 16 mm separation between the protection zone and the analogue inputs reduces coupling of clamp energy and connector-side EMI into the high-impedance signal chain.
+The board uses three horizontal rows in the wind interface area: connector tabs (J4–J9) at y ≈ 116 mm, protection and power conditioning (TVS row, FL2, D17) at y ≈ 121–122 mm, and signal processing (L4/L5, divider networks, U12, U11) at y ≈ 103–106 mm. This 16 mm separation between the protection zone and the analog inputs reduces coupling of clamp energy and connector-side EMI into the high-impedance signal chain.
 
 ### Verification summary
 
@@ -109,7 +111,7 @@ The board uses three horizontal rows in the wind interface area: connector tabs 
 | GND_WIND / GNDREF single star point | ✅ Met | FL2 winding 2 only; no parallel copper connection found |
 | GND_WIND / GNDREF F.Cu zone separation | ✅ Verified | Gerbers checked 2026-05-08; ≥ 0.2 mm gap at x ≈ 88.1 mm boundary confirmed |
 | WIND_X / WIND_Y trace separation | ✅ Met | 5 mm separation with copper pour fill between traces |
-| WIND_SPD digital routing away from analogue traces | ✅ Met | WIND_SPD runs at x ≈ 131 mm; WIND_X/Y at x ≈ 113 mm; ≥ 15 mm separation |
+| WIND_SPD digital routing away from analog traces | ✅ Met | WIND_SPD runs at x ≈ 131 mm; WIND_X/Y at x ≈ 113 mm; ≥ 15 mm separation |
 | GND_WIND zone F.Cu priority (V2.0) | 🔲 Deferred | GND_WIND fill at priority 15 (same as GNDREF). Re-prioritise to 16 in V2.0 |
 
 ### Placement — non-obvious decisions
@@ -178,7 +180,9 @@ At rated 8.30 V supply this is marginally above VCC = 3.3 V; D10 (3.6 V zener) d
 
 ## Testing & Verification
 
-:::caution Verification required — In service on *Sunny Spells*
+:::caution
+
+Verification required — In service on *Sunny Spells*
 
 **Verify during bring-up:**
 - **WIND_8V rail voltage:** Measure at J5 tab under rated transducer load (25 mA). Expected: 8.30 V at JP1 8v4. Record at board and at far end of representative mast cable.
