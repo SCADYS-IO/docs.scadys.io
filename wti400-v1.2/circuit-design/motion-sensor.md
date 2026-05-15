@@ -42,11 +42,11 @@ The PCB carries an axis diagram (silk-screen) showing the X, Y, Z directions and
 
 The IMU must:
 
-- Measure acceleration on three orthogonal axes (X, Y, Z) and angular rate on the same three axes simultaneously and continuously
-- Deliver samples at a rate sufficient for the firmware to compute masthead transducer velocity over a rolling time window — current setting is 52 Hz; this may need to increase once the compensation algorithm is developed
-- Communicate with the ESP32 over I2C, appearing as a slave device at a fixed address of 0x6A
-- Operate reliably across the marine operating range (−10 °C to +55 °C, extended)
-- Consume minimal power — the WTI400 is bus-powered from the NMEA 2000 backbone, which has a limited supply budget per node
+- measure acceleration on three orthogonal axes (X, Y, Z) and angular rate on the same three axes simultaneously and continuously;
+- deliver samples at a rate sufficient for the firmware to compute masthead transducer velocity over a rolling time window — current setting is 52 Hz; this may need to increase once the compensation algorithm is developed;
+- communicate with the ESP32 over I2C, appearing as a slave device at a fixed address of 0x6A;
+- operate reliably across the marine operating range (−10 °C to +55 °C, extended); and
+- consume minimal power — the WTI400 is bus-powered from the NMEA 2000 backbone, which has a limited supply budget per node.
 
 ### How it works
 

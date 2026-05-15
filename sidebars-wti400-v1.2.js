@@ -51,8 +51,13 @@ const sidebars = {
         },
         {
           "type": "doc",
-          "id": "circuit-design/button-led",
-          "label": "Button & LED"
+          "id": "circuit-design/button",
+          "label": "Button Input"
+        },
+        {
+          "type": "doc",
+          "id": "circuit-design/led-indicator",
+          "label": "LED Indicator"
         },
         {
           "type": "category",
