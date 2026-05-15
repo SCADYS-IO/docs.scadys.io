@@ -1,5 +1,5 @@
 ---
-title: CAN Bus Power Protection
+title: CAN Bus Power
 hw_version: v2.9
 hw_status: prototype
 hw_status_label: "Fabricated prototype — testing phase"
@@ -7,204 +7,203 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_0f210798.svg" alt="CAN Bus Power Protection schematic" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_0f210798.svg" alt="CAN bus power schematic" viewBox="20 20 249 81" />
 
 :::note[Hardware version]
-
 MDD400 **v2.9** — Fabricated prototype — testing phase
-
 :::
+
+## Overview
+
+The CAN bus power circuit takes the raw NMEA 2000 bus supply (NET-S, nominally 12 V) and delivers a clean, protected supply rail (VS+) to the rest of the MDD400. Six sequential stages condition the input: primary surge clamping, a resettable fuse and reverse-polarity protection, bulk capacitor buffering, a two-stage LC EMI filter, an over-voltage protection switch with current shunt, and a secondary output clamp.
+
+---
+
+## CAN Bus Power
+
+### Functional specification and design objectives
+
+The CAN bus power circuit must:
+
+- withstand NMEA 2000 bus surge events up to ISO 7637-2 Pulse 5b without component damage;
+- block reverse polarity passively — no firmware involvement;
+- provide a resettable overload fuse that restores automatically after a fault clears;
+- suppress conducted EMI on the supply rail before it reaches the downstream circuits;
+- disconnect VS+ if bus voltage rises above the INA219 current monitor's safe operating range; and
+- deliver VS+ within 800 mV of NET-S under nominal operating current.
+
+### How it works
+
+The NMEA 2000 bus delivers power on NET-S (positive) and NET-C (ground). The MDD400 is bus-powered: GNDREF is tied directly to NET-C at J2. NET-S is nominally 9–16 V DC under IEC 61162-3, with a maximum charging voltage of 14.8 V. Surge events — load-dump, cable plug/unplug, or a switching transient elsewhere on the backbone — can reach hundreds of volts for microseconds at J2.
+
+#### Stage 1 — Primary surge clamping
+
+Two devices in parallel absorb surge energy before it reaches any active circuitry.
+
+D10 (SM8S36CA) is a bidirectional TVS in a DO-218AB package with a 36 V standoff voltage and 6.6 kW peak pulse power rating. It clamps fast transients — including ISO 7637-2 Pulse 5b — to approximately 58 V during an 8/20 µs surge. The DO-218AB footprint uses copper pads on all layers with multiple through-hole vias for thermal relief during repeated surge events.
+
+M2 (V33MLA1206NH) is a 75 V metal oxide varistor in 1206. MOVs are slower than TVS diodes but absorb more energy across a longer pulse. M2 absorbs the leading edge of slow high-energy transients before D10 needs to clamp.
+
+#### Stage 2 — Fuse and reverse-polarity protection
+
+F1 (BSMD1812-050-60V) is a 500 mA / 60 V PTC resettable fuse in 1812. A PTC is preferred over a one-shot fuse for a marine instrument: a blown fuse mid-passage leaves the instrument dead with no means of recovery. After a fault clears, F1 cools and resets automatically. The 500 mA hold current at 25 °C gives comfortable margin over the 242 mA nominal operating current — accidental trips from normal operation are not possible.
+
+D12 (SS34) is a 40 V / 3 A Schottky diode in SMA, wired in series on the high-side rail. It blocks reverse polarity passively: if NET-S and NET-C are swapped, D12 prevents current from flowing. The Schottky forward voltage (~380 mV at 242 mA) contributes to the voltage drop budget.
+
+#### Stage 3 — Bulk capacitor buffer
+
+C51 and C52 (2 × 22 µF / 100 V, X7R, 2220) provide 44 µF of bulk capacitance at the post-fuse rail, decoupling cable impedance and storing energy during the brief window while D10 is clamping a surge event.
+
+R60 (100 mΩ) damps LC resonance between the bulk capacitor bank and the EMI filter inductors that follow. R53 (220 mΩ) damps the resonance between the bulk stage and the first filter inductor. Both carry load current but dissipate only a few tens of milliwatts at nominal operating current.
+
+R54 (100 kΩ) bleeds C51/C52 to zero when power is removed, preventing VS+ from remaining live after the bus is disconnected.
+
+#### Stage 4 — Two-stage LC EMI filter
+
+A cascaded LC ladder suppresses conducted EMI on the supply rail. Two filter stages are used because a single stage would require impractically large inductors to achieve the same attenuation.
+
+**First stage**: L4 (1 µH, 3.5 A rated) with C47 (1 µF) and C45 (4.7 µF) as shunt capacitors to GNDREF. The two shunt capacitors in parallel give a nominal capacitance of 5.7 µF, derated to approximately 3.7 µF at 12 V DC bias (X7R characteristic).
+
+**Second stage**: L3 (4.7 µH, 2.1 A rated) with C43 (22 µF), C46 (4.7 µF), C44 (100 nF), and C42 (100 nF). The X7R bulk caps C43 and C46 derate from 26.7 µF combined to approximately 17.4 µF at 12 V; C44/C42 provide additional high-frequency shunting at 200 nF. The filter output is the local net V_P1, which feeds the OVP switch.
+
+| Stage | L | C_eff at 12 V | f_c |
+|-------|---|---------------|-----|
+| 1 | 1 µH | 3.7 µF | 83 kHz |
+| 2 | 4.7 µH | 17.6 µF | 17.5 kHz |
+
+:::note[X7R DC bias derating]
+X7R MLCC capacitance falls significantly with applied DC voltage. All filter capacitor values above are rated at 100 V; at 12 V operating voltage the effective capacitance is approximately 60–75% of the nominal value. Filter corner frequencies are calculated on the derated values. Measure actual capacitance at bring-up to verify.
+:::
+
+#### Stage 5 — Over-voltage protection and current shunt
+
+The OVP circuit disconnects VS+ from V_P1 if the bus voltage rises above approximately 18.6 V. It protects the INA219 current monitor (U11, 40 V absolute maximum on the VS input): the 18.6 V trip point provides 21.4 V of margin below that limit. Without OVP, a sustained bus fault — a faulty charger or a wrong supply connected to the backbone — could drive the bus toward or beyond the ratings of downstream components. The LMR51610 buck converter (U1) is rated to 65 V and does not require this protection.
+
+Q6 (PMV240SPR) is a P-channel MOSFET in SOT-23, wired as a series high-side switch between V_P1 (source) and the output node (drain). Under normal conditions, R44 (22 kΩ) pulls Q6's gate to GNDREF, giving V_GS ≈ −12 V — Q6 is fully on.
+
+Q7 (MMBTA56LT1G) is a PNP BJT in SOT-23. Its emitter connects to V_P1; its base connects to the midpoint of the voltage divider formed by R46 (2.4 kΩ, upper arm, V_P1 to base) and R45 (68 kΩ, lower arm, base to GNDREF). When V_P1 rises to the OVP threshold, the divider raises the base potential, but the emitter (at V_P1) rises faster. Once the base-emitter voltage exceeds ~0.635 V, Q7 turns on; its collector current through R39 (4.7 Ω) raises Q6's gate toward V_P1, turning Q6 off and disconnecting VS+.
+
+C41 (100 nF) in parallel with R45 adds noise immunity on the divider node, preventing false trips from conducted transients.
+
+The OVP threshold is:
+
+```
+V_threshold = V_BE × (R45 + R46) / R46
+            = 0.635 V × (68,000 + 2,400) / 2,400
+            = 18.6 V  (nominal, 25 °C)
+```
+
+**OVP has been verified on both MDD400 and WTI400 prototypes — confirmed disconnect at 18.6 V.**
+
+V_BE decreases with temperature at approximately 2 mV/°C, causing the threshold to drift:
+
+| Temperature | V_BE | V_threshold | Margin vs 14.8 V max |
+|-------------|------|-------------|----------------------|
+| 25 °C | 635 mV | 18.6 V | +3.8 V |
+| 50 °C | 585 mV | 17.2 V | +2.4 V |
+| 85 °C | 515 mV | 15.1 V | +0.3 V |
+
+At 85 °C the margin above the NMEA 2000 maximum charging voltage (14.8 V) is 300 mV — see Gaps.
+
+**D8 (BZT52C7V5S)** is a 7.5 V Zener between Q6's source (V_P1) and gate. During a D10-clamped surge, V_P1 peaks at ~58 V while Q6's gate is held near 0 V by R44. Without D8, V_GS would reach −58 V against a ±20 V rating. D8 clamps V_GS to −7.5 V throughout the event.
+
+**R33 (330 mΩ)** is the current-sense shunt on the VS+ output. It carries the full MDD400 load current; the voltage drop across R33 (80 mV at 242 mA nominal) is read by the INA219 (U11) on the I²C sensors sub-sheet.
+
+#### Stage 6 — Secondary output clamp
+
+D7 (PESD15VL1BA) is a 15 V / 200 W bidirectional TVS across VS+ and GNDREF. It catches fast transients that pass through Q6 before the OVP comparator can respond, providing a final protective barrier for the downstream circuits.
+
+:::caution[D7 clamp margin — verify at bring-up]
+D7's open-circuit clamp voltage is approximately 44 V — above the INA219's 40 V absolute maximum on the VS pin. Under a real transient, the clamped voltage will be lower because D7 conducts into the INA219 input impedance; the actual loaded clamp has not been quantitatively confirmed. Verify at bring-up — see Gaps.
+:::
+
+### Performance review
+
+#### Voltage drop budget (NET-S to VS+)
+
+| Element | Drop at 242 mA | Drop at 500 mA (PTC hold) |
+|---------|----------------|--------------------------|
+| F1 (PTC cold, ~0.5 Ω) | 121 mV | 250 mV |
+| D12 (Schottky V_F) | ~380 mV | ~430 mV |
+| R60 (100 mΩ) | 24 mV | 50 mV |
+| R53 (220 mΩ) | 53 mV | 110 mV |
+| Q6 (R_DS(on) = 365 mΩ) | 88 mV | 183 mV |
+| R33 (330 mΩ) | 80 mV | 165 mV |
+| **Total** | **~746 mV** | **~1188 mV** |
+
+At NMEA 2000 minimum bus voltage (9.0 V): VS+_min ≈ 8.25 V at nominal load. Downstream regulators (LMR51610 rated to 65 V, LP5907 LDO) are unaffected by this margin. This is an accepted design constraint — typical operating bus voltage is 12–13 V.
+
+### Bring-up tests
+
+1. **Reverse polarity**: apply −12 V to NET-S — pass if VS+ remains at 0 V and no components become warm.
+2. **Normal operation**: apply 12 V; measure VS+ — pass if VS+ ≈ 11.25 V (within the ~750 mV drop budget).
+3. **OVP trip**: slowly raise supply voltage — pass if VS+ drops to 0 V between 17.5 V and 19.5 V with no oscillation at the threshold. *(Verified at 18.6 V on both MDD400 and WTI400 prototypes.)*
+4. **OVP hysteresis**: after trip, slowly reduce supply voltage — pass if VS+ recovers cleanly at a voltage measurably below the trip point.
+5. **PTC fuse**: short VS+ briefly — pass if F1 trips and the board powers up again without intervention after the fault clears.
+6. **Bleed resistor**: remove supply; measure VS+ discharge time — pass if VS+ reaches < 1 V in approximately 4.4 s (R54 × 44 µF).
+7. **EMI filter ripple**: scope VS+ with a 242 mA load — pass if supply ripple is below the LMR51610 VIN ripple tolerance.
+8. **Filter capacitance at bias**: measure C43, C45, C46, C47 at 12 V DC bias — record actual values and compare against derated filter corner frequency calculations.
+9. **D7 clamp under transient**: inject a fast transient onto VS+ representative of OVP turn-off spike or cable-coupled ESD; measure peak VS+ voltage — pass if VS+ stays below 40 V (INA219 VS abs max).
+10. **INA219 current reading**: at 242 mA nominal load, confirm the INA219 reads within ±5% of the expected value (cross-check against a bench ammeter).
+
+### Gaps & next version
+
+**Verify at bring-up**
+
+- **D7 clamp margin**: D7 (PESD15VL1BA) clamps at approximately 44 V open-circuit — above the INA219 VS absolute maximum of 40 V. The loaded clamp will be lower, but this has not been quantitatively confirmed. If the loaded clamp voltage exceeds 40 V under a representative transient, substitute D7 with a part with a lower standoff (e.g. PESD12VL1BA, ~34 V clamp at 200 W).
+- **F1 thermal proximity to D10**: confirm F1 body temperature stays below 70 °C after an IEC 61000-4-5 surge sequence — D10 dissipates surge energy as heat and F1 is in the same vicinity.
+- **L3 cold-start inrush**: confirm peak current through L3 at power-on stays below the 2.6 A saturation rating.
+
+**Next version**
+
+- **OVP threshold margin at temperature**: at 85 °C the OVP threshold reaches 15.1 V — only 300 mV above the 14.8 V NMEA 2000 maximum charging voltage. Raising the margin requires either increasing the 25 °C trip point (by decreasing R46 or increasing R45, which shifts both thresholds together), or replacing the divider-only comparator with a voltage reference for temperature-stable operation.
+- **Over-temperature disconnect**: the OVP threshold drift with temperature is not a reliable thermal cutout — at typical bus voltages the threshold never drops to the operating voltage. A two-component board modification can add a genuine over-temperature disconnect: wire a normally-closed thermal switch (85 °C or 100 °C rated, e.g. Murata PKGS series) in series between R44 and GNDREF, and add a 100 kΩ pull-up from Q6's gate to its source (V_P1). Under normal conditions R44 dominates and Q6 remains on; when the switch opens on overtemperature, the pull-up holds V_GS ≈ 0 and Q6 turns off. Sensor placement is critical — the switch must be adjacent to the hottest component (Q6 or L3/L4).
+- **R33 Kelvin routing**: verify that INA219 IN+ and IN− sense traces connect from the inner edges of R33's pads, separate from the main VS+ power traces, to minimise current measurement error.
+- **D8 proximity**: tighten D8 to within 2 mm of Q6's gate/source (currently 3.0 mm) to reduce gate loop area.
+- **D10 sourcing for production**: qualify a Littelfuse or STMicro equivalent SM8S36CA for CE/ABYC certification — the current FUXINSEMI part is suitable for prototype but not preferred for production compliance documentation.
+
+---
 
 ## Components
 
-| Ref | Value | Description | Datasheet |
-|---|---|---|---|
-| D10 | SM8S36CA | Bidirectional TVS, 36 V standoff, 58.1 V / 6.6 kW clamp, DO-218AB — primary input transient protection | [SM8S36CA](https://www.lcsc.com/datasheet/C4355049.pdf) |
-| M2 | V33MLA1206NH | MOV, 75 V rated, 43.5 V clamp at 1 A, 1206 — secondary slow-transient absorber in parallel with D10 | [V33MLA1206NH](https://lcsc.com/datasheet/lcsc_datasheet_2410121837_Littelfuse-V33MLA1206NH_C187727.pdf) |
-| D12 | SS34 | Schottky rectifier, 40 V / 3 A, SMA — reverse polarity protection in series with NET-S rail | [SS34](https://www.lcsc.com/datasheet/lcsc_datasheet_2310100931_MSKSEMI-SS34-MS_C2836396.pdf) |
-| F1 | BSMD1812-050 | PTC resettable fuse, 500 mA hold / 1 A trip, 60 V, 1812 — series current limiting | [BSMD1812-050](https://lcsc.com/datasheet/lcsc_datasheet_2504101957_BHFUSE-BSMD1812-050-60V_C883142.pdf) |
-| C51, C52 | 22 µF / 100 V | X7R MLCC, 2220 — bulk input capacitors; post-fuse surge energy storage and damping | [FS55X225K251EGG](https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_PSA-Prosperity-Dielectrics-FS55X225K251EGG_C153032.pdf) |
-| R60 | 100 mΩ | 0603 thick-film — series damping resistor for bulk capacitor stage | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R53 | 220 mΩ | 0603 thick-film — inter-stage damping between bulk caps and EMI filter | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R54 | 100 kΩ | 0603 — bleed resistor; discharges bulk capacitors after power removal | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| L4 | 1 µH | Power inductor, 3.5 A / 4.6 A sat., 4×4 mm — EMI filter stage 1 | [Murata LQM/LQH (LCSC C602020)](https://www.lcsc.com/datasheet/C602020.pdf) |
-| C47 | 1 µF / 100 V | X7R MLCC, 1206 — stage 1 filter output capacitor | — |
-| C45 | 4.7 µF / 100 V | X7R MLCC, 1206 — stage 1 filter output capacitor (∥ C47) | [LCSC C2997285](https://www.lcsc.com/datasheet/C2997285.pdf) |
-| L3 | 4.7 µH | Power inductor, 2.1 A / 2.6 A sat., 4×4 mm — EMI filter stage 2 | [Murata LQM/LQH (LCSC C602022)](https://www.lcsc.com/datasheet/C602022.pdf) |
-| C43 | 22 µF / 100 V | X7R MLCC, 2220 — stage 2 filter bulk output capacitor | [FS55X225K251EGG](https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_PSA-Prosperity-Dielectrics-FS55X225K251EGG_C153032.pdf) |
-| C46 | 4.7 µF / 100 V | X7R MLCC, 1206 — stage 2 filter output capacitor (∥ C43) | [LCSC C2997285](https://www.lcsc.com/datasheet/C2997285.pdf) |
-| C44 | 100 nF / 100 V | X7R MLCC, 0603 — high-frequency decoupling at V_P1 output | [Murata GCJ188R72A104KA01D](https://www.lcsc.com/datasheet/C161117.pdf) |
-| C42 | 100 nF / 100 V | X7R MLCC, 0603 — high-frequency decoupling at V_P1 (∥ C43/C44/C46) | [Murata GCJ188R72A104KA01D](https://www.lcsc.com/datasheet/C161117.pdf) |
-| R45 | 68 kΩ | 0603 — upper arm of OVP voltage divider (V_P1 to Q7 base) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R46 | 2.4 kΩ | 0603 — lower arm of OVP voltage divider (Q7 base to GNDREF) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| C41 | 100 nF / 50 V | X7R MLCC, 0603 — noise filter on OVP divider node | [Murata GRM188R71H104KA93D](https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf) |
-| Q7 | MMBTA56LT1G | PNP BJT, 80 V / 500 mA, SOT-23 — OVP sense transistor | [onsemi MMBTA56LT1G](https://www.onsemi.com/pub/Collateral/MMBTA56LT1G-D.pdf) |
-| R44 | 22 kΩ | 0603 — Q6 gate pull-down; holds Q6 on under normal operating conditions | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R39 | 4.7 Ω | 0603 — Q6 gate series resistor; limits gate charging current and damps oscillation | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| D8 | BZT52C7V5S | Zener, 7.5 V / 200 mW, SOD-323 — clamps Q6 VGS to protect gate oxide | [Diodes Inc BZT52C7V5S](https://www.diodes.com/assets/Datasheets/BZT52C.pdf) |
-| Q6 | PMV240SPR | P-channel MOSFET, 100 V / 1.2 A / 365 mΩ RDS(on), SOT-23 — series OVP pass switch | [Nexperia PMV240SPR](https://assets.nexperia.com/documents/data-sheet/PMV240SPR.pdf) |
-| D7 | PESD15VL1BA | Bidirectional TVS, 15 V standoff, 44 V clamp, 200 W, SOD-323 — secondary surge protection on VS+ output | [Nexperia PESD15VL1BA](https://assets.nexperia.com/documents/data-sheet/PESD15VL1BA.pdf) |
-| R33 | 330 mΩ | 0603 thick-film — current-sense shunt on VS+ output (annotated: 80 mV = 242 mA) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| Ref | Value | Function | Datasheet |
+|-----|-------|----------|-----------|
+| D10 | SM8S36CA | Bidirectional TVS, DO-218AB, 36 V / 6.6 kW — primary surge clamp | [FUXINSEMI SM8S36CA](https://www.fuxinsemi.com/cn/products/detail_200.html) |
+| M2 | V33MLA1206NH | MOV, 1206, 75 V — slow high-energy transient absorber | [Littelfuse V33MLA1206NH](https://www.littelfuse.com/products/varistors/multilayer-varistors-mlv/v33mla1206nh.aspx) |
+| F1 | 500 mA / 60 V | PTC resettable fuse, 1812 — series overload protection | [BHFUSE BSMD1812-050-60V](https://www.bhfuse.com/ProductDetail.aspx?id=BSMD1812-050-60V) |
+| D12 | SS34 | Schottky, SMA, 40 V / 3 A — reverse-polarity protection | [MSKSEMI SS34-MS](https://www.msksemi.com/upload/MSKSEMI-SS34-MS_datasheet.pdf) |
+| C51, C52 | 22 µF / 100 V | X7R 2220 — bulk input capacitors (44 µF combined) | [PSA FS55X226K101LRG](https://www.psa.com.tw/en/product_detail.php?lang=en&id=100) |
+| R60 | 100 mΩ | 0603 — bulk capacitor ESR damping | — |
+| R53 | 220 mΩ | 0603 — LC filter input damping | — |
+| R54 | 100 kΩ | 0603 — bulk capacitor bleed/discharge | — |
+| L4 | 1 µH | 3.5 A / 4.6 A Isat, 4×4 mm — first-stage EMI filter inductor | [cjiang FHD4012S-1R0MT](https://www.cjinductors.com/product/fhd4012s/) |
+| C47 | 1 µF / 100 V | X7R 1206 — first-stage filter shunt cap | [Murata GRM31CR72A105KA01K](https://www.murata.com/en-us/products/productdetail?partno=GRM31CR72A105KA01K) |
+| C45 | 4.7 µF / 100 V | X7R 1206 — first-stage filter shunt cap (parallel with C47) | [Murata GRM31CZ72A475KE11L](https://www.murata.com/en-us/products/productdetail?partno=GRM31CZ72A475KE11L) |
+| L3 | 4.7 µH | 2.1 A / 2.6 A Isat, 4×4 mm — second-stage EMI filter inductor | [cjiang FHD4012S-4R7MT](https://www.cjinductors.com/product/fhd4012s/) |
+| C43 | 22 µF / 100 V | X7R 2220 — second-stage filter bulk cap | [PSA FS55X226K101LRG](https://www.psa.com.tw/en/product_detail.php?lang=en&id=100) |
+| C46 | 4.7 µF / 100 V | X7R 1206 — second-stage filter shunt cap | [Murata GRM31CZ72A475KE11L](https://www.murata.com/en-us/products/productdetail?partno=GRM31CZ72A475KE11L) |
+| C44, C42 | 100 nF / 100 V | X7R 0603 — second-stage filter HF shunt caps | [Murata GCJ188R72A104KA01D](https://www.murata.com/en-us/products/productdetail?partno=GCJ188R72A104KA01D) |
+| Q6 | PMV240SPR | P-channel MOSFET, SOT-23, 100 V / 1.2 A — OVP series switch | [Nexperia PMV240SPR](https://assets.nexperia.com/documents/data-sheet/PMV240SPR.pdf) |
+| Q7 | MMBTA56LT1G | PNP BJT, SOT-23, 80 V / 500 mA — OVP sense transistor | [onsemi MMBTA56LT1G](https://www.onsemi.com/pdf/datasheet/mmbta56lt1-d.pdf) |
+| D8 | BZT52C7V5S | Zener, SOD-323, 7.5 V — Q6 gate-source clamp | [Diodes Inc BZT52C7V5S-7-F](https://www.diodes.com/assets/Datasheets/BZT52C.pdf) |
+| R46 | 2.4 kΩ | 0603 — OVP divider upper arm (V_P1 to Q7 base) | — |
+| R45 | 68 kΩ | 0603 — OVP divider lower arm (Q7 base to GNDREF) | — |
+| C41 | 100 nF / 50 V | X7R 0603 — OVP divider noise filter | — |
+| R39 | 4.7 Ω | 0603 — Q7 collector resistor; limits Q6 gate current | — |
+| R44 | 22 kΩ | 0603 — Q6 gate pull-down; holds Q6 on under normal conditions | — |
+| R33 | 330 mΩ | 0603 — VS+ current-sense shunt (feeds INA219 U11) | — |
+| D7 | PESD15VL1BA | Bidirectional TVS, SOD-323, 15 V / 200 W — secondary VS+ clamp | [Nexperia PESD15VL1BA](https://assets.nexperia.com/documents/data-sheet/PESD15VL1BA.pdf) |
 
-## How It Works
-
-The CAN bus power circuit takes the raw 12 V NMEA 2000 backbone supply (`NET-S`, arriving via the `VSC` global net) and conditions it through four sequential stages: input surge protection, polarity protection and fusing, two-stage differential EMI filtering, and an over-voltage protection (OVP) pass switch. The filtered and protected output (`VS+`) supplies the CAN transceiver and related downstream circuitry.
-
-**Input protection stage.** D10 (SM8S36CA, 36 V standoff, 58.1 V clamp) is placed directly across NET-S to absorb ISO 7637-2 transients — load dump (Pulse 5b), relay switching (Pulses 1, 2a), and ESD up to ±30 kV contact discharge. M2 (V33MLA1206NH MOV, 75 V rated, 43.5 V clamp at 1 A) is fitted in parallel to absorb slower, higher-energy transients that would sustain D10 conduction; the MOV's softer clamping characteristic complements the TVS's fast response. D12 (SS34 Schottky, 40 V / 3 A) is in series in the power path for passive reverse polarity protection. F1 (BSMD1812-050, 500 mA hold / 1 A trip PTC) limits sustained overcurrent after the polarity diode.
-
-**Bulk damping stage.** C51 and C52 (2 × 22 µF / 100 V, 2220 MLCC) in parallel form a 44 µF bulk reservoir that stores clamped surge energy, decouples the upstream cable impedance, and damps post-clamp ringing. R60 (100 mΩ) provides series damping within the bulk stage; R53 (220 mΩ) provides additional damping between the bulk stage and the EMI filter input, suppressing LC resonance in the combined network (combined 320 mΩ ≈ 1.06 × R_crit = 301 mΩ — critically damped, Q ≈ 0.47). R54 (100 kΩ) bleeds stored charge after power removal.
-
-**Two-stage EMI filter.** L4 (1 µH, 3.5 A) feeds [C47 (1 µF) ∥ C45 (4.7 µF)] forming stage 1 (f₁ = 66.6 kHz). L3 (4.7 µH, 2.1 A) feeds [C46 (4.7 µF) ∥ C43 (22 µF) ∥ C44 (100 nF) ∥ C42 (100 nF)] forming stage 2 (f₂ = 14.2 kHz) on the filtered `V_P1` net. The cascaded ladder provides >60 dB differential-mode attenuation at 10 MHz, suppressing both incoming backbone noise and outgoing emissions from the internal switching regulators.
-
-**Over-voltage protection (OVP) stage.** Q6 (PMV240SPR, P-channel MOSFET) acts as a series pass switch between V_P1 and VS+. Under normal conditions, R44 (22 kΩ) pulls Q6's gate low relative to its source, keeping it on. The divider R45 (68 kΩ) / R46 (2.4 kΩ) monitors V_P1; when V_P1 rises above approximately 19.1 V (V_trip = V_BE × (R45 + R46) / R46 = 0.65 V × 29.4 = 19.1 V; schematic annotates ~18.6 V reflecting component tolerances), Q7 (MMBTA56LT1G PNP) turns on and pulls Q6's gate toward V_P1, turning Q6 off and disconnecting VS+. C41 (100 nF) on the divider node provides noise immunity. D8 (BZT52C7V5S, 7.5 V zener) clamps Q6's VGS. The circuit is self-resetting when input voltage drops back below the threshold. On the VS+ output, D7 (PESD15VL1BA, 44 V clamp) provides secondary residual-surge protection, and R33 (330 mΩ, annotated "80 mV = 242 mA") is the current-sense shunt feeding the INA219 current monitor on the I²C sensors sub-sheet.
-
-## Design Rationale
-
-The SM8S36CA was selected for its 6.6 kW / 10 µs peak rating and DO-218AB package, which provides the thermal mass needed for ISO 7637-2 Pulse 5b load-dump events. Thermal analysis confirms only ~8 °C junction temperature rise under a 12 V system Pulse 5b (87 V open-circuit, 400 ms), leaving a 57 °C margin to T_j(max) at 85 °C ambient. The device is unsuitable for 24 V Pulse 5b (~18 J), which constrains the MDD400 to 12 V NMEA 2000 systems for full transient compliance.
-
-The MOV (M2) in parallel with D10 serves a complementary role: TVS diodes respond to fast transients in nanoseconds but have limited energy capacity; MOVs absorb slower, higher-energy events more efficiently. This combination improves protection robustness without requiring a larger TVS.
-
-The Schottky diode (D12) for reverse polarity protection was chosen over a MOSFET ideal-diode circuit because the generous input headroom (12 V input to 3.3/5 V regulated outputs) makes the ~0.38 V forward-voltage drop acceptable, and the passive solution has no failure modes from gate-drive faults or latch-up.
-
-The two-stage LC filter architecture was chosen over a single-stage to achieve steeper roll-off at low frequencies. Two cascaded stages each contributing −40 dB/decade above their respective corners (66.6 kHz and 14.2 kHz) produce a combined slope exceeding −80 dB/decade above 67 kHz — sufficient to meet CISPR 32 Class B conducted limits with margin.
-
-The OVP threshold of ~18.6–19.1 V protects downstream devices from accidental 24 V supply connections (which would otherwise exceed the INA219 VS abs-max of 40 V and the CAN transceiver supply ratings) while passing the NMEA 2000 operating range of 9–16 V with ample margin. The BJT-based OVP topology was chosen over a dedicated supervisor IC to minimise component count; the PNP sense transistor and P-channel pass switch form a latch-free, self-resetting circuit.
-
-## PCB Layout
-
-The entire CAN bus power circuit operates within the board-level GNDREF domain (CAN power domain ground). There is no ground isolation within this sub-sheet — all ground returns stitch to the common GNDREF plane. The MPS EMI priority-zone topology assigns this circuit to the main GNDREF region, with the large 9063 mm² copper pour providing low-impedance return paths throughout.
-
-| # | Requirement | Status | Notes |
-|---|---|---|---|
-| P1 | D10, M2 within 3–5 mm of J2 NET-S pad | Accepted — physical constraint | 17.4 mm due to DeviceNet connector body/flange preventing closer DO-218AB placement; 1.8 mm NET-S trace accepted |
-| P2 | C51, C52 side-by-side after F1; GNDREF vias stitched | Met | 6.1 mm separation; copper pour and GNDREF vias confirmed |
-| P3 | EMI filter chain linear, L4–L3 ≥ 5 mm | Met | L4→L3 = 6.0 mm; no stage interleaving |
-| P4 | OVP cluster (Q6, Q7, R45/R46/C41) grouped; Q7→R39→Q6 gate short | Met | Gate loop 5.1 mm²; OVP block in 3.4 × 9 mm footprint |
-| P5 | D7 on VS+ downstream of R33; copper fills both pads | Met | D7 3.1 mm from R33; VS+ copper pour covers both |
-| P6 | D8 within 2 mm of Q6 gate/source | Partial | 3.0 mm — benign at OVP µs timescale; flagged for v2.10 |
-| R1 | NET-S trace ≥ 1.0 mm | Met | 1.8 mm routed + 27 mm² copper pour in clamp loop |
-| R2 | V_P1 ≥ 0.5 mm; no shared via with OVP divider | Met | V_P1 as 58 mm² pour; no shared via confirmed |
-| R3 | R33 shunt — Kelvin connections | Partial | Acceptable for V2.9; inner-edge tap not confirmed; flagged for v2.10 |
-| R4 | R53 in series, ≥ 0.5 mm | Met | 0.9 mm pads; series in-line placement confirmed |
-| R5 | Gate loop area < 50 mm² | Met | ~5.1 mm² — well within limit |
-| G1 | All on GNDREF; no isolated domain ground | Met | All 27 components verified on GNDREF or circuit nets only |
-| G2 | TVS/MOV return via copper pour, not traces | Met | 9063 mm² GNDREF pour; 23 vias in D10 anode region |
-| G3 | Filter cap returns individual short vias | Unverifiable | Pour topology consistent with individual vias; cannot confirm from geometry alone |
-| G4 | OVP divider ground at quiet point | Unverifiable | OVP at y=92–96, bulk caps at y=118 — 20 mm physical separation reduces coupling |
-| G5 | No split plane or guard ring within circuit | Met | Single GNDREF domain; no keepouts or splits found |
-| D1 | C41 within 2 mm of Q7 base | Partial | 3.6 mm; electrically close via copper pour; benign at ms OVP timescales |
-| D2 | C44 at V_P1 output | Met | Adjacent to C43 at L3 output |
-| D3 | C42 at V_P1 stage 2 output | Met | Correctly on V_P1 alongside C43/C44/C46 |
-| D4 | Filter caps adjacent to inductors; vias at body | Met | Caps 4.7–8.2 mm from respective inductors; GNDREF vias confirmed |
-| T1 | D10 anode pour ≥ 300 mm²; ≥ 2 vias to inner plane | Met | 9063 mm² pour; 23 vias in D10 region stitching to In1.Cu and In2.Cu |
-| T2 | D12 cathode copper pour | Met | 8 mm² pour on cathode; anode on GNDREF pour |
-| T3 | Q6 SOT-23 standard pad; no thermal via | Met | 21–33 mW at nominal current — well within 710 mW limit |
-| T4 | L4, L3 identically oriented | Met | Both at 90° rotation |
-| T5 | F1 ≥ 5 mm from C41 and Q7 | Met | 23.8 mm to C41; 24.2 mm to Q7 |
-
-**Non-obvious placements:**
-
-- **Input protection cluster (D10, M2, D12, F1)** at x:[86–95] y:[105–116] is 15–17 mm from J2 rather than the target 3–5 mm. The DeviceNet connector body and PCB mounting flange physically prevent the tall DO-218AB package (D10) from being placed closer. The 1.8 mm NET-S trace adds ~10 nH to the clamp path; at 15 mA/ns dI/dt this contributes ~150 mV additional clamp overshoot above 58.1 V — within the margin of all downstream devices.
-
-- **EMI filter chain** runs top-to-bottom along the decreasing-y axis, with inductors on the right column (x ≈ 80.5 mm) and filter capacitors on the left column (x ≈ 74–80 mm). This left/right split keeps the two LC stages in linear order without interleaving and achieves the ≥5 mm inter-inductor spacing needed to prevent magnetic coupling.
-
-## Design Calculations
-
-### Over-Voltage Protection Threshold
-
-| Parameter | Value | Source |
-|---|---|---|
-| R45 (upper divider) | 68 kΩ | Schematic |
-| R46 (lower divider) | 2.4 kΩ | Schematic |
-| Q7 V_BE (nominal) | 0.65 V | Datasheet typical |
-| V_trip (calculated) | **19.1 V** | V_BE × (R45+R46)/R46 |
-| Schematic annotation | ~18.6 V | Implies V_BE = 0.634 V |
-| Discrepancy | 2.7% | Within BJT V_BE spread (0.60–0.70 V) |
-| Margin to INA219 VS abs-max (40 V) | 52% | (40−19.1)/40 |
-
-### Pass Switch and Diode Losses
-
-| Component | Condition | Power dissipation |
-|---|---|---|
-| Q6 PMV240SPR (R_DS(on) = 365 mΩ) | 242 mA nominal | 21.4 mW |
-| Q6 PMV240SPR | 500 mA (PTC hold) | 91.3 mW (13% of 710 mW limit) |
-| D12 SS34 (V_F ≈ 0.38 V) | 242 mA nominal | 91.9 mW |
-
-### EMI Filter
-
-| Stage | L | C_total | f_corner |
-|---|---|---|---|
-| Stage 1 (L4) | 1 µH | C47 (1 µF) ∥ C45 (4.7 µF) = 5.7 µF | **66.6 kHz** |
-| Stage 2 (L3) | 4.7 µH | C46 (4.7 µF) ∥ C43 (22 µF) ∥ C44 (100 nF) ∥ C42 (100 nF) = 26.9 µF | **14.2 kHz** |
-
-Combined attenuation: >60 dB at 10 MHz, >100 dB above 100 MHz (simulation from old-docs; CISPR 32 scan required to validate against V2.9 values — see Testing & Verification).
-
-### Bulk Stage Resonance Damping
-
-| Parameter | Value |
-|---|---|
-| L_eff (L4) | 1 µH |
-| C_bulk (C51 ∥ C52) | 44 µF |
-| Critical damping resistance R_crit | 2 × √(L/C) = **301 mΩ** |
-| Actual damping (R53 + R60) | 220 + 100 = **320 mΩ** |
-| Quality factor Q | √(L/C) / R_damp = **0.47** (critically damped) |
-
-### ISO 7637-2 Pulse 5b — Thermal (SM8S36CA, 12 V system)
-
-| Parameter | Value |
-|---|---|
-| Test level | Level IV: V_oc = 87 V, R_i = 0.5 Ω, t = 400 ms |
-| Peak clamp current | (87 − 58.1) / 0.5 = 57.8 A |
-| Peak clamping power | 58.1 × 57.8 = 3358 W |
-| Energy absorbed (simulation) | ~320 mJ |
-| Estimated ΔTj | **~8 °C** |
-| T_j at T_amb = 85 °C | 93 °C — 57 °C below T_j(max) 150 °C |
-
-### NMEA 2000 LEN Budget
-
-| Operating mode | Current | LEN (1 LEN = 83.3 mA at 12 V) |
-|---|---|---|
-| Nominal (242 mA) | 242 mA | **2.9 LEN** |
-| PTC hold (500 mA) | 500 mA | **6.0 LEN** |
-| Limit | — | 8 LEN |
-
-:::caution
-
-Testing & Verification — Fabricated prototype — testing phase
-
-**Before next production run:**
-- Update `can_bus_power.kicad_sch` title block rev from "2.8" to "2.9" to match the enclosing hardware version.
-
-**Verify during bring-up:**
-- **OVP trip voltage**: Measure actual OVP disconnect voltage on prototype. Confirm threshold is in the 18.6–19.1 V range. Note: schematic annotation says ~18.6 V; component calculation gives 19.1 V — 2.7% discrepancy within BJT V_BE tolerance.
-- **D7 clamp voltage under transient**: Measure or SPICE-simulate loaded clamp voltage of D7 (PESD15VL1BA) with INA219 input impedance under a representative post-OVP residual transient. D7 open-circuit clamp is 44 V; INA219 VS abs-max is 40 V. At rated 200 W with INA219 input loading the clamped voltage will be lower than open-circuit, but this has not been quantitatively confirmed.
-- **EMI filter attenuation**: Perform conducted-emission scan (CISPR 32 Class B) on the prototype to validate the >60 dB at 10 MHz attenuation claim. The simulation result originates from old-docs and has not been re-run against V2.9 component values; the calculated corner frequencies (66.6 kHz and 14.2 kHz) are consistent with the claim but empirical validation is required.
-- **VS+ load current**: Measure total VS+ current draw from the CAN transceiver and connected drivers to confirm it remains below the 500 mA PTC hold threshold in all operating modes.
-
-**For next version:**
-- **D7 TVS substitution** (conditional on test result): If testing confirms the loaded clamp voltage exceeds INA219 VS abs-max (40 V), substitute D7 with a same-footprint SOD-323 bidirectional TVS with V_clamp ≤ 40 V — e.g. PESD12VL1BA (12 V standoff, ~34 V clamp at 200 W). Verify clamp current against INA219 input impedance before selecting.
-- **R33 Kelvin routing**: Route INA219 IN+ and IN− sense traces from the inner edges of R33 pad 1 and pad 2 respectively, separate from the main VS+/VSC power traces. Current routing is acceptable but not optimal for current measurement accuracy.
-- **C41 and D8 proximity** (nice-to-have): Tighten C41 to within 2 mm of Q7 base pin (currently 3.6 mm) and D8 to within 2 mm of Q6 gate/source (currently 3.0 mm). Both deviations are functionally benign at OVP µs timescales.
-- **EMI filter simulation source**: Add LTspice `.asc` source file to `design-docs/` using V2.9 component values to replace the untraced old-docs attenuation figures.
-
-:::
+---
 
 ## References
 
-1. SMC Diode Solutions, [*SM8S36CA Bidirectional TVS Diode Datasheet*](https://www.lcsc.com/datasheet/C4355049.pdf)
-2. Littelfuse, [*V33MLA1206NH Metal Oxide Varistor Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2410121837_Littelfuse-V33MLA1206NH_C187727.pdf)
-3. MSKSEMI, [*SS34 Schottky Barrier Rectifier Datasheet*](https://www.lcsc.com/datasheet/lcsc_datasheet_2310100931_MSKSEMI-SS34-MS_C2836396.pdf)
-4. BHFUSE, [*BSMD1812-050 PTC Resettable Fuse Datasheet*](https://lcsc.com/datasheet/lcsc_datasheet_2504101957_BHFUSE-BSMD1812-050-60V_C883142.pdf)
-5. onsemi, [*MMBTA56LT1G PNP General-Purpose Transistor Datasheet*](https://www.onsemi.com/pub/Collateral/MMBTA56LT1G-D.pdf)
-6. Nexperia, [*PMV240SPR P-Channel MOSFET Datasheet*](https://assets.nexperia.com/documents/data-sheet/PMV240SPR.pdf)
-7. Diodes Incorporated, [*BZT52C7V5S Zener Diode Datasheet*](https://www.diodes.com/assets/Datasheets/BZT52C.pdf)
-8. Nexperia, [*PESD15VL1BA Bidirectional TVS Diode Datasheet*](https://assets.nexperia.com/documents/data-sheet/PESD15VL1BA.pdf)
-9. PSA Prosperity Dielectrics, [*FS55X225K251EGG 22 µF / 100 V MLCC Datasheet*](https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_PSA-Prosperity-Dielectrics-FS55X225K251EGG_C153032.pdf)
-10. Murata Electronics, [*GCJ188R72A104KA01D 100 nF / 100 V MLCC Datasheet*](https://www.lcsc.com/datasheet/C161117.pdf)
-11. Murata Electronics, [*1 µH / 3.5 A Power Inductor Datasheet (LCSC C602020)*](https://www.lcsc.com/datasheet/C602020.pdf)
-12. Murata Electronics, [*4.7 µH / 2.1 A Power Inductor Datasheet (LCSC C602022)*](https://www.lcsc.com/datasheet/C602022.pdf)
-13. Yageo, [*RC_Group 0603 Thick-Film Resistor Series Datasheet*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf)
-14. Texas Instruments, [*INA219 Zero-Drift Bidirectional Current/Power Monitor Datasheet*](https://www.ti.com/lit/ds/symlink/ina219.pdf)
-15. International Standards Organization, [*ISO 7637-2:2011 — Road vehicles: Electrical disturbances from conduction and coupling, Part 2: Supply lines*](https://www.iso.org/standard/50925.html)
-16. NMEA, [*NMEA 2000 Standard*](https://www.nmea.org/nmea-2000.html)
-17. Monolithic Power Systems, [*EMI Webinar: Practical Grounding and Layout*](https://www.monolithicpower.com/en/support/videos/emi-2-webinar-early-session.html)
+- Nexperia, [*PMV240SPR P-channel MOSFET*](https://assets.nexperia.com/documents/data-sheet/PMV240SPR.pdf)
+- Nexperia, [*PESD15VL1BA Bidirectional TVS*](https://assets.nexperia.com/documents/data-sheet/PESD15VL1BA.pdf)
+- onsemi, [*MMBTA56LT1G PNP Bipolar Transistor*](https://www.onsemi.com/pdf/datasheet/mmbta56lt1-d.pdf)
+- Littelfuse, [*V33MLA1206NH Multilayer Varistor*](https://www.littelfuse.com/products/varistors/multilayer-varistors-mlv/v33mla1206nh.aspx)
+- BHFUSE, [*BSMD1812-050-60V PTC Resettable Fuse*](https://www.bhfuse.com/ProductDetail.aspx?id=BSMD1812-050-60V)
+- cjiang, [*FHD4012S Series Power Inductors*](https://www.cjinductors.com/product/fhd4012s/)
+- Texas Instruments, [*INA219 Zero-Drift Bidirectional Current/Power Monitor*](https://www.ti.com/lit/ds/symlink/ina219.pdf)
+- ISO, *ISO 7637-2:2011 — Road vehicles — Electrical disturbances from conduction and coupling — Part 2: Electrical transient conduction*
+- NMEA / IEC, *IEC 61162-3 — Maritime navigation and radiocommunication equipment — NMEA 2000*
