@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
@@ -26,8 +26,29 @@ const wrapperStyle = {
   background: 'var(--ifm-background-color)',
 };
 
-export default function SchematicViewer({ src, alt }) {
+export default function SchematicViewer({ src, alt, viewBox }) {
   const url = useBaseUrl(src);
+  const [svgContent, setSvgContent] = useState(null);
+
+  useEffect(() => {
+    if (!viewBox) return;
+    setSvgContent(null);
+    fetch(url)
+      .then(r => r.text())
+      .then(text => {
+        const patched = text
+          .replace(/viewBox="[^"]*"/, `viewBox="${viewBox}"`)
+          .replace(/\bwidth="[^"]*mm"/, 'width="100%"')
+          .replace(/\bheight="[^"]*mm"/, '');
+        setSvgContent(patched);
+      })
+      .catch(() => setSvgContent(null));
+  }, [url, viewBox]);
+
+  const content = viewBox && svgContent
+    ? <div style={{ width: '100%', lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: svgContent }} />
+    : <img src={url} alt={alt} style={{ width: '100%', display: 'block' }} />;
+
   return (
     <div style={{ marginBottom: '1.5rem' }}>
       <TransformWrapper initialScale={1} minScale={0.25} maxScale={8} wheel={{ step: 0.1 }}>
@@ -40,7 +61,7 @@ export default function SchematicViewer({ src, alt }) {
             </div>
             <div style={wrapperStyle}>
               <TransformComponent wrapperStyle={{ width: '100%' }} contentStyle={{ width: '100%' }}>
-                <img src={url} alt={alt} style={{ width: '100%', display: 'block' }} />
+                {content}
               </TransformComponent>
             </div>
           </>

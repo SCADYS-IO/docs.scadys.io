@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/button_led_a6421fe1.svg" alt="Button & LED schematic" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/button_led_a56559cf.svg" alt="Button input schematic" viewBox="14 22 134 86" />
 
 :::note[Hardware version]
 WTI400 **v1.2** — In service — installed on test vessel
