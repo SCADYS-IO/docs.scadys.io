@@ -79,7 +79,7 @@ X7R MLCC capacitance falls significantly with applied DC voltage. All filter cap
 
 #### Stage 5 — Over-voltage protection
 
-The OVP circuit disconnects VSC from V_P1 if the bus voltage rises above approximately 18.6 V. It protects the LP2951 wind transducer LDO (U13, 30 V absolute maximum input), which would be destroyed by a sustained overvoltage — a 24 V system accidentally connected to the NMEA 2000 backbone, for example. The LMR51610 buck converter (U2) is rated to 65 V and does not require this protection.
+The OVP circuit disconnects VSC from V_P1 if the bus voltage rises above approximately 18.6 V. It protects the LP2951 wind transducer LDO (U13, 30 V absolute maximum input): the 18.6 V trip point provides 11.4 V of margin below that limit. Without OVP, a sustained bus fault — a faulty charger or a wrong supply connected to the backbone — could drive the bus toward or beyond 30 V and damage U13. The LMR51610 buck converter (U2) is rated to 65 V and does not require this protection.
 
 :::note[OVP origin]
 The same OVP topology was first used in the MDD400, where it protects the INA219 current monitor. The INA219 is not present in the WTI400, but the LP2951 (30 V maximum) provides the same design constraint.
