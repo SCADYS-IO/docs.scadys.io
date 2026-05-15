@@ -15,9 +15,17 @@ WTI400 **v1.2** — In service — installed on test vessel
 
 ## Overview
 
-The WTI400 is a wind transducer interface. Wind sensors are mounted at the top of the mast — this position gives the clearest airflow reading, but it also means that every movement of the vessel is greatly amplified at the masthead. A boat rolling just a few degrees at deck level can cause the masthead to swing through an arc of several metres. This movement directly affects both the apparent wind speed and the apparent wind direction reported by the sensor.
+The WTI400 connects to analog wind transducers. It reads the analog apparent wind angle and anemometer rotations,  outputting digital wind data on the vessel network(s). On sailboats, wind transducers are often mounted at the top of the mast. The masthead placement is in relatively clear air flow, but it also means that movement of the vessel is amplified. A boat rolling just a few degrees at deck level can cause the masthead to swing through an arc of several metres. This movement directly affects both the apparent wind speed and the apparent wind direction reported by the transducer.
 
-The LSM6DSLTR motion sensor on the WTI400 measures this movement. It provides three-axis acceleration and three-axis angular rate (rotation speed) data, which the firmware uses to compute the instantaneous velocity of the masthead sensor in the horizontal plane. That velocity is then subtracted from each wind reading, producing a stabilised output that reflects the true wind rather than the combined effect of wind plus boat movement.
+The LSM6DSLTR motion sensor on the WTI400 measures vessel roll, pitch and yaw. It provides three-axis acceleration and three-axis angular rate (rotation speed) data, which the firmware uses to compute the instantaneous velocity of the masthead sensor in the horizontal plane. That velocity is then subtracted from each wind reading, producing a stabilised output that reflects the corrected apparent wind rather than the combined effect of wind plus boat movement.
+
+:::note[Typical errors without motion compensation]
+For a mast 18 m above the waterline, ±10° roll at a 7-second period produces a peak lateral masthead velocity of **~5.5 knots**. The resulting errors in the apparent wind reading are:
+- **Wind speed** (beam reach): ±5.5 knots peak, ±3.9 knots RMS
+- **Wind angle** (sailing upwind, 10 kt wind): ±29°; at 20 kt: ±16°
+
+These errors oscillate at the roll frequency and are large enough to render the raw transducer data unreliable for performance sailing or accurate wind logging.
+:::
 
 This page covers two aspects of the motion sensor implementation:
 
