@@ -51,7 +51,7 @@ export default function SchematicViewer({ src, alt, viewBox }) {
 
   return (
     <div style={{ marginBottom: '1.5rem' }}>
-      <TransformWrapper initialScale={1} minScale={0.25} maxScale={8} wheel={{ step: 0.1 }}>
+      <TransformWrapper initialScale={1} minScale={0.25} maxScale={8} wheel={{ disabled: true }}>
         {({ zoomIn, zoomOut, resetTransform }) => (
           <>
             <div style={toolbarStyle}>

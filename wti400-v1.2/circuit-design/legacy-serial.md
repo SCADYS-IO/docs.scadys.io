@@ -13,17 +13,19 @@ WTI400 **v1.2** — In service — installed on test vessel
 
 ## Overview
 
-The legacy serial interface provides a galvanically isolated single-wire serial connection designed for full electrical compatibility with Raymarine's Legacy Serial Protocol (e.g. SeaTalk™). It connects to legacy marine instruments via a 3-pin connector and delivers two MCU signals — `ST_RX` and `ST_TX` / `ST_EN` — for receive and transmit respectively, each crossing the isolation barrier via TLP2309 opto-isolators.
+The legacy serial interface provides a galvanically isolated single-wire serial connection designed for full electrical compatibility with Raymarine's Legacy Serial Protocol (e.g. SeaTalk™). It connects to legacy marine instruments via a 3-pin connector and exposes three MCU signals — `ST_RX`, `ST_TX` and `ST_EN` (for receive, transmit and transmit enable respectively), each crossing the isolation barrier via a TLP2309 opto-isolator.
 
-The primary application on the WTI400 is to place apparent wind data onto the Legacy Serial Protocol bus as a direct drop-in replacement for an ST60 wind instrument. A receiving and transmitting capability is provided for potential future use, such as consuming depth or speed data from other Legacy Serial Protocol instruments.
+The primary application on the WTI400 is to place apparent wind data onto a SeaTalk I bus as a direct drop-in replacement for an ST60 wind instrument.
 
-The interface has limited compatibility with single-ended NMEA 0183 operation. Receive is fully NMEA 0183 listener compliant. Transmit is single-wire only and is not compatible with standard RS-422 NMEA 0183 talkers; compatibility with NMEA 0183 receivers depends on whether the receiving device accepts single-ended 12 V logic (see [NMEA 0183 caveats](#nmea-0183-caveats)).
+The interface has limited compatibility with single-ended NMEA 0183 operation. Receive is fully NMEA 0183 listener compliant. Transmit compatibility with NMEA 0183 receivers depends on whether the receiving device accepts single-ended 12 V logic (see [NMEA 0183 caveats](#nmea-0183-caveats)).
 
 **Sub-circuits:**
 - [3-wire connector and bus modes](#3-wire-connector-and-bus-modes) — physical interface, SeaTalk I and NMEA 0183 wiring;
 - [12 V power protection and regulation](#12-v-power-protection-and-regulation) — bus supply conditioning and LDO;
 - [Receive path](#receive-path) — signal filtering and isolated receive opto; and
 - [Transmit path](#transmit-path) — isolated transmit, enable gate, and open-drain line driver.
+
+<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_73020a10.svg" alt="Legacy Serial RX — block diagram overview" viewBox="157 99 130 68" />
 
 ---
 
@@ -55,9 +57,15 @@ For NMEA 0183 single-ended receive, connect the talker output as follows:
 
 | J3 Pin | NMEA 0183 talker wire |
 |--------|----------------------|
-| 1 (RED) | Not connected (leave open, or connect to talker +12 V supply if powering from bus) |
+| 1 (RED) | Not connected (listener-only); 9–16 V supply required if transmitting |
 | 2 (BLACK) | TALK-B (RS-422 A−, signal return / reference) |
 | 3 (YELLOW) | TALK-A (RS-422 A+, active signal) |
+
+:::note[12 V supply — when required]
+- **SeaTalk I** — always required; bus power on pin 1 is the only supply source;
+- **NMEA 0183 listener only** — not required; the RX buffer draws its LED drive current passively from the talker signal;
+- **NMEA 0183 talker** — required; the TX line driver (Q6, VST pull-up R33) needs VST to assert the bus LOW. Connect a 9–16 V supply to pin 1.
+:::
 
 The receive circuit draws approximately 0.36 mA from the line at 2.0 V input, within the NMEA 0183 listener limit of 2.0 mA. The TLP2309 propagation delay (≤ 1 µs) and signal filter cut-off (723 kHz) both support NMEA 0183 at 4800 baud and at 38400 baud (high-speed).
 
@@ -79,7 +87,7 @@ J3 uses a proprietary Raymarine-compatible pin arrangement. For V2.0, consider r
 
 ## 12 V Power Protection and Regulation
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_73020a10.svg" alt="Legacy Serial RX schematic — power and receive path" viewBox="0 0 294 207" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_73020a10.svg" alt="Legacy Serial RX — connector and filter section" viewBox="10 99 151 100" />
 
 The 12 V bus supply on J3 pin 1 passes through a six-stage protection chain before reaching the LDO regulator.
 
@@ -131,6 +139,8 @@ The VST rail is not MCU-controlled. It is live whenever the Legacy Serial Protoc
 ---
 
 ## Receive Path
+
+<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_73020a10.svg" alt="Legacy Serial RX — receive buffer section" viewBox="10 10 151 93" />
 
 The signal on J3 pin 3 (ST_SIG) passes through a two-stage RF filter and ESD clamp before reaching the TLP2309 opto-isolator.
 
