@@ -60,20 +60,9 @@ const sidebars = {
           "label": "LED Indicator"
         },
         {
-          "type": "category",
-          "label": "Legacy IO",
-          "items": [
-            {
-              "type": "doc",
-              "id": "circuit-design/legacy-serial-rx",
-              "label": "Legacy Serial RX"
-            },
-            {
-              "type": "doc",
-              "id": "circuit-design/legacy-serial-tx",
-              "label": "Legacy Serial TX"
-            }
-          ]
+          "type": "doc",
+          "id": "circuit-design/legacy-serial",
+          "label": "Legacy Serial Interface"
         }
       ]
     },
