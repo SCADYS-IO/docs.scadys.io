@@ -7,7 +7,7 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_0eeb927d.svg" alt="Power Supplies schematic" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_5f3c0fec.svg" alt="Power Supplies schematic" />
 
 :::note[Hardware version]
 

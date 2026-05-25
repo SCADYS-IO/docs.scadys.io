@@ -7,7 +7,7 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_0f210798.svg" alt="CAN bus power schematic" viewBox="20 20 249 81" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_24f6b21f.svg" alt="CAN bus power schematic" viewBox="20 20 249 81" />
 
 :::note[Hardware version]
 MDD400 **v2.9** — Fabricated prototype — testing phase
