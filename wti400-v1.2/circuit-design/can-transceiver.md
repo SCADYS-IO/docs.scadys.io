@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_92a44bba.svg" alt="CAN transceiver schematic" viewBox="20 28 225 74" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_c834331c.svg" alt="CAN transceiver schematic" viewBox="20 28 225 74" />
 
 :::note[Hardware version]
 WTI400 **v1.2** — In service — installed on test vessel

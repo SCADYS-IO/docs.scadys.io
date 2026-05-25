@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_a4e708c6.svg" alt="Power Supplies schematic" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_b9e184fb.svg" alt="Power Supplies schematic" />
 
 :::note[Hardware version]
 

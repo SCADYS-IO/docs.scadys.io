@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/can_bus_power_0819808b.svg" alt="CAN bus power schematic" viewBox="18 24 258 82" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_bus_power_9dca1984.svg" alt="CAN bus power schematic" viewBox="18 24 258 82" />
 
 :::note[Hardware version]
 WTI400 **v1.2** — In service — installed on test vessel

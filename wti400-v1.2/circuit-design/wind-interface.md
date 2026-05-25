@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_fc409790.svg" alt="Wind Interface schematic" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_a9b84b60.svg" alt="Wind Interface schematic" />
 
 :::note[Hardware version]
 
