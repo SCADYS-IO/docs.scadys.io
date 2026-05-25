@@ -258,10 +258,15 @@ The cable charges to VST via Q12 and R51 (10 Ω): for an 8 nF cable, τ_charge =
 | 9600 baud | 104 µs | 25.4 % | Marginal — C48 partially discharged at next transition |
 | 38400 baud (NMEA 0183 HS) | 26 µs | ~100 % | Ineffective — C48 cannot discharge between bits |
 
-:::note[Rise-time assist — C48 value]
-MDD400 V2.9 ships with C48 = **2.2 nF**. This is functional at 4800 baud (SeaTalk I) with a pulse duration of 26.4 µs (12.7% of one bit period). At 9600 baud, the assist pulse is marginally long (25.4% of one bit period); C48 may not fully discharge before the next transition on dense data. For SeaTalk I operation at 4800 baud, no change is required.
+:::caution[Rise-time assist — recommended rework for V2.9]
+**Recommendation: change C48 from 2.2 nF to 820 pF.** With R59 = 12 kΩ unchanged, this gives τ_assist = 9.8 µs.
 
-If 9600 baud TX performance needs to be improved in a future revision, reducing C48 to 820 pF gives τ_assist = 9.8 µs (9.4% of one 9600 baud bit period).
+- At 4800 baud: τ_assist / T = 4.7 % — fully effective; cable (8 nF) charges in ≈ 80 ns, well within the 9.8 µs pulse. No degradation for SeaTalk I long-cable installations.
+- At 9600 baud: τ_assist / T = 9.4 % — effective. The 9.8 µs assist pulse fully discharges before the next bit.
+
+This is a component value change only. C48 is a 0603 C0G capacitor; the footprint is unchanged. The change is achievable by reworking existing V2.9 boards and updating the schematic BOM. Update the schematic value for C48 to 820 pF and fit the correct value on all assembled units.
+
+38400 baud (NMEA 0183 HS) TX remains unsupported with either C48 value. Supporting 38400 baud would require further reduction of C48 to ≈ 220 pF, which would reduce the assist pulse to 2.6 µs — insufficient to reliably charge cable lengths beyond 2–3 m. A redesign of the assist stage (e.g. a constant-current source or firmware-adaptive baud rate detection) would be required for robust HS NMEA 0183 TX support.
 :::
 
 #### Feedback current-limiting loop — Q11 (BC847BS TR2)
@@ -292,7 +297,7 @@ The second transistor of the Q11 BC847BS package monitors current through Q10. W
 | Assert `ST_EN` LOW, `ST_TX` HIGH | ST_SIG = VST; Q10 off | Q10 not conducting |
 | Assert `ST_EN` LOW, `ST_TX` LOW | ST_SIG &lt; 50 mV | Q10 conducting; bus pulled LOW |
 | Toggle `ST_TX` at 4800 baud; measure rising edge at ST_SIG | Edge reaches ≥ 80 % VST within 50 µs | Rise-time assist functioning |
-| Toggle `ST_TX` at 9600 baud | Edge reaches ≥ 80 % VST within 50 µs | Assist effective at 9600 baud |
+| Toggle `ST_TX` at 9600 baud (after C48 rework to 820 pF) | Edge reaches ≥ 80 % VST within 30 µs | Assist effective at 9600 baud |
 | Measure D9 current at VST = 16 V (max NMEA 2000) | D9 zener begins to conduct (V_Z = 15 V); confirm dissipation ≤ 200 mW | Within D9 rating |
 | Apply 58 V transient on ST_SIG (clamped by upstream TVS) | No gate driver or Q10 damage | Circuit survives |
 
@@ -362,6 +367,14 @@ Current values (C48 = 2.2 nF, R59 = 12 kΩ):
 | τ_cable (R51 × C_cable, 80 m run) | 10 Ω × 8 nF = **80 ns** |
 | τ_assist / bit period @ 4800 baud | 26.4 µs / 208 µs = **12.7 %** |
 | τ_assist / bit period @ 9600 baud | 26.4 µs / 104 µs = **25.4 %** |
+
+Recommended rework values (C48 = 820 pF, R59 = 12 kΩ unchanged):
+
+| Parameter | Value |
+|-----------|-------|
+| τ_assist | 820 pF × 12 kΩ = **9.84 µs** |
+| τ_assist / bit period @ 4800 baud | 9.84 µs / 208 µs = **4.7 %** |
+| τ_assist / bit period @ 9600 baud | 9.84 µs / 104 µs = **9.5 %** |
 
 </details>
 
@@ -486,7 +499,7 @@ The transmit-side component cluster occupies approximately X: 147–158 mm, Y: 7
 | R61 | 10 kΩ / 0603 | Yageo RC Series — feedback current-limit bias | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | C39 | 100 nF / 50 V / 0603 / X7R | Murata GCM188R71H104KA57D — VST bypass at U8 | [GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C40 | 100 nF / 50 V / 0603 / X7R | Murata GCM188R71H104KA57D — VCC bypass at U9 | [GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
-| C48 | 2.2 nF / 50 V / 0603 / C0G | Murata GRM1885C1H222JA01D — rise-time assist timing capacitor | [GRM1885C1H222JA01D](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H222JA01D) |
+| C48 | **820 pF** / 50 V / 0603 / C0G | Murata GRM1885C1H821JA01D (or equivalent) — rise-time assist timing capacitor (**updated from 2.2 nF; rework required**) | — |
 | Q8, Q11 | BC847BS | Nexperia BC847BS NPN dual, SOT363 — gate driver push-pull pre-driver (both units used) | [BC847BS](https://assets.nexperia.com/documents/data-sheet/BC847BS.pdf) |
 | Q9 | AO3407A | AOS AO3407A P-channel MOSFET, SOT-23, 30 V / 4.2 A — high-side gate driver | [AO3407A](https://aosmd.com/res/data_sheets/AO3407A.pdf) |
 | Q10 | 2N7002 | Nexperia 2N7002 N-channel MOSFET, SOT-23, 60 V / 300 mA — open-drain line driver | [2N7002](https://assets.nexperia.com/documents/data-sheet/2N7002.pdf) |
