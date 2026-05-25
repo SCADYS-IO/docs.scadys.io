@@ -1,0 +1,27 @@
+{
+  "product": "wti400",
+  "version": "v1.2",
+  "kicad_sheets": [
+    "esp32_module",
+    "power_supplies",
+    "can_bus_power",
+    "can_transceiver",
+    "wind_interface",
+    "motion_sensor",
+    "button_led",
+    "legacy_serial_rx",
+    "legacy_serial_tx",
+    "pcb_markings"
+  ],
+  "circuit_design_pages": [
+    { "slug": "esp32-module",    "label": "ESP32 Module",            "renders": ["esp32_module"] },
+    { "slug": "power-supplies",  "label": "Power Supplies",          "renders": ["power_supplies"] },
+    { "slug": "can-bus-power",   "label": "CAN Bus Power",           "renders": ["can_bus_power"] },
+    { "slug": "can-transceiver", "label": "CAN Transceiver",         "renders": ["can_transceiver"] },
+    { "slug": "wind-interface",  "label": "Wind Interface",          "renders": ["wind_interface"] },
+    { "slug": "motion-sensor",   "label": "Motion Sensor",           "renders": ["motion_sensor"] },
+    { "slug": "button",          "label": "Button Input",            "renders": ["button_led"] },
+    { "slug": "led-indicator",   "label": "LED Indicator",           "renders": ["button_led"] },
+    { "slug": "legacy-serial",   "label": "Legacy Serial Interface", "renders": ["legacy_serial_rx", "legacy_serial_tx"] }
+  ]
+}
