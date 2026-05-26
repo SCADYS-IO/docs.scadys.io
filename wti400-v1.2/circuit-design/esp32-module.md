@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_0431eca0.svg" alt="ESP32 Module schematic" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_98fd5f66.svg" alt="ESP32 Module schematic" />
 
 :::note[Hardware version]
 

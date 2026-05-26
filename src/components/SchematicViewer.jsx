@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
@@ -26,38 +26,108 @@ const wrapperStyle = {
   background: 'var(--ifm-background-color)',
 };
 
-export default function SchematicViewer({ src, alt, viewBox }) {
+// SchematicViewer renders an SVG schematic with pan/zoom controls.
+// Two optional ways to start with a focused view:
+//   viewBox="x y w h"      — HARD-CROPS the SVG to the region (legacy behaviour);
+//                            zoom/pan only works within the cropped region.
+//   initialFocus="x y w h" — preserves the full SVG; sets initial transform so the
+//                            region fills the viewport. User can zoom out / pan
+//                            to see the rest of the schematic. Reset button
+//                            returns to this focused view.
+export default function SchematicViewer({ src, alt, viewBox, initialFocus }) {
   const url = useBaseUrl(src);
   const [svgContent, setSvgContent] = useState(null);
+  const [svgViewBox, setSvgViewBox] = useState(null);
+  const containerRef = useRef(null);
+  const transformRef = useRef(null);
 
   useEffect(() => {
-    if (!viewBox) return;
+    if (!viewBox && !initialFocus) return;
     setSvgContent(null);
+    setSvgViewBox(null);
     fetch(url)
       .then(r => r.text())
       .then(text => {
-        const patched = text
-          .replace(/viewBox="[^"]*"/, `viewBox="${viewBox}"`)
+        const vbMatch = text.match(/viewBox="([^"]+)"/);
+        if (vbMatch) {
+          const parts = vbMatch[1].split(/\s+/).map(parseFloat);
+          if (parts.length === 4 && parts.every(n => !isNaN(n))) {
+            setSvgViewBox(parts);
+          }
+        }
+        let patched = text
           .replace(/\bwidth="[^"]*mm"/, 'width="100%"')
           .replace(/\bheight="[^"]*mm"/, '');
+        if (viewBox) {
+          patched = patched.replace(/viewBox="[^"]*"/, `viewBox="${viewBox}"`);
+        }
         setSvgContent(patched);
       })
       .catch(() => setSvgContent(null));
-  }, [url, viewBox]);
+  }, [url, viewBox, initialFocus]);
 
-  const content = viewBox && svgContent
+  const applyInitialFocus = useCallback(() => {
+    if (!initialFocus || !svgViewBox || !transformRef.current || !containerRef.current) return;
+    const parts = initialFocus.split(/\s+/).map(parseFloat);
+    if (parts.length !== 4 || parts.some(n => isNaN(n))) return;
+    const [fx, fy, fw, fh] = parts;
+    const [, , totalW, totalH] = svgViewBox;
+    const CW = containerRef.current.clientWidth;
+    if (CW <= 0 || fw <= 0) return;
+    const CH = CW * (totalH / totalW);
+    // Fit focus width to container width.
+    const scale = totalW / fw;
+    // Translate so focus region is centered in the viewport.
+    const positionX = -CW * fx / fw;
+    const positionY = (CH - fh * CW / fw) / 2 - CW * fy / fw;
+    transformRef.current.setTransform(positionX, positionY, scale, 0);
+  }, [initialFocus, svgViewBox]);
+
+  // Apply initial focus once content has loaded and the container has a width.
+  useEffect(() => {
+    if (!initialFocus || !svgContent || !svgViewBox) return;
+    let cancelled = false;
+    const tryApply = () => {
+      if (cancelled) return;
+      if (containerRef.current && containerRef.current.clientWidth > 0) {
+        applyInitialFocus();
+      } else {
+        requestAnimationFrame(tryApply);
+      }
+    };
+    requestAnimationFrame(tryApply);
+    return () => { cancelled = true; };
+  }, [svgContent, svgViewBox, initialFocus, applyInitialFocus]);
+
+  const content = (viewBox || initialFocus) && svgContent
     ? <div style={{ width: '100%', lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: svgContent }} />
     : <img src={url} alt={alt} style={{ width: '100%', display: 'block' }} />;
 
   return (
-    <div style={{ marginBottom: '1.5rem' }}>
-      <TransformWrapper initialScale={1} minScale={0.25} maxScale={8} wheel={{ disabled: true }}>
+    <div ref={containerRef} style={{ marginBottom: '1.5rem' }}>
+      <TransformWrapper
+        ref={transformRef}
+        initialScale={1}
+        minScale={0.25}
+        maxScale={20}
+        wheel={{ disabled: true }}
+      >
         {({ zoomIn, zoomOut, resetTransform }) => (
           <>
             <div style={toolbarStyle}>
               <button style={btnStyle} onClick={() => zoomIn()} title="Zoom in">+</button>
               <button style={btnStyle} onClick={() => zoomOut()} title="Zoom out">−</button>
-              <button style={{ ...btnStyle, fontSize: 13, padding: '4px 8px' }} onClick={() => resetTransform()} title="Reset">Reset</button>
+              <button
+                style={{ ...btnStyle, fontSize: 13, padding: '4px 8px' }}
+                onClick={() => {
+                  if (initialFocus) {
+                    applyInitialFocus();
+                  } else {
+                    resetTransform();
+                  }
+                }}
+                title="Reset"
+              >Reset</button>
             </div>
             <div style={wrapperStyle}>
               <TransformComponent wrapperStyle={{ width: '100%' }} contentStyle={{ width: '100%' }}>

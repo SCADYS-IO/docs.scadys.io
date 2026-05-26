@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/can_bus_power_9dca1984.svg" alt="CAN bus power schematic" viewBox="18 24 258 82" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_bus_power_42c1c1e1.svg" alt="CAN bus power — full sheet" />
 
 :::note[Hardware version]
 WTI400 **v1.2** — In service — installed on test vessel
@@ -36,7 +36,11 @@ The CAN bus power circuit must:
 
 The NMEA 2000 bus delivers power on NET-S (positive) and NET-C (ground). The WTI400 is bus-powered: GNDREF is tied directly to NET-C at J2. NET-S is nominally 9–16 V DC under IEC 61162-3, with a maximum charging voltage of 14.8 V. Surge events — load-dump, cable plug/unplug, or a switching transient elsewhere on the backbone — can reach hundreds of volts for microseconds at J2.
 
-#### Stage 1 — Primary surge clamping
+#### CAN Domain Power Conditioning (Stages 1–4)
+
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_bus_power_42c1c1e1.svg" alt="CAN domain power conditioning — TVS/MOV clamp, fuse + reverse-polarity Schottky, bulk caps, two-stage LC EMI filter. Zoom out to see the full sheet." initialFocus="0 0 165 117" />
+
+##### Stage 1 — Primary surge clamping
 
 Two devices in parallel absorb surge energy before it reaches any active circuitry.
 
@@ -44,13 +48,13 @@ D11 (SM8S36CA) is a bidirectional TVS in a DO-218AB package with a 36 V standoff
 
 M1 (V33MLA1206NH) is a 75 V metal oxide varistor in 1206. MOVs are slower than TVS diodes but absorb more energy across a longer pulse. M1 absorbs the leading edge of slow high-energy transients before D11 needs to clamp.
 
-#### Stage 2 — Fuse and reverse-polarity protection
+##### Stage 2 — Fuse and reverse-polarity protection
 
 F1 (BSMD1812-050-60V) is a 500 mA / 60 V PTC resettable fuse in 1812. A PTC is preferred over a one-shot fuse for a marine instrument: a blown fuse mid-passage leaves the instrument dead with no means of recovery. After a fault clears, F1 cools and resets automatically. The 500 mA hold current at 25 °C gives a 7× margin over the 65 mA continuous operating current — accidental trips from normal operation are not possible.
 
 D9 (SS34) is a 40 V / 3 A Schottky diode in SMA, wired in series on the high-side rail immediately after F1. It blocks reverse polarity passively: if NET-S and NET-C are swapped, D9 prevents current from flowing. The Schottky forward voltage (~380 mV at 65 mA) contributes to the voltage drop budget.
 
-#### Stage 3 — Bulk capacitor buffer
+##### Stage 3 — Bulk capacitor buffer
 
 C41 and C42 (2 × 22 µF / 100 V, X7R, 2220) provide 44 µF of bulk capacitance at the post-fuse rail, decoupling cable impedance and storing energy during the brief window while D11 is clamping a surge event.
 
@@ -58,7 +62,7 @@ R43 (100 mΩ) damps LC resonance between the bulk capacitor bank and the EMI fil
 
 R42 (100 kΩ) bleeds C41/C42 to zero when power is removed, preventing VSC from remaining live after the bus is disconnected.
 
-#### Stage 4 — Two-stage LC EMI filter
+##### Stage 4 — Two-stage LC EMI filter
 
 A cascaded LC ladder suppresses conducted EMI on the supply rail. Two filter stages are used because a single stage would require impractically large inductors to achieve the same attenuation.
 
@@ -77,7 +81,11 @@ The filter output is the local net V_P1, which feeds the OVP switch.
 X7R MLCC capacitance falls significantly with applied DC voltage. All filter capacitor values above are rated at 100 V; at 12 V operating voltage the effective capacitance is approximately 60–75% of the nominal value. Filter corner frequencies are calculated on the derated values. Measure actual capacitance at bring-up to verify.
 :::
 
-#### Stage 5 — Over-voltage protection
+#### Over-voltage Protection (Stages 5–6)
+
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_bus_power_42c1c1e1.svg" alt="Over-voltage protection — Q2 high-side switch, Q3 comparator, R27/R28 divider, R25/R26 gate network, C28 hysteresis, D3 gate clamp, D2 secondary clamp. Zoom out to see the full sheet." initialFocus="150 0 147 105" />
+
+##### Stage 5 — OVP comparator and high-side switch
 
 The OVP circuit disconnects VSC from V_P1 if the bus voltage rises above approximately 18.6 V. It protects the LP2951 wind transducer LDO (U13, 30 V absolute maximum input): the 18.6 V trip point provides 11.4 V of margin below that limit. Without OVP, a sustained bus fault — a faulty charger or a wrong supply connected to the backbone — could drive the bus toward or beyond 30 V and damage U13. The LMR51610 buck converter (U2) is rated to 65 V and does not require this protection.
 
@@ -113,7 +121,7 @@ At 85 °C the margin above the NMEA 2000 maximum charging voltage (14.8 V) is 30
 
 **D3 (BZT52C7V5S)** is a 7.5 V Zener between Q2's source (V_P1) and gate. During a D11-clamped surge, V_P1 peaks at ~58 V while Q2's gate is held near 0 V by R26. Without D3, V_GS would reach −58 V against a ±20 V rating. D3 clamps V_GS to −7.5 V throughout the event.
 
-#### Stage 6 — Secondary output clamp
+##### Stage 6 — Secondary output clamp
 
 D2 (PESD15VL1BA) is a 15 V / 200 W bidirectional TVS across VSC and GNDREF. It catches fast transients that pass through Q2 before the OVP comparator can respond, providing a final protective barrier for the downstream regulators.
 

@@ -27,7 +27,7 @@ const sidebars = {
         {
           "type": "doc",
           "id": "circuit-design/power-supplies",
-          "label": "Power Supplies"
+          "label": "Power Supply"
         },
         {
           "type": "doc",

@@ -7,159 +7,286 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_5f3c0fec.svg" alt="Power Supplies schematic" />
-
 :::note[Hardware version]
 
 MDD400 **v2.9** — Fabricated prototype — testing phase
 
 :::
 
-## Components
+## Overview
 
-| Ref | Value | Description | Datasheet |
-|---|---|---|---|
-| U6 | LMR51610 | Synchronous buck converter, 4–65 V in, 1 A, SOT-23, 400 kHz — VDD 5.0 V | [TI LMR51610](/assets/datasheets/mdd400-v2.9/LMR51610.pdf) |
-| U1 | LMR51610 | Synchronous buck converter, 4–65 V in, 1 A, SOT-23, 400 kHz — VCC 3.3 V | [TI LMR51610](/assets/datasheets/mdd400-v2.9/LMR51610.pdf) |
-| L2 | 22 µH | Semi-shielded power inductor, 1.62 A sat, 123 mΩ DCR, 5×5 mm — VDD output filter | [Bourns SRN5040TA](/assets/datasheets/mdd400-v2.9/SRN5040TA.pdf) |
-| L1 | 22 µH | Semi-shielded power inductor, 1.62 A sat, 123 mΩ DCR, 5×5 mm — VCC output filter | [Bourns SRN5040TA](/assets/datasheets/mdd400-v2.9/SRN5040TA.pdf) |
-| C33 | 10 µF/50 V | X7R 1210 MLCC — VDD input bulk decoupling | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
-| C20, C32 | 10 µF/50 V | X7R 1210 MLCC — VDD output bulk capacitors (×2) | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
-| C21 | 100 nF/50 V | X7R 0603 MLCC — VDD input high-frequency decoupling | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| C25 | 100 nF/50 V | X7R 0603 MLCC — VDD bootstrap hold reservoir (VSD→SW) | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| C23 | 1 pF/100 V | C0G 0603 MLCC — VDD bootstrap capacitor (BST–SW pin) | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| C31 | 100 pF/50 V | C0G 0603 MLCC — VDD feedback feedforward capacitor (across R19) | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| C24 | 1 nF/50 V | C0G 0603 MLCC — VDD SW-node snubber capacitor (DNP) | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| C15 | 10 µF/50 V | X7R 1210 MLCC — VCC input bulk decoupling | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
-| C5, C14 | 10 µF/50 V | X7R 1210 MLCC — VCC output bulk capacitors (×2) | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
-| C6 | 100 nF/50 V | X7R 0603 MLCC — VCC input high-frequency decoupling | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| C10 | 100 nF/50 V | X7R 0603 MLCC — VCC bootstrap hold reservoir (VSD→SW) | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| C7 | 1 pF/100 V | C0G 0603 MLCC — VCC bootstrap capacitor (BST–SW pin) | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| C13 | 100 pF/50 V | C0G 0603 MLCC — VCC feedback feedforward capacitor (across R6) | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| C9 | 1 nF/50 V | C0G 0603 MLCC — VCC SW-node snubber capacitor (DNP) | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| R19 | 100 kΩ | Thick film 0603 — VDD feedback upper divider | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R18 | 19.1 kΩ | Thin film 0603 — VDD feedback lower divider (sets 5.0 V output with R19) | — |
-| R23 | 22 Ω | Thick film 0603 — VDD SW-node snubber resistor, series with C24 (DNP) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R6 | 100 kΩ | Thick film 0603 — VCC feedback upper divider | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R5 | 32 kΩ | Thin film 0603 — VCC feedback lower divider (sets 3.3 V output with R6) | — |
-| R7 | 22 Ω | Thick film 0603 — VCC SW-node snubber resistor, series with C9 (DNP) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| FB2 | 600 Ω@100 MHz | 1206 ferrite bead, 80 mΩ DCR — VDD output EMI filter (5V0→VDD) | [Murata BLM31KN601SN1L](https://www.murata.com/en-us/products/productdetail?partno=BLM31KN601SN1L%40T) |
-| FB1 | 600 Ω@100 MHz | 1206 ferrite bead, 80 mΩ DCR — VCC output EMI filter (3v3→VCC) | [Murata BLM31KN601SN1L](https://www.murata.com/en-us/products/productdetail?partno=BLM31KN601SN1L%40T) |
-| FB4 | 600 Ω@100 MHz | 1206 ferrite bead, 80 mΩ DCR — CAN-to-SMPS input filter (VSC→VSD) | [Murata BLM31KN601SN1L](https://www.murata.com/en-us/products/productdetail?partno=BLM31KN601SN1L%40T) |
-| TP1 | GNDREF | Test point on GNDREF rail (DNP) | — |
+The MDD400 has two regulated supplies, generated by two independent **LMR51610 synchronous buck converters** running from the protected bus supply (VSD ≈ 12 V, sourced from the [CAN Bus Power](./can-bus-power) section via FB4):
 
-> **Snubber footprints DNP by default:** R23/C24 (VDD) and R7/C9 (VCC) are placed on the board but not populated. Footprints are retained for post-EMC-test population if SW-node ringing requires damping.
+- **VCC 3.3 V** — powers the ESP32-S3 module (U3) and all digital logic.
+- **VDD 5.0 V** — powers the DWIN capacitive touch display (gated by a high-side switch on the [Display Interface](./display-interface) page) and the MLT-8530 buzzer.
 
-## How It Works
+The two converters use the **same chip (LMR51610XDBVR), the same inductor footprint (Bourns SRN5040TA-220M, 22 µH), and an identical surrounding circuit topology**. Only three things differ per rail: the feedback divider values that set the output voltage, the board placement, and what each rail drives. This page describes the shared converter once, then states the per-rail specifics and performance numbers separately.
 
-The `power_supplies` sheet implements two independent synchronous buck converters that generate the regulated rails from the VSD input (nominally 12 V, supplied from the `can_bus_power` sheet via FB4). A single ground reference, GNDREF, serves both converters and the digital domain — V2.9 eliminated the galvanic isolation transformer present in V2.8, eliminating both a separate PGND domain and the push-pull driver/transformer stage. FB4 (VSC→VSD) at the sheet boundary provides EMI filtering at the CAN-to-SMPS domain interface.
+The two converters sit side-by-side at the top of the schematic — VDD (U6) on the left, VCC (U1) on the right. The "Isolation of Power Domains" sub-diagram (lower-left area of the sheet) makes the ferrite strategy explicit: an input ferrite (FB4) at the CAN→SMPS boundary, plus an output ferrite per rail (FB1 for VCC, FB2 for VDD) with a 100 pF rail bypass cap right at each output ferrite pad.
 
-**VDD 5.0 V converter (U6, L2):** U6 (LMR51610XDBVR) operates at 400 kHz. The input stage uses C33 (10 µF/50 V X7R 1210) for bulk energy storage and C21 (100 nF X7R 0603) for high-frequency bypass directly at the VIN pin. The SW pin drives L2 (Bourns SRN5040TA-220M, 22 µH, 1.62 A sat) followed by C20 and C32 (2× 10 µF X7R 1210) as the output filter. Output voltage is set by the feedback divider R19 (100 kΩ upper) / R18 (19.1 kΩ lower): Vout = 0.8 × (1 + 100/19.1) = 4.989 V ≈ 5.0 V. C31 (100 pF C0G) is the feedforward capacitor across R19. The bootstrap path uses C23 (1 pF C0G, directly between BST and SW pins) for gate-drive charging, and C25 (100 nF X7R, connecting VSD to the SW node) as the BST hold reservoir during converter start-up and light load. Snubber components R23 (22 Ω) and C24 (1 nF) are placed at the edge of the SW copper pour and are DNP. FB2 bridges the 5V0 net to the VDD rail at the SMPS/digital boundary. Maximum output is 250 mA.
+<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_5f3c0fec.svg" alt="MDD400 Power Supplies schematic (full sheet) — VDD converter top-left, VCC converter top-right, Isolation of Power Domains sub-diagram lower-left" />
 
-**VCC 3.3 V converter (U1, L1):** Identical topology to VDD. U1 configured at 400 kHz. Input: C15 (10 µF bulk) + C6 (100 nF HF bypass). L1 (22 µH SRN5040TA) + C5/C14 (2× 10 µF X7R 1210) output filter. Feedback: R6 (100 kΩ upper) / R5 (32 kΩ lower): Vout = 0.8 × (1 + 100/32) = 3.300 V exactly. C13 (100 pF C0G) feedforward across R6. Bootstrap: C7 (1 pF C0G) BST capacitor + C10 (100 nF X7R) BST hold reservoir (VSD→SW). Snubber R7/C9 are DNP. FB1 bridges 3v3 to VCC at the domain boundary. Peak output 275 mA during ESP32 Wi-Fi transmit.
+The circuit topology and the four-layer GNDREF / moat / via-fence layout strategy are identical to the WTI400 V1.2 Power Supply page (`/wti400/v1.2/circuit-design/power-supplies`). Where this page says "follows the same pattern as WTI400", refer to that page for the per-rule MPS EMI webinar explanation; the MDD400-specific deltas (dual converters, two-cell moat, per-rail consumers, dual-converter EMI flag) are covered here.
 
-## Design Rationale
+---
 
-The LMR51610 integrates synchronous rectification, operates over a wide input range (4–65 V), and is available in a compact SOT-23 package. The 400 kHz fixed switching frequency reduces inductor size compared with 200–300 kHz legacy designs while remaining below 1 MHz, where switching losses and RF emissions increase significantly. Both converters share the same IC, inductor, and capacitor types, reducing BOM complexity.
+## The LMR51610 converter — shared description
 
-The Bourns SRN5040TA-220M (22 µH, 1.62 A sat, 123 mΩ DCR) is conservatively sized for this application: peak inductor current at maximum load reaches only ~460 mA — 28% of the saturation rating — leaving substantial margin against core saturation in temperature extremes or transient overloads. The semi-shielded construction contains radiated flux within the 5×5 mm body. Output capacitors use 1210-size X7R MLCCs; a smaller 0805 part at 12 V input would lose more than 60% of rated capacitance due to DC bias derating, whereas the 1210 X7R parts retain effective capacitance under operating bias.
+Each converter is built around an LMR51610XDBVR (TI synchronous buck, SOT-23-5 DBV, 400 kHz fixed switching frequency, integrated high-side + low-side MOSFETs). The surrounding components are functionally identical across the two instances; only the refdes and FB divider values change. The VCC converter (U1) sits on the right of the schematic above; the VDD converter (U6) on the left is a mirror with the same topology and different FB divider values.
 
-V2.9 eliminated the galvanic isolation transformer and push-pull driver from V2.8, replacing them with a single GNDREF domain. Ferrite beads FB1 and FB2 are not isolation boundaries — they are high-side EMI filters on the output rails, attenuating switching ripple before it reaches the digital domain. FB4 at the CAN-to-SMPS input serves the same function on the power inlet. The layout implements the MPS EMI Webinar per-circuit ground isolation strategy (0.4 mm perimeter moat + layered GNDREF fills on all inner copper layers) to contain switching-domain EMI without requiring a separate ground plane.
+<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_5f3c0fec.svg" alt="VCC switcher sub-circuit (U1) — input decoupling C6/C15, bootstrap C10, feedforward C7, feedback divider R5/R6, snubber footprint (DNP), inductor L1, output bulk C5/C14, rail output bypass C13, boundary ferrite FB1. Zoom out to see the full sheet (the VDD converter U6 is the mirror on the left)." initialFocus="150 5 130 92" />
 
-## PCB Layout
+**Per-converter components (VCC instance / VDD instance):**
 
-The two LMR51610 converters are co-located in the SMPS region (X: 71.8–86.2 mm) on F.Cu, mirrored at Y = 53.8 mm (U1/VCC) and Y = 69.4 mm (U6/VDD), with 15.6 mm centre-to-centre spacing. The layout follows the MPS EMI Webinar circuit-level isolation strategy strictly: each converter cell is enclosed by a **0.4 mm `copper pour not allowed` keepout moat** on F.Cu, In1.Cu, and In2.Cu, preventing any external copper from entering. Inside each moat, a layered GNDREF fill (priority-1 tight zone → priority-14 full-cell zone on F.Cu; priority-26 solid fills on both In1.Cu and In2.Cu) provides the ground reference. 195 GNDREF vias (0.3 mm drill) stitch F.Cu to the inner planes. SW nodes are implemented as copper pours (not routed traces), eliminating SW-to-inductor trace inductance. Ferrite beads FB1 and FB2 at x = 89.0 mm are the sole high-frequency connections between the SMPS copper and the digital VCC/VDD regions.
+- **Input stage:** 10 µF X7R 1210 bulk (**C15 / C33**) + 100 nF X7R 0603 HF bypass (**C6 / C21**) at the VIN pin. Two-tier decoupling, HF cap closest to VIN — minimises the input hot-loop area.
+- **Bootstrap (CB↔SW):** 100 nF X7R 0603 (**C10 / C25**). Connects the LMR51610 CB (CBOOT) pin to the SW node; charged during off-time via the IC's internal LDO, delivers gate-drive voltage above SW during on-time.
+- **Feedforward (Vout↔FB across upper divider):** 1 pF C0G 0603 (**C7 / C23**). Across the upper FB divider resistor; introduces a zero in the feedback loop for transient response. C0G dielectric is essential at 1 pF — X5R/X7R would derate catastrophically at this value.
+- **DNP snubber footprint (SW→GNDREF):** 1 nF C0G 0603 + 22 Ω 0603 (**C9 + R7 / C24 + R23**). Series RC between SW and GNDREF, **Do-Not-Populate by default**. All four parts carry `(attr smd dnp)` in the current PCB. Populated only if SW-node ringing is observed during EMC bring-up.
+- **Output filter:** 22 µH semi-shielded inductor (**L1 / L2**, Bourns SRN5040TA-220M, 5×5 mm, 1.62 A Isat, 1.50 A Irms, 123 mΩ DCR) flanked symmetrically by 2× 10 µF X7R 1210 bulk caps (**C5 + C14 / C20 + C32**).
+- **Rail output bypass (Vout→GNDREF, just before the output ferrite):** 100 pF C0G 0603 (**C13 / C31**). Located between the inductor output and the boundary ferrite; extends bypass response into the tens of MHz, attenuating switching harmonics on the SMPS-side rail before they reach the ferrite.
+- **SMPS → digital boundary ferrite:** Murata BLM31KN601SN1L 1206 (**FB1 / FB2**, 600 Ω @ 100 MHz, 80 mΩ DCR). The sole copper path between the SMPS-side output rail (`/SMPS DOMAIN/3v3` or `/SMPS DOMAIN/5v0`) and the digital rail (VCC or VDD). No bypass copper across the ferrite.
 
-The feedback lower-divider resistors (R5/R18) connect via through-vias to all four copper layers; on F.Cu the via lands on the outer surrounding GNDREF pour rather than the tight local pour that forms the VIN hot-loop return. Convergence of the feedback GND return and the VIN capacitor return occurs on the In1.Cu/In2.Cu planes — consistent with LMR51610 §8.4.1.2, which recommends placing the feedback return on a different layer or region from the SW node, with the ground plane providing shielding.
+The PCB layout matches the **MPS EMI webinar containment pattern** documented in detail on the [WTI400 Power Supply page](/wti400/v1.2/circuit-design/power-supplies) — two-tier input decoupling, SW implemented as a copper pour rather than a trace, symmetric flanking output caps, sole-ferrite-at-boundary, star convergence of GND returns at the IC GND pad, and a moat / via fence / multi-layer GNDREF strategy. The MDD400-specific layout deltas are covered in [Layout — two-cell moat + via fence](#layout--two-cell-moat--via-fence) below.
 
-### Verification Summary
+### Inductor sourcing — production vs prototype
 
-| # | Requirement | Status | Evidence |
-|---|---|---|---|
-| P1 | HF input caps (C6/C21) within 1–2 mm of VIN/GND pins | Met | C6↔U1: 2.62 mm; C21↔U6: 2.62 mm |
-| P2 | BST caps (C7/C23) adjacent to BST and SW pins | Met | C7↔U1: 3.35 mm; C23↔U6: 3.35 mm, 0.2 mm trace |
-| P3 | BST hold caps (C10/C25) adjacent to BST pin | Met | C10/C25 at x≈80.8; SW-side connection direct (0.3 mm) |
-| P4 | Feedback dividers (R5/R6/C13; R18/R19/C31) close to FB pin | Met | R5/R18 at 3.19 mm; R6/R19 at 3.32 mm from IC |
-| P5 | Output inductors connected to SW pin copper pour | Met | L1/L2 on same x-column; SW pour spans IC-to-inductor gap |
-| P7 | Snubber footprints DNP; C9 correct | **⚠️ Partial** | C9 marked DNP; **C24, R7, R23 missing DNP attribute** |
-| P8 | FB1/FB2 in-line at SMPS/digital boundary | Met | Both at x=89.0 mm, straddling SMPS copper (x≤86.2) and VCC/VDD copper (x≥88.5) |
-| R1 | SW nets implemented as copper pour | Met | Zero routed segments; VCC SW pour 3×4 mm; VDD SW pour 3×3.85 mm |
-| R2 | VIN/PGND hot-loop short | Met | C6/U1 GND share Y=53.8 mm; straight 3.625 mm return, loop area ≈6.6 mm² |
-| G1 | Per-circuit layered GNDREF with via stitching | Met | 2×F.Cu tight+extended zones + 2×inner-plane fills per converter; 195 GNDREF vias |
-| G2 | 0.4 mm keepout moat per circuit on 3 layers | Met | Two moats confirmed: U1 outer 71.8–86.2×45.8–64.2 mm; U6 outer 71.8–86.2×63.8–79.2 mm |
-| G5 | AGND/PGND convergence | Met | R5/R18 vias to outer GNDREF pour on F.Cu; VIN-side and FB-side GND converge on In1.Cu/In2.Cu per §8.4.1.2 |
-| T1 | U1/U6 GND via stitching to inner plane | Met | 195 GNDREF vias in SMPS area; SOT-23 no exposed pad — GND/output pins the dissipation path |
+Production BOM specifies **Bourns SRN5040TA-220M** for both L1 (VCC) and L2 (VDD). The current V2.9 prototype boards are populated with **Fenghua FNR5040S220MT** (same footprint, stock-available substitute).
 
-## Design Calculations
+| Parameter | Bourns SRN5040TA-220M (production) | Fenghua FNR5040S220MT (prototype) | Impact |
+|-----------|-----------------------------------|-----------------------------------|--------|
+| Inductance | 22 µH | 22 µH | No change |
+| DCR | **123 mΩ** | **168 mΩ** | **+45 mΩ with Fenghua** — main difference |
+| Saturation current Isat | 1.62 A | 1.8 A | Fenghua slightly higher; both > 3× over peak IL_peak ≈ 500–605 mA |
+| RMS current Irms | 1.50 A | 1.6 A | Both well above design IL_rms ≈ 448 / 518 mA (VCC / VDD) |
+| Package | 5×5 mm semi-shielded | 5×5 mm shielded | Functionally equivalent footprint |
+| Self-resonant frequency | ≥ 16 MHz (datasheet) | Not listed (typical > 5 MHz for this form factor) | Both well above the 400 kHz fundamental |
 
-Key values from TI WEBENCH design reports (`design-docs/vdd_design_report.pdf`, `design-docs/vcc_design_report.pdf`) and schematic calculations.
+At the design peak loads, the higher Fenghua DCR adds:
 
-### VDD 5.0 V (U6, L2)
+| Rail | Iout (design peak) | Bourns inductor loss | Fenghua inductor loss | Δ loss | Δ DC drop |
+|------|---------------------|----------------------|-----------------------|---------|-----------|
+| VCC (3.3 V) | 360 mA | 15.9 mW | 21.8 mW | **+5.9 mW** | +16.2 mV |
+| VDD (5.0 V) | 400 mA | 19.7 mW | 26.9 mW | **+7.2 mW** | +18.0 mV |
 
-| Parameter | Value | Conditions |
-|---|---|---|
-| Output voltage (calculated) | 4.989 V ≈ 5.0 V | Vref=0.8 V, R19=100 kΩ, R18=19.1 kΩ |
-| IC power dissipation | ≈ 94 mW | WEBENCH Total Pd=0.09 W @ 240 mA, Vin=9–18 V |
-| IC junction temp (25°C ambient) | 31–35°C | WEBENCH Tj chart, 240 mA output |
-| IC junction temp (85°C ambient) | ≈ 91–95°C | WEBENCH ΔTj + 85°C — below 125°C limit |
-| Inductor ripple ΔIL @ Vin=12 V | 331 mA | D=0.417, ΔIL = 5.0×0.583 / (22 µH × 400 kHz) |
-| Peak inductor current @ Vin=12 V | 416 mA | 25.7% of Isat=1.62 A |
-| Inductor dissipation | 7.7 mW | Iout² × DCR = 0.250² × 123 mΩ |
-| WEBENCH simulation Vout | 5.0 V | Rfbb=19.1 kΩ — exact match to actual R18 |
-| WEBENCH duty cycle | ≈55% / ≈28% | Vin=9 V / Vin=18 V |
+Efficiency reduction ~0.4–0.5 % per rail at the typical operating point. Junction-temperature margin on U1 / U6 is unchanged (the extra few mW dissipates in the inductor, not the IC). Saturation margin is actually slightly *better* with Fenghua because its Isat rating is higher. The reason for the production switch to Bourns is the lower DCR (better efficiency) and the guaranteed SRF spec — not a fitness-for-purpose concern with Fenghua.
 
-### VCC 3.3 V (U1, L1)
+---
 
-| Parameter | Value | Conditions |
-|---|---|---|
-| Output voltage (calculated) | 3.300 V | Vref=0.8 V, R6=100 kΩ, R5=32 kΩ |
-| IC power dissipation | ≈ 126 mW | WEBENCH Total Pd=0.11 W @ 240 mA, Vin=9–18 V |
-| IC junction temp (25°C ambient) | 32–38°C | WEBENCH Tj chart, 240 mA output |
-| IC junction temp (85°C ambient) | ≈ 94–100°C | WEBENCH ΔTj + 85°C — below 125°C limit |
-| Inductor ripple ΔIL @ Vin=12 V | 272 mA | D=0.275, ΔIL = 3.3×0.725 / (22 µH × 400 kHz) |
-| Peak inductor current @ Vin=12 V | 411 mA | 25.4% of Isat=1.62 A |
-| Inductor dissipation | 9.3 mW | Iout² × DCR = 0.275² × 123 mΩ |
-| WEBENCH simulation Vout | 3.3 V | Rfbb=32.0 kΩ — exact match to actual R5 |
-| WEBENCH duty cycle | ≈37% / ≈19% | Vin=9 V / Vin=18 V |
+## VCC 3.3 V — for the ESP32 module
 
-### Ferrite Beads (FB1, FB2, FB4)
+### Feedback divider
 
-Murata BLM31KN601SN1L — 1206, 600 Ω @ 100 MHz, DCR = 80 mΩ.
+- Upper: **R6 = 100 kΩ** (3v3 → FB pin)
+- Lower: **R5 = 32 kΩ** (FB pin → GNDREF)
 
-| Ref | Rail | Max current | Dissipation |
-|---|---|---|---|
-| FB1 | 3v3 → VCC | 275 mA | 6.1 mW |
-| FB2 | 5V0 → VDD | 250 mA | 5.0 mW |
-| FB4 | VSC → VSD | 525 mA (VDD + VCC combined) | 22.1 mW |
+```
+V_out = V_ref × (1 + R6/R5) = 0.8 × (1 + 100 kΩ / 32 kΩ) = 3.300 V
+```
 
-FB4 carries the summed input current for both converters. At 525 mA the 22 mW dissipation is within the 1206 package rating — no thermal flag.
+### Consumers
 
-:::caution
+The dominant VCC consumer is **U3 — ESP32-S3-WROOM-1-N16R8**. Per the Espressif ESP32-S3 datasheet (Table 16, "Current consumption in active mode"):
 
-Verification required — Fabricated prototype — testing phase
+- 802.11b TX at 11 Mbps, P_OUT = +18 dBm: **350 mA typical**
+- 802.11g TX at 54 Mbps, P_OUT = +15 dBm: 280 mA typical
+- 802.11n TX at MCS7, P_OUT = +13 dBm: 240 mA typical
+- RX, listening: 95 mA
+- Modem-sleep: 25 mA
+
+The worst single-mode continuous draw is 802.11b TX at 350 mA. Adding the other VCC consumers:
+
+| Consumer | Worst-case current | Notes |
+|----------|--------------------|-------|
+| U3 — ESP32-S3 Wi-Fi 802.11b TX | 350 mA | Datasheet typical, +18 dBm |
+| I²C sensors (BME280 + LSM6DSL on the I²C bus) | < 5 mA combined | Normal mode |
+| Display interface signals (UART2 TX/RX, DISP_EN driving Q5/Q4) | < 1 mA | Logic-level only; VDSP itself is on VDD |
+| Pull-ups (R4 EN, R24 IO0, button/LED pulls) | < 2 mA | Worst-case all asserted low |
+| Other (filter quiescent, leakages) | < 5 mA | Margin |
+| **VCC design peak (rounded up)** | **~360 mA** | Rail headroom design point |
+
+This figure is conservative for sustained operation. Boot, RF ramp, and ESP-PROG load transients can briefly exceed it; output capacitance handles those.
+
+**Developer / kit variant note:** In the **developer variant**, U4 (HT7833 LDO on the ESP32 Module page) supplies VCC from VDD as a back-up path that protects the ESP32 if the ESP-PROG programmer is fed 5 V at the IDC connector. In **production** U4 is DNP and R22 (0 Ω link) replaces it — VCC feeds U3 directly from this SMPS. The SMPS budget above is what counts in either case.
+
+### Performance
+
+| Parameter | Value | Condition | Notes |
+|-----------|-------|-----------|-------|
+| Output voltage | 3.300 V | Calculated from R5/R6 | Exactly on target |
+| Switching frequency | 400 kHz | Fixed (datasheet) | — |
+| Duty cycle | 27.5 % / 18.3 % | V_in = 12.0 V / 18.0 V | CCM, ideal |
+| Inductor ripple ΔIL | 272 mA / 306 mA | V_in = 12.0 V / 18.0 V | Healthy CCM |
+| Peak inductor current IL_peak | 496 mA / 513 mA | 360 mA load | **32 % of Isat 1.62 A — 68 % margin** |
+| Inductor RMS current | ~448 mA | Iout + ΔIL/(2√3) | 30 % of 1.5 A Irms rating |
+| Estimated output ripple | ~4–7 mV pp | C_eff = 20 µF, ΔIL = 272 mA | Well below 50 mV target |
+| IC dissipation estimate | ~180–200 mW | Scaled from WEBENCH 110 mW @ 240 mA | — |
+| Junction temp rise | ~28 °C | θJA = 148 °C/W (DBV/SOT-23-5) | At 190 mW Pdiss |
+| **Tj at 85 °C ambient** | **~113 °C** | Worst credible thermal case | **12 °C margin** below 125 °C limit |
+
+Margin is tighter than the original WEBENCH report indicated because the design load has been updated from 240 mA (WEBENCH) → 360 mA (ESP32-S3 datasheet). The DRG-package swap (see [Gaps & next version](#gaps--next-version)) restores generous headroom if needed.
+
+---
+
+## VDD 5.0 V — for the display and buzzer
+
+### Feedback divider
+
+- Upper: **R19 = 100 kΩ** (5v0 → FB pin)
+- Lower: **R18 = 19.1 kΩ** (FB pin → GNDREF, 0.1 % thin-film)
+
+```
+V_out = V_ref × (1 + R19/R18) = 0.8 × (1 + 100 kΩ / 19.1 kΩ) = 4.989 V ≈ 5.0 V
+```
+
+### Consumers
+
+| Consumer | Worst-case current | Notes |
+|----------|--------------------|-------|
+| DWIN DMG48480F040_01WTC display (via VDSP) | ~250–350 mA | 4.0 " IPS 480×480 + capacitive touch; backlight PWM dominates; gated by Q4 on the [Display Interface](./display-interface) page |
+| MLT-8530 buzzer (during sound) | ~30 mA | Magnetic SMD buzzer; only drawn during alarm/notification |
+| Filter quiescent, leakages | < 5 mA | — |
+| **VDD design peak (rounded up)** | **~400 mA** | Display backlight at 100 % + buzzer simultaneously |
+
+The VDD design load is dominated by the DWIN backlight at full brightness. Firmware typically PWM-dims the backlight (lower average current), but the rail must handle 100 % brightness continuously for outdoor / direct-sunlight operation. The buzzer is a brief transient; output capacitance handles the turn-on inrush.
+
+### Performance
+
+| Parameter | Value | Condition | Notes |
+|-----------|-------|-----------|-------|
+| Output voltage | 4.989 V ≈ 5.0 V | Calculated from R18/R19 | Within LMR51610 reference accuracy |
+| Switching frequency | 400 kHz | Fixed (datasheet) | Same as VCC — see EMI flag below |
+| Duty cycle | 41.7 % / 27.8 % | V_in = 12.0 V / 18.0 V | CCM, ideal |
+| Inductor ripple ΔIL | 331 mA / 410 mA | V_in = 12.0 V / 18.0 V | Higher than VCC because V_out is higher |
+| Peak inductor current IL_peak | 566 mA / 605 mA | 400 mA load | **37 % of Isat 1.62 A — 63 % margin** |
+| Inductor RMS current | ~518 mA | Iout + ΔIL/(2√3) | 35 % of 1.5 A Irms rating |
+| Estimated output ripple | ~5–8 mV pp | C_eff = 20 µF, ΔIL = 331 mA | Well below 50 mV target |
+| IC dissipation estimate | ~190–220 mW | Scaled from WEBENCH 90 mW @ 240 mA | — |
+| Junction temp rise | ~30 °C | θJA = 148 °C/W (DBV/SOT-23-5) | At 200 mW Pdiss |
+| **Tj at 85 °C ambient** | **~115 °C** | Worst credible thermal case | **10 °C margin** below 125 °C limit |
+
+Same DRG-package consideration as VCC — V2.10 swap restores headroom.
+
+---
+
+## Layout — two-cell moat + via fence
+
+The MDD400 power supplies section follows the same **MPS EMI webinar containment pattern** as WTI400, but applied **per-converter**: each LMR51610 instance sits inside its own moat-bounded cell on F.Cu / In1.Cu / In2.Cu, with an outer moat enclosing both cells. The four-layer GNDREF role assignment is the same as WTI400 — refer there for the per-rule explanation. The MDD400 deltas:
+
+### Two independent moated cells + outer moat
+
+- **Each converter has its own moat-bounded cell.** VCC (U1) cell at the top of the SMPS area; VDD (U6) cell below it. The moats are 0.4 mm `copper pour not allowed` keepouts cut on F.Cu, In1.Cu, and In2.Cu, with a **perimeter via fence** on the inside edge of each moat stitching the inside-moat GNDREF down to the continuous B.Cu plane.
+- **The two cells share an inter-cell moat segment** between them — neither cell's GNDREF copper connects to the other on layers 1–3 except through the B.Cu plane below.
+- **An outer moat encloses both cells**, separating the SMPS area as a whole from the rest of the board.
+- **B.Cu spans the full board uninterrupted** (no moat) — the global GNDREF reference that ties everything together at low impedance.
+- **195 GNDREF stitching vias** in the SMPS area connect F.Cu to In1.Cu and In2.Cu.
+
+Isolating the two converters from each other (not just from the rest of the board) is what differs from WTI400's single-cell layout. WTI400 has one SMPS; MDD400 has two, and they should not couple switching noise into each other any more than they couple into the digital rails.
+
+<table>
+<tr>
+<td><img src="/img/pcb-layers/mdd400-v2.9/f-cu-gndref.png" alt="F.Cu — two stacked moated cells (VCC top, VDD bottom) inside an outer moat" width="100%" /></td>
+<td><img src="/img/pcb-layers/mdd400-v2.9/in1-cu-gndref.png" alt="In1.Cu — GNDREF inside each cell, bounded by moat keepouts" width="100%" /></td>
+</tr>
+<tr>
+<td align="center"><em>F.Cu — two cells inside outer moat</em></td>
+<td align="center"><em>In1.Cu — per-cell GNDREF + via fence</em></td>
+</tr>
+<tr>
+<td><img src="/img/pcb-layers/mdd400-v2.9/in2-cu-gndref.png" alt="In2.Cu — same two-cell moat pattern as In1.Cu" width="100%" /></td>
+<td><img src="/img/pcb-layers/mdd400-v2.9/b-cu-gndref.png" alt="B.Cu — full-board GNDREF, no moat" width="100%" /></td>
+</tr>
+<tr>
+<td align="center"><em>In2.Cu — per-cell GNDREF + via fence</em></td>
+<td align="center"><em>B.Cu — full-board GNDREF, no moat</em></td>
+</tr>
+</table>
+
+### VCC plane pair in the digital area
+
+As on the WTI400, the digital VCC area uses a **VCC plane pair**: F.Cu and B.Cu carry VCC pour; In1.Cu and In2.Cu carry unbroken GNDREF. The two VCC↔GNDREF plane pairs (F.Cu+In1.Cu and In2.Cu+B.Cu) act as distributed bypass capacitance for the VCC rail. The MDD400 also benefits from a similar **VDD plane-pair region** wherever VDD distribution copper appears on F.Cu/B.Cu with GNDREF on the inner layers.
+
+### Inter-rail boundary ferrites — same pattern, two instances
+
+FB1 (3v3 → VCC) and FB2 (5v0 → VDD) are positioned at the right-hand boundary of their respective converter cells. Each is the **sole copper connection** between the SMPS-side rail and the digital-side rail; no bypass copper crosses either bead. **FB4 (VSC → VSD)** is on this sheet at the south end — the CAN-power output filter that feeds both converter inputs. FB4's design and placement are covered on the [CAN Bus Power](./can-bus-power) page.
+
+The schematic carries an **"Isolation of Power Domains"** sub-diagram that lays out the ferrite strategy on a single picture: one input ferrite (FB4) at the CAN→SMPS boundary, then one output ferrite per SMPS rail (FB1 for VCC, FB2 for VDD), each with its 100 pF rail bypass cap (C13 / C31) right at the ferrite pad.
+
+<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_5f3c0fec.svg" alt="Isolation of Power Domains (MDD400) — FB4 input ferrite at SMPS boundary, FB1/FB2 output ferrites per rail with 100 pF rail bypass at each ferrite pad. Zoom out to see the full sheet." initialFocus="5 100 130 85" />
+
+---
+
+## Bring-up tests
+
+For each rail:
+
+1. **Output voltage accuracy** — Probe the relevant rail (VCC at TP1; VDD on the inductor-side of FB2). Pass: 3.30 V ± 2 % (VCC) and 5.00 V ± 2 % (VDD) with no Wi-Fi / display activity.
+2. **Output ripple at full load** — Probe with a 100 MHz scope, low-inductance ground (≤ 5 mm tip-to-tip). For VCC run a sustained 802.11b TX burst; for VDD set DWIN backlight to 100 %. Pass: < 50 mV pp at the 400 kHz fundamental on both rails.
+3. **IC case temperature soak** — 10 min continuous worst-case load at 85 °C enclosure ambient (or scaled). Touch-probe both U1 and U6 cases. Pass: < ~95 °C (consistent with Tj < ~115 °C). Flag any IC running hotter — strong candidate for V2.10 DRG-package swap.
+4. **Snubber decision** — Probe the SW node of each converter with a 500 MHz scope and low-inductance ground spring. Capture the rising edge. Pass without snubber if peak ringing is < ~1 V above V_in. If above, populate R7+C9 (VCC) or R23+C24 (VDD).
+5. **EMC pre-scan — dual-converter common-mode (this is the important new test for MDD400)** — Capture the conducted-emission spectrum on the VSD input with both converters running. Look for 400 kHz, 800 kHz, 1.2 MHz peaks rising above margin. If excessive, this is the test that motivates the V2.10 phase-staggering improvement below.
+
+---
+
+## Gaps & next version
 
 **Before next production run:**
-- C24, R7, R23: set `(attr smd dnp)` in the PCB file to match schematic DNP designation; only C9 is currently marked DNP.
 
-**Verify during bring-up:**
-- Output ripple (VDD and VCC): no numerical ripple figure is available from the 2-page WEBENCH reports; measure at bench with oscilloscope.
-- VCC ripple at 275 mA Wi-Fi burst: WEBENCH simulation is at 240 mA steady state; measure VCC undershoot and ripple during ESP32 Wi-Fi transmit with oscilloscope.
-- Loop stability (phase margin / gain margin): values from old evidence file cannot be traced to a verified source; re-run WEBENCH with full Bode plot export, or measure on bench.
-- BST hold cap trace length (C10, C25): both caps are at x≈80.8 mm, approximately 9 mm from the VSD strip pour; check BST pin waveform at first bring-up to confirm bootstrap charging is unaffected.
-- Thermal model: θJA = 200 °C/W used for Tj calculations is from training knowledge; verify against LMR51610 datasheet Section 7.4 (DBV package).
+- **Switch L1 and L2 from Fenghua FNR5040S220MT (prototype stock) to Bourns SRN5040TA-220M (production BOM).** Same footprint; ~+0.4–0.5 % efficiency per rail at the design loads and a guaranteed SRF spec. See [Inductor sourcing](#inductor-sourcing--production-vs-prototype) for the full analysis.
 
-:::
+**Next version (V2.10) — recorded improvements:**
+
+- **Address dual-converter in-phase 400 kHz EMI** *(conditional on V2.9 EMC pre-scan)* — V2.9 runs both LMR51610 instances at fixed 400 kHz with no phase synchronisation. When in-phase by chance, common-mode emissions sum at 400 kHz and its harmonics. **This was not addressed in V2.9 and is flagged for V2.10.** Options: spread-spectrum LMR variant if available; deliberate frequency offset via an RT-pin component on one converter (only if a frequency-trim pin is exposed on the chosen variant); a sync-capable converter with deliberate 180° phase shift; or — if EMC still passes — accept and document.
+- **Switch U1 and U6 to LMR51610XDRGR (DRG package, exposed pad)** *(if VCC or VDD continuous load grows, or if V2.9 thermal soak shows IC case > ~95 °C)* — DRG θJA = 48 °C/W vs DBV's 148 °C/W. At ~190 mW (VCC) / ~200 mW (VDD) dissipation this gives ΔTj ≈ 9–10 °C vs 28–30 °C — about 20 °C of extra Tj headroom on each rail. Same improvement the WTI400 V1.3 backlog carries for its single converter.
+- **Concentrated thermal via array under each LMR51610 GND pin** *(conditional on V2.9 thermal soak)* — DBV/SOT-23-5 has no exposed pad; heat flows through the GND pin. V2.9 has GNDREF copper + abundant stitching vias in the SMPS region but no concentrated cluster directly under each IC's GND pin. Add if V2.9 soak shows tighter margin than expected.
+
+---
+
+## Components
+
+| Ref | Value | Function | Datasheet |
+|-----|-------|----------|-----------|
+| U1 | LMR51610XDBVR | Synchronous buck converter, SOT-23-5, 400 kHz — VCC 3.3 V | [TI LMR51610](/assets/datasheets/mdd400-v2.9/LMR51610.pdf) |
+| U6 | LMR51610XDBVR | Synchronous buck converter, SOT-23-5, 400 kHz — VDD 5.0 V | [TI LMR51610](/assets/datasheets/mdd400-v2.9/LMR51610.pdf) |
+| L1 | 22 µH semi-shielded inductor, 5×5 mm | **Production: Bourns SRN5040TA-220M** (Isat 1.62 A, Irms 1.50 A, DCR 123 mΩ). **Prototype (stock substitute): Fenghua FNR5040S220MT** (Isat 1.8 A, Irms 1.6 A, DCR 168 mΩ). See [Inductor sourcing](#inductor-sourcing--production-vs-prototype). — VCC output filter | [Bourns SRN5040TA](/assets/datasheets/mdd400-v2.9/SRN5040TA.pdf) · [Fenghua FNR5040 (LCSC)](https://www.lcsc.com/datasheet/C167971.pdf) |
+| L2 | 22 µH semi-shielded inductor, 5×5 mm | **Production: Bourns SRN5040TA-220M** (Isat 1.62 A, Irms 1.50 A, DCR 123 mΩ). **Prototype (stock substitute): Fenghua FNR5040S220MT** (Isat 1.8 A, Irms 1.6 A, DCR 168 mΩ). See [Inductor sourcing](#inductor-sourcing--production-vs-prototype). — VDD output filter | [Bourns SRN5040TA](/assets/datasheets/mdd400-v2.9/SRN5040TA.pdf) · [Fenghua FNR5040 (LCSC)](https://www.lcsc.com/datasheet/C167971.pdf) |
+| FB1 | BLM31KN601SN1L | 1206 ferrite bead, 600 Ω @ 100 MHz, 80 mΩ DCR — sole 3v3 → VCC copper path | [Murata BLM31KN601SN1L](https://www.murata.com/en-us/api/pdfdownloadapi?cate=luBLM&partno=BLM31KN601SN1L) |
+| FB2 | BLM31KN601SN1L | 1206 ferrite bead, 600 Ω @ 100 MHz, 80 mΩ DCR — sole 5v0 → VDD copper path | [Murata BLM31KN601SN1L](https://www.murata.com/en-us/api/pdfdownloadapi?cate=luBLM&partno=BLM31KN601SN1L) |
+| FB4 | BLM31KN601SN1L | 1206 ferrite bead — VSC → VSD CAN-domain input filter (covered on the [CAN Bus Power](./can-bus-power) page) | [Murata BLM31KN601SN1L](https://www.murata.com/en-us/api/pdfdownloadapi?cate=luBLM&partno=BLM31KN601SN1L) |
+| C15 | 10 µF / 50 V X7R 1210 | VCC converter VSD input bulk capacitor | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
+| C33 | 10 µF / 50 V X7R 1210 | VDD converter VSD input bulk capacitor | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
+| C6 | 100 nF / 50 V X7R 0603 | VCC converter VIN high-frequency bypass | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
+| C21 | 100 nF / 50 V X7R 0603 | VDD converter VIN high-frequency bypass | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
+| C10 | 100 nF / 50 V X7R 0603 | VCC bootstrap capacitor — CB↔SW (charges high-side gate driver) | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
+| C25 | 100 nF / 50 V X7R 0603 | VDD bootstrap capacitor — CB↔SW | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
+| C7 | 1 pF / 100 V C0G 0603 | VCC feedforward capacitor — across R6 (3v3 → FB), sets a feedback zero | [Murata GCM1885C2A1R0BA16D](https://www.murata.com/en-us/products/productdetail?partno=GCM1885C2A1R0BA16D) |
+| C23 | 1 pF / 100 V C0G 0603 | VDD feedforward capacitor — across R19 (5v0 → FB) | [Murata GCM1885C2A1R0BA16D](https://www.murata.com/en-us/products/productdetail?partno=GCM1885C2A1R0BA16D) |
+| C9 | 1 nF / 50 V C0G 0603 | VCC SW-node snubber capacitor — **DNP**; fit only if SW ringing observed | — |
+| C24 | 1 nF / 50 V C0G 0603 | VDD SW-node snubber capacitor — **DNP** | — |
+| C5 | 10 µF / 50 V X7R 1210 | VCC output bulk capacitor — flanks L1 | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
+| C14 | 10 µF / 50 V X7R 1210 | VCC output bulk capacitor — flanks L1 (symmetric with C5) | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
+| C20 | 10 µF / 50 V X7R 1210 | VDD output bulk capacitor — flanks L2 | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
+| C32 | 10 µF / 50 V X7R 1210 | VDD output bulk capacitor — flanks L2 (symmetric with C20) | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
+| C13 | 100 pF / 50 V C0G 0603 | VCC rail output bypass — 3v3 → GNDREF just before FB1 | — |
+| C31 | 100 pF / 50 V C0G 0603 | VDD rail output bypass — 5v0 → GNDREF just before FB2 | — |
+| R5 | 32 kΩ 0603 thin film ±0.1 % | VCC feedback divider lower (sets 3.30 V with R6) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R6 | 100 kΩ 0603 thick film ±1 % | VCC feedback divider upper (3v3 → FB) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R7 | 22 Ω 0603 thick film ±1 % | VCC SW-node snubber resistor (with C9) — **DNP** | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R18 | 19.1 kΩ 0603 thin film ±0.1 % | VDD feedback divider lower (sets 4.99 V with R19) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R19 | 100 kΩ 0603 thick film ±1 % | VDD feedback divider upper (5v0 → FB) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R23 | 22 Ω 0603 thick film ±1 % | VDD SW-node snubber resistor (with C24) — **DNP** | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| TP1 | — | GNDREF test point — **DNP** | — |
+
+---
 
 ## References
 
-- Texas Instruments, [*LMR516xx SIMPLE SWITCHER® 4-V to 65-V, 0.6-A/1-A Buck Converter Datasheet*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf) — local copy: `/assets/datasheets/mdd400-v2.9/LMR51610.pdf`
-- Texas Instruments, *WEBENCH Design Report — LMR51610DBVR, 9–18 V to 5.0 V @ 245 mA, Rfbb=19.1 kΩ* — `MDD400/hardware/MDD400_V2.9/design-docs/vdd_design_report.pdf`
-- Texas Instruments, *WEBENCH Design Report — LMR51610DBVR, 9–18 V to 3.3 V @ 300 mA, Rfbb=32.0 kΩ* — `MDD400/hardware/MDD400_V2.9/design-docs/vcc_design_report.pdf`
-- Texas Instruments, [*Controlling switch-node ringing in synchronous buck converters*](https://www.ti.com/lit/an/slyt465/slyt465.pdf), Application Note SLYT465
-- Texas Instruments, [*Design Consideration on Boot Resistor in Buck Converter*](https://www.ti.com/lit/an/snvaa73/snvaa73.pdf), Application Note SNVAA73
-- Bourns, [*SRN5040TA Semi-shielded AEC-Q200 Power Inductors Datasheet*](https://www.bourns.com/docs/product-datasheets/srn5040ta.pdf) — local copy: `/assets/datasheets/mdd400-v2.9/SRN5040TA.pdf`
-- Murata, [*GRM32ER71H106KA12L 10 µF 1210 X7R Capacitor*](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D)
-- Murata, [*GRM188R71H104KA93D 0603 MLCC Series*](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D)
-- Murata, [*BLM31KN601SN1L 1206 Ferrite Bead*](https://www.murata.com/en-us/products/productdetail?partno=BLM31KN601SN1L%40T)
-- Yageo, [*RC Group Thick Film Chip Resistors*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf)
-- Monolithic Power Systems, [*EMI Webinar: Practical Grounding and Layout*](https://www.monolithicpower.com/en/support/videos/emi-2-webinar-early-session.html)
+- Texas Instruments, [*LMR516xx SIMPLE SWITCHER® Power Converter, 4 V to 65 V, 0.6 A / 1 A Buck Converter Datasheet*](/assets/datasheets/mdd400-v2.9/LMR51610.pdf) — see §8.4 for layout guidance.
+- Texas Instruments, [*Controlling switch-node ringing in synchronous buck converters*](https://www.ti.com/lit/an/slyt465/slyt465.pdf) (SLYT465) — snubber design guidance.
+- Texas Instruments, [*Design Consideration on Boot Resistor in Buck Converter*](https://www.ti.com/lit/an/snvaa73/snvaa73.pdf) (SNVAA73).
+- Bourns, [*SRN5040TA-220M Semi-shielded AEC-Q200 Compliant Power Inductors Datasheet*](/assets/datasheets/mdd400-v2.9/SRN5040TA.pdf).
+- Murata Electronics, [*BLM31KN601SN1L Ferrite Bead Datasheet*](https://www.murata.com/en-us/api/pdfdownloadapi?cate=luBLM&partno=BLM31KN601SN1L).
+- Espressif Systems, [*ESP32-S3 Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf) — Table 16, current consumption in active mode.
+- Espressif Systems, [*ESP32-S3-WROOM-1 & WROOM-1U Module Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf).
+- DWIN, *DMG48480F040_01WTC 4.0" Capacitive Touch Display* — backlight + interface current consumption (verify against the production datasheet during bring-up).
+- Monolithic Power Systems, [*EMI Webinar: Practical Grounding and Layout*](https://www.monolithicpower.com/en/support/videos/emi-2-webinar-early-session.html) — the layout reference for this design.
+- WTI400 V1.2 [Power Supply page](/wti400/v1.2/circuit-design/power-supplies) — the per-rule MPS EMI webinar match is documented there in detail; the MDD400 layout follows the same pattern with the dual-cell deltas noted above.
