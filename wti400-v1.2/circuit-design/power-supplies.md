@@ -2,7 +2,7 @@
 title: Power Supply
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — *Sunny Spells* test vessel"
+hw_status_label: "In service — test vessel"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
@@ -19,7 +19,7 @@ This page documents the **3.3 V VCC rail** that powers the ESP32 module and all 
 
 The same KiCad sheet (`power_supplies.kicad_sch`) also contains the LP2951 LDO that supplies the wind transducer (rails VSC, VAS, signals WND_EN/WND_ERR, ferrite FB2, and jumper JP1). That sub-circuit is documented on the [Wind Interface](./wind-interface) page; this page covers only the SMPS portion.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_3a841631.svg" alt="Power Supply schematic (full sheet — SMPS and LDO; LDO portion documented on the Wind Interface page)" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_87c16579.svg" alt="Power Supply schematic (full sheet — SMPS and LDO; LDO portion documented on the Wind Interface page)" />
 
 The four sub-circuits on this page, in narrative order:
 
@@ -67,7 +67,7 @@ The two caps are not redundant — they cooperate. The HF cap controls the loop 
 
 ## LMR51610 buck converter core
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_3a841631.svg" alt="VCC switcher sub-circuit — U2 (LMR51610), input decoupling C2/C4, bootstrap C11, feedforward C9, feedback divider R1/R2, snubber footprint (DNP), inductor L1, output bulk C14/C15, rail output bypass C13, boundary ferrite FB1. Zoom out to see the full sheet." initialFocus="0 5 130 92" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_87c16579.svg" alt="VCC switcher sub-circuit — U2 (LMR51610), input decoupling C2/C4, bootstrap C11, feedforward C9, feedback divider R1/R2, snubber footprint (DNP), inductor L1, output bulk C14/C15, rail output bypass C13, boundary ferrite FB1. Zoom out to see the full sheet." initialFocus="12.7 12.7 139.7 83.82" />
 
 ### Functional specification and design objectives
 
@@ -194,7 +194,7 @@ This is the layout decision that most distinguishes the WTI400 SMPS from a gener
 
 The schematic carries an **"Isolation of Power Domains"** sub-diagram that makes this strategy explicit at a glance: a single input ferrite at the SMPS boundary plus an output ferrite on each SMPS rail, with the 100 pF rail bypass cap right at each output ferrite pad.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_3a841631.svg" alt="Isolation of Power Domains — input ferrite at SMPS boundary, output ferrite on each rail with 100 pF rail bypass at the ferrite pad. Zoom out to see the full sheet." initialFocus="148 90 125 88" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_87c16579.svg" alt="Isolation of Power Domains — input ferrite at SMPS boundary, output ferrite on each rail with 100 pF rail bypass at the ferrite pad. Zoom out to see the full sheet." initialFocus="152.4 96.52 132.08 68.58" />
 
 #### Inductor sourcing — production vs prototype
 

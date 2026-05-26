@@ -19,7 +19,7 @@ const toolbarStyle = {
   marginBottom: 6,
 };
 
-const wrapperStyle = {
+const baseWrapperStyle = {
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: 6,
   overflow: 'hidden',
@@ -31,9 +31,11 @@ const wrapperStyle = {
 //   viewBox="x y w h"      — HARD-CROPS the SVG to the region (legacy behaviour);
 //                            zoom/pan only works within the cropped region.
 //   initialFocus="x y w h" — preserves the full SVG; sets initial transform so the
-//                            region fills the viewport. User can zoom out / pan
-//                            to see the rest of the schematic. Reset button
-//                            returns to this focused view.
+//                            region fills the viewport with the same aspect ratio
+//                            as the focus rectangle (so engineer-drawn block
+//                            borders frame the viewport edge-to-edge). User can
+//                            zoom out / pan to see the rest of the schematic.
+//                            Reset button returns to this focused view.
 export default function SchematicViewer({ src, alt, viewBox, initialFocus }) {
   const url = useBaseUrl(src);
   const [svgContent, setSvgContent] = useState(null);
@@ -66,22 +68,29 @@ export default function SchematicViewer({ src, alt, viewBox, initialFocus }) {
       .catch(() => setSvgContent(null));
   }, [url, viewBox, initialFocus]);
 
-  const applyInitialFocus = useCallback(() => {
-    if (!initialFocus || !svgViewBox || !transformRef.current || !containerRef.current) return;
+  // Parse the focus rectangle once so both the wrapper aspect-ratio and the
+  // transform math see the same values.
+  const focus = (() => {
+    if (!initialFocus) return null;
     const parts = initialFocus.split(/\s+/).map(parseFloat);
-    if (parts.length !== 4 || parts.some(n => isNaN(n))) return;
-    const [fx, fy, fw, fh] = parts;
-    const [, , totalW, totalH] = svgViewBox;
+    if (parts.length !== 4 || parts.some(n => isNaN(n)) || parts[2] <= 0 || parts[3] <= 0) return null;
+    return { fx: parts[0], fy: parts[1], fw: parts[2], fh: parts[3] };
+  })();
+
+  const applyInitialFocus = useCallback(() => {
+    if (!focus || !svgViewBox || !transformRef.current || !containerRef.current) return;
+    const { fx, fy, fw, fh } = focus;
+    const [, , totalW] = svgViewBox;
     const CW = containerRef.current.clientWidth;
-    if (CW <= 0 || fw <= 0) return;
-    const CH = CW * (totalH / totalW);
-    // Fit focus width to container width.
+    if (CW <= 0) return;
+    // The wrapper enforces aspect-ratio = fw/fh, so the container is exactly
+    // CW × (CW × fh/fw). We scale the SVG so the focus region maps 1:1 onto
+    // that container — no letterboxing, no centering offset.
     const scale = totalW / fw;
-    // Translate so focus region is centered in the viewport.
     const positionX = -CW * fx / fw;
-    const positionY = (CH - fh * CW / fw) / 2 - CW * fy / fw;
+    const positionY = -CW * fy / fw;
     transformRef.current.setTransform(positionX, positionY, scale, 0);
-  }, [initialFocus, svgViewBox]);
+  }, [focus, svgViewBox]);
 
   // Apply initial focus once content has loaded and the container has a width.
   useEffect(() => {
@@ -129,8 +138,13 @@ export default function SchematicViewer({ src, alt, viewBox, initialFocus }) {
                 title="Reset"
               >Reset</button>
             </div>
-            <div style={wrapperStyle}>
-              <TransformComponent wrapperStyle={{ width: '100%' }} contentStyle={{ width: '100%' }}>
+            <div style={focus
+              ? { ...baseWrapperStyle, aspectRatio: `${focus.fw} / ${focus.fh}` }
+              : baseWrapperStyle}>
+              <TransformComponent
+                wrapperStyle={focus ? { width: '100%', height: '100%' } : { width: '100%' }}
+                contentStyle={{ width: '100%' }}
+              >
                 {content}
               </TransformComponent>
             </div>
