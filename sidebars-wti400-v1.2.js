@@ -12,11 +12,6 @@ const sidebars = {
       "label": "Quick Reference"
     },
     {
-      "type": "doc",
-      "id": "transducer-compatibility",
-      "label": "Transducer Compatibility"
-    },
-    {
       "type": "category",
       "label": "Circuit Design",
       "link": {
