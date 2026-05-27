@@ -7,9 +7,39 @@ const sidebars = {
       "label": "MDD400 Overview (v2.9)"
     },
     {
-      "type": "doc",
-      "id": "quick-reference",
-      "label": "Quick Reference"
+      "type": "category",
+      "label": "Quick Reference",
+      "link": {
+        "type": "doc",
+        "id": "quick-reference/index"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "quick-reference/pin-assignments",
+          "label": "Pin Assignments"
+        },
+        {
+          "type": "doc",
+          "id": "quick-reference/power-rails",
+          "label": "Power Rails"
+        },
+        {
+          "type": "doc",
+          "id": "quick-reference/connectors",
+          "label": "External Connectors"
+        },
+        {
+          "type": "doc",
+          "id": "quick-reference/bom",
+          "label": "Bill of Materials"
+        },
+        {
+          "type": "doc",
+          "id": "quick-reference/flash-partitions",
+          "label": "Flash Partitions"
+        }
+      ]
     },
     {
       "type": "doc",

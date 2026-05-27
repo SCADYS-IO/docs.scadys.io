@@ -83,7 +83,7 @@ The migration is intended to be **behaviour-preserving** for the operational cod
 
 ## Non-volatile storage (planned)
 
-Configuration and calibration data will be stored in the NVS (Non-Volatile Storage) partition in flash. The planned flash partition layout includes a 1 MB NVS partition, a coredump partition, and OTA update partitions. See the [Quick Reference](../quick-reference.md) for the full partition table.
+Configuration and calibration data will be stored in the NVS (Non-Volatile Storage) partition in flash. The planned flash partition layout includes a 1 MB NVS partition, a coredump partition, and OTA update partitions. See [Flash Partitions](../quick-reference/flash-partitions.md) for the full partition table.
 
 ## Display protocol (planned)
 

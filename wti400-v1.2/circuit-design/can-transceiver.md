@@ -44,7 +44,7 @@ The ESP32 implements CAN via its TWAI (Two-Wire Automotive Interface) peripheral
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_2252980e.svg" alt="NMEA 2000 Connector and Shield block — J2 Micro-C panel-mount socket, shield handling. Zoom out to see the full sheet." initialFocus="19.05 101.6 127 88.9" />
 
-J2 is a DeviceNet Micro-C A-code 5-pin male panel-mount socket rated IP67. Full pin assignments are in the [Quick Reference](/wti400/v1.2/quick-reference). The shield pin is left floating inside the device, consistent with NMEA 2000 practice of connecting the drain wire to vessel ground at a single external point only.
+J2 is a DeviceNet Micro-C A-code 5-pin male panel-mount socket rated IP67. Full pin assignments are in the [External Connectors](/wti400/v1.2/quick-reference/connectors) reference. The shield pin is left floating inside the device, consistent with NMEA 2000 practice of connecting the drain wire to vessel ground at a single external point only.
 
 #### EMC protection chain
 
@@ -136,7 +136,7 @@ Configure the TWAI peripheral before asserting TWAI_EN. Enabling the transceiver
 |-----------|-------|
 | Bit rate | 250 kbps |
 | Mode | Normal |
-| GPIO assignments | see [Quick Reference](/wti400/v1.2/quick-reference) — assert TWAI_EN HIGH after TWAI init |
+| GPIO assignments | see [Pin Assignments](/wti400/v1.2/quick-reference/pin-assignments) — assert TWAI_EN HIGH after TWAI init |
 
 NMEA 2000 uses 11-bit (standard frame) CAN identifiers. Configure the TWAI acceptance filter to receive all IDs, or filter to the specific PGNs the application requires.
 

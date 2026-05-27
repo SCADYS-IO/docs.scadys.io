@@ -95,4 +95,4 @@ The MDD400 V2.9 currently runs only hardware test routines — no production fir
 
 - **[Circuit Design](./circuit-design/index.md)** — block diagram, ground domain map, PCB stack-up, EMC philosophy, and a page per circuit (ESP32 Module, Power Supplies, CAN Bus Power, CAN Transceiver, Display Interface, the three I²C sensors, Buzzer Driver, Programming Socket, LED Indicator, Legacy Serial, PCB Markings).
 - **[Tasks](./tasks.md)** — live tracker for verification work against V2.9 and the V2.10 next-version backlog across hardware / firmware / housing / compliance.
-- **[Quick Reference](./quick-reference.md)** — pin assignments, I²C addresses, power rails, full component list, key PCB design notes.
+- **[Quick Reference](./quick-reference/index.md)** — landing page for fast-lookup tables (pin assignments, power rails, external connectors, full component list, flash partitions).

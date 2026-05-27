@@ -1,81 +1,15 @@
 ---
-title: Quick Reference
+title: Bill of Materials
 hw_version: v1.2
 hw_status: in-service
 hw_status_label: "In service — installed on test vessel"
 ---
-
-import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
 
 WTI400 **v1.2** — In service — installed on test vessel
 
 :::
-
-## Pin Assignments
-
-| Label | GPIO | Bias | Function | Description |
-|---|---|---|---|---|
-| I2C_SCL | GPIO8 | VCC | I²C | I²C clock — R3 10 kΩ pull-up to VCC |
-| I2C_SDA | GPIO18 | VCC | I²C | I²C data — R4 10 kΩ pull-up to VCC |
-| TWAI_RX | GPIO12 | float | TWAI | CAN RX from SN65HVD234 TXD (R14 47 Ω series) |
-| TWAI_TX | GPIO13 | VCC | TWAI | CAN TX to SN65HVD234 RXD (R15 10 kΩ pull-up) |
-| TWAI_EN | GPIO14 | GNDREF | TWAI | CAN transceiver enable — R16 10 kΩ pull-down; pull HIGH to enable |
-| WIND_X | GPIO10 | float | ADC1 CH9 | X-axis wind angle — analog via U12A op-amp |
-| WIND_Y | GPIO11 | float | ADC2 CH0 | Y-axis wind angle — analog via U12B op-amp |
-| WIND_SPD | GPIO21 | float | INPUT | Wind speed pulse — Schmitt-triggered via U11 74LVC1G17 |
-| WND_EN | GPIO47 | VCC | OUTPUT | Wind transducer supply enable — LP2951 U13 SHUTDOWN (R55 10 kΩ, active LOW) |
-| WND_ERR | GPIO48 | VCC | INPUT | Wind transducer supply error — LP2951 U13 ERROR (R65 10 kΩ pull-up, open-drain, active LOW) |
-| LED_RED | GPIO17 | GNDREF | OUTPUT | Red LED — Q1 PNP fail-on driver (R6 68 kΩ pulls base LOW by default; HIGH overrides) |
-| LED_GRN | GPIO15 | VCC | OUTPUT | Green LED — R11 220 Ω, active LOW, common-anode D1 (R7 10 kΩ pull-up) |
-| LED_BLU | GPIO7 | VCC | OUTPUT | Blue LED — R10 220 Ω, active LOW, common-anode D1 (R8 10 kΩ pull-up) |
-| BUTTON | GPIO40 | VCC | INPUT | User button — R41 10 kΩ pull-up, R31 series, U10 Schmitt, R40/C38 RC debounce (τ = 39 ms) |
-| ST_TX | GPIO41 | float | UART1 | Legacy serial TX — to opto-isolator U7 TLP2309 |
-| ST_RX | GPIO39 | VCC | UART1 | Legacy serial RX — from opto-isolator U6 TLP2309 (R19 2.2 kΩ pull-up) |
-| ST_EN | GPIO1 | VCC | OUTPUT | Legacy serial TX enable — R20 10 kΩ pull-up, active LOW; HIGH = TX disabled |
-| ESP_TX | GPIO43 | float | UART0 | Programming UART TX — ESP-PROG J1 pin 3 |
-| ESP_RX | GPIO44 | float | UART0 | Programming UART RX — ESP-PROG J1 pin 5 |
-| ESP_EN | EN | VCC | BOOT | Chip enable / reset — R9 10 kΩ pull-up, C7 1 µF power-on delay (τ = 10 ms) |
-| ESP_BOOT | GPIO0 | VCC | BOOT | Boot mode select — R18 10 kΩ pull-up, C22 100 nF; LOW at reset = ROM download mode |
-
-## I²C Addresses
-
-| Device | I²C Address | Ref | Notes |
-|---|---|---|---|
-| LSM6DSLTR 6DoF IMU | 0x6A | U1 | SA0 = GND (pin 1); CS = VDDIO (pin 12) selects I²C mode |
-
-**Bus configuration:** R3 / R4 = 10 kΩ pull-ups to VCC. Rise time τ_r = 254 ns at C_bus = 30 pF (passes Standard and Fast mode). Maximum C_bus for Fast mode (400 kHz) with 10 kΩ pull-ups is 35 pF. Current firmware: Standard mode (100 kHz).
-
-## Power Rails
-
-| Rail | Voltage | Source | Loads |
-|---|---|---|---|
-| NET-S | 9–16 V (nom. 12 V) | NMEA 2000 backbone via J2 M12 | Input power — feeds CAN bus power sub-sheet |
-| VSC | 9–14.8 V (protected) | Q2 PMV240SPR OVP switch, EMI filter L2/L3, fuse F1 | LMR51610 (→ VCC), LP2951 (→ VAS) |
-| VCC | 3.3 V ±2 % | LMR51610XDBVR buck (U2), 1 A, 400 kHz | ESP32-S3 (U3), SN65HVD234 (U5), LSM6DSLTR (U1), signal logic |
-| VAS | 8.65 V (8v4) or 6.89 V (6v8) | LP2951 LDO (U13), 25 mA rated | Wind transducer via J5 and D17 Schottky; WIND_8V = VAS − 0.35 V |
-| VST | ~12 V (tracks NET-S above 12.9 V, dropout below) | ZXTR2012FF regulator (U14), 30 mA | Legacy serial opto-isolator bias (U6, U7, U8) |
-| V_PROG | 3.3 V from 5 V programmer | HT7833 LDO (U4) — **developer variant only** | VCC during programming; DNP in production (R24 0 Ω bridges VCC) |
-
-**JP1 setpoints:** 8v4 position → VAS = 8.65 V → WIND_8V ≈ 8.30 V (Raymarine E22078). 6v8 position → VAS = 6.89 V → WIND_8V ≈ 6.54 V (B&G 213).
-
-## External Connectors
-
-| Connector | Style | Domain | Notes |
-|---|---|---|---|
-| J1 — Programming | 2×3 IDC 2.54 mm (XFCN BH254V-6P) | DIGITAL | ESP-PROG-compatible: Pin 1 = ESP_EN, Pin 2 = V_PROG, Pin 3 = ESP_TX, Pin 4 = GND, Pin 5 = ESP_RX, Pin 6 = ESP_BOOT. **Developer/kit variant only** |
-| J2 — NMEA 2000 | M12 5-pin A-code panel socket (IEC 61076-2-101) | CAN | Pin 1 = Shield, 2 = NET-S (+12 V), 3 = NET-C (GND), 4 = NET-H, 5 = NET-L |
-| J3 — Legacy Serial | 3-pin THT (CON-THT-SEATALK-0292) | LEGACY IO | Pin 1 = 12 V (red), 2 = GND (black), 3 = SIG (yellow); half-duplex, 4800 / 9600 bps |
-| J4 — WIND_SHLD | Keystone 1211 solder tab | WIND | Wind transducer cable shield return |
-| J5 — WIND_8V | Keystone 1211 solder tab | WIND | Transducer supply (WIND_8V, JP1-selectable) |
-| J6 — WIND_X | Keystone 1211 solder tab | WIND | X-axis Hall sensor analogue output |
-| J7 — WIND_Y | Keystone 1211 solder tab | WIND | Y-axis Hall sensor analogue output |
-| J8 — WIND_SPD | Keystone 1211 solder tab | WIND | Anemometer speed pulse (P-line, reed-switch) |
-| J9 — GND_WIND | Keystone 1211 solder tab | WIND | Transducer ground return (isolated from GNDREF via FL2 CMF) |
-| JP1 — Voltage Select | 3-pin THT header 2.54 mm (PZ254V-11-03P) | WIND POWER | Positions: 8v4 = Raymarine (8.65 V), 6v8 = B&G (6.89 V); field-configurable |
-
-## Component List
 
 | Refs | Value | Qty | Description | Datasheet |
 |---|---|---|---|---|
@@ -121,23 +55,23 @@ WTI400 **v1.2** — In service — installed on test vessel
 | C33, C41, C42 | 22 µF / 100 V | 3 | 2220 X7R MLCC | [PSA FS55X225K251EGG](https://www.lcsc.com/product-detail/C153032.html) |
 | C2, C14, C15 | 10 µF / 50 V | 3 | 1210 X7R MLCC | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
 | C1, C16, C52, C54 | 10 µF / 25 V | 4 | 0805 X7R MLCC | [Murata GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
-| C36, C37 | 4.7 µF / 100 V | 2 | 1206 X7R MLCC | [Murata GRM31CR72A475KA73L](https://www.murata.com/en-us/products/search) |
-| C51 | 4.7 µF / 25 V | 1 | 0805 X7R MLCC | [Murata GRM21BZ71E475KE15L](https://www.murata.com/en-us/products/search) |
-| C39, C58 | 1 µF / 100 V | 2 | 1206 X7R MLCC | [Murata Product Page](https://www.murata.com/en-us/products/search) |
+| C36, C37 | 4.7 µF / 100 V | 2 | 1206 X7R MLCC | Murata GRM31CR72A475KA73L |
+| C51 | 4.7 µF / 25 V | 1 | 0805 X7R MLCC | Murata GRM21BZ71E475KE15L |
+| C39, C58 | 1 µF / 100 V | 2 | 1206 X7R MLCC | — |
 | C5, C7, C38 | 1 µF / 25 V | 3 | 0603 X7R MLCC | [Murata GCM188R71E105KA64D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71E105KA64D) |
-| C32, C34 | 100 nF / 100 V | 2 | 0603 X7R MLCC | [Murata Product Page](https://www.murata.com/en-us/products/search) |
+| C32, C34 | 100 nF / 100 V | 2 | 0603 X7R MLCC | — |
 | C4, C10, C11, C17, C19, C20, C22, C23, C28, C30, C31, C35, C40, C43, C53, C55 | 100 nF / 50 V | 16 | 0603 X7R MLCC | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C6, C12 | 100 nF / 50 V | 2 | 0603 X7R MLCC (motion sensor VDDIO) | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C3 | 100 nF / 50 V | 1 | 0603 X7R MLCC (mid-freq VCC bypass) | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C8, C13 | 100 pF / 50 V | 2 | 0603 C0G MLCC | [Murata GRM1885C1H101JA01D](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H101JA01D) |
-| C24, C25, C26, C27 | 15 pF / 100 V | 4 | 0603 C0G MLCC (CAN CMC filter) | [Murata Product Page](https://www.murata.com/en-us/products/search) |
-| C44, C45 | 1 nF / 50 V | 2 | 0603 C0G MLCC (wind ADC anti-alias) | [Murata Product Page](https://www.murata.com/en-us/products/search) |
-| C46, C56 | 15 pF / 50 V | 2 | 0603 C0G MLCC | [Murata Product Page](https://www.murata.com/en-us/products/search) |
-| C50, C49 | 100 pF / 50 V | 2 | 0603 C0G MLCC (legacy RX LC filter) | [Murata Product Page](https://www.murata.com/en-us/products/search) |
-| C48 | 100 pF / 50 V | 1 | 0603 C0G MLCC (LP2951 feedforward CFF) | [Murata Product Page](https://www.murata.com/en-us/products/search) |
-| C9 | 1 pF / 100 V | 1 | 0603 C0G MLCC (VCC FB feedforward) | [Murata Product Page](https://www.murata.com/en-us/products/search) |
-| C47 | 2.2 nF / 50 V | 1 | 0603 C0G MLCC (legacy TX rise-time RC) | [Murata GRM1881X0J223JA01](https://www.murata.com/en-us/products/search) |
-| C57 | 1 nF / 50 V | 1 | 0603 C0G MLCC (wind shield HF bypass) | [Murata Product Page](https://www.murata.com/en-us/products/search) |
+| C24, C25, C26, C27 | 15 pF / 100 V | 4 | 0603 C0G MLCC (CAN CMC filter) | — |
+| C44, C45 | 1 nF / 50 V | 2 | 0603 C0G MLCC (wind ADC anti-alias) | — |
+| C46, C56 | 15 pF / 50 V | 2 | 0603 C0G MLCC | — |
+| C50, C49 | 100 pF / 50 V | 2 | 0603 C0G MLCC (legacy RX LC filter) | — |
+| C48 | 100 pF / 50 V | 1 | 0603 C0G MLCC (LP2951 feedforward CFF) | — |
+| C9 | 1 pF / 100 V | 1 | 0603 C0G MLCC (VCC FB feedforward) | — |
+| C47 | 2.2 nF / 50 V | 1 | 0603 C0G MLCC (legacy TX rise-time RC) | Murata GRM1881X0J223JA01 |
+| C57 | 1 nF / 50 V | 1 | 0603 C0G MLCC (wind shield HF bypass) | — |
 | C10 (SW snubber), C29 (CAN diff) | 100 nF / 50 V or 100 pF / 50 V | — | **DNP** — see circuit docs for conditions | — |
 | R1 | 32 kΩ | 1 | 0603 thin-film ±0.1 % (VCC feedback lower) | [Yageo Thin Film](https://www.lcsc.com/product-detail/C861839.html) |
 | R2, R42, R55, R65, R74 | 100 kΩ | 5 | 0603 thick-film ±1 % | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
@@ -160,7 +94,7 @@ WTI400 **v1.2** — In service — installed on test vessel
 | R30 | 2.2 kΩ | 1 | 0603 thick-film ±1 % (legacy RX opto LED limit) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | R32 | 390 Ω | 1 | 0603 thick-film ±1 % (legacy TX EN secondary) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | R35, R68 | 39 kΩ | 2 | 0603 thick-film ±1 % | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R36, R38, R41 (see above) | 1 MΩ | 2 | 0603 thick-film ±1 % (legacy TX high-Z bias — R36, R38) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R36, R38 | 1 MΩ | 2 | 0603 thick-film ±1 % (legacy TX high-Z bias) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | R37 | 30.9 kΩ | 1 | 0603 thick-film ±1 % (legacy TX gate driver) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | R39 | 220 mΩ | 1 | 0603 thick-film ±1 % (CAN LC input damping) | [Yageo RC Series](https://www.lcsc.com/product-detail/C326952.html) |
 | R40 | 39 kΩ | 1 | 0603 thick-film ±1 % (button debounce R) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
@@ -188,32 +122,3 @@ WTI400 **v1.2** — In service — installed on test vessel
 | R78 | 20 kΩ | 1 | 0603 thick-film ±1 % (LP2951 lower feedback main) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | R79 | 0 Ω (DNP) | 1 | 0805 zero-ohm — **factory voltage select link** | — |
 | SW1 | Tactile 6×6×12 mm | 1 | SPST N.O., 50 mA / 12 V, SMD | — |
-
-## PCB Design Notes
-
-<SchematicViewer src="/img/schematics/wti400-v1.2/pcb_markings_d21d2cbc.svg" alt="PCB markings" />
-
-### Board Stackup
-
-4-layer FR4 PCB, IPC-6012 Class 2, ENIG surface finish, dark blue solder mask. Board outline: 95.2 × 95.2 mm.
-
-| Layer | Number | Type | Thickness | Role |
-|---|---|---|---|---|
-| F.Cu | 0 | Signal | 17.5 µm (0.5 oz, plated to ~35 µm) | Component side; VCC and GNDREF fills; routed signals |
-| In1.Cu | 4 | Power / GND | 35 µm (1 oz) | GNDREF solid ground plane (return path) for top layer |
-| In2.Cu | 6 | Power | 35 µm (1 oz) | GNDREF solid ground plane (return path) for bottom layer |
-| B.Cu | 2 | Signal | 17.5 µm (0.5 oz, plated to ~35 µm) | GNDREF and VCC fills; signal routing |
-
-### Compliance Markings
-
-The PCB silkscreen includes:
-- **CE** — EU Conformité Européenne
-- **FCC** — US Federal Communications Commission
-- **UKCA** — UK Conformity Assessed
-- **RoHS** — Restriction of Hazardous Substances
-
-Additional silkscreen labels:
-- WTI400 v1.2 version label
-- SixSense product logo
-- © 2026 GM Consolidated Holdings Pty Ltd
-- `docs.scadys.io/wti400`

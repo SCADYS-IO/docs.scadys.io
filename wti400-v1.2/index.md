@@ -95,5 +95,5 @@ The WTI400 V1.2 is the production-intent **evolution of the MLI400 V1.0** (Marin
 
 - **[Circuit Design](./circuit-design/index.md)** — block diagram, four-domain ground map (GNDC / GNDREF / GND_WIND / GNDS), PCB stack-up, EMC philosophy, and a page per circuit (ESP32 Module, Power Supply, CAN Bus Power, CAN Transceiver, Wind Interface, Motion Sensor, Button Input, LED Indicator, Programming Socket, Legacy Serial, PCB Markings).
 - **[Tasks](./tasks.md)** — live tracker for verification work against V1.2 in service and the V1.3 / V2.0 next-version backlog across hardware / firmware / housing / compliance.
-- **[Quick Reference](./quick-reference.md)** — pin assignments, I²C addresses, power rails, full component list, key PCB design notes.
+- **[Quick Reference](./quick-reference/index.md)** — landing page for fast-lookup tables (pin assignments, power rails, external connectors, full component list, flash partitions).
 - **[Transducer Compatibility](./transducer-compatibility.md)** — per-transducer pin-outs, supply requirements, signal-level characteristics, and V1.2 compatibility matrix.
