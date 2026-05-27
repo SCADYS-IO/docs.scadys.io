@@ -11,6 +11,7 @@
 # MkDocs
 site/
 .assets/docs_old/
+.assets/.olddocs/
 
 # Docusaurus
 node_modules/
