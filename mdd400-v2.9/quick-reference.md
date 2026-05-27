@@ -156,7 +156,7 @@ MDD400 **v2.9** — Fabricated prototype — testing phase
 
 ## PCB Design Notes
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_6df2a542.svg" alt="PCB markings" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_a2fbdbdf.svg" alt="PCB markings" />
 
 ### Board Stackup
 

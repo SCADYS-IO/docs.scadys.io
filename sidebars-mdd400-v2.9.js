@@ -56,8 +56,18 @@ const sidebars = {
         },
         {
           "type": "doc",
-          "id": "circuit-design/i2c-sensors",
-          "label": "I²C Sensors"
+          "id": "circuit-design/power-monitor",
+          "label": "Power Monitor"
+        },
+        {
+          "type": "doc",
+          "id": "circuit-design/ambient-light-sensor",
+          "label": "Ambient Light Sensor"
+        },
+        {
+          "type": "doc",
+          "id": "circuit-design/temperature-sensor",
+          "label": "Temperature Sensor"
         },
         {
           "type": "doc",

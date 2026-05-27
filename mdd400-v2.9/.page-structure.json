@@ -14,14 +14,16 @@
     "pcb_markings"
   ],
   "circuit_design_pages": [
-    { "slug": "esp32-module",     "label": "ESP32 Module",             "renders": ["esp32_module"] },
+    { "slug": "esp32-module",     "label": "ESP32 Module",             "renders": ["esp32_module", "i2c_sensors"] },
     { "slug": "led-indicator",    "label": "LED Indicator",            "renders": ["esp32_module"] },
     { "slug": "programming-socket","label": "Programming Socket",       "renders": ["esp32_module"] },
     { "slug": "power-supplies",   "label": "Power Supplies",           "renders": ["power_supplies"] },
     { "slug": "can-bus-power",    "label": "CAN Bus Power Protection", "renders": ["can_bus_power"] },
     { "slug": "can-transceiver",  "label": "CAN Transceiver",          "renders": ["can_transceiver"] },
     { "slug": "display-interface","label": "Display Interface",        "renders": ["display_interface"] },
-    { "slug": "i2c-sensors",      "label": "I²C Sensors",              "renders": ["i2c_sensors"] },
+    { "slug": "power-monitor",        "label": "Power Monitor",            "renders": ["i2c_sensors"] },
+    { "slug": "ambient-light-sensor", "label": "Ambient Light Sensor",     "renders": ["i2c_sensors"] },
+    { "slug": "temperature-sensor",   "label": "Temperature Sensor",       "renders": ["i2c_sensors"] },
     { "slug": "buzzer-driver",    "label": "Buzzer Driver",            "renders": ["buzzer_driver"] },
     { "slug": "legacy-serial",    "label": "Legacy Serial Interface",  "renders": ["legacy_serial_rx", "legacy_serial_tx"] }
   ]

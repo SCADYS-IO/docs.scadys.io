@@ -7,7 +7,7 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/buzzer_driver_661c4d0c.svg" alt="Buzzer Driver schematic" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/buzzer_driver_a2605baf.svg" alt="Buzzer Driver schematic" />
 
 :::note[Hardware version]
 

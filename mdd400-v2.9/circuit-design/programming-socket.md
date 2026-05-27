@@ -17,7 +17,7 @@ MDD400 **v2.9** — Fabricated prototype, bench-test phase. The board is the **d
 
 This page documents the MDD400 firmware-programming hardware on `esp32_module.kicad_sch`: the ESP-PROG-compatible IDC header J1, the optional HT7833 LDO (U4) with its three isolation Schottky diodes (D3, D4, D5), and the production-variant zero-ohm bridge (R22) that takes their place. The host MCU and its supply bypass are on the [ESP32 Module](./esp32-module) page.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_70e13287.svg" alt="ESP-PROG programming socket sub-circuit — J1 (2×3 2.54 mm IDC header, ESP-PROG-compatible), the three 1N5819WS Schottky diodes (D4 = VDD-to-V_PROG OR'ing; D3 = V_PROG-to-U4 V_IN forward isolation; D5 = Vout-to-Vin protection), U4 (HT7833 3.3 V LDO), and R22 (production-variant zero-ohm bridge, DNP on this prototype)." initialFocus="13.335 107.95 132.715 82.55" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_1876f855.svg" alt="ESP-PROG programming socket sub-circuit — J1 (2×3 2.54 mm IDC header, ESP-PROG-compatible), the three 1N5819WS Schottky diodes (D4 = VDD-to-V_PROG OR'ing; D3 = V_PROG-to-U4 V_IN forward isolation; D5 = Vout-to-Vin protection), U4 (HT7833 3.3 V LDO), and R22 (production-variant zero-ohm bridge, DNP on this prototype)." initialFocus="13.335 107.95 132.715 82.55" />
 
 The two assembly variants share the same footprint:
 

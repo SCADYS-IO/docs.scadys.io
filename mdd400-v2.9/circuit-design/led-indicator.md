@@ -17,7 +17,7 @@ MDD400 **v2.9** — Fabricated prototype, bench-test phase. Status LED has not y
 
 The MDD400 has a single front-panel status LED — an amber 0603 SMD LED (D2) driven by a PNP high-side switch (Q1 BC807-25). The sub-circuit is drawn on `esp32_module.kicad_sch` (the same KiCad sheet as the [ESP32 Module](./esp32-module) page) because LED_EN is an ESP32 GPIO; this page documents the LED-side hardware only.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_70e13287.svg" alt="Status LED sub-circuit — Q1 (BC807-25 PNP high-side switch), D2 (amber 0603 LED), R8 (base-bias resistor), R15 (base pull-down to GNDREF), R14 (LED current-limit). Default-on by hardware bias; firmware-controlled via LED_EN." initialFocus="146.05 88.9 137.16 74.93" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_1876f855.svg" alt="Status LED sub-circuit — Q1 (BC807-25 PNP high-side switch), D2 (amber 0603 LED), R8 (base-bias resistor), R15 (base pull-down to GNDREF), R14 (LED current-limit). Default-on by hardware bias; firmware-controlled via LED_EN." initialFocus="146.05 88.9 137.16 74.93" />
 
 ### Behavioural summary
 

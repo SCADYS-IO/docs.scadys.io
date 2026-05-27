@@ -20,7 +20,7 @@ This page documents the MDD400's main application processor — an Espressif ESP
 - The **firmware programming socket** (J1 IDC header, the optional HT7833 LDO U4, the three OR'ing Schottky diodes D3 / D4 / D5, and the production-variant zero-ohm bridge R22) → [Programming Socket](./programming-socket).
 - The **status LED** (Q1 PNP switching the amber D2 LED via the LED_EN signal) → [LED Indicator](./led-indicator).
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_70e13287.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket, status LED). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_1876f855.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket, status LED). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
 
 Two sub-circuits on this page, in narrative order:
 
@@ -31,7 +31,7 @@ Two sub-circuits on this page, in narrative order:
 
 ## ESP32-S3 module and signal map
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_70e13287.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_1876f855.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
 
 ### Functional specification and design objectives
 
@@ -60,12 +60,19 @@ U3 fans out to every other sub-sheet through hierarchical global labels. Functio
 | CAN / NMEA 2000 | TWAI_TX, TWAI_RX, TWAI_EN | UART-like | [CAN Transceiver](./can-transceiver) |
 | Display interface | DISP_TX, DISP_RX, DISP_EN | UART + control | [Display Interface](./display-interface) |
 | Legacy serial | ST_TX, ST_RX, ST_EN | UART | [Legacy Serial Interface](./legacy-serial) |
-| I²C peripherals | I2C_SDA, I2C_SCL | I²C bus | [I²C Sensors](./i2c-sensors) (where the bus pull-ups live) |
+| I²C peripherals | I2C_SDA, I2C_SCL | I²C bus | [Power Monitor](./power-monitor), [Ambient Light Sensor](./ambient-light-sensor), [Temperature Sensor](./temperature-sensor) |
 | Audio | AUDIO_PWM | PWM out | [Buzzer Driver](./buzzer-driver) |
 | Status LED | LED_EN | GPIO out (default-on by HW bias) | [LED Indicator](./led-indicator) |
 | Programming | ESP_TX, ESP_RX, ESP_EN, ESP_BOOT | UART0 + control | J1 (this sheet) |
 
-The I²C bus pull-ups live on the [I²C Sensors](./i2c-sensors) sub-sheet rather than this one — the bus is shared across multiple slaves and the pull-up choice depends on the slave-side bus capacitance.
+#### I2C bus pull-ups
+
+The MDD400 I²C bus is shared across three sensor slaves on the `i2c_sensors.kicad_sch` sub-sheet: the [Power Monitor](./power-monitor) (INA219 at 0x40), the [Ambient Light Sensor](./ambient-light-sensor) (OPT3004 at 0x44), and the [Temperature Sensor](./temperature-sensor) (TMP112 at 0x48). The bus pull-ups are placed physically on that sub-sheet (near the sensor cluster, so the GND return paths to the slaves are short), but logically they belong to the MCU and are documented here:
+
+- **R1 — 10 kΩ** on I2C_SCL to VCC.
+- **R2 + R3 — both 10 kΩ** on I2C_SDA to VCC, in parallel — i.e. **5 kΩ effective** on SDA.
+
+The asymmetric pull-up choice (10 kΩ SCL, 5 kΩ SDA) compensates for the higher capacitive load on SDA — every slave on the bus contributes capacitance on SDA when it acknowledges, but only the master drives SCL. The bus runs at I²C **Standard Mode (100 kHz)**; rise-time at 5 kΩ ∥ 50 pF bus capacitance is τ ≈ 250 ns, well inside the 1000 ns Standard-Mode limit.
 
 **Antenna-end clearance.** The Espressif module datasheet requires the antenna projection area to be free of copper on all PCB layers. The MDD400 V2.9 layout satisfies this with generous keep-out: the F.Cu GNDREF pour boundary sits ≥ 6.3 mm beyond the antenna end, the B.Cu GNDREF pour ≥ 10.9 mm, and the antenna is aligned with a dedicated board-edge slot. The 3 mm minimum is exceeded by a factor of two. Module pre-certification is preserved.
 
@@ -90,7 +97,7 @@ The I²C bus pull-ups live on the [I²C Sensors](./i2c-sensors) sub-sheet rather
 
 ## VCC supply bypass and control-line RC networks
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_70e13287.svg" alt="VCC supply bypass and control-line RC networks sub-circuit — main 3V3 bypass cluster (C4 100 pF C0G, C2 100 nF, C1 10 µF) at U3 pad 2, additional bulk and mid-frequency bypass on the VCC pour (C16 / C26 10 µF, C17 / C22 / C29 100 nF, C3 1 µF), EN pull-up (R4 + C3 RC), and BOOT pull-up (R24)." initialFocus="146.05 12.7 137.16 76.2" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_1876f855.svg" alt="VCC supply bypass and control-line RC networks sub-circuit — main 3V3 bypass cluster (C4 100 pF C0G, C2 100 nF, C1 10 µF) at U3 pad 2, additional bulk and mid-frequency bypass on the VCC pour (C16 / C26 10 µF, C17 / C22 / C29 100 nF, C3 1 µF), EN pull-up (R4 + C3 RC), and BOOT pull-up (R24)." initialFocus="146.05 12.7 137.16 76.2" />
 
 ### Functional specification and design objectives
 
@@ -161,6 +168,9 @@ Time to reach the ESP32-S3's valid-HIGH threshold (≥ 0.75 × VCC ≈ 2.48 V) i
 | U3 | ESP32-S3-WROOM-1-N16R8 | Espressif dual-core Xtensa LX7 MCU module, 240 MHz, 16 MB QSPI flash, 8 MB PSRAM, 2.4 GHz Wi-Fi + BT 5 LE, pre-certified | [Espressif ESP32-S3-WROOM-1](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf) |
 | R4 | 10 kΩ 0603 ±1 % | EN pull-up — VCC to ESP_EN (U3 CHIP_PU). With C3 forms power-on RC delay (τ = 10 ms) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | R24 | 10 kΩ 0603 ±1 % | BOOT pull-up — VCC to ESP_BOOT (U3 IO0). Selects SPI flash boot mode during normal operation; no RC cap, by design | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R1 | 10 kΩ 0603 ±1 % | I²C bus pull-up on SCL to VCC. Physically placed on `i2c_sensors.kicad_sch` near the sensor cluster | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R2 | 10 kΩ 0603 ±1 % | I²C bus pull-up on SDA to VCC (parallel with R3). Physically on `i2c_sensors.kicad_sch` | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R3 | 10 kΩ 0603 ±1 % | Second I²C bus pull-up on SDA to VCC (parallel with R2 → 5 kΩ effective). Physically on `i2c_sensors.kicad_sch` | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | C1 | 10 µF / 25 V X7R 0805 | VCC main-cluster bulk bypass, third in chain (courtyard-touching adjacent to C2); single via to F.Cu VCC pour at far end | [Murata GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
 | C2 | 100 nF / 50 V X7R 0603 | VCC main-cluster mid-frequency bypass, second in chain (between C4 and C1) | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C3 | 1 µF / 25 V X7R 0603 | EN RC timing capacitor (ESP_EN to GNDREF). τ = 10 ms with R4 | [Murata GCM188R71E105KA64D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71E105KA64D) |
