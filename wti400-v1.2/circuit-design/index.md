@@ -10,7 +10,7 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
 
-WTI400 **v1.2** — In service on the test vessel. The board has accumulated approximately 1,000 sea miles with the ESP32 continuously Wi-Fi-active and the wind transducer running on a self-calibrating firmware. The WTI400 is an **evolution of the MLI400 V1.0** (Marine Legacy Interface) which carried a wind interface and a fairly mature bespoke firmware; the MLI400 V1.0 was installed on the same test vessel during the circumnavigation, accumulating thousands of sea miles in service and feeding the design improvements that produced V1.2. Subjective in-service performance is satisfactory; the per-circuit pages list the quantitative bench measurements still required.
+WTI400 **v1.2** — In service on the test vessel. The board has accumulated approximately 1,000 sea miles running a simple PlatformIO/Arduino firmware that emits NMEA 2000 wind sentences with hard-coded start-up constants and a self-calibrating ADC limits / midpoint scheme. **Wi-Fi has never been enabled** on any WTI400 V1.2 board; **BLE** has only been exercised during early BLE-library development on test hardware. The WTI400 is an **evolution of the MLI400 V1.0** (Marine Legacy Interface) which carried a wind interface and a bespoke PlatformIO/Arduino firmware; the MLI400 V1.0 was installed on the same test vessel during the circumnavigation, accumulating thousands of sea miles in service and feeding the design improvements that produced V1.2. A production ESP-IDF firmware is the next major project task. Subjective in-service performance of the current firmware is satisfactory; the per-circuit pages list the quantitative bench measurements still required.
 
 :::
 

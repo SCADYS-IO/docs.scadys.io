@@ -9,7 +9,7 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
 
-MDD400 **v2.9** — Fabricated prototype, bench-test phase. The DWIN display has been driven end-to-end through DGUS II on this prototype: power-switching, the UART link, command issuance, and touch-event round-tripping are functional. Brightness control is firmware-driven from the on-board ambient light sensor; the V2.9 housing introduces a new ALS placement and the brightness lookup will need to be re-calibrated against the previous lookup curve, which was tuned over significant in-service open-ocean operating hours on a prior MDD400 hardware revision.
+MDD400 **v2.9** — Fabricated prototype, bench-test phase. The DWIN display has been driven end-to-end through DGUS II on this prototype using bench test routines: power-switching, the UART link, command issuance, and touch-event round-tripping are functional. The production firmware (planned in ESP-IDF, migrating from the MDD400 V1.0 PlatformIO/Arduino predecessor) will drive display brightness from the on-board ambient light sensor. The V2.9 housing introduces a new ALS placement, so the brightness lookup will need to be re-calibrated against the previous lookup curve — which was tuned over significant in-service open-ocean operating hours on the MDD400 V1.0 hardware — before the migrated brightness loop can ship on V2.9.
 
 :::
 
@@ -126,7 +126,7 @@ The remaining 46 pins are intentionally left unconnected — they're not needed 
 
 ## Firmware integration notes
 
-A short pointer set for firmware writers — the DGUS II side has matured on prior MDD400 hardware revisions through significant in-service operating hours (including extended open-ocean passages), but V2.9 introduces a new housing and a new ambient-light-sensor placement that will require **re-calibration of the brightness lookup curve** against the previous behaviour.
+A short pointer set for firmware writers — the DGUS II side has matured on the **MDD400 V1.0** PlatformIO/Arduino predecessor firmware through significant in-service operating hours (including extended open-ocean passages); that code is the planned starting point for the V2.9 production ESP-IDF firmware. V2.9 introduces a new housing and a new ambient-light-sensor placement that will require **re-calibration of the brightness lookup curve** against the previous behaviour before the migrated loop can ship.
 
 **Brightness control loop.**
 

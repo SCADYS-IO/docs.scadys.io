@@ -9,7 +9,7 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
 
-WTI400 **v1.2** — In service on the test vessel. Approximately 1,000 sea miles accumulated with the ESP32 continuously Wi-Fi-active. Self-calibrating firmware running, I2C bus at **Standard mode (100 kHz)**. The firmware carries hard-coded start-up speed-conversion and installation-angle constants and hard-coded initial WIND_X / WIND_Y ADC limits; the limits and midpoint are then self-adjusted at run-time as new extremes are observed. Subjective in-service performance is satisfactory; the Testing & Verification section lists what's still to be measured.
+WTI400 **v1.2** — In service on the test vessel. Approximately 1,000 sea miles accumulated running a simple PlatformIO/Arduino firmware on the ESP32 with **Wi-Fi never enabled** and **BLE** only exercised during early BLE-library development on test hardware. The firmware emits NMEA 2000 wind sentences with hard-coded start-up speed-conversion and installation-angle constants and hard-coded initial WIND_X / WIND_Y ADC limits; the limits and midpoint are then self-adjusted at run-time as new extremes are observed. I2C bus runs at **Standard mode (100 kHz)**. A production ESP-IDF firmware is the next major project task. Subjective in-service performance is satisfactory; the Testing & Verification section lists what's still to be measured.
 
 :::
 
@@ -184,7 +184,7 @@ Programming-socket components (U4, D4, D5, J1, R24, C20, C21) are listed on the 
 
 :::caution
 
-The V1.2 prototype on the test vessel has been Wi-Fi-active for approximately 1,000 sea miles with the firmware described in the operating-context note at the top of this page. Programming via the ESP-PROG adapter has been confirmed working on both WTI400 V1.2 and MDD400 V2.9. **No quantitative bench measurements have been performed on the VCC bypass, EN RC, BOOT RC, or LDO thermal behaviour yet.** The following are required.
+The V1.2 prototype on the test vessel has been in service for approximately 1,000 sea miles running the PlatformIO/Arduino firmware described in the operating-context note at the top of this page (Wi-Fi has never been enabled; BLE only exercised during early library development on test hardware). Programming via the ESP-PROG adapter has been confirmed working on both WTI400 V1.2 and MDD400 V2.9. **No quantitative bench measurements have been performed on the VCC bypass, EN RC, BOOT RC, or LDO thermal behaviour yet.** The following are required.
 
 **Hardware bring-up (rig at the bench):**
 

@@ -345,7 +345,7 @@ The feedback divider lower-leg GND return (R1 pad 2), the input cap GND returns 
 
 :::caution
 
-The V1.2 prototype on the test vessel has been Wi-Fi-active for approximately 1,000 sea miles. The VCC SMPS rail powers the ESP32, IMU, button, LED, and pull-ups continuously without observed brownouts or resets in service. **No quantitative bench measurements have been performed on the SMPS output voltage, ripple, U2 thermal behaviour, inductor thermal behaviour, or input current under sustained Wi-Fi TX.** The following are required.
+The V1.2 prototype on the test vessel has been in service for approximately 1,000 sea miles. The VCC SMPS rail powers the ESP32, IMU, button, LED, and pull-ups continuously without observed brownouts or resets in service — but the ESP32 has been running with **Wi-Fi never enabled** (see operating-context notes elsewhere in these docs), so the SMPS has not yet been loaded by sustained Wi-Fi TX bursts in actual use. **No quantitative bench measurements have been performed on the SMPS output voltage, ripple, U2 thermal behaviour, inductor thermal behaviour, or input current under sustained Wi-Fi TX.** The following are required.
 
 **Hardware bring-up (rig at the bench):**
 

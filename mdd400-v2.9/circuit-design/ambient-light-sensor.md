@@ -9,7 +9,7 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
 
-MDD400 **v2.9** — Fabricated prototype, bench-test phase. The OPT3004 has been bench-tested on this prototype: I²C addressing, lux readout, and auto-ranging are functional. The V2.9 housing has a new aperture / lens window relative to the previous hardware revision, so the firmware's ALS-reading → DGUS II brightness lookup table needs to be re-fitted on this hardware before deployment — see the [Display Interface](./display-interface) page for the firmware-side brightness control loop.
+MDD400 **v2.9** — Fabricated prototype, bench-test phase. The OPT3004 has been bench-tested on this prototype using hardware test routines: I²C addressing, lux readout, and auto-ranging are functional. The V2.9 housing has a new aperture / lens window relative to the previous hardware revision, so the ALS-reading → display brightness lookup table — currently in the **MDD400 V1.0** PlatformIO/Arduino predecessor firmware and earmarked for migration into the planned V2.9 production ESP-IDF firmware — will need to be re-fitted on V2.9 hardware before deployment. See the [Display Interface](./display-interface) page for the firmware-side brightness control loop.
 
 :::
 
@@ -69,7 +69,7 @@ The OPT3004 is at I²C address **0x44**.
 
 The OPT3004 reading is the input to the **automatic display brightness loop**. The matching firmware-side guidance is on the [Display Interface](./display-interface#firmware-integration-notes) page. Summary of the bits that belong on the OPT3004 side:
 
-- **Re-calibration on V2.9 is mandatory.** The brightness lookup table from the prior hardware revision was tuned over significant in-service operating hours (including extended open-ocean passages). The V2.9 housing has a new ALS aperture / lens placement, so the same outside illuminance now produces a *different* OPT3004 raw reading. The lookup table's input axis must be re-mapped before the firmware can be deployed on V2.9 hardware.
+- **Re-calibration on V2.9 is mandatory.** The brightness lookup table from the **MDD400 V1.0** PlatformIO/Arduino predecessor firmware was tuned over significant in-service operating hours (including extended open-ocean passages). The V2.9 housing has a new ALS aperture / lens placement, so the same outside illuminance now produces a *different* OPT3004 raw reading. The lookup table's input axis must be re-mapped against the V2.9 housing before the migrated brightness loop can be deployed in the planned V2.9 production ESP-IDF firmware.
 - **Sub-second polling rate is sufficient.** Eye adaptation is slow; a 1–4 Hz polling rate matches typical needs. Don't poll faster than necessary — the OPT3004's auto-range conversion time (~800 ms at full integration) is the bottleneck anyway.
 - **Hysteresis at brightness step boundaries.** DGUS II brightness commands have a small number of discrete steps. The lookup must include hysteresis at each step boundary so the brightness doesn't flicker when ambient light drifts across a threshold.
 
