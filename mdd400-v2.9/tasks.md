@@ -70,6 +70,6 @@ Update the JSON file alongside the task execution:
 
 The list is hand-maintained. It was seeded once from each circuit-design page's `## Testing & Verification` `:::caution` admonition — the **Hardware bring-up** / **Conditional** bullets became `kind: "verification"` tasks; the **For V2.10...** / **Before next production run...** bullets became `kind: "next-version"` tasks.
 
-When a circuit page gains a new bullet, add a matching entry to `tasks.json`. When a circuit page bullet is reworded, update the matching entry's `description` to stay in sync. The hardware-repo backlog file `v2.10-improvements.md` in `MDD400/hardware/MDD400_V2.9/` remains the canonical narrative for next-version *rationale*; this page is the live state tracker.
+When a circuit page gains a new bullet, add a matching entry to `tasks.json`. When a circuit page bullet is reworded, update the matching entry's `description` to stay in sync. The hardware-repo backlog file `v2.10-improvements.md` in `MDD400/PCB/MDD400_V2.9/` remains the canonical narrative for next-version *rationale*; this page is the live state tracker.
 
 <p style={{textAlign: 'right', fontSize: '0.9em'}}><a href="#">↑ Back to top</a></p>

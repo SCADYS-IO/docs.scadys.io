@@ -70,6 +70,6 @@ Update the JSON file alongside the task execution:
 
 The list is hand-maintained. It was seeded once from each circuit-design page's `## Testing & Verification` `:::caution` admonition — the **Hardware bring-up** / **Conditional** bullets became `kind: "verification"` tasks; the **For V1.3...** / **For V2.0...** / **Before next production run...** bullets became `kind: "next-version"` tasks with the appropriate `target_version`.
 
-When a circuit page gains a new bullet, add a matching entry to `tasks.json`. When a circuit page bullet is reworded, update the matching entry's `description` to stay in sync. The hardware-repo backlog files (`v1.3-improvements.md`, `v2.0-improvements.md` in `WTI400/hardware/WTI400_V1.2/`) remain the canonical narrative for next-version *rationale*; this page is the live state tracker.
+When a circuit page gains a new bullet, add a matching entry to `tasks.json`. When a circuit page bullet is reworded, update the matching entry's `description` to stay in sync. The hardware-repo backlog files (`v1.3-improvements.md`, `v2.0-improvements.md` in `WTI400/PCB/WTI400_V1.2/`) remain the canonical narrative for next-version *rationale*; this page is the live state tracker.
 
 <p style={{textAlign: 'right', fontSize: '0.9em'}}><a href="#">↑ Back to top</a></p>
