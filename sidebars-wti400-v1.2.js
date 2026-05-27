@@ -68,6 +68,11 @@ const sidebars = {
           "type": "doc",
           "id": "circuit-design/legacy-serial",
           "label": "Legacy Serial Interface"
+        },
+        {
+          "type": "doc",
+          "id": "circuit-design/pcb-markings",
+          "label": "PCB Markings & Compliance"
         }
       ]
     },

@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/motion_sensor_62fc6205.svg" alt="Motion sensor schematic" initialFocus="12.7 12.7 139.7 92.71" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/motion_sensor_14dded72.svg" alt="Motion sensor schematic" initialFocus="12.7 12.7 139.7 92.71" />
 
 :::note[Hardware version]
 WTI400 **v1.2** — In service — installed on test vessel

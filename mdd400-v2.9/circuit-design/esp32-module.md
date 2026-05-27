@@ -20,7 +20,7 @@ This page documents the MDD400's main application processor — an Espressif ESP
 - The **firmware programming socket** (J1 IDC header, the optional HT7833 LDO U4, the three OR'ing Schottky diodes D3 / D4 / D5, and the production-variant zero-ohm bridge R22) → [Programming Socket](./programming-socket).
 - The **status LED** (Q1 PNP switching the amber D2 LED via the LED_EN signal) → [LED Indicator](./led-indicator).
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_56a37d7b.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket, status LED). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_7c3ce4f1.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket, status LED). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
 
 Two sub-circuits on this page, in narrative order:
 
@@ -31,7 +31,7 @@ Two sub-circuits on this page, in narrative order:
 
 ## ESP32-S3 module and signal map
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_56a37d7b.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_7c3ce4f1.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
 
 ### Functional specification and design objectives
 
@@ -97,7 +97,7 @@ The asymmetric pull-up choice (10 kΩ SCL, 5 kΩ SDA) compensates for the higher
 
 ## VCC supply bypass and control-line RC networks
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_56a37d7b.svg" alt="VCC supply bypass and control-line RC networks sub-circuit — main 3V3 bypass cluster (C4 100 pF C0G, C2 100 nF, C1 10 µF) at U3 pad 2, additional bulk and mid-frequency bypass on the VCC pour (C16 / C26 10 µF, C17 / C22 / C29 100 nF, C3 1 µF), EN pull-up (R4 + C3 RC), and BOOT pull-up (R24)." initialFocus="146.05 12.7 137.16 76.2" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_7c3ce4f1.svg" alt="VCC supply bypass and control-line RC networks sub-circuit — main 3V3 bypass cluster (C4 100 pF C0G, C2 100 nF, C1 10 µF) at U3 pad 2, additional bulk and mid-frequency bypass on the VCC pour (C16 / C26 10 µF, C17 / C22 / C29 100 nF, C3 1 µF), EN pull-up (R4 + C3 RC), and BOOT pull-up (R24)." initialFocus="146.05 12.7 137.16 76.2" />
 
 ### Functional specification and design objectives
 

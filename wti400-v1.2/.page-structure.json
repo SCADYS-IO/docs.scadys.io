@@ -24,6 +24,7 @@
     { "slug": "motion-sensor",   "label": "Motion Sensor",           "renders": ["motion_sensor"] },
     { "slug": "button",          "label": "Button Input",            "renders": ["button_led"] },
     { "slug": "led-indicator",   "label": "LED Indicator",           "renders": ["button_led"] },
-    { "slug": "legacy-serial",   "label": "Legacy Serial Interface", "renders": ["legacy_serial_rx", "legacy_serial_tx"] }
+    { "slug": "legacy-serial",   "label": "Legacy Serial Interface", "renders": ["legacy_serial_rx", "legacy_serial_tx"] },
+    { "slug": "pcb-markings",    "label": "PCB Markings & Compliance","renders": ["pcb_markings"] }
   ]
 }

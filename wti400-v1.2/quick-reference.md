@@ -191,7 +191,7 @@ WTI400 **v1.2** — In service — installed on test vessel
 
 ## PCB Design Notes
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/pcb_markings_42a823f7.svg" alt="PCB markings" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/pcb_markings_b90e6958.svg" alt="PCB markings" />
 
 ### Board Stackup
 

@@ -17,7 +17,7 @@ MDD400 **v2.9** — Fabricated prototype, bench-test phase. The TMP112 has been 
 
 This page documents the TMP112 temperature sensor on `i2c_sensors.kicad_sch` — a ±0.5 °C digital temperature sensor whose readings drive the firmware's thermal protection and display-derating logic. The I²C bus pull-ups (R1 on SCL; R2 ∥ R3 on SDA) are documented on the [ESP32 Module](./esp32-module#i2c-bus-pull-ups) page.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/i2c_sensors_59542a1c.svg" alt="TMP112 temperature sensor sub-circuit — U13 (TI TMP112AIDRLR), R62 (ALERT open-drain pull-up to VCC), and C57 (100 pF V_CC HF bypass; V2.10 backlog item is to add a 100 nF cap in parallel per the datasheet)." initialFocus="19.05 101.6 133.35 85.09" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/i2c_sensors_37ef56ec.svg" alt="TMP112 temperature sensor sub-circuit — U13 (TI TMP112AIDRLR), R62 (ALERT open-drain pull-up to VCC), and C57 (100 pF V_CC HF bypass; V2.10 backlog item is to add a 100 nF cap in parallel per the datasheet)." initialFocus="19.05 101.6 133.35 85.09" />
 
 The TMP112 is at I²C address **0x48**.
 

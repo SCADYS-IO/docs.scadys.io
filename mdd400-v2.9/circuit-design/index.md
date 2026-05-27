@@ -20,7 +20,7 @@ The **MDD400** is a marine multi-function display node for **NMEA 2000** vessel 
 
 This page narrates the system at the board level — the block diagram, power and signal flow, the four electrical isolation domains, the PCB stack-up, and the EMC philosophy that ties the layout together. Each functional block links to its own page where the schematic, layout, performance review, and firmware integration are documented in detail.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/MDD400_V2.9_7ea61dc4.svg" alt="MDD400 V2.9 hierarchical block diagram — the parent KiCad sheet showing each sub-sheet as a labelled block, with the inter-sheet bus connections (VDD, VCC, GNDREF, TWAI bus, I²C bus, DISP_* bus, ST_* bus, etc.) routed between blocks." />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/MDD400_V2.9_ea05cda7.svg" alt="MDD400 V2.9 hierarchical block diagram — the parent KiCad sheet showing each sub-sheet as a labelled block, with the inter-sheet bus connections (VDD, VCC, GNDREF, TWAI bus, I²C bus, DISP_* bus, ST_* bus, etc.) routed between blocks." />
 
 ---
 
@@ -85,7 +85,7 @@ Each block on the schematic block diagram above maps to one or more docs pages:
 | Display | [Display Interface](./display-interface.md) | `display_interface.kicad_sch` | DWIN DMG48480F040 4.0-inch DGUS II display; high-side P-MOSFET switched VDSP rail; 50-pin FPC connector |
 | Audio alerts | [Buzzer Driver](./buzzer-driver.md) | `buzzer_driver.kicad_sch` | MLT-8530 passive electromagnetic transducer; high-side P-MOSFET drive via NPN gate driver; output LP filter; flyback Schottky |
 | Legacy serial | [Legacy Serial Interface](./legacy-serial.md) | `legacy_serial_rx.kicad_sch` + `legacy_serial_tx.kicad_sch` | Opto-isolated transmit and receive paths to single-wire 12 V protocols and NMEA 0183; ZXTR2012FF isolated supply; TLP2309 opto-couplers |
-| PCB markings & compliance | n/a *(not a docs page)* | `pcb_markings.kicad_sch` | Fiducials, compliance marks, silkscreen labels |
+| PCB markings & compliance | [PCB Markings & Compliance](./pcb-markings.md) | `pcb_markings.kicad_sch` | Silkscreen marks (CE / UKCA / FCC / RoHS / EFUP); board-identity copper; Scadys logo; product-docs QR; fiducial markers; PCB stackup detail; mounting and board outline |
 
 ---
 

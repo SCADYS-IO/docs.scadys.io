@@ -26,6 +26,7 @@
     { "slug": "ambient-light-sensor", "label": "Ambient Light Sensor",     "renders": ["i2c_sensors"] },
     { "slug": "temperature-sensor",   "label": "Temperature Sensor",       "renders": ["i2c_sensors"] },
     { "slug": "buzzer-driver",    "label": "Buzzer Driver",            "renders": ["buzzer_driver"] },
-    { "slug": "legacy-serial",    "label": "Legacy Serial Interface",  "renders": ["legacy_serial_rx", "legacy_serial_tx"] }
+    { "slug": "legacy-serial",    "label": "Legacy Serial Interface",  "renders": ["legacy_serial_rx", "legacy_serial_tx"] },
+    { "slug": "pcb-markings",     "label": "PCB Markings & Compliance","renders": ["pcb_markings"] }
   ]
 }

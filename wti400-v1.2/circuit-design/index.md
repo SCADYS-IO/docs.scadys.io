@@ -22,7 +22,7 @@ The WTI400 is a fully self-contained NMEA 2000 device: power and data enter on a
 
 This page narrates the system at the board level — the block diagram, power and signal flow, the four electrical isolation domains, the PCB stack-up, and the EMC philosophy that ties the layout together. Each functional block links to its own page where the schematic, layout, performance review, and firmware integration are documented in detail.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/WTI400_V1.2_78b17db7.svg" alt="WTI400 V1.2 hierarchical block diagram — the parent KiCad sheet showing each sub-sheet as a labelled block, with the inter-sheet bus connections (VCC, VSC, VAS, WIND_X / WIND_Y / WIND_SPD, TWAI bus, I²C bus, ST_* bus, etc.) routed between blocks." />
+<SchematicViewer src="/img/schematics/wti400-v1.2/WTI400_V1.2_9fa89c87.svg" alt="WTI400 V1.2 hierarchical block diagram — the parent KiCad sheet showing each sub-sheet as a labelled block, with the inter-sheet bus connections (VCC, VSC, VAS, WIND_X / WIND_Y / WIND_SPD, TWAI bus, I²C bus, ST_* bus, etc.) routed between blocks." />
 
 ---
 
@@ -88,7 +88,7 @@ Each block on the schematic block diagram above maps to one or more docs pages:
 | Local UI — tactile button | [Button Input](./button.md) | `button_led.kicad_sch` | SW1 tactile switch; pull-up biasing; debounce expectations |
 | Local UI — RGB LED | [LED Indicator](./led-indicator.md) | `button_led.kicad_sch` | RGB LED (D1) backlighting the Scadys logo; current limiting (R10–R12); LED_RED / LED_GRN / LED_BLU GPIO mapping |
 | Legacy serial | [Legacy Serial Interface](./legacy-serial.md) | `legacy_serial_rx.kicad_sch` + `legacy_serial_tx.kicad_sch` | Galvanically-isolated transmit and receive paths; ZXTR2012FF isolated 12 V supply; TLP2309 opto-couplers; 2N7002 open-drain output driver |
-| PCB markings & compliance | n/a *(not a docs page)* | `pcb_markings.kicad_sch` | Fiducials, compliance marks, silkscreen labels |
+| PCB markings & compliance | [PCB Markings & Compliance](./pcb-markings.md) | `pcb_markings.kicad_sch` | Silkscreen marks (CE / UKCA / FCC / RoHS / EFUP); board-identity copper; Scadys logo; product-docs QR; fiducial markers; PCB stackup detail; mounting and board outline |
 
 ---
 

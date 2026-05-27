@@ -25,7 +25,7 @@ The interface has limited compatibility with single-ended NMEA 0183 operation. R
 - [Receive path](#receive-path) — signal filtering and isolated receive opto; and
 - [Transmit path](#transmit-path) — isolated transmit, enable gate, and open-drain line driver.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_f21d08dd.svg" alt="Legacy Serial RX — block diagram overview" initialFocus="158.75 101.6 125.73 63.5" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_d063166d.svg" alt="Legacy Serial RX — block diagram overview" initialFocus="158.75 101.6 125.73 63.5" />
 
 ---
 
@@ -87,7 +87,7 @@ J3 uses a proprietary Raymarine-compatible pin arrangement. For V2.0, consider r
 
 ## 12 V Power Protection and Regulation
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_f21d08dd.svg" alt="Legacy Serial RX — connector and filter section" initialFocus="12.7 101.6 146.05 95.25" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_d063166d.svg" alt="Legacy Serial RX — connector and filter section" initialFocus="12.7 101.6 146.05 95.25" />
 
 The 12 V bus supply on J3 pin 1 passes through a six-stage protection chain before reaching the LDO regulator.
 
@@ -140,7 +140,7 @@ The VST rail is not MCU-controlled. It is live whenever the Legacy Serial Protoc
 
 ## Receive Path
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_f21d08dd.svg" alt="Legacy Serial RX — receive buffer section" initialFocus="12.7 12.7 146.05 88.9" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_d063166d.svg" alt="Legacy Serial RX — receive buffer section" initialFocus="12.7 12.7 146.05 88.9" />
 
 The signal on J3 pin 3 (ST_SIG) passes through a two-stage RF filter and ESD clamp before reaching the TLP2309 opto-isolator.
 
@@ -216,7 +216,7 @@ For NMEA 0183: 4800 baud or 38400 baud, 8N1, no parity.
 
 ## Transmit Path
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_tx_f52880fc.svg" alt="Legacy Serial TX schematic" initialFocus="12.7 12.7 138.43 177.8" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_tx_736e552a.svg" alt="Legacy Serial TX schematic" initialFocus="12.7 12.7 138.43 177.8" />
 
 The TX circuit has four functional stages: an enable opto-isolator (U8) that gates the transmitter by default, a TX opto-isolator (U7) that transfers the UART data signal across the isolation barrier, a two-transistor push-pull gate driver (Q4, Q7) with a PMOS high-side switch (Q5) that drives the NMOS line driver (Q6), and a rise-time assist stage (Q8) that accelerates bus rising edges.
 
