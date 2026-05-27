@@ -12,6 +12,11 @@ const sidebars = {
       "label": "Quick Reference"
     },
     {
+      "type": "doc",
+      "id": "tasks",
+      "label": "Tasks"
+    },
+    {
       "type": "category",
       "label": "Circuit Design",
       "link": {

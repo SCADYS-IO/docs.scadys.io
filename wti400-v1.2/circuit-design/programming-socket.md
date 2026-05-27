@@ -17,7 +17,7 @@ WTI400 **v1.2** — In service on the test vessel. The page covers the **develop
 
 This page documents the WTI400 firmware-programming hardware on `esp32_module.kicad_sch`: the ESP-PROG-compatible IDC header J1, the optional HT7833 LDO (U4) with its isolation Schottky diodes (D4, D5), and the production-variant zero-ohm bridge (R24) that takes their place. The host MCU and its supply bypass are on the [ESP32 Module](./esp32-module) page.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_f496440e.svg" alt="ESP-PROG programming socket sub-circuit — J1 (2×3 2.54 mm IDC header, ESP-PROG-compatible), D4 (input isolation Schottky), U4 (HT7833 3.3 V LDO), D5 (Vout-to-Vin protection Schottky), R24 (zero-ohm production-variant link), and LDO-input decoupling C20 + C21." initialFocus="13.335 107.95 132.715 82.55" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_d5db8452.svg" alt="ESP-PROG programming socket sub-circuit — J1 (2×3 2.54 mm IDC header, ESP-PROG-compatible), D4 (input isolation Schottky), U4 (HT7833 3.3 V LDO), D5 (Vout-to-Vin protection Schottky), R24 (zero-ohm production-variant link), and LDO-input decoupling C20 + C21." initialFocus="13.335 107.95 132.715 82.55" />
 
 The two assembly variants share the same footprint:
 

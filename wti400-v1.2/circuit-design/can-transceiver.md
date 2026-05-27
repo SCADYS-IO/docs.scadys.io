@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_a99b4e46.svg" alt="CAN transceiver — full sheet" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_2252980e.svg" alt="CAN transceiver — full sheet" />
 
 :::note[Hardware version]
 WTI400 **v1.2** — In service — installed on test vessel
@@ -42,13 +42,13 @@ The ESP32 implements CAN via its TWAI (Two-Wire Automotive Interface) peripheral
 
 #### NMEA 2000 connector (J2)
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_a99b4e46.svg" alt="NMEA 2000 Connector and Shield block — J2 Micro-C panel-mount socket, shield handling. Zoom out to see the full sheet." initialFocus="19.05 101.6 127 88.9" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_2252980e.svg" alt="NMEA 2000 Connector and Shield block — J2 Micro-C panel-mount socket, shield handling. Zoom out to see the full sheet." initialFocus="19.05 101.6 127 88.9" />
 
 J2 is a DeviceNet Micro-C A-code 5-pin male panel-mount socket rated IP67. Full pin assignments are in the [Quick Reference](/wti400/v1.2/quick-reference). The shield pin is left floating inside the device, consistent with NMEA 2000 practice of connecting the drain wire to vessel ground at a single external point only.
 
 #### EMC protection chain
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_a99b4e46.svg" alt="CAN Filter and ESD Protection block — U9 TVS, FL1 common-mode choke, C24–C27 filter caps. Zoom out to see the full sheet." initialFocus="19.05 12.7 127 88.9" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_2252980e.svg" alt="CAN Filter and ESD Protection block — U9 TVS, FL1 common-mode choke, C24–C27 filter caps. Zoom out to see the full sheet." initialFocus="19.05 12.7 127 88.9" />
 
 The signal path from J2 to U5 follows the connector-first TVS topology described in TI application note SLLA271: **Connector → TVS → CMC → Transceiver**. Placing the TVS before the CMC clamps high-speed transients at the connector entry point; the CMC's series impedance then limits current in the TVS shunt path during surge events.
 
@@ -64,7 +64,7 @@ Isolation was evaluated in an earlier revision. The isolated DC-DC converter req
 
 #### CAN transceiver (U5)
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_a99b4e46.svg" alt="CAN Transceiver block — U5 SN65HVD234DR transceiver, R14–R17 configuration resistors. Zoom out to see the full sheet." initialFocus="146.05 12.7 127 88.9" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_2252980e.svg" alt="CAN Transceiver block — U5 SN65HVD234DR transceiver, R14–R17 configuration resistors. Zoom out to see the full sheet." initialFocus="146.05 12.7 127 88.9" />
 
 U5 is a Texas Instruments SN65HVD234DR — a 3.3 V CAN transceiver in SOIC-8, compliant with ISO 11898-2 and rated to 1 Mbps. It translates between the differential CANH/CANL bus and the single-ended TWAI_TX/TWAI_RX logic signals for the ESP32.
 
@@ -84,7 +84,7 @@ V1.2 replaced an isolated CAN transceiver design with the SN65HVD234DR and remov
 
 #### VCC decoupling
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_a99b4e46.svg" alt="Vcc Supply Decoupling block — C18 bulk + C19 HF bypass at U5 VCC pin. Zoom out to see the full sheet." initialFocus="146.05 101.6 127 63.5" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_transceiver_2252980e.svg" alt="Vcc Supply Decoupling block — C18 bulk + C19 HF bypass at U5 VCC pin. Zoom out to see the full sheet." initialFocus="146.05 101.6 127 63.5" />
 
 U5's VCC (pin 3) is decoupled by C19 (100 nF, X7R, placed immediately adjacent to U5) and C18 (10 µF, X7R, bulk bypass), following the SN65HVD234 datasheet recommendation. In V1.2, trace length from U5 pin 3 to C19 is ~2.5 mm due to courtyard constraints from R14 and R15 — flagged for correction in V1.3.
 

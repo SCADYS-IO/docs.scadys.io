@@ -17,7 +17,7 @@ WTI400 **v1.2** — In service on the test vessel. Approximately 1,000 sea miles
 
 This page documents the WTI400's main application processor — an Espressif ESP32-S3-WROOM-1-N16R8 module — and its host-side surroundings on `esp32_module.kicad_sch`: VCC bypass, control-line RC networks, and the I2C bus pull-ups. The firmware-programming hardware (J1 ESP-PROG IDC socket, the optional HT7833 LDO U4, isolation Schottkys D4 / D5, and the production-variant R24 zero-ohm bridge) is also on this sheet but is documented on its own [Programming Socket](./programming-socket) page.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_f496440e.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_d5db8452.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
 
 Two sub-circuits in narrative order:
 
@@ -28,7 +28,7 @@ Two sub-circuits in narrative order:
 
 ## ESP32-S3 module and signal map
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_f496440e.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_d5db8452.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
 
 ### Functional specification and design objectives
 
@@ -85,7 +85,7 @@ The I2C bus pull-ups (R3, R4) live on this sheet rather than on the motion-senso
 
 ## VCC supply bypass and control-line RC networks
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_f496440e.svg" alt="VCC supply bypass and control-line RC networks sub-circuit — main 3V3 bypass cluster (C8 100 pF C0G, C3 100 nF, C1 10 µF) at U3 pads, LDO-output-side bypass (C16 10 µF, C17 100 nF), EN RC pair (R9 + C7), BOOT RC pair (R18 + C22), and I2C bus pull-ups (R3 SCL, R4 SDA)." initialFocus="146.05 12.7 137.16 76.2" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_d5db8452.svg" alt="VCC supply bypass and control-line RC networks sub-circuit — main 3V3 bypass cluster (C8 100 pF C0G, C3 100 nF, C1 10 µF) at U3 pads, LDO-output-side bypass (C16 10 µF, C17 100 nF), EN RC pair (R9 + C7), BOOT RC pair (R18 + C22), and I2C bus pull-ups (R3 SCL, R4 SDA)." initialFocus="146.05 12.7 137.16 76.2" />
 
 ### Functional specification and design objectives
 

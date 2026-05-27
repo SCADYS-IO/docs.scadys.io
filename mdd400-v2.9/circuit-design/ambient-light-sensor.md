@@ -17,7 +17,7 @@ MDD400 **v2.9** — Fabricated prototype, bench-test phase. The OPT3004 has been
 
 This page documents the OPT3004 ambient light sensor on `i2c_sensors.kicad_sch` — a digital lux sensor whose readings drive the firmware's automatic display-brightness loop. The I²C bus pull-ups (R1 on SCL; R2 ∥ R3 on SDA) are documented on the [ESP32 Module](./esp32-module#i2c-bus-pull-ups) page.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/i2c_sensors_37ef56ec.svg" alt="OPT3004 ambient light sensor sub-circuit — U12 (TI OPT3004DNPR), C56 (100 nF V_DD bypass), and the open-drain INT pin connected (without ESP32 GPIO routing in V2.9 — firmware polls rather than interrupts)." initialFocus="19.05 12.7 133.35 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/i2c_sensors_0e420ae8.svg" alt="OPT3004 ambient light sensor sub-circuit — U12 (TI OPT3004DNPR), C56 (100 nF V_DD bypass), and the open-drain INT pin connected (without ESP32 GPIO routing in V2.9 — firmware polls rather than interrupts)." initialFocus="19.05 12.7 133.35 88.9" />
 
 The OPT3004 is at I²C address **0x44**.
 

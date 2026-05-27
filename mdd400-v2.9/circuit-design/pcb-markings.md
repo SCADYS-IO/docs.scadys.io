@@ -17,7 +17,7 @@ MDD400 **v2.9** — Fabricated prototype. The silkscreen marks, fiducials, and s
 
 This page documents the PCB-level markings on `pcb_markings.kicad_sch`: the **fiducial markers** that support automated assembly, the **silkscreen marks** that carry product identity and compliance information, and the **PCB stackup** that physically realises the four-layer construction described elsewhere in the docs.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_365d688f.svg" alt="PCB markings schematic — full sheet (silkscreen labels block, fiducials block, PCB stackup block). Zoom and pan freely; per-sub-section zoomed views appear below." />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c0beb6b5.svg" alt="PCB markings schematic — full sheet (silkscreen labels block, fiducials block, PCB stackup block). Zoom and pan freely; per-sub-section zoomed views appear below." />
 
 Three sub-sections on this page, in narrative order:
 
@@ -48,7 +48,7 @@ Some board-level mechanical details (board outline, mounting hole positions) liv
 
 ## Silkscreen marks and compliance
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_365d688f.svg" alt="Silkscreen labels sub-section — board identity (S1), CE mark (S2), RoHS / China EFUP (S3), FCC mark (S4), Scadys logo (S5), QR code (S6), UKCA mark (S7), copyright (S8)." initialFocus="19.05 13.97 127.0 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c0beb6b5.svg" alt="Silkscreen labels sub-section — board identity (S1), CE mark (S2), RoHS / China EFUP (S3), FCC mark (S4), Scadys logo (S5), QR code (S6), UKCA mark (S7), copyright (S8)." initialFocus="19.05 13.97 127.0 88.9" />
 
 ### Functional specification and design objectives
 
@@ -96,7 +96,7 @@ All marks listed below are **silkscreen** unless noted. They sit on the F.Cu (to
 
 ## Fiducial markers
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_365d688f.svg" alt="Fiducial markers sub-section — FID1 / FID2 on F.Cu, FID3 / FID4 on B.Cu (mirrored at the same XY positions), supporting pick-and-place machine-vision alignment." initialFocus="146.05 13.97 127.0 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c0beb6b5.svg" alt="Fiducial markers sub-section — FID1 / FID2 on F.Cu, FID3 / FID4 on B.Cu (mirrored at the same XY positions), supporting pick-and-place machine-vision alignment." initialFocus="146.05 13.97 127.0 88.9" />
 
 ### Functional specification and design objectives
 
@@ -137,7 +137,7 @@ The **mirrored front / back placement** at identical XY coordinates means the sa
 
 ## PCB stackup detail
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_365d688f.svg" alt="PCB stackup sub-section — 4-layer construction (F.Cu / In1.Cu / In2.Cu / B.Cu) with copper weights and dielectric layers." initialFocus="19.05 102.87 127.0 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c0beb6b5.svg" alt="PCB stackup sub-section — 4-layer construction (F.Cu / In1.Cu / In2.Cu / B.Cu) with copper weights and dielectric layers." initialFocus="19.05 102.87 127.0 88.9" />
 
 ### Functional specification and design objectives
 

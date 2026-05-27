@@ -20,7 +20,7 @@ The **MDD400** is a marine multi-function display node for **NMEA 2000** vessel 
 
 This page narrates the system at the board level — the block diagram, power and signal flow, the four electrical isolation domains, the PCB stack-up, and the EMC philosophy that ties the layout together. Each functional block links to its own page where the schematic, layout, performance review, and firmware integration are documented in detail.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/MDD400_V2.9_ea05cda7.svg" alt="MDD400 V2.9 hierarchical block diagram — the parent KiCad sheet showing each sub-sheet as a labelled block, with the inter-sheet bus connections (VDD, VCC, GNDREF, TWAI bus, I²C bus, DISP_* bus, ST_* bus, etc.) routed between blocks." />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/MDD400_V2.9_32550724.svg" alt="MDD400 V2.9 hierarchical block diagram — the parent KiCad sheet showing each sub-sheet as a labelled block, with the inter-sheet bus connections (VDD, VCC, GNDREF, TWAI bus, I²C bus, DISP_* bus, ST_* bus, etc.) routed between blocks." />
 
 ---
 

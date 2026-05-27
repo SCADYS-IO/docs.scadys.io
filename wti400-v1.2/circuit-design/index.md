@@ -22,7 +22,7 @@ The WTI400 is a fully self-contained NMEA 2000 device: power and data enter on a
 
 This page narrates the system at the board level — the block diagram, power and signal flow, the four electrical isolation domains, the PCB stack-up, and the EMC philosophy that ties the layout together. Each functional block links to its own page where the schematic, layout, performance review, and firmware integration are documented in detail.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/WTI400_V1.2_9fa89c87.svg" alt="WTI400 V1.2 hierarchical block diagram — the parent KiCad sheet showing each sub-sheet as a labelled block, with the inter-sheet bus connections (VCC, VSC, VAS, WIND_X / WIND_Y / WIND_SPD, TWAI bus, I²C bus, ST_* bus, etc.) routed between blocks." />
+<SchematicViewer src="/img/schematics/wti400-v1.2/WTI400_V1.2_a2ad5755.svg" alt="WTI400 V1.2 hierarchical block diagram — the parent KiCad sheet showing each sub-sheet as a labelled block, with the inter-sheet bus connections (VCC, VSC, VAS, WIND_X / WIND_Y / WIND_SPD, TWAI bus, I²C bus, ST_* bus, etc.) routed between blocks." />
 
 ---
 

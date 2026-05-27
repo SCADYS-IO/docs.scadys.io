@@ -24,7 +24,7 @@ The two converters use the **same chip (LMR51610XDBVR), the same inductor footpr
 
 The two converters sit side-by-side at the top of the schematic — VDD (U6) on the left, VCC (U1) on the right. The "Isolation of Power Domains" sub-diagram (lower-left area of the sheet) makes the ferrite strategy explicit: an input ferrite (FB4) at the CAN→SMPS boundary, plus an output ferrite per rail (FB1 for VCC, FB2 for VDD) with a 100 pF rail bypass cap right at each output ferrite pad.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_d78a5c6f.svg" alt="MDD400 Power Supplies schematic (full sheet) — VDD converter top-left, VCC converter top-right, Isolation of Power Domains sub-diagram lower-left" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_161c189f.svg" alt="MDD400 Power Supplies schematic (full sheet) — VDD converter top-left, VCC converter top-right, Isolation of Power Domains sub-diagram lower-left" />
 
 The circuit topology and the four-layer GNDREF / moat / via-fence layout strategy are identical to the WTI400 V1.2 Power Supply page (`/wti400/v1.2/circuit-design/power-supplies`). Where this page says "follows the same pattern as WTI400", refer to that page for the per-rule MPS EMI webinar explanation; the MDD400-specific deltas (dual converters, two-cell moat, per-rail consumers, dual-converter EMI flag) are covered here.
 
@@ -34,7 +34,7 @@ The circuit topology and the four-layer GNDREF / moat / via-fence layout strateg
 
 Each converter is built around an LMR51610XDBVR (TI synchronous buck, SOT-23-5 DBV, 400 kHz fixed switching frequency, integrated high-side + low-side MOSFETs). The surrounding components are functionally identical across the two instances; only the refdes and FB divider values change. The VCC converter (U1) sits on the right of the schematic above; the VDD converter (U6) on the left is a mirror with the same topology and different FB divider values.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_d78a5c6f.svg" alt="VCC switcher sub-circuit (U1) — input decoupling C6/C15, bootstrap C10, feedforward C7, feedback divider R5/R6, snubber footprint (DNP), inductor L1, output bulk C5/C14, rail output bypass C13, boundary ferrite FB1. Zoom out to see the full sheet (the VDD converter U6 is the mirror on the left)." initialFocus="148.59 12.7 135.89 76.2" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_161c189f.svg" alt="VCC switcher sub-circuit (U1) — input decoupling C6/C15, bootstrap C10, feedforward C7, feedback divider R5/R6, snubber footprint (DNP), inductor L1, output bulk C5/C14, rail output bypass C13, boundary ferrite FB1. Zoom out to see the full sheet (the VDD converter U6 is the mirror on the left)." initialFocus="148.59 12.7 135.89 76.2" />
 
 **Per-converter components (VCC instance / VDD instance):**
 
@@ -211,7 +211,7 @@ FB1 (3v3 → VCC) and FB2 (5v0 → VDD) are positioned at the right-hand boundar
 
 The schematic carries an **"Isolation of Power Domains"** sub-diagram that lays out the ferrite strategy on a single picture: one input ferrite (FB4) at the CAN→SMPS boundary, then one output ferrite per SMPS rail (FB1 for VCC, FB2 for VDD), each with its 100 pF rail bypass cap (C13 / C31) right at the ferrite pad.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_d78a5c6f.svg" alt="Isolation of Power Domains (MDD400) — FB4 input ferrite at SMPS boundary, FB1/FB2 output ferrites per rail with 100 pF rail bypass at each ferrite pad. Zoom out to see the full sheet." initialFocus="12.7 90.17 135.89 106.68" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/power_supplies_161c189f.svg" alt="Isolation of Power Domains (MDD400) — FB4 input ferrite at SMPS boundary, FB1/FB2 output ferrites per rail with 100 pF rail bypass at each ferrite pad. Zoom out to see the full sheet." initialFocus="12.7 90.17 135.89 106.68" />
 
 ---
 
