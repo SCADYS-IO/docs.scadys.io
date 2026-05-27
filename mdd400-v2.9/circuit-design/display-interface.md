@@ -17,7 +17,7 @@ MDD400 **v2.9** — Fabricated prototype, bench-test phase. The DWIN display has
 
 This page documents the MDD400's interface to its 4.0-inch capacitive-touch DWIN DGUS II display module, drawn on `display_interface.kicad_sch`. The interface consists of two sub-circuits:
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/display_interface_0bfc1860.svg" alt="Display Interface schematic — full sheet (display power switch with VDSP rail conditioning; DWIN DMG48480F040 FPC connector). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/display_interface_057c2c8b.svg" alt="Display Interface schematic — full sheet (display power switch with VDSP rail conditioning; DWIN DMG48480F040 FPC connector). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
 
 1. **Display power switch and VDSP rail conditioning** — high-side P-MOSFET (Q4) switched on by an NPN gate driver (Q5) under firmware control via DISP_EN, followed by a ferrite bead (FB3) and a two-stage bypass cluster (C37, C38) on the switched VDSP rail.
 2. **DWIN display FPC connector and UART2 link** — J4 (50-pin 0.5 mm FPC) carrying VDSP, GNDREF, and the DISP_TX / DISP_RX UART2 lines that drive the DGUS II protocol.
@@ -28,7 +28,7 @@ The display module is a DWIN **DMG48480F040_01WTC** — a 4.0-inch, 480 × 480 c
 
 ## Display power switch and VDSP rail conditioning
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/display_interface_0bfc1860.svg" alt="Display power switch sub-circuit — Q4 (AO3407A P-MOSFET high-side switch), Q5 (S8050 NPN gate driver), R34 (Q4 gate pull-up), R31 + R35 (Q5 base-drive network), FB3 (BLM31KN601SN1L ferrite bead), and the VDSP bypass cluster C37 + C38." initialFocus="19.05 101.6 127.0 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/display_interface_057c2c8b.svg" alt="Display power switch sub-circuit — Q4 (AO3407A P-MOSFET high-side switch), Q5 (S8050 NPN gate driver), R34 (Q4 gate pull-up), R31 + R35 (Q5 base-drive network), FB3 (BLM31KN601SN1L ferrite bead), and the VDSP bypass cluster C37 + C38." initialFocus="19.05 101.6 127.0 88.9" />
 
 ### Functional specification and design objectives
 
@@ -78,7 +78,7 @@ The 5 V rail entering FB3 (Q4 drain) is therefore the *clean* side; the rail lea
 
 ## DWIN display FPC connector and UART2 link
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/display_interface_0bfc1860.svg" alt="DWIN display FPC connector sub-circuit — J4 (Xunpu FPC-05FB-50PH20 50-pin 0.5 mm FPC connector), carrying VDSP, GNDREF, and the DISP_TX / DISP_RX UART2 link to the display's T5L SoC." initialFocus="19.05 12.7 127.0 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/display_interface_057c2c8b.svg" alt="DWIN display FPC connector sub-circuit — J4 (Xunpu FPC-05FB-50PH20 50-pin 0.5 mm FPC connector), carrying VDSP, GNDREF, and the DISP_TX / DISP_RX UART2 link to the display's T5L SoC." initialFocus="19.05 12.7 127.0 88.9" />
 
 ### Functional specification and design objectives
 

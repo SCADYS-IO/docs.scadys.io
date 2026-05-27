@@ -2,6 +2,7 @@
   "product": "wti400",
   "version": "v1.2",
   "kicad_sheets": [
+    "WTI400_V1.2",
     "esp32_module",
     "power_supplies",
     "can_bus_power",

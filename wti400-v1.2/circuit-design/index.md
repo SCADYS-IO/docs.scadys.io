@@ -2,78 +2,171 @@
 title: Circuit Design
 hw_version: v1.2
 hw_status: in-service
-hw_status_label: "In service — installed on test vessel"
+hw_status_label: "In service — test vessel (~1,000 sea miles)"
 sidebar_label: Overview
 ---
 
+import SchematicViewer from '@site/src/components/SchematicViewer';
+
 :::note[Hardware version]
 
-WTI400 **v1.2** — In service — installed on test vessel
+WTI400 **v1.2** — In service on the test vessel. The board has accumulated approximately 1,000 sea miles with the ESP32 continuously Wi-Fi-active and the wind transducer running on a self-calibrating firmware. The WTI400 is an **evolution of the MLI400 V1.0** (Marine Legacy Interface) which carried a wind interface and a fairly mature bespoke firmware; the MLI400 V1.0 was installed on the same test vessel during the circumnavigation, accumulating thousands of sea miles in service and feeding the design improvements that produced V1.2. Subjective in-service performance is satisfactory; the per-circuit pages list the quantitative bench measurements still required.
 
 :::
 
-## System Architecture
+## Overview
 
-The WTI400 is a marine wind transducer interface that bridges analog wind sensors to NMEA 2000 networks. It accepts a standard sine-wave wind transducer (e.g. Raymarine E22078/E22079 or B&G 213) and outputs calibrated Apparent Wind Speed and Apparent Wind Angle as PGN 130306 messages on the vessel CAN bus. Vessel motion data from an onboard 6DoF IMU is used to apply heel, pitch, and dynamic correction to the raw transducer signals.
+The **WTI400** is a marine **Wind Transducer Interface** for **NMEA 2000** networks. It accepts a standard sine-wave wind transducer (Raymarine ST60 / E22078 family at the configured 8.4 V setpoint; B&G 213 supply-compatible at 6.8 V but requires the V2.0 ADC fix) and outputs calibrated *Apparent Wind Speed* and *Apparent Wind Angle* as PGN 130306 messages on the vessel CAN bus. A 6-DoF IMU on the same board provides heel / pitch / dynamic correction so the wind output is referenced to the vessel's true horizon rather than the mast's instantaneous orientation.
 
-Power enters on the NMEA 2000 backbone (9–16 V DC) via the M12 5-pin connector. An overvoltage protection cell clamps the input and feeds a switching regulator (VCC, 3.3 V) and a precision linear regulator (VAS, 8 V or 6.5 V selectable) for the wind transducer supply. The ESP32-S3 module acts as the system controller: 
-* samples the two wind sine channels through unity-gain buffers and ADCs, 
-* counts speed pulses from the anemometer, 
-* polls the IMU over I²C and 
-* transmits CAN frames via the SN65HVD234 transceiver. 
-An optional legacy serial interface transmits wind data (e.g. SeaTalk™ or NMEA0183) for backwards compatibility with older systems.
+The WTI400 is a fully self-contained NMEA 2000 device: power and data enter on a single Micro-C connector, the wind transducer attaches at six quick-connect tabs on the opposite edge, and a single RGB LED + tactile button on the front face provide local UI without requiring a display.
 
-All signal processing runs on the ESP32-S3-WROOM-1-N16R8 (16 MB flash, 8 MB PSRAM). Firmware communicates with the IMU at 52 Hz over I²C, reads the two wind ADC channels at the ESP32's native sample rate, counts speed pulses from the anemometer and publishes CAN frames at 1 Hz (True Wind). A single RGB LED and tactile button provide status indication and mode selection without requiring a display.
+This page narrates the system at the board level — the block diagram, power and signal flow, the four electrical isolation domains, the PCB stack-up, and the EMC philosophy that ties the layout together. Each functional block links to its own page where the schematic, layout, performance review, and firmware integration are documented in detail.
+
+<SchematicViewer src="/img/schematics/wti400-v1.2/WTI400_V1.2_78b17db7.svg" alt="WTI400 V1.2 hierarchical block diagram — the parent KiCad sheet showing each sub-sheet as a labelled block, with the inter-sheet bus connections (VCC, VSC, VAS, WIND_X / WIND_Y / WIND_SPD, TWAI bus, I²C bus, ST_* bus, etc.) routed between blocks." />
+
+---
+
+## Power flow
+
+Power enters on the NMEA 2000 backbone through a single 5-pin Micro-C connector at the bus-side edge. It travels through three stages before reaching the digital, wind-transducer, and legacy-serial rails:
+
+1. **CAN bus input protection** — fuse, TVS surge clamp, reverse-polarity Schottky, two-stage LC EMI filter, and over-voltage cut-off MOSFET pair (M1/M3 with threshold set by Zener D10). Documented on the [CAN Bus Power](./can-bus-power.md) page.
+2. **VCC SMPS + VAS LDO** — an LMR51610 synchronous buck generates the **VCC (3.3 V)** digital rail; an LP2951 micropower LDO generates the **VAS (8.4 V or 6.8 V selectable via JP1)** wind-transducer supply. Both regulators sit on `power_supplies.kicad_sch`, but the LDO content is documented on the [Wind Interface](./wind-interface.md) page as part of the wind-transducer supply chain. The SMPS lives in a moat-bounded F.Cu / B.Cu GNDREF island that contains the switching return currents.
+3. **Digital and wind distribution** — VCC feeds the ESP32 module, the motion sensor, the CAN transceiver, the legacy-serial RX/TX paths, and the button / LED indicator. VAS feeds the wind transducer connector through a series Schottky (D17) and a common-mode filter (FL2 — also the GND_WIND ↔ GNDREF star point).
+
+The VCC distribution exploits a deliberate **VCC – GNDREF – GNDREF – VCC** plane-pair stack-up across the digital domain: F.Cu and B.Cu carry VCC pour, and the two inner layers carry unbroken GNDREF. This creates two distributed VCC↔GNDREF plane-pair capacitors that decouple the rail at GHz frequencies with no parasitic inductance and no ESR — explained in detail on the [Power Supply](./power-supplies.md#in-the-vcc-digital-area) page and exploited specifically on the [ESP32 Module](./esp32-module.md) page (force-commutated daisy-chain bypass cluster at U3 pad 2).
+
+VAS has its own bypass topology (the LP2951's output cap C52, output bleed R74, and the C48 feedforward) — documented on the [Wind Interface](./wind-interface.md) page.
+
+---
+
+## Data flow
+
+The ESP32-S3-WROOM-1-N16R8 module (U3 on the [ESP32 Module](./esp32-module.md) page) is the system controller. All inter-block data signals fan out from U3 over hierarchical labels on the schematic:
+
+- **NMEA 2000 (CAN)** — TWAI_TX / TWAI_RX / TWAI_EN drive the SN65HVD234 transceiver on the [CAN Transceiver](./can-transceiver.md) page, which connects to NET-H / NET-L on the Micro-C connector through a two-stage common-mode filter and split-termination network. The ESP32-S3 TWAI peripheral emits PGN 130306 (apparent wind) at ~1 Hz; firmware also receives heading-reference and vessel-motion PGNs from other nodes when available.
+- **Wind transducer signals** — three analog/digital signals come in over the [Wind Interface](./wind-interface.md):
+  - **WIND_X / WIND_Y** — two analog sine channels (cosine + sine relative to the transducer's mechanical reference) sampled at the ESP32-S3 ADC's native rate. Firmware does `atan2` reconstruction to derive apparent wind angle.
+  - **WIND_SPD** — anemometer reed-switch pulse train (~2 Hz to ~100 Hz across the operating speed range), conditioned by a 74LVC1G17 Schmitt trigger and counted on a GPIO interrupt.
+  - **WND_EN / WND_ERR** — control / status pair for the LP2951 LDO that supplies the wind transducer. Firmware enables / disables the transducer rail and reads the LDO's open-drain ERROR output for fault detection.
+- **Motion sensing** — I2C_SCL / I2C_SDA at I²C Standard mode (100 kHz) connect to the LSM6DSLTR 6-DoF IMU on the [Motion Sensor](./motion-sensor.md) page (accelerometer + gyroscope, address 0x6A). Firmware polls the IMU at ~52 Hz to apply heel / pitch / dynamic correction to the raw transducer signals. Bus pull-ups (R3 / R4) live on the ESP32 module sheet.
+- **Local UI** — a single tactile **BUTTON** and an **RGB LED** (LED_RED / LED_GRN / LED_BLU) on the [Button Input](./button.md) and [LED Indicator](./led-indicator.md) pages provide configuration, mode selection, and status indication without requiring a display. The RGB LED backlights the Scadys logo on the front face.
+- **Programming interface** — ESP_TX / ESP_RX / ESP_EN / ESP_BOOT terminate at the [Programming Socket](./programming-socket.md) page's J1 ESP-PROG IDC header (developer/kit build) or the J1 THT pad footprint (production pogo-pin programming, R24 zero-ohm link in place of the LDO chain).
+- **Legacy serial (optional)** — ST_TX / ST_RX / ST_EN drive opto-isolated transmit and receive paths to the legacy serial backbone (single-wire 12 V protocol — e.g. for output to older instrument displays). Documented on the [Legacy Serial Interface](./legacy-serial.md) page.
+
+---
+
+## Ground domain map
+
+The WTI400 has **four electrically isolated ground domains**, each with its own pour and isolation creepage gap. Crossing a domain boundary is always via a defined isolator (transformer-coupled CAN transceiver, opto-coupler for legacy serial, common-mode filter at the wind connector, or a regulator's input-output isolation).
+
+| Domain | Reference | Scope | Crossing devices |
+|---|---|---|---|
+| **CAN domain** | GNDC | NMEA 2000 input — Micro-C connector, input protection (fuse / TVS / Schottky), EMI filter, OVP MOSFET. References the NMEA 2000 NET-C. | NMEA 2000 bus differential coupling crosses to **GNDREF** via the SN65HVD234 CAN transceiver's internal isolation. |
+| **DIGITAL domain** | GNDREF | Main domain — VCC SMPS, ESP32, motion sensor, CAN transceiver, button / LED, programming socket, the VCC plane-pair stack-up. | Crosses to **GND_WIND** via FL2 common-mode filter (also the star point). Crosses to **GNDS** via TLP2309 opto-couplers in the legacy serial paths. |
+| **WIND domain** | GND_WIND | Wind transducer interface — six Keystone 1211 quick-connect tabs (J4–J9), cable shield conditioning, D17 series Schottky, FL2 CMF, broadband bypass. References the transducer cable shield. | Joined to **GNDREF** at a single star point on FL2 — DC-continuous but separated for AC return paths. |
+| **LEGACY IO domain** *(optional, populated for legacy-serial builds)* | GNDS | Galvanically isolated legacy serial backbone — single-wire 12 V signalling. Has its own isolated 12 V supply (ZXTR2012FF LDO on the [Legacy Serial Interface](./legacy-serial.md) sheet). | Crosses to **GNDREF** *only* via TLP2309 opto-couplers; no DC continuity. |
+
+The board enforces these boundaries with 1.4 mm creepage gaps across each full-isolation line (CAN ↔ digital, legacy-serial ↔ digital) and a copper-free isolation gap across the wind connector's GND_WIND ↔ GNDREF boundary up to the FL2 star point.
 
 ---
 
 ## Subsystems
 
-| Subsystem | Sub-sheet | Role |
-|-----------|-----------|------|
-| Power Supplies | `power_supplies` | Input OVP clamp, LP2951 VAS linear regulator (8.4 V / 6.8 V selectable via JP1), HT7833 VCC 3.3 V LDO, reverse-polarity and ESD protection |
-| CAN Bus Power | `can_bus_power` | NMEA 2000 backbone power conditioning — fuse (F1), TVS surge protection (D11), PI filter (L2/L3, C33–C39), OVP MOSFET (M1/M3) with threshold set by Zener (D10) |
-| CAN Transceiver | `can_transceiver` | SN65HVD234 CAN transceiver, two-stage common-mode filter, split-termination (R5/R6 + C15), TVS protection (U9) on NET-H/NET-L |
-| Wind Interface | `wind_interface` | Transducer supply routing (WIND_8V via J5), dual-channel unity-gain buffer amplifier (U12 OPA2356) on WIND_X/WIND_Y, speed pulse input (WIND_SPD) via 74LVC1G17 Schmitt trigger |
-| ESP32 Module | `esp32_module` | ESP32-S3-WROOM-1-N16R8 controller, HT7833 VCC supply, programming header (J1), I²C pull-ups (R3/R4 = 10 kΩ), enable/boot configuration |
-| Motion Sensor | `motion_sensor` | LSM6DSLTR 6DoF IMU (accelerometer + gyroscope, LGA-14), I²C at address 0x6A, decoupled by C5/C6/C12 |
-| Button & LED | `button_led` | RGB LED (D1) backlighting the Scadys logo, tactile switch (SW1), current limiting resistors (R10–R12) |
-| Legacy Serial RX | `legacy_serial_rx` | Galvanically isolated receive path for the legacy serial bus (e.g. SeaTalk™) — ZXTR2012FF 12 V LDO (U14), TLP2309 opto-isolator (U6), LC filter, D-type protection |
-| Legacy Serial TX | `legacy_serial_tx` | Galvanically isolated transmit path — TLP2309 opto-isolators (U7 TX, U8 EN), 2N7002 open-drain output driver (Q6), MMBTA56LT1G rise-time assist (Q8), BZT52C15S zener clamp (D8) |
+Each block on the schematic block diagram above maps to one or more docs pages:
+
+| Function | Docs page | KiCad sheet | What it covers |
+|---|---|---|---|
+| NMEA 2000 input protection | [CAN Bus Power](./can-bus-power.md) | `can_bus_power.kicad_sch` | Fuse F1, TVS D11, PI filter L2/L3 + C33–C39, OVP MOSFET pair M1/M3 with Zener-set threshold |
+| 3.3 V VCC SMPS | [Power Supply](./power-supplies.md) | `power_supplies.kicad_sch` | LMR51610 buck converter; moat-bounded SMPS island; VCC plane-pair distribution; domain isolation boundaries |
+| CAN transceiver | [CAN Transceiver](./can-transceiver.md) | `can_transceiver.kicad_sch` | SN65HVD234 transceiver; CAN common-mode filter; split-termination + PESD15VL1BA TVS protection |
+| MCU + VCC bypass + I²C pull-ups | [ESP32 Module](./esp32-module.md) | `esp32_module.kicad_sch` | ESP32-S3-WROOM-1-N16R8; force-commutated VCC bypass at U3 pad 2; EN / BOOT RC networks; I²C bus pull-ups (R3 / R4) |
+| Programming hardware | [Programming Socket](./programming-socket.md) | `esp32_module.kicad_sch` | J1 ESP-PROG IDC header; HT7833 LDO + single-Schottky-isolation chain (D4 / D5); production-variant R24 zero-ohm bridge |
+| Wind transducer interface | [Wind Interface](./wind-interface.md) | `wind_interface.kicad_sch` + (LP2951 portion of) `power_supplies.kicad_sch` | VAS LDO (8.4 V / 6.8 V via JP1); six Keystone 1211 tabs (J4–J9); D17 series Schottky; FL2 CMF; X / Y channel buffer amplifier; speed-pulse Schmitt trigger |
+| Transducer compatibility | [Transducer Compatibility](../transducer-compatibility.md) | n/a *(documentation only)* | Per-transducer pin-out, supply requirements, signal-level characteristics, V1.2 compatibility matrix |
+| Motion sensor | [Motion Sensor](./motion-sensor.md) | `motion_sensor.kicad_sch` | LSM6DSLTR 6-DoF IMU (accelerometer + gyroscope) at I²C 0x6A; firmware polls at ~52 Hz for heel / pitch / dynamic correction |
+| Local UI — tactile button | [Button Input](./button.md) | `button_led.kicad_sch` | SW1 tactile switch; pull-up biasing; debounce expectations |
+| Local UI — RGB LED | [LED Indicator](./led-indicator.md) | `button_led.kicad_sch` | RGB LED (D1) backlighting the Scadys logo; current limiting (R10–R12); LED_RED / LED_GRN / LED_BLU GPIO mapping |
+| Legacy serial | [Legacy Serial Interface](./legacy-serial.md) | `legacy_serial_rx.kicad_sch` + `legacy_serial_tx.kicad_sch` | Galvanically-isolated transmit and receive paths; ZXTR2012FF isolated 12 V supply; TLP2309 opto-couplers; 2N7002 open-drain output driver |
+| PCB markings & compliance | n/a *(not a docs page)* | `pcb_markings.kicad_sch` | Fiducials, compliance marks, silkscreen labels |
 
 ---
 
-## PCB Layout & Stack-up
+## PCB stack-up and layer allocation
 
-### Stack-up
+The WTI400 V1.2 PCB is a **four-layer** design manufactured to IPC-6012 Class 2, with ENIG surface finish and dark blue solder mask. The stack-up is asymmetric in copper weight (signal layers at 0.5 oz / 17.5 µm; inner layers at 1 oz / 35 µm) and the layer roles change region-by-region across the board:
 
-The WTI400 V1.2 PCB is a four-layer design manufactured to IPC-6012 Class 2, with ENIG surface finish and dark blue solder mask.
-
-| Layer | Number | Type | Thickness | Role |
-|-------|--------|------|-----------|------|
-| F.Cu | 0 | Signal | 17.5 µm (0.5 oz) | Component layer; VCC and GNDREF fills; routed signals |
-| In1.Cu | 4 | Power | 35 µm (1 oz) | GNDREF solid ground plane (primary reference) |
-| In2.Cu | 6 | Power | 35 µm (1 oz) | Additional power/ground fill (domain-dependent) |
-| B.Cu | 2 | Signal | 17.5 µm (0.5 oz) | GNDREF fills; VCC fill; signal routing |
+| Layer | # | Type | Thickness | Role |
+|---|---|---|---|---|
+| F.Cu | 0 | Signal | 17.5 µm (0.5 oz) | Component layer; VCC pour in the digital region; GNDREF moat-bounded fills under SMPS, CAN-power, and wind-LDO sections; routed signals |
+| In1.Cu | 4 | Power | 35 µm (1 oz) | Unbroken GNDREF in the digital region (one half of the plane pair); GNDREF moat inside the SMPS island |
+| In2.Cu | 6 | Power | 35 µm (1 oz) | Unbroken GNDREF in the digital region (other half of the plane pair); domain-dependent fills elsewhere |
+| B.Cu | 2 | Signal | 17.5 µm (0.5 oz) | VCC pour in the digital region; GNDREF fills under SMPS / CAN-power / wind-LDO islands; signal routing |
 
 **Board outline:** 95.2 × 95.2 mm (Edge.Cuts x: 66.4–161.6 mm, y: 42.4–137.6 mm).
 
-### Layer Allocation
+**In the digital region** (ESP32 module, motion sensor, CAN transceiver, button / LED), F.Cu and B.Cu carry **VCC pour**; In1.Cu and In2.Cu carry unbroken **GNDREF**. The two VCC↔GNDREF plane pairs (F.Cu↔In1.Cu and In2.Cu↔B.Cu) separated by 0.1855 mm prepreg form a distributed VCC bypass capacitor across the whole digital area — no parasitic inductance, no ESR, effective up to GHz frequencies. This is what makes the force-commutated three-cap daisy-chain at U3 pad 2 sufficient for the antenna's 2.4 GHz fundamental: above the discrete caps' package ESL, the plane pair takes over.
 
-The In1.Cu GNDREF plane is the primary signal return and EMC reference layer. In the switching power supply region (x: 72.2–85.8 mm), In1.Cu provides an uninterrupted solid pour. Across the digital domain (ESP32, CAN transceiver, IMU), both F.Cu and B.Cu carry GNDREF fills stitched to In1.Cu by regular via arrays.
+**In the SMPS island** (LMR51610 core, switching nodes, hot loops, x &lt; 88 mm), all four layers carry **GNDREF** with a copper-keepout moat surrounding the island. Switching return currents are contained inside the moat. The same moat-and-fence pattern is applied around the **CAN-bus power section** and the **wind-transducer LDO section** — both are similarly noisy and similarly contained. Documented in detail on the [Power Supply](./power-supplies.md) page.
 
-In2.Cu is unused in most domains. Where a second power rail is required (such as the NMEA 2000 NET-S path in the CAN bus power section), In2.Cu carries the isolated supply. The use of In1.Cu as a dedicated ground layer — rather than as a general power plane — ensures a continuous low-impedance return path under all signal traces on F.Cu and B.Cu.
+**Across isolation boundaries** (CAN-bus side to digital domain; legacy-serial side to digital domain), all four layers carry **copper-free 1.4 mm creepage gaps**. Crossing devices (CAN transceiver, opto-couplers, ferrite beads, LDOs) are the only DC paths between domains. The GND_WIND ↔ GNDREF boundary at the wind connector is also held copper-free up to the FL2 star point.
 
-VCC (3.3 V) is distributed via wide copper fills on F.Cu and B.Cu. The VCC zone spans the digital domain (x: 83.5–157.5 mm) and connects the HT7833 LDO output to the ESP32 module, CAN transceiver, IMU, and pull-up resistors. Ninety-five VCC vias (0.3 mm drill, F.Cu–B.Cu) ensure low-resistance distribution across the domain.
+---
 
-### Isolation Zones
+## EMC layout philosophy
 
-Two galvanic isolation boundaries are maintained on the PCB:
+The WTI400 layout follows three principles, each grounded in a specific reference:
 
-1. **CAN bus isolation (CAN transceiver domain):** The NET-H/NET-L differential pair and NET-S power are separated from the ESP32 digital domain by a minimum 1.4 mm creepage gap. The common-mode filter and TVS protection stage (U9) sit on the NMEA 2000 side of this boundary; the SN65HVD234 (U5) straddles it.
+1. **Confine the switching converters.** Per the Monolithic Power Systems EMI webinar (*Practical Grounding and Layout*), every buck-converter SW node, input hot loop, and output hot loop is kept inside the SMPS island. The island is surrounded by a 0.4 mm copper-keepout moat on F.Cu and B.Cu; the inner GNDREF planes provide a containment cage. The same containment is applied to the CAN-bus power section and the wind-LDO section. Documented on the [Power Supply](./power-supplies.md) page.
 
-2. **Legacy serial isolation (legacy_serial_rx / legacy_serial_tx):** A 1.4 mm isolation gap separates the ST_SIG bus-side traces from the ESP32-side RX/TX signals. The TLP2309 opto-isolators (U6, U7, U8) bridge the two domains. The GND_WIND fill and GNDREF fill are copper-free across this boundary on F.Cu.
+2. **Use the VCC↔GNDREF plane pair as the primary GHz-band decoupling.** Discrete bypass caps handle frequencies up to their package self-resonance (~100 MHz for 0603 X7R, higher for C0G). Above that, the plane pair takes over — provided the digital area's F.Cu / B.Cu pours stay as VCC (not GNDREF) so the plane-pair geometry is preserved. The moat-bounded GNDREF on F.Cu / B.Cu is therefore **only** under the SMPS, CAN-bus power, and wind-LDO islands; extending it into the digital area would break the plane-pair capacitance.
 
-### EMC Layout Philosophy
+3. **Preserve module pre-certification with antenna keep-out.** The ESP32-S3-WROOM-1's FCC / CE / IC pre-certification is contingent on a copper-free area in the antenna projection. The WTI400 layout uses a physical PCB cutout under the antenna section — the substrate is removed entirely, which also removes any fill copper that might otherwise have been carried there by zone priority alone. No `keepout` rule area is needed because the cutout makes the requirement self-enforcing. Documented on the [ESP32 Module](./esp32-module.md) page.
 
-Switching nodes (LMR51610 in the power_supplies section) are confined to the west of the board (x < 88 mm). The ESP32 module, IMU, and analog wind buffers occupy the eastern half. I²C traces (I2C_SCL, I2C_SDA) run northward from the IMU to the ESP32 module without crossing any switching power domain. CAN differential traces (NET-H, NET-L) are routed as a matched pair with the common-mode filter immediately at the M12 connector. The WIND_X and WIND_Y analog traces are separated by 5 mm with a GNDREF copper fill between them; no deliberate shielding is required at the operating signal frequencies (< 5 Hz wind sine wave).
+Other layout notes:
+
+- The WIND_X and WIND_Y analog traces are routed as a matched pair, separated by 5 mm with a GNDREF copper fill between them. No deliberate shielding is required at the operating signal frequencies (&lt; 5 Hz wind sine wave) — the L4 / L5 RF chokes on each channel are for RF / EMI ingress at the masthead cable, not for inter-channel crosstalk.
+- I²C traces (I2C_SCL, I2C_SDA) run from the ESP32 module to the motion sensor without crossing any switching power domain — both are in the digital region.
+- The CAN differential pair (NET-H, NET-L) is routed as a matched pair with the common-mode filter immediately at the M12 connector. The transceiver (U5) sits on the boundary between the CAN domain and the digital domain, with the differential pair always staying in the CAN domain.
+
+---
+
+## Testing & Verification
+
+:::caution
+
+V1.2 is in service on the test vessel. Each circuit page has its own Testing & Verification list — the items below are the **system-level** items that span multiple sub-circuits or require integrated bring-up.
+
+**Heritage in service.** The WTI400 V1.2 deployment on the test vessel has accumulated approximately 1,000 sea miles with continuous Wi-Fi operation and the self-calibrating wind firmware running. The MLI400 V1.0 predecessor, installed on the same test vessel for the circumnavigation, accumulated thousands more sea miles of wind-interface operating heritage on the bespoke firmware that fed forward into the WTI400 design. The remaining bring-up tests are quantitative bench measurements that haven't yet been performed against the in-service installation.
+
+**System-level bring-up (rig at the bench, transducer attached):**
+
+- **NMEA 2000 round-trip** — Plug into a live N2K backbone with a known-instrumented vessel simulator. Pass if the WTI400 acquires an address, emits PGN 130306 (apparent wind), and receives heading PGNs cleanly.
+- **Wind transducer round-trip on the bench** — Connect a Raymarine ST60 / E22078 transducer at JP1 8v4, spin the vane through a known angular pattern, and confirm the firmware-reported angle matches within ±5° across all four quadrants. Repeat the speed-pulse PPR calibration at a measured RPM.
+- **IMU correction validation** — Tilt the assembled WTI400 (mounted in a representative mast-bracket orientation) through known heel / pitch angles; confirm the firmware's wind-direction output stays referenced to the vessel-frame true horizon, not the mast's instantaneous tilt.
+- **VCC rail under sustained Wi-Fi TX** — Probe at U3 pad 2 during a sustained 802.11b TX burst. Pass if the rail stays within ±3 % of 3.30 V with no individual dip below 3.10 V (covers the bypass topology under realistic load).
+- **VAS rail thermal soak** — 30-minute run at VSC = 14.8 V, JP1 6v8, 30 mA load on the LDO. Record LP2951 package temperature; pass if estimated T<sub>j</sub> stays below 110 °C at 40 °C ambient.
+- **End-to-end power-up sequence** — Brown-out the N2K supply repeatedly. Confirm the timing of: VCC stable → ESP32 boots → RGB LED initialises → firmware starts → WND_EN enables the transducer → first NMEA 2000 frame emitted. No spurious LED flicker, no transducer power glitch.
+
+**For V1.3 (tracked in `v1.3-improvements.md`):**
+
+- All per-circuit V1.3 entries documented on the individual pages, including: M12 6-pin waterproof connector replacing the Keystone 1211 tab array on the wind side; LP2951 DRG package for better thermal headroom on the wind LDO; the U12 amplifier bias rework so V1.3 supports both Raymarine 8v4 and B&G 6v8 transducers natively (currently V1.2 is Raymarine-only); shorter ESP_EN routing; per-circuit GNDREF moat carry-over from the MDD400 V2.9 layout.
+- Sister-product cross-reference: the MDD400 V2.9 uses the same buck converter, the same ESP32-S3 module, and the same CAN transceiver. Where V1.3 introduces a change that also applies to MDD400 V2.10, the items are cross-referenced between the two product backlogs.
+
+:::
+
+---
+
+## References
+
+- **Sister product** — [MDD400 V2.9 Circuit Design](/mdd400/v2.9/circuit-design/) — shares the buck converter, ESP32-S3 module, and CAN transceiver subsystems. Mirror product designed alongside the WTI400; the two share design decisions, layout patterns, and several backlog items.
+- **Predecessor product** — MLI400 V1.0 (*Marine Legacy Interface*) — the bespoke-firmware wind interface that preceded the WTI400. Installed on the test vessel for the circumnavigation; the firmware lineage and several design decisions carry forward into V1.2.
+- [Transducer Compatibility Reference](../transducer-compatibility.md) — per-transducer pin-outs, supply requirements, signal-level characteristics, and V1.2 compatibility matrix.
+- Texas Instruments, [*LMR51610 Synchronous Buck Converter*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf) — VCC switching regulator.
+- Texas Instruments, [*LP2951 Adjustable Micropower Voltage Regulator*](http://www.ti.com/lit/ds/symlink/lp2951.pdf) — VAS wind-transducer LDO.
+- Texas Instruments, [*SN65HVD234 3.3 V CAN Transceiver*](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf) — NMEA 2000 transceiver.
+- Texas Instruments, [*TLV9002 1-MHz Rail-to-Rail Op-Amp*](https://www.ti.com/lit/ds/symlink/tlv9002.pdf) — wind X / Y channel buffer amplifier.
+- STMicroelectronics, [*LSM6DSL 6-DoF IMU*](https://www.st.com/resource/en/datasheet/lsm6dsl.pdf) — motion sensor.
+- Espressif Systems, [*ESP32-S3-WROOM-1 Module Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf) — system controller.
+- Monolithic Power Systems, [*EMI Webinar: Practical Grounding and Layout*](https://www.monolithicpower.com/en/support/videos/emi-2-webinar-early-session.html) — referenced throughout the layout philosophy on the [Power Supply](./power-supplies.md) page.
+- NMEA 2000 Network Specification — IEC 61162-1 / SAE J1939 family.

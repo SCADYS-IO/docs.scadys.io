@@ -17,7 +17,7 @@ MDD400 **v2.9** — Fabricated prototype, bench-test phase. The INA219 has been 
 
 This page documents the INA219 power monitor on `i2c_sensors.kicad_sch` — a high-side current and bus-voltage measurement IC that lets the firmware read the MDD400's NMEA 2000 bus supply current and voltage. The I²C bus pull-ups (R1 on SCL; R2 ∥ R3 on SDA) are documented on the [ESP32 Module](./esp32-module#i2c-bus-pull-ups) page.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/i2c_sensors_d1803b00.svg" alt="INA219 power monitor sub-circuit — U2 (TI INA219AIDCNR), R33 (Yageo 330 mΩ precision thick-film shunt, located in the power supply section), C8 (1 µF VCC bulk bypass), and C11 (100 nF VCC HF bypass)." initialFocus="152.4 12.7 130.81 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/i2c_sensors_59542a1c.svg" alt="INA219 power monitor sub-circuit — U2 (TI INA219AIDCNR), R33 (Yageo 330 mΩ precision thick-film shunt, located in the power supply section), C8 (1 µF VCC bulk bypass), and C11 (100 nF VCC HF bypass)." initialFocus="152.4 12.7 130.81 88.9" />
 
 The INA219 is at I²C address **0x40**.
 

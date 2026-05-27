@@ -2,6 +2,7 @@
   "product": "mdd400",
   "version": "v2.9",
   "kicad_sheets": [
+    "MDD400_V2.9",
     "esp32_module",
     "power_supplies",
     "can_bus_power",

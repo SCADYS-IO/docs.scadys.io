@@ -17,7 +17,7 @@ MDD400 **v2.9** — Fabricated prototype, bench-test phase. PWM tone generation 
 
 This page documents the audio-alert driver on `buzzer_driver.kicad_sch` — a high-side P-MOSFET buzzer driver that takes the ESP32 AUDIO_PWM signal and produces audible tones through an 16 Ω passive electromagnetic transducer (MLT-8530). The circuit is the MDD400's single audio output, used for system alerts (low-voltage, over-temperature, fault, user-acknowledged alarm) annunciated to the helm operator.
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/buzzer_driver_a2605baf.svg" alt="Buzzer driver sub-circuit — Q3 (S8050 NPN gate driver), Q2 (AO3407A P-MOSFET high-side switch), R11 (Q2 gate pull-up to VDD), R12 + R13 (Q3 base-drive network with default-off pull-down), R10 + C12 + R9 (output low-pass filter), D1 (BAT54 flyback Schottky clamp), and BZ0 (MLT-8530 16 Ω passive electromagnetic transducer on B.Cu)." initialFocus="19.05 12.7 127.0 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/buzzer_driver_275e7578.svg" alt="Buzzer driver sub-circuit — Q3 (S8050 NPN gate driver), Q2 (AO3407A P-MOSFET high-side switch), R11 (Q2 gate pull-up to VDD), R12 + R13 (Q3 base-drive network with default-off pull-down), R10 + C12 + R9 (output low-pass filter), D1 (BAT54 flyback Schottky clamp), and BZ0 (MLT-8530 16 Ω passive electromagnetic transducer on B.Cu)." initialFocus="19.05 12.7 127.0 88.9" />
 
 The transducer is mounted on B.Cu directly underneath the driver cluster on F.Cu; the FPC-style "speaker / buzzer" label in the schematic marks this rectangle.
 
