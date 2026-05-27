@@ -26,6 +26,16 @@ const sidebars = {
         },
         {
           "type": "doc",
+          "id": "circuit-design/led-indicator",
+          "label": "LED Indicator"
+        },
+        {
+          "type": "doc",
+          "id": "circuit-design/programming-socket",
+          "label": "Programming Socket"
+        },
+        {
+          "type": "doc",
           "id": "circuit-design/power-supplies",
           "label": "Power Supplies"
         },

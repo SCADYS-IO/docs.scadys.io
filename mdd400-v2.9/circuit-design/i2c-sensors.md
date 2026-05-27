@@ -7,7 +7,7 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/i2c_sensors_edfd1990.svg" alt="I²C Sensors schematic" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/i2c_sensors_a982f521.svg" alt="I²C Sensors schematic" />
 
 :::note[Hardware version]
 

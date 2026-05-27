@@ -7,7 +7,7 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_24f6b21f.svg" alt="CAN bus power — full sheet" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_eb684e89.svg" alt="CAN bus power — full sheet" />
 
 :::note[Hardware version]
 MDD400 **v2.9** — Fabricated prototype — testing phase
@@ -38,7 +38,7 @@ The NMEA 2000 bus delivers power on NET-S (positive) and NET-C (ground). The MDD
 
 #### CAN Domain Power Conditioning (Stages 1–4)
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_24f6b21f.svg" alt="CAN domain power conditioning — TVS/MOV clamp, fuse + reverse-polarity Schottky, bulk caps, two-stage LC EMI filter. Zoom out to see the full sheet." initialFocus="12.7 12.7 147.32 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_eb684e89.svg" alt="CAN domain power conditioning — TVS/MOV clamp, fuse + reverse-polarity Schottky, bulk caps, two-stage LC EMI filter. Zoom out to see the full sheet." initialFocus="12.7 12.7 147.32 88.9" />
 
 ##### Stage 1 — Primary surge clamping
 
@@ -81,7 +81,7 @@ X7R MLCC capacitance falls significantly with applied DC voltage. All filter cap
 
 #### Over-voltage Protection (Stages 5–6)
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_24f6b21f.svg" alt="Over-voltage protection and current shunt — Q2 high-side switch, Q3 comparator, R27/R28 divider, R25/R26 gate network, C28 hysteresis, D3 gate clamp, current shunt + INA219 area, D2 secondary clamp. Zoom out to see the full sheet." initialFocus="160.02 12.7 124.46 88.9" />
+<SchematicViewer src="/img/schematics/mdd400-v2.9/can_bus_power_eb684e89.svg" alt="Over-voltage protection and current shunt — Q2 high-side switch, Q3 comparator, R27/R28 divider, R25/R26 gate network, C28 hysteresis, D3 gate clamp, current shunt + INA219 area, D2 secondary clamp. Zoom out to see the full sheet." initialFocus="160.02 12.7 124.46 88.9" />
 
 ##### Stage 5 — Over-voltage protection and current shunt
 

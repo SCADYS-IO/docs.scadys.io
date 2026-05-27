@@ -15,6 +15,8 @@
   ],
   "circuit_design_pages": [
     { "slug": "esp32-module",     "label": "ESP32 Module",             "renders": ["esp32_module"] },
+    { "slug": "led-indicator",    "label": "LED Indicator",            "renders": ["esp32_module"] },
+    { "slug": "programming-socket","label": "Programming Socket",       "renders": ["esp32_module"] },
     { "slug": "power-supplies",   "label": "Power Supplies",           "renders": ["power_supplies"] },
     { "slug": "can-bus-power",    "label": "CAN Bus Power Protection", "renders": ["can_bus_power"] },
     { "slug": "can-transceiver",  "label": "CAN Transceiver",          "renders": ["can_transceiver"] },

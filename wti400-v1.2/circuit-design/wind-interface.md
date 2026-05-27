@@ -20,7 +20,7 @@ This page documents the **wind transducer interface**: everything between the ma
 - **`wind_interface.kicad_sch`** — the analog signal chain, the connector ring, cable shield conditioning, the supply path from the LDO to the transducer, and the speed-pulse conditioning.
 - **A portion of `power_supplies.kicad_sch`** — the LP2951 LDO (sub-block titled *"8V / 6v5 LDO REGULATOR (35mA max)"*) that produces the VAS rail. The Power Supply page documents only the LMR51610 SMPS portion of that sheet and cross-links here for the LDO.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_2f3014a9.svg" alt="Wind Interface schematic — full sheet (connectors, protection, conditioning, X/Y channels, speed pulse). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
+<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_9e207d39.svg" alt="Wind Interface schematic — full sheet (connectors, protection, conditioning, X/Y channels, speed pulse). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
 
 Five sub-circuits in narrative order:
 
@@ -36,7 +36,7 @@ Five sub-circuits in narrative order:
 
 ## Wind transducer supply (VAS rail)
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_322b68cf.svg" alt="LP2951 LDO sub-circuit — U13 (LP2951-50DR adjustable), feedback divider (R72 upper, R77/R78 selectable lower legs), JP1 (Vsel jumper), R79 (factory-select 0 Ω alternative), D16 (Vout-to-Vin protection diode), R55 (SHUTDOWN pull-up), R65 (ERROR pull-up), R74 (VAS bleed), C48 (feedforward), C51 (input bypass), C52 (output bypass), FB2 (LDO output to VAS digital-domain boundary ferrite). Zoom out to see the full power_supplies sheet." initialFocus="12.7 96.52 139.7 97.79" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_c6c5a4ee.svg" alt="LP2951 LDO sub-circuit — U13 (LP2951-50DR adjustable), feedback divider (R72 upper, R77/R78 selectable lower legs), JP1 (Vsel jumper), R79 (factory-select 0 Ω alternative), D16 (Vout-to-Vin protection diode), R55 (SHUTDOWN pull-up), R65 (ERROR pull-up), R74 (VAS bleed), C48 (feedforward), C51 (input bypass), C52 (output bypass), FB2 (LDO output to VAS digital-domain boundary ferrite). Zoom out to see the full power_supplies sheet." initialFocus="12.7 96.52 139.7 97.79" />
 
 ### Functional specification and design objectives
 
@@ -133,7 +133,7 @@ A V1.3 / V2.0 candidate is the **DRG package** of the LP2951 (LP2951CSDRG, expos
 
 ## Connector and cable shield
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_2f3014a9.svg" alt="Connector and cable shield sub-circuits — six Keystone 1211 quick-connect tabs (J4 shield, J5 WIND_8V, J6 X analog, J7 Y analog, J8 P pulse, J9 GND_WIND), connector-side TVS row (D18 WIND_8V, D20 X, D21 Y, D22 P), cable shield conditioning (D19 PESD15VL1BA TVS, R75 1 MΩ DC bleed, C57 1 nF HF bypass)." initialFocus="13.97 152.4 132.08 44.45" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_9e207d39.svg" alt="Connector and cable shield sub-circuits — six Keystone 1211 quick-connect tabs (J4 shield, J5 WIND_8V, J6 X analog, J7 Y analog, J8 P pulse, J9 GND_WIND), connector-side TVS row (D18 WIND_8V, D20 X, D21 Y, D22 P), cable shield conditioning (D19 PESD15VL1BA TVS, R75 1 MΩ DC bleed, C57 1 nF HF bypass)." initialFocus="13.97 152.4 132.08 44.45" />
 
 ### Functional specification and design objectives
 
@@ -199,7 +199,7 @@ The schematic carries an explicit placement instruction: *"Place C44, C45 and D2
 
 ## Wind transducer power conditioning
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_2f3014a9.svg" alt="Wind transducer power conditioning sub-circuit — D17 (BAT54 series Schottky, anode=VAS, cathode=FL2 pin 3), FL2 (SMCM7060-132T common-mode filter; also the GND_WIND ↔ GNDREF star point through winding 2), C55 (100 nF X7R broadband bypass on WIND_8V), C56 (15 pF C0G HF bypass on WIND_8V). Adjacent cable shield conditioning (D19, R75, C57) and WIND_8V connector-side TVS (D18) shown to the right." initialFocus="146.05 82.55 127.0 82.55" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_9e207d39.svg" alt="Wind transducer power conditioning sub-circuit — D17 (BAT54 series Schottky, anode=VAS, cathode=FL2 pin 3), FL2 (SMCM7060-132T common-mode filter; also the GND_WIND ↔ GNDREF star point through winding 2), C55 (100 nF X7R broadband bypass on WIND_8V), C56 (15 pF C0G HF bypass on WIND_8V). Adjacent cable shield conditioning (D19, R75, C57) and WIND_8V connector-side TVS (D18) shown to the right." initialFocus="146.05 82.55 127.0 82.55" />
 
 ### Functional specification and design objectives
 
@@ -272,7 +272,7 @@ Together they supplement the FL2 common-mode filtering with a local energy reser
 
 ## Wind angle X and Y channels
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_2f3014a9.svg" alt="Wind angle X ADC buffer sub-circuit (Y channel is identical with mirrored designators — see table below) — D20 (SD09C-7 TVS), L4 (1 µH RF/EMI choke), C44 (1 nF C0G filter cap), R58/R59 (56 kΩ input divider), R47/R48 (bias divider), R49 (Rg), R50 (Rf), U12A non-inverting amplifier → WIND_X." initialFocus="13.97 12.7 132.08 69.85" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_9e207d39.svg" alt="Wind angle X ADC buffer sub-circuit (Y channel is identical with mirrored designators — see table below) — D20 (SD09C-7 TVS), L4 (1 µH RF/EMI choke), C44 (1 nF C0G filter cap), R58/R59 (56 kΩ input divider), R47/R48 (bias divider), R49 (Rg), R50 (Rf), U12A non-inverting amplifier → WIND_X." initialFocus="13.97 12.7 132.08 69.85" />
 
 The two analog wind angle channels are functionally and electrically identical — exact mirrors of each other, so that the firmware `atan2(WIND_Y, WIND_X)` direction reconstruction sees a symmetric pair. The pair occupies the top half of the schematic with X on the left and Y on the right; the PCB layout mirrors trace lengths and component orientations around U12's vertical centreline. Any systematic offset or gain mismatch between the two would appear as a fixed angular error in atan2 output, so symmetry is a first-class requirement.
 
@@ -416,7 +416,7 @@ The amplifier is no longer ADC-centred. The negative half-wave of the X signal (
 
 ## Wind speed pulse conditioning
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_2f3014a9.svg" alt="Wind speed pulse conditioning sub-circuit — D22 (SD09C-7 TVS at J8), L7 (10 µH RF choke in P line), R76 (22 kΩ pull-up to WIND_8V), R63 (150 kΩ upper divider), R62 (100 kΩ shunt to GNDREF), VSENSE node, R64 (330 Ω series current-limit to U11 input), D10 (BZT52C3V6S 3.6 V zener clamp), C46 (15 pF C0G HF filter), U11 (74LVC1G17 Schmitt-trigger buffer), output WIND_SPD to ESP32 GPIO." initialFocus="13.97 82.55 132.08 69.85" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_9e207d39.svg" alt="Wind speed pulse conditioning sub-circuit — D22 (SD09C-7 TVS at J8), L7 (10 µH RF choke in P line), R76 (22 kΩ pull-up to WIND_8V), R63 (150 kΩ upper divider), R62 (100 kΩ shunt to GNDREF), VSENSE node, R64 (330 Ω series current-limit to U11 input), D10 (BZT52C3V6S 3.6 V zener clamp), C46 (15 pF C0G HF filter), U11 (74LVC1G17 Schmitt-trigger buffer), output WIND_SPD to ESP32 GPIO." initialFocus="13.97 82.55 132.08 69.85" />
 
 ### Functional specification and design objectives
 

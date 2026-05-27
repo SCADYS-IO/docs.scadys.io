@@ -15,23 +15,20 @@ WTI400 **v1.2** — In service on the test vessel. Approximately 1,000 sea miles
 
 ## Overview
 
-This page documents the WTI400's main application processor — an Espressif ESP32-S3-WROOM-1-N16R8 module — and the surrounding circuitry on `esp32_module.kicad_sch`: VCC bypass, control-line RC networks, the I2C bus pull-ups, the ESP-PROG programming socket, and the dual-variant LDO that supplies VCC during firmware flashing.
+This page documents the WTI400's main application processor — an Espressif ESP32-S3-WROOM-1-N16R8 module — and its host-side surroundings on `esp32_module.kicad_sch`: VCC bypass, control-line RC networks, and the I2C bus pull-ups. The firmware-programming hardware (J1 ESP-PROG IDC socket, the optional HT7833 LDO U4, isolation Schottkys D4 / D5, and the production-variant R24 zero-ohm bridge) is also on this sheet but is documented on its own [Programming Socket](./programming-socket) page.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_eb5ab595.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_5c3156a6.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
 
-Three sub-circuits in narrative order:
+Two sub-circuits in narrative order:
 
 1. **ESP32-S3 module and signal map** — U3 itself, its global-label fan-out to every other sub-sheet, and the antenna-end clearance treatment.
 2. **VCC supply bypass and control-line RC networks** — multi-stage VCC decoupling at U3's 3V3 pads, the EN power-on RC, the IO0 boot-strap RC, and the I2C bus pull-ups.
-3. **ESP-PROG programming socket and dual-variant LDO** — J1 ESP-PROG-compatible header, the developer-variant HT7833 LDO chain (U4 + isolation Schottky D4 + Vout-to-Vin protection D5), and the production-variant zero-ohm bridge (R24).
-
-The page covers the V1.2 **developer/kit** assembly variant — U4, D4, D5, J1 populated and R24 DNP — which is the build installed on the test vessel. The production variant is described in the third sub-section as the configuration the same PCB will carry once volume builds are programmed via pogo-pin fixture.
 
 ---
 
 ## ESP32-S3 module and signal map
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_eb5ab595.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_5c3156a6.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
 
 ### Functional specification and design objectives
 
@@ -88,7 +85,7 @@ The I2C bus pull-ups (R3, R4) live on this sheet rather than on the motion-senso
 
 ## VCC supply bypass and control-line RC networks
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_eb5ab595.svg" alt="VCC supply bypass and control-line RC networks sub-circuit — main 3V3 bypass cluster (C8 100 pF C0G, C3 100 nF, C1 10 µF) at U3 pads, LDO-output-side bypass (C16 10 µF, C17 100 nF), EN RC pair (R9 + C7), BOOT RC pair (R18 + C22), and I2C bus pull-ups (R3 SCL, R4 SDA)." initialFocus="146.05 12.7 137.16 76.2" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_5c3156a6.svg" alt="VCC supply bypass and control-line RC networks sub-circuit — main 3V3 bypass cluster (C8 100 pF C0G, C3 100 nF, C1 10 µF) at U3 pads, LDO-output-side bypass (C16 10 µF, C17 100 nF), EN RC pair (R9 + C7), BOOT RC pair (R18 + C22), and I2C bus pull-ups (R3 SCL, R4 SDA)." initialFocus="146.05 12.7 137.16 76.2" />
 
 ### Functional specification and design objectives
 
@@ -162,104 +159,24 @@ IO0 reaches the valid HIGH well before EN releases (~14 ms later), so the module
 
 ---
 
-## ESP-PROG programming socket and dual-variant LDO
-
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_eb5ab595.svg" alt="ESP-PROG programming socket sub-circuit — J1 (2×3 2.54 mm IDC header, ESP-PROG-compatible), D4 (input isolation Schottky), U4 (HT7833 3.3 V LDO), D5 (Vout-to-Vin protection Schottky), R24 (zero-ohm production-variant link), and LDO-input decoupling C20 + C21." initialFocus="13.335 107.95 132.715 82.55" />
-
-### Functional specification and design objectives
-
-- Expose a programming interface compatible with Espressif's standard ESP-PROG 6-pin adapter so the developer build can be flashed and debugged with off-the-shelf tools.
-- Protect U3 from over-voltage if the adapter is wired or jumpered to 5 V output rather than 3.3 V.
-- Prevent the programmer from being back-fed by the board's own VCC rail when both are connected.
-- Provide a zero-cost path to remove all programmer-side parts in volume production where a pogo-pin fixture replaces the IDC socket.
-
-### How it works
-
-**J1 — XFCN BH254V-6P** is a 2×3, 2.54 mm pitch through-hole IDC header matching the standard Espressif ESP-PROG pinout. From the module's frame of reference:
-
-| Pin | Net | ESP-PROG function |
-|---|---|---|
-| 1 | ESP_EN | Reset / EN |
-| 2 | V_PROG | Programmer 5 V supply |
-| 3 | ESP_TX | UART0 TX (out from module) |
-| 4 | GNDREF | Ground |
-| 5 | ESP_RX | UART0 RX (in to module) |
-| 6 | ESP_BOOT | IO0 boot-strap |
-
-TX and RX are named from the module's perspective; the ESP-PROG adapter handles the crossover internally. The pinout has been verified working with the standard ESP-PROG cable on both WTI400 V1.2 and MDD400 V2.9.
-
-**Developer/kit variant (V1.2 build on the test vessel).** U4, D4, D5 and J1 are populated; R24 is DNP. The V_PROG path is:
-
-```
-J1 pin 2 (V_PROG, 5 V from programmer)
-   → D4 anode  (1N5819WS Schottky, isolation)
-   → D4 cathode = U4 VIN = Net-(D4-K)
-   → U4 (HT7833 3.3 V LDO, SOT-89-3)
-   → U4 VOUT = VCC (3.3 V)
-```
-
-**D4 — back-feed protection.** When the programmer is disconnected and the board is powered normally (VCC = 3.3 V from the on-board SMPS), D4's anode sits at 0 V (J1 pin 2 unloaded) while its cathode is at U4 V<sub>IN</sub> ≈ VCC during start-up. D4 is reverse-biased and prevents any current path from board VCC back into the programmer's V_PROG pin.
-
-**D5 — Vout-to-Vin protection.** Cathode at Net-(D4-K) (U4 V<sub>IN</sub>), anode at VCC. During normal LDO operation, U4 V<sub>IN</sub> sits ~1.35 V above VCC and D5 is reverse-biased (no current). During programmer-disconnection, the LDO input collapses while the output capacitors (C1, C16) hold VCC for a few milliseconds. When VCC > U4 V<sub>IN</sub>, D5 conducts and bleeds VCC back through D5 to U4 V<sub>IN</sub>, preventing the output caps from back-charging U4 through its internal body diode. This is the same topology as D16 on the [Power Supply](./power-supplies) sheet.
-
-The WTI400 LDO path has **one** isolation Schottky in the forward direction (D4), as opposed to MDD400's two in series — the WTI400 has no separate 5 V VDD bus that needs OR-ing protection at the same node, so the simpler chain suffices.
-
-**LDO input decoupling.** C20 (100 nF X7R 0603) and C21 (10 µF X7R 0805) sit on Net-(D4-K), 3.6 mm and 5.4 mm from U4 V<sub>IN</sub> respectively. Two-tier decoupling on the LDO input is required by the HT7833 datasheet for stable regulation. C16 / C17 on the output side double as the second-tier VCC bypass described in the previous sub-circuit.
-
-**Production variant.** R24 (0 Ω 0805) is populated and U4 / D4 / D5 / J1 are DNP. The zero-ohm link bridges VCC directly to V_PROG: programming is performed with a pogo-pin fixture contacting the J1 THT pad footprint from the top side of the board, and the board's own VCC supplies the programming session current. **The two variants are mutually exclusive — never populate both R24 and U4** (back-feeds VCC into the LDO output uncontrolled).
-
-### Performance review
-
-| Parameter | Value | Notes |
-|-----------|-------|-------|
-| D4 V<sub>F</sub> at ~200 mA | 0.35 V typ / 0.40 V worst | 1N5819WS Schottky |
-| U4 V<sub>IN</sub> (typical) | 4.65 V | V_PROG 5.00 V − 0.35 V D4 |
-| U4 dropout at 300 mA | 0.30 V | HT7833 datasheet |
-| U4 headroom (typical) | 1.05 V | 4.65 V − (3.3 + 0.30) — passes |
-| U4 P<sub>d</sub> @ 100 mA programming | 0.135 W | (4.65 − 3.3) × 0.10 |
-| U4 P<sub>d</sub> @ 450 mA abs-max | 0.608 W | Reference; not the operating point |
-| U4 R<sub>θJA,eff</sub> (as-built) | ~50 °C/W | 56 mm² 4-layer copper + 9 thermal vias |
-| U4 T<sub>j</sub> @ 100 mA, 70 °C amb | 76.8 °C | 48.2 °C margin (38 %) to 125 °C T<sub>j,max</sub> |
-| U4 tab net | V<sub>IN</sub> (Net-(D4-K)) | **Tab is V<sub>IN</sub>, not GND** — layout must not connect to GNDREF |
-| ESP_TX trace length | 33.1 mm | Under 50 mm; no series damping needed |
-| ESP_RX trace length | 30.6 mm | Under 50 mm; no series damping needed |
-| ESP_EN trace length | 57.1 mm | Exceeds 50 mm guideline; RC-limited signal — accepted for V1.2 |
-| Schottky type | JSMSEMI 1N5819WS, 40 V / 350 mA, SOD-323 | D4 + D5 same part |
-| Header type | 2×3, 2.54 mm IDC THT (XFCN BH254V-6P) | ESP-PROG compatible |
-
-**Why thermal is fine even at modest copper spreading.** U4 is only active during programming sessions. During normal operation (Wi-Fi running, programmer disconnected) the V_PROG path is at 0 V, D4 is reverse-biased, U4 sees no input voltage, and U4 dissipates nothing. The 76.8 °C / 100 mA / 70 °C-ambient figure above is for a worst-case programming session in a hot enclosure — outside that window U4 is dormant.
-
-### Bring-up tests
-
-1. **End-to-end programming via ESP-PROG** — Flash a known firmware image at 921600 baud over the standard ESP-PROG adapter and cable. Pass if the image flashes cleanly, the device boots, and Wi-Fi associates. *(Confirmed working on WTI400 V1.2 and MDD400 V2.9.)*
-2. **D4 back-feed check** — Power the board from its own SMPS only, with the programmer disconnected. Probe J1 pin 2 (V_PROG). Pass if pin 2 measures &lt; 0.1 V (any voltage above this indicates leakage through D4 or contamination).
-3. **U4 thermal soak during programming** — Hold the SoC in ROM download mode while the programmer drives sustained UART traffic for 60 s. Probe U4 body temperature with a contact thermocouple. Record peak. Pass if peak ≤ 95 °C in a 70 °C ambient (≥ 30 °C T<sub>j</sub> margin).
-
----
-
 ## Components
 
 | Ref | Value | Function | Datasheet |
 |-----|-------|----------|-----------|
 | U3 | ESP32-S3-WROOM-1-N16R8 | Espressif dual-core Xtensa LX7 MCU module, 240 MHz, 16 MB QSPI flash, 8 MB PSRAM, 2.4 GHz Wi-Fi + BT 5 LE, pre-certified | [Espressif ESP32-S3-WROOM-1](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf) |
-| U4 | HT7833 | UMW HT7833-A 3.3 V fixed-output LDO, SOT-89-3, 450 mA. Regulates programmer V_PROG to VCC during firmware flashing. **Developer/kit variant only** — DNP in production builds | [UMW HT7833-A](https://www.lcsc.com/datasheet/C347195.pdf) |
-| D4 | 1N5819WS | JSMSEMI Schottky, 40 V / 350 mA, SOD-323. Input isolation Schottky on the V_PROG path (anode = J1 V_PROG, cathode = U4 V<sub>IN</sub>). Prevents back-feed from VCC to the programmer | [JSMSEMI 1N5819WS](/assets/datasheets/wti400-v1.2/1N5819WS.pdf) |
-| D5 | 1N5819WS | JSMSEMI Schottky, SOD-323. Vout-to-Vin protection on the LDO (cathode = U4 V<sub>IN</sub>, anode = VCC). Conducts only during power-down to discharge VCC output caps without back-charging U4. Same topology as D16 on the power_supplies sheet | [JSMSEMI 1N5819WS](/assets/datasheets/wti400-v1.2/1N5819WS.pdf) |
-| J1 | XFCN BH254V-6P | 2×3, 2.54 mm pitch THT IDC header — ESP-PROG-compatible programming interface. **Developer/kit variant only** | [XFCN BH254V-6P](/assets/datasheets/wti400-v1.2/XFCN-BH254V-6P.pdf) |
 | R3 | 10 kΩ 0603 ±1 % | I2C bus pull-up — VCC to I2C_SCL | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | R4 | 10 kΩ 0603 ±1 % | I2C bus pull-up — VCC to I2C_SDA | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | R9 | 10 kΩ 0603 ±1 % | EN pull-up — VCC to ESP_EN (U3 CHIP_PU). With C7 forms power-on RC delay (τ = 10 ms) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | R18 | 10 kΩ 0603 ±1 % | BOOT pull-up — VCC to ESP_BOOT (U3 IO0). Selects SPI flash boot mode during normal operation | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R24 | 0 Ω 0805 (DNP on V1.2) | Production-variant zero-ohm bridge VCC ↔ V_PROG. Populated only when U4 / D4 / D5 / J1 are DNP. **Never populate alongside U4** | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
 | C1 | 10 µF / 25 V X7R 0805 | VCC main-cluster bulk bypass, third in chain from U3 pad 2 (single via to F.Cu VCC pour at far end) | [Murata GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
 | C3 | 100 nF / 50 V X7R 0603 | VCC main-cluster mid-frequency bypass, second in chain (between C8 and C1) | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C7 | 1 µF / 25 V X7R 0603 | EN RC timing capacitor (ESP_EN to GNDREF). τ = 10 ms with R9 | [Murata GCM188R71E105KA64D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71E105KA64D) |
 | C8 | 100 pF / 50 V C0G 0603 | VCC main-cluster RF bypass, first in chain (VCC pad courtyard-touching U3 pad 2) | [Murata GRM1885C1H101JA01D](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H101JA01D) |
-| C16 | 10 µF / 25 V X7R 0805 | LDO-output-side VCC bulk bypass, ~3.5 mm from U4 | [Murata GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
+| C16 | 10 µF / 25 V X7R 0805 | LDO-output-side VCC bulk bypass, ~3.5 mm from U4 (LDO described on the [Programming Socket](./programming-socket) page) | [Murata GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
 | C17 | 100 nF / 50 V X7R 0603 | LDO-output-side VCC mid-frequency bypass | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
-| C20 | 100 nF / 50 V X7R 0603 | LDO input bypass (Net-(D4-K) to GNDREF), 3.6 mm from U4 V<sub>IN</sub> | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
-| C21 | 10 µF / 25 V X7R 0805 | LDO input bulk bypass (Net-(D4-K) to GNDREF), 5.4 mm from U4 V<sub>IN</sub> | [Murata GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
 | C22 | 100 nF / 50 V X7R 0603 | BOOT filter (ESP_BOOT to GNDREF). τ = 1 ms with R18 | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
+
+Programming-socket components (U4, D4, D5, J1, R24, C20, C21) are listed on the [Programming Socket](./programming-socket) page.
 
 ---
 
@@ -274,9 +191,8 @@ The V1.2 prototype on the test vessel has been Wi-Fi-active for approximately 1,
 - **VCC rail under Wi-Fi TX** — Probe at U3 pad 2 during a sustained 802.11b TX burst. Pass if the rail stays within ±3 % of 3.30 V with no individual dip below 3.10 V.
 - **EN release timing** — Trigger on VCC rising; capture ESP_EN. Pass if ESP_EN crosses 2.48 V ≥ 10 ms after VCC reaches 3.0 V.
 - **I2C rise time** — Capture SDA / SCL transitions during normal Standard-mode (100 kHz) operation. Record 30 %-to-70 % t<sub>r</sub> and infer C<sub>bus</sub>. Pass if t<sub>r</sub> ≤ 1000 ns.
-- **End-to-end programming** — Flash a known image via ESP-PROG at 921600 baud; pass if image flashes cleanly and the device boots. *(Confirmed working in field use.)*
-- **D4 back-feed check** — Programmer disconnected, board powered from on-board SMPS. Probe J1 pin 2. Pass if &lt; 0.1 V.
-- **U4 thermal soak during programming** — Hold ROM download mode under sustained UART traffic for 60 s. Probe U4 body temperature with a thermocouple. Pass if peak ≤ 95 °C in a 70 °C ambient.
+
+Programmer-side bring-up (end-to-end programming, D4 back-feed check, U4 thermal soak) is on the [Programming Socket](./programming-socket) page.
 
 **Conditional — only if firmware is upgraded to I2C Fast mode (400 kHz):**
 
@@ -295,14 +211,11 @@ The V1.2 prototype on the test vessel has been Wi-Fi-active for approximately 1,
 
 - Espressif Systems, [*ESP32-S3-WROOM-1 & WROOM-1U Module Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf).
 - Espressif Systems, [*ESP32-S3 Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf).
-- Espressif Systems, [*ESP-PROG Hardware Guide*](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html).
 - Espressif Systems, [*ESP-IDF API Reference — GPIO & RTC GPIO*](https://docs.espressif.com/projects/esp-idf/en/v5.5/esp32s3/api-reference/peripherals/gpio.html).
-- UMW, [*HT7833-A SOT-89 LDO*](https://www.lcsc.com/datasheet/C347195.pdf).
-- JSMSEMI, [*1N5819WS SOD-323 Schottky*](/assets/datasheets/wti400-v1.2/1N5819WS.pdf).
-- XFCN, [*BH254V-6P 2×3 2.54 mm IDC Header*](/assets/datasheets/wti400-v1.2/XFCN-BH254V-6P.pdf).
 - NXP Semiconductors, *UM10204 I²C-bus specification and user manual*, Rev 7.0, 2021.
 - Yageo, [*RC Group Chip Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf).
 - Murata Electronics, [*GRM21BZ71E106KE15L — 10 µF X7R 0805*](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L).
 - Murata Electronics, [*GCM188R71H104KA57D — 100 nF X7R 0603*](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D).
 - Murata Electronics, [*GCM188R71E105KA64D — 1 µF X7R 0603*](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71E105KA64D).
 - Murata Electronics, [*GRM1885C1H101JA01D — 100 pF C0G 0603*](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H101JA01D).
+- [Programming Socket](./programming-socket) — J1 IDC header; HT7833 LDO; isolation Schottkys; programming bring-up.
