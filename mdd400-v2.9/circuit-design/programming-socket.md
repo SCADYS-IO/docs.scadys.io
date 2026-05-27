@@ -142,6 +142,29 @@ The LDO **output**-side decoupling (C16 / C17 plus the distributed VCC-pour bypa
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+V2.9 is a fabricated prototype in the bench-test phase, assembled in the **developer/kit variant** (J1 / U4 / D3 / D4 / D5 populated, R22 DNP). Programming via the ESP-PROG adapter has been confirmed end-to-end on the V2.9 prototype. **U4 thermal soak under sustained Wi-Fi TX, the D3 back-feed check, and VDD-only operation under D4 OR'ing have not been quantitatively measured yet.** The 19.5 % Tj margin at 300 mA / 70 °C ambient is below the standard 20 % safety threshold and needs measurement in a soak chamber before the developer/kit variant can be marked verified.
+
+**Hardware bring-up (rig at the bench):**
+
+- **End-to-end programming via ESP-PROG** — Flash a known image at 921600 baud through the standard ESP-PROG adapter and cable. Pass if the image flashes cleanly, the device boots, and Wi-Fi associates.
+- **VDD-only operation** — Disconnect the ESP-PROG cable; power the board from VDD alone. Pass if the LDO produces 3.30 V ± 2 % and the ESP32 boots normally (confirms the D4 OR'ing path).
+- **D3 back-feed check** — Power the board from its own VDD only; probe J1 pin 1 (V_PROG). Pass if pin 1 measures &lt; 0.1 V above VDD − V_F(D4); any larger reading indicates leakage on the OR'd node.
+- **U4 thermal soak under Wi-Fi TX** — Sustained 802.11b TX for 30 minutes from cold start; record U4 body temperature with a thermocouple every 5 minutes. Pass if peak Tj stays below 110 °C in a 70 °C-ambient soak chamber, or below 80 °C at room ambient. Tj > 110 °C is a strong V2.10 signal to expand the F.Cu pour or add thermal vias.
+
+**For V2.10 (tracked in `v2.10-improvements.md`):**
+
+- **Expand U4 F.Cu pour / thermal vias** *(conditional on V2.9 thermal soak)* — If the 30-minute Wi-Fi TX soak shows Tj exceeding 110 °C at 70 °C ambient, increase the 64 mm² F.Cu pour and / or add to the 16-via thermal cluster under the tab. The HT7833 tab is V_IN (Net-(D3-K)), **not GND** — layout must not connect to GNDREF.
+- **Tighten U4 V_IN decoupling** — The nearest dedicated capacitor to U4 V_IN is C22 (100 nF) at ~3.3 mm — outside the ≤ 1 mm tight-decoupling guideline. Stable at the load currents in use; add a dedicated 100 nF 0603 adjacent to U4 V_IN if any oscillation is observed during the thermal soak.
+- **ESP_TX / ESP_RX trace-length verification** — Straight-line distance is ~29.5 mm; extract actual routed length in the PCB editor. If either trace exceeds 50 mm, add 33 Ω series damping at the U3 output pads per the ESP-PROG Hardware Guide. Cross-referenced from the [ESP32 Module](./esp32-module) page.
+
+:::
+
+---
+
 ## References
 
 - Espressif Systems, [*ESP-PROG Hardware Guide*](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html).

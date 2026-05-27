@@ -166,6 +166,33 @@ The CAN physical layer is the scope of this page. PGN encoding, fast-packet reas
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+The V1.2 prototype on the test vessel has been connected to the vessel's NMEA 2000 bus for approximately 1,000 sea miles. CAN frames have been transmitted and received successfully in normal operation. **No quantitative bench measurements have been performed on bus fault survivability, U9 clamp margin against the SN65HVD234 &plusmn;36 V spec, or live-network framing accuracy with a CAN analyser.** The following are required.
+
+**Hardware bring-up (rig at the bench):**
+
+- **Bus idle &mdash; recessive state** &mdash; With TWAI_EN LOW, measure CANH and CANL at J2. Pass if both sit at approximately 2.5 V.
+- **Transceiver enable** &mdash; Assert TWAI_EN HIGH. Pass if U5 enters normal mode with no bus disturbance visible on a scope.
+- **TXD default** &mdash; Before TWAI is initialised, measure TXD at U5 pin 1. Pass if HIGH (R15 holding recessive).
+- **TWAI loopback** &mdash; Configure the TWAI peripheral in self-test / loopback mode and transmit a frame. Pass if received without error.
+- **Receive on live network** &mdash; Connect to an NMEA 2000 network, capture traffic with a CAN analyser. Pass if frames are received at 250 kbps with no error frames.
+- **Transmit on live network** &mdash; Send a test PGN. Pass if the frame appears on the network and is acknowledged by another node.
+- **Bus fault survivability** &mdash; Apply a brief over-voltage to CANH / CANL at J2. Pass if U9 clamps and U5 survives. The 4 V clamp-vs-spec margin must be characterised before any production run.
+
+**For V1.3 (tracked in `v1.3-improvements.md`):**
+
+- **TWAI_TX damping footprint** &mdash; No series resistor is fitted on TXD. Add a DNP 0603 footprint to allow evaluation at bring-up without a board respin.
+- **C29 population decision** &mdash; Resolve DNP status after EMC testing; either populate or remove the footprint.
+- **Relocate C18 / C19** &mdash; Move C18 / C19 adjacent to U5 pin 3 to reduce VCC bypass trace from ~2.5 mm to &le; 0.5 mm, per the SN65HVD234 datasheet.
+- **NMEA 2000 certification** &mdash; The physical layer meets ISO 11898-2, but formal NMEA 2000 certification has not been pursued. Required before any commercial release.
+
+:::
+
+---
+
 ## References
 
 - Texas Instruments, [*SN65HVD23x 3.3-V CAN Bus Transceivers (SLLS557H)*](https://www.ti.com/lit/ds/symlink/sn65hvd234.pdf)

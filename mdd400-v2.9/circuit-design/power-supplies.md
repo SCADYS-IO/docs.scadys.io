@@ -278,6 +278,31 @@ For each rail:
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+V2.9 is a fabricated prototype in the bench-test phase. Both LMR51610 converters power up and deliver their rails — the ESP32 boots from VCC and the DWIN display runs from VDD on the prototype. **No quantitative bench measurements have been performed on output ripple, switch-node ringing, IC thermal soak, or the dual-converter EMI signature yet.** The dual-converter common-mode EMI scan is the most important new measurement for MDD400 because both LMR51610 instances run at the same fixed 400 kHz with no phase relationship.
+
+**Hardware bring-up (rig at the bench):**
+
+- **Output-voltage accuracy** — Probe VCC at TP1 and VDD at the inductor-side of FB2 with no Wi-Fi or display activity. Pass if 3.30 V ± 2 % (VCC) and 5.00 V ± 2 % (VDD).
+- **Output ripple at full load** — 100 MHz scope with ≤ 5 mm-tip ground. For VCC sustain an 802.11b TX burst; for VDD set DWIN backlight to 100 %. Pass if &lt; 50 mV pp at 400 kHz on both rails.
+- **IC case temperature soak** — 10 min worst-case load at 85 °C enclosure ambient (or scaled). Touch-probe U1 and U6. Pass if case &lt; ~95 °C (Tj &lt; ~115 °C). Hotter readings are a strong DRG-package-swap signal.
+- **Snubber decision** — 500 MHz scope on each SW node with low-inductance ground spring; capture rising edge. Pass without snubber if peak ringing &lt; ~1 V above V_in; otherwise populate R7+C9 (VCC) or R23+C24 (VDD).
+- **Dual-converter common-mode EMI pre-scan** — Capture conducted-emission spectrum on the VSD input with both converters running. Look for 400 kHz / 800 kHz / 1.2 MHz peaks rising above margin. This is the test that motivates the V2.10 phase-staggering work below.
+
+**For V2.10 (tracked in `v2.10-improvements.md`):**
+
+- **Switch L1 / L2 from Fenghua FNR5040S220MT (prototype stock) to Bourns SRN5040TA-220M (production BOM)** — same footprint; ~+0.4–0.5 % efficiency per rail and a guaranteed SRF spec.
+- **Address dual-converter in-phase 400 kHz EMI** *(conditional on V2.9 EMC pre-scan)* — both LMR51610 instances run fixed-frequency with no phase synchronisation; in-phase coincidence sums common-mode emissions at 400 kHz and its harmonics. Options: spread-spectrum LMR variant; deliberate frequency offset via an RT-pin component on one converter (only if a frequency-trim pin is exposed on the chosen variant); a sync-capable converter with deliberate 180° phase shift; or — if EMC still passes — accept and document.
+- **Swap U1 / U6 to LMR51610XDRGR (DRG package, exposed pad)** *(if VCC or VDD continuous load grows, or if V2.9 thermal soak shows IC case > ~95 °C)* — DRG θJA = 48 °C/W vs DBV's 148 °C/W. ~20 °C extra Tj headroom on each rail; same improvement as the WTI400 V1.3 backlog.
+- **Concentrated thermal via array under each LMR51610 GND pin** *(conditional on V2.9 thermal soak)* — DBV/SOT-23-5 has no exposed pad; add a tight cluster directly under each IC's GND pin if margin proves tight.
+
+:::
+
+---
+
 ## References
 
 - Texas Instruments, [*LMR516xx SIMPLE SWITCHER® Power Converter, 4 V to 65 V, 0.6 A / 1 A Buck Converter Datasheet*](/assets/datasheets/mdd400-v2.9/LMR51610.pdf) — see §8.4 for layout guidance.

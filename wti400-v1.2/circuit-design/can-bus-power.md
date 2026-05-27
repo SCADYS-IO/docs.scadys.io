@@ -198,6 +198,37 @@ At NMEA 2000 minimum bus voltage (9.0 V): VSC_min ≈ 8.54 V. The LP2951 in the 
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+The V1.2 prototype on the test vessel has been bus-powered for approximately 1,000 sea miles. VSC regulates correctly under operational NMEA 2000 bus voltage and no PTC trips, OVP trips, or component failures have been observed. OVP threshold has been verified at 18.6 V on both the WTI400 V1.2 and MDD400 V2.9 prototypes. **No quantitative bench measurements have been performed on surge survivability, F1 thermal proximity to D11, L2 cold-start inrush, EMI filter ripple, or filter capacitor DC-bias derating.** The following are required.
+
+**Hardware bring-up (rig at the bench):**
+
+- **Reverse polarity** &mdash; Apply &minus;12 V to NET-S. Pass if VSC remains at 0 V and no components become warm.
+- **Normal operation** &mdash; Apply 12 V; measure VSC. Pass if VSC &asymp; 11.5 V.
+- **OVP trip** &mdash; Slowly raise supply voltage. Pass if VSC drops to 0 V between 17.5 V and 19.5 V with no oscillation at the threshold (verified at 18.6 V on prototypes).
+- **OVP hysteresis** &mdash; After trip, slowly reduce supply voltage. Pass if VSC recovers cleanly at a voltage measurably below the trip point.
+- **PTC fuse** &mdash; Short VSC briefly. Pass if F1 trips and the board powers up again without intervention after the fault clears.
+- **Bleed resistor** &mdash; Remove supply; measure VSC discharge time. Pass if VSC reaches &lt; 1 V in approximately 4.4 s (R42 &times; 44 &micro;F).
+- **EMI filter ripple** &mdash; Scope VSC with a 65 mA load. Pass if supply ripple is below the LMR51610 VIN ripple tolerance.
+- **Filter capacitance at bias** &mdash; Measure C33, C36, C37, C39 at 12 V DC bias. Record actual values and compare against derated filter corner frequency calculations.
+- **Surge** &mdash; Apply an ISO 7637-2 Pulse 5b transient (or bench equivalent) to NET-S. Pass if VSC remains stable and all components survive.
+- **F1 thermal proximity to D11** &mdash; Run an IEC 61000-4-5 surge sequence and confirm F1 body temperature stays below 70 &deg;C post-surge.
+- **L2 cold-start inrush** &mdash; Confirm peak current through L2 at power-on stays below the 2.6 A saturation rating.
+
+**For V1.3 (tracked in `v1.3-improvements.md`):**
+
+- **OVP threshold margin at temperature** &mdash; At 85 &deg;C the OVP threshold reaches 15.1 V &mdash; only 300 mV above the 14.8 V NMEA 2000 maximum. Either raise the 25 &deg;C trip point (decrease R28 or increase R27) or replace the divider-only comparator with a voltage reference for temperature-stable operation.
+- **L2 / L3 body spacing** &mdash; Current edge-to-edge gap is 1.95 mm &mdash; 0.05 mm short of the 2 mm keepout. Increase in next layout revision.
+- **D11 sourcing for production** &mdash; Qualify a Littelfuse or STMicro equivalent SM8S36CA for CE / ABYC certification; the current FUXINSEMI part is suitable for prototype but not preferred for production compliance.
+- **Over-temperature disconnect** &mdash; Add a 2-component mod: a normally-closed thermal switch in series between R26 and GNDREF plus a 100 k&Omega; pull-up from Q2's gate to source. Switch placement must be adjacent to the hottest component (Q2 or L2 / L3).
+
+:::
+
+---
+
 ## References
 
 - Nexperia, [*PMV240SPR P-channel MOSFET*](https://assets.nexperia.com/documents/data-sheet/PMV240SPR.pdf)

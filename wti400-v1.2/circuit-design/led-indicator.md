@@ -141,6 +141,34 @@ These calculations use Vf values read from the datasheet V-A curve at low curren
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+The V1.2 prototype on the test vessel has accumulated approximately 1,000 sea miles. The RGB LED illuminates red on power-up before firmware runs (confirming the Q1 fail-on topology) and the firmware can independently drive red, green, and blue under operator control. **The V1.2 prototype shipped with R10 = R11 = 220 &Omega; &mdash; these values do not account for green's higher luminous efficiency and produce a visually unbalanced output.** No quantitative bench measurements have been performed on Vf at operating point, perceived brightness balance after the R10 / R11 rework, or boot-state behaviour with a scope. The following are required.
+
+**Hardware bring-up (rig at the bench, after R10 / R11 rework):**
+
+- **Power-good indication** &mdash; Apply VCC with no firmware running. Pass if red illuminates immediately and green and blue remain off.
+- **Red off** &mdash; Run firmware that asserts LED_RED HIGH. Pass if red extinguishes completely.
+- **Green on / off** &mdash; Drive LED_GRN LOW; pass if green illuminates. Drive HIGH; pass if green extinguishes.
+- **Blue on / off** &mdash; Drive LED_BLU LOW; pass if blue illuminates. Drive HIGH; pass if blue extinguishes.
+- **Brightness balance** &mdash; Illuminate each channel in turn at the corrected resistor values. Measure Vf across each LED die and record actual operating current. Assess perceived brightness; pass if no channel appears more than 2&times; brighter than the others.
+- **Fail-safe states** &mdash; Cycle power several times. Pass if red always illuminates before firmware asserts control and green / blue never flicker on during boot.
+
+**Before next production run:**
+
+- **R10 and R11 correction** &mdash; R11 must change from 220 &Omega; to 1 k&Omega; and R10 from 220 &Omega; to 270 &Omega; before the next fabrication run. Rework existing prototypes by hand and verify brightness balance at bring-up.
+
+**For V1.3 (tracked in `v1.3-improvements.md`):**
+
+- **Verify Vf at operating point** &mdash; The resistor calculations use Vf estimated from the V-A curve at low current. Measure actual Vf at operating current on the reworked prototype and refine resistor values if predicted balance is not achieved.
+- **R12 (red) balance review** &mdash; With R11 corrected to 1 k&Omega;, re-verify red vs green / blue balance and adjust R12 if needed.
+
+:::
+
+---
+
 ## References
 
 - XINGLIGHT, [*XL-3528RGBW-HM Technical Data Sheet*](/assets/datasheets/wti400-v1.2/xinglight_xl-3528RGBW-HM.pdf)

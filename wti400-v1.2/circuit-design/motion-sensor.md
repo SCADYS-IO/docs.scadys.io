@@ -281,6 +281,33 @@ The **default installation orientation** is vertical mounting on a transverse bu
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+The V1.2 prototype on the test vessel has the LSM6DSL polled over Standard-mode (100 kHz) I2C at 52 Hz with no observed bus errors or sensor lock-ups over approximately 1,000 sea miles. The MEMS soldering followed ST TN0018 rigorously after the V1.1 land-pattern problems, so thermomechanical offset drift is not currently a known concern. **No quantitative bench measurements have been performed on VDD ripple, zero-g / zero-rate offset drift, or Fast-mode (400 kHz) I2C robustness.** The masthead-velocity compensation algorithm is still in firmware development, so the in-service operation exercises the IMU as a polled sensor rather than as the input to a full motion-compensation loop. The following are required.
+
+**Hardware bring-up (rig at the bench):**
+
+- **I2C device detection** &mdash; Scan the I2C bus. U1 must respond at address 0x6A. Pass if the `WHO_AM_I` register (0x0F) returns `0x6A`.
+- **Register round-trip** &mdash; Write a known value to a writable register (e.g. CTRL1_XL at 0x10) and read it back. Pass if the read value matches.
+- **Live data output** &mdash; Configure accelerometer and gyroscope at 52 Hz, read 10 consecutive samples. Pass if all six axes produce non-zero readings, with the accelerometer Z axis showing approximately &plusmn;1 g at rest.
+- **VDD supply ripple** &mdash; Measure VDD at U1 pin 8 with a 100 MHz oscilloscope under normal I2C polling load. Pass if ripple is below 50 mV peak-to-peak.
+- **Zero-g and zero-rate offset characterisation** &mdash; Capture accelerometer and gyroscope readings on a stationary board after reflow. Compare against TN0018 expectations to confirm the V1.2 land-pattern fix has eliminated the V1.1 thermomechanical stress.
+
+**Conditional &mdash; only if firmware is upgraded to I2C Fast mode (400 kHz):**
+
+- **Fast-mode robustness** &mdash; Verify stable communication at 400 kHz. Pass if no I2C NACK errors occur over 1000 consecutive transactions. If failures occur, reduce R3 / R4 from 10 k&Omega; to 4.7 k&Omega; on the `esp32_module` sheet (tracked as a V1.3 backlog item on the ESP32 Module page).
+
+**For V1.3 (tracked in `v1.3-improvements.md`):**
+
+- **ODR adequacy for velocity algorithm** &mdash; Once the masthead-velocity compensation algorithm is designed, verify that 52 Hz provides sufficient temporal resolution for accurate integration. The LSM6DSL supports ODR up to 6664 Hz; increasing requires only a firmware register change.
+- **Interrupt routing for algorithm timing** &mdash; INT1 and INT2 are currently unconnected. If the compensation algorithm requires precise interrupt-driven sample timing, route INT1 to a spare ESP32 GPIO in the next PCB revision.
+
+:::
+
+---
+
 ## References
 
 1. ST Microelectronics, [*LSM6DSL iNEMO Inertial Module Datasheet*](https://www.st.com/resource/en/datasheet/lsm6dsl.pdf)

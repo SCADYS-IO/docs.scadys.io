@@ -168,6 +168,27 @@ Single press must be detected after the T_gap window has elapsed — otherwise t
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+The V1.2 prototype on the test vessel responds to single press, double-click, and long press inputs without observed false triggers or missed presses across approximately 1,000 sea miles of in-service use. The RC debounce + Schmitt-trigger chain operates as designed in normal field conditions. **No quantitative bench measurements have been performed on debounce effectiveness with a scope, boot-state behaviour during VCC ramp-up, or the R31 continuous-drain figure.** The following are required.
+
+**Hardware bring-up (rig at the bench):**
+
+- **Input logic levels** &mdash; With SW1 open, measure BUTTON at U10 output. Pass if &ge; 2.0 V (logic HIGH). Press and hold SW1; pass if &le; 0.4 V (logic LOW).
+- **Debounce effectiveness** &mdash; Connect an oscilloscope to U10 output and press SW1 rapidly several times. Pass if no more than one LOW transition per press is visible at U10 output.
+- **ESD protection present** &mdash; Verify D7 is fitted and oriented correctly (cathode toward input node, anode toward GNDREF path). Visual inspection; pass if D7 marking matches silkscreen.
+- **Boot-state pull-down** &mdash; Power the board with no firmware running. Measure BUTTON; pass if LOW (&le; 0.4 V). Note: this is the current expected behaviour but is flagged for review in V1.3.
+
+**For V1.3 (tracked in `v1.3-improvements.md`):**
+
+- **R31 pull-down direction** &mdash; R31 currently holds BUTTON LOW during boot, which reads as a button press. A weak pull-up (e.g. 100 k&Omega;) to VCC would hold BUTTON HIGH (not-pressed = idle) during boot &mdash; the correct safe default. Review whether any pull resistor is needed at all given U10's push-pull output. Also eliminates the ~0.33 mA continuous drain that R31 currently causes.
+
+:::
+
+---
+
 ## References
 
 - Nexperia, [*74LVC1G17 Single Schmitt-trigger Buffer*](https://assets.nexperia.com/documents/data-sheet/74LVC1G17.pdf)

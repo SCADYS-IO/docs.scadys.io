@@ -341,6 +341,34 @@ The feedback divider lower-leg GND return (R1 pad 2), the input cap GND returns 
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+The V1.2 prototype on the test vessel has been Wi-Fi-active for approximately 1,000 sea miles. The VCC SMPS rail powers the ESP32, IMU, button, LED, and pull-ups continuously without observed brownouts or resets in service. **No quantitative bench measurements have been performed on the SMPS output voltage, ripple, U2 thermal behaviour, inductor thermal behaviour, or input current under sustained Wi-Fi TX.** The following are required.
+
+**Hardware bring-up (rig at the bench):**
+
+- **Output voltage accuracy** — Measure VCC at TP1 with no Wi-Fi activity. Pass if 3.30 V &plusmn; 2 % (3.234&ndash;3.366 V).
+- **Input current at Wi-Fi TX** — Measure VSD-side current at U2 VIN during a sustained 802.11b TX burst (11 Mbps). Pass if mean current is within 130&ndash;170 mA at VSD = 12 V.
+- **U2 IC temperature at sustained Wi-Fi TX** — Run continuous 802.11b TX for 10 min at 85 &deg;C enclosure ambient. Pass if U2 case temperature stays below ~95 &deg;C (Tj &asymp; 111 &deg;C internal).
+- **Output ripple at Wi-Fi TX burst** — Probe VCC at TP1 with a 100 MHz scope (low-inductance ground, &le; 5 mm tip-to-tip), sustained 802.11b TX. Pass if peak-to-peak ripple at the 400 kHz fundamental is below 50 mV.
+- **L1 thermal at sustained load** — Touch-probe L1 case after 10 min of continuous Wi-Fi TX at 85 &deg;C ambient. Pass if case is below ~80 &deg;C.
+- **SW-node snubber decision** — Probe SW with a 500 MHz scope (low-inductance ground spring). Pass without snubber if peak ringing is &lt; ~1 V above V_in; otherwise populate R13 + C10.
+- **VCC vs 3v3 SMPS output, at Wi-Fi TX** — Probe both sides of FB1 simultaneously during a Wi-Fi TX burst. Pass if the digital VCC side shows visibly reduced HF ripple compared with the SMPS-output side.
+
+**For next production run:**
+
+- **Switch L1 to production BOM** — Move from Fenghua FNR5040S220MT (prototype stock) to Bourns SRN5040TA-220M (production); same footprint, ~+0.4&ndash;0.5 % efficiency improvement and a guaranteed SRF spec.
+
+**For V1.3 (tracked in `v1.3-improvements.md`):**
+
+- **Switch U2 to LMR51610XDRGR (DRG package, exposed pad)** &mdash; if higher MCU or peripheral current budgets are anticipated. DRG &theta;JA = 48 &deg;C/W vs DBV's 148 &deg;C/W gives ~18 &deg;C of additional thermal headroom at the same dissipation.
+
+:::
+
+---
+
 ## References
 
 - Texas Instruments, [*LMR516xx SIMPLE SWITCHER® Power Converter, 4 V to 65 V, 0.6 A / 1 A Buck Converter Datasheet*](https://www.ti.com/lit/ds/symlink/lmr51610.pdf) — see §8.4 for layout guidance.

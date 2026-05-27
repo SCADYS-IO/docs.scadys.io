@@ -129,6 +129,30 @@ The LDO **output**-side decoupling caps (C16 / C17) double as VCC bypass on the 
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+The developer/kit assembly variant (J1 / U4 / D4 / D5 populated, R24 DNP) is the build deployed on the test vessel. End-to-end programming via the standard Espressif ESP-PROG adapter has been confirmed working on both WTI400 V1.2 and MDD400 V2.9, and field firmware updates have been performed on the test-vessel unit without observed failures. **No quantitative bench measurements have been performed on D4 back-feed leakage, U4 thermal soak during sustained programming traffic, or the production-variant R24 path under any pogo-pin fixture.** The following are required.
+
+**Hardware bring-up (rig at the bench, developer/kit variant):**
+
+- **End-to-end programming via ESP-PROG** &mdash; Flash a known firmware image at 921600 baud over the standard ESP-PROG adapter and cable. Pass if the image flashes cleanly, the device boots, and Wi-Fi associates. (Confirmed working on WTI400 V1.2 and MDD400 V2.9.)
+- **D4 back-feed check** &mdash; Power the board from its own SMPS only, with the programmer disconnected. Probe J1 pin 2 (V_PROG). Pass if pin 2 measures &lt; 0.1 V (any voltage above this indicates leakage through D4 or contamination).
+- **U4 thermal soak during programming** &mdash; Hold the SoC in ROM download mode while the programmer drives sustained UART traffic for 60 s. Probe U4 body temperature with a contact thermocouple and record peak. Pass if peak &le; 95 &deg;C in a 70 &deg;C ambient (&ge; 30 &deg;C Tj margin).
+
+**For production variant (R24 populated, J1 / U4 / D4 / D5 DNP):**
+
+- **Pogo-pin fixture programming** &mdash; Once the pogo-pin fixture exists, verify end-to-end flashing through it using the board's own VCC for the programming session. Confirm no contamination, no over-stress, and matching pinout to the J1 THT pad footprint.
+
+**For V1.3 (tracked in `v1.3-improvements.md`):**
+
+- **Shorten the ESP_EN routing** &mdash; V1.2 has a 57.1 mm ESP_EN trace from J1 through R9 / C7 to U3 pad 3 (EN). Re-route R9 / C7 closer to U3's EN pad to bring the trace below the 50 mm guideline. (Also tracked on the [ESP32 Module](./esp32-module) page.)
+
+:::
+
+---
+
 ## References
 
 - Espressif Systems, [*ESP-PROG Hardware Guide*](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html).

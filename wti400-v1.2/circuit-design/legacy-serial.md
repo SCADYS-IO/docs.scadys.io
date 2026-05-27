@@ -509,6 +509,58 @@ ST_SIG crosses to B.Cu via a via at (148.0, 86.75) and runs 17.3 mm on B.Cu befo
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+The V1.2 prototype on the test vessel uses the legacy serial interface as a SeaTalk I drop-in replacement for an ST60 wind instrument, transmitting apparent wind data onto the SeaTalk bus at 4800 baud. RX and TX have been exercised across approximately 1,000 sea miles of in-service use. **The C47 rise-time-assist capacitor on V1.2 prototypes is the original 2.2 nF value &mdash; a rework to 820 pF is required.** No quantitative bench measurements have been performed on isolation behaviour, NMEA 0183 listener compliance, U14 thermal at the top of the bus-voltage range, D8 leakage at 16 V, surge survivability, or rise-time-assist effectiveness at 4800 / 9600 baud after the rework. The following are required.
+
+**Hardware bring-up (rig at the bench, after C47 rework to 820 pF):**
+
+Power:
+- **Nominal supply** &mdash; Apply 12 V to J3 pin 1 with pin 2 to GND. Pass if VST = 12.0 &plusmn; 0.5 V.
+- **Dropout** &mdash; Apply 9 V to J3 pin 1. Pass if VST &asymp; 8.1 V (dropout) and ST_RX still responds to bus signal with LED current &ge; 2.9 mA.
+- **Top of range** &mdash; Apply 16 V to J3 pin 1. Pass if VST regulates at 12.0 &plusmn; 0.5 V and U14 junction &Delta;T &lt; 2 &deg;C.
+- **Reverse polarity** &mdash; Apply &minus;12 V on pin 1, GND on pin 2. Pass if VST = 0 V and no component failure.
+- **Swapped pins** &mdash; Apply 12 V with pin 1 and pin 2 swapped. Pass if VST = 0 V and no component failure.
+
+Receive:
+- **Bus idle** &mdash; Pass if ST_RX &asymp; VCC (&ge; 2.9 V).
+- **Bus pulled low** &mdash; Pull J3 pin 3 to GND via 1 k&Omega;. Pass if ST_RX &le; 0.4 V.
+- **4800 baud framing** &mdash; Apply 4800 baud test pattern on J3 pin 3. Pass if framing is captured cleanly on UART RX with no framing errors.
+- **38400 baud framing** &mdash; Apply NMEA 0183 HS pattern at 38400 baud. Pass if framing is captured cleanly.
+- **NMEA 0183 listener load** &mdash; Measure input current at J3 pin 3 = 2.0 V. Pass if &le; 2.0 mA.
+- **Dropout LED current** &mdash; Measure VST and I_LED at V_bus = 9 V. Pass if I_LED &ge; 2.0 mA and no missed transitions.
+
+Transmit:
+- **Default-disabled** &mdash; Assert ST_EN HIGH (or leave undriven), measure ST_SIG. Pass if ST_SIG = VST (&asymp; 12 V via R33).
+- **Enable, idle** &mdash; Assert ST_EN LOW, ST_TX HIGH. Pass if ST_SIG = VST and Q6 not conducting.
+- **Enable, asserted** &mdash; Assert ST_EN LOW, ST_TX LOW. Pass if ST_SIG &lt; 50 mV.
+- **Rise time at 4800 baud** &mdash; Toggle ST_TX at 4800 baud and scope the rising edge at ST_SIG. Pass if edge reaches &ge; 80 % of VST within 50 &micro;s.
+- **Rise time at 9600 baud** &mdash; Toggle ST_TX at 9600 baud after the C47 rework. Pass if edge reaches &ge; 80 % of VST within 30 &micro;s.
+- **D8 static current at 16 V** &mdash; Measure D8 zener leakage and continuous dissipation at V_bus = 16 V. Pass if dissipation &le; 200 mW.
+- **Surge survivability** &mdash; Apply 58 V transient on ST_SIG (clamped by upstream TVS). Pass if no gate-driver or Q6 damage.
+
+**Before next production run (rework required on V1.2):**
+
+- **C47 rework: 2.2 nF &rarr; 820 pF** &mdash; Update the schematic BOM and rework all assembled V1.2 units. Component value change only (0603 C0G footprint unchanged). Restores rise-time-assist effectiveness at 4800 baud on long cables and adds 9600 baud capability.
+- **C58 and C54 bypass distance** &mdash; C58 is 7.70 mm from U14 VIN; C54 is 5.46 mm from U14 VOUT. Both exceed the &le; 2 mm guideline. If VST oscillation is observed under transient load at bring-up, rework both caps to within 2 mm of U14 pins.
+- **C49 / C50 schematic part-number fix** &mdash; KiCAD schematic lists the wrong manufacturer P/N (GRM188R71H104KA93D, 100 nF) for C49 / C50; assembled BOM value (100 pF) is correct. Metadata-only fix in the schematic.
+
+**For V2.0 / V1.3 (tracked in `v1.3-improvements.md`):**
+
+- **Replace J3 with M12 3-pin waterproof connector** &mdash; M12 A-code or B-code, panel-mount, IP67, field-wireable; the SeaTalk I pin assignment (power / ground / signal) maps directly.
+- **C23 bypass distance** &mdash; Add a dedicated 100 nF 0603 bypass adjacent to U6 pin 6 (currently 9.4 mm away).
+- **Guard ring around U6 isolation gap** &mdash; Add an unconnected guard trace if conformal coating is not applied; reduces ionic creepage risk in marine salt-spray.
+- **D8 proximity** &mdash; Relocate D8 to within 3 mm of the ST_SIG isolation via for better transient suppression (currently 10.7 mm).
+- **PCB creepage slot** &mdash; Evaluate adding a milled slot at the U7 / U8 isolation boundary if CE / MED certification is pursued.
+- **Dedicated VCC bypass at U7** &mdash; Add a 100 nF 0603 adjacent to U7 VCC pin (pin 6).
+- **HS NMEA 0183 TX support** &mdash; Robust 38400 baud TX requires a redesigned rise-time-assist stage (e.g. constant-current source) &mdash; not achievable with a simple C47 value change.
+
+:::
+
+---
+
 ## References
 
 1. Toshiba, [*TLP2309 High-Speed Logic Gate Opto-Isolator*](/assets/datasheets/wti400-v1.2/TLP2309.pdf)

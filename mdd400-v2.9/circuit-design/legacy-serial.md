@@ -509,6 +509,55 @@ The transmit-side component cluster occupies approximately X: 147–158 mm, Y: 7
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+V2.9 is a prototype under test. The galvanically isolated legacy-serial interface (receive, transmit, and enable paths all crossing the TLP2309 opto barrier) is in place on the V2.9 board, but **end-to-end SeaTalk I receive and transmit verification on a live bus, NMEA 0183 listener compliance measurement, rise-time-assist behaviour at 4800 / 9600 baud, and U11 LDO behaviour across the 9–16 V NMEA 2000 bus range have not yet been measured on the prototype.** The V2.9 boards also need the **C48 rework from 2.2 nF to 820 pF** applied before TX timing is meaningful.
+
+**Hardware bring-up (rig at the bench) — power:**
+
+- **Apply 12 V to J3 pin 1** — VST regulates at 12.0 ± 0.5 V.
+- **Apply 9 V to J3 pin 1** — VST ≈ 8.1 V (dropout); LED current still ≥ 2.9 mA and ST_RX responds to bus signal.
+- **Apply 16 V to J3 pin 1** — VST regulates at 12.0 ± 0.5 V; U11 junction ΔT &lt; 2 °C.
+- **Reverse polarity / swapped pins** — Apply −12 V or swap pin 1 and pin 2. Pass if VST = 0 V and no component damage.
+
+**Hardware bring-up (rig at the bench) — receive:**
+
+- **Idle bus** — ST_RX ≈ VCC (≥ 2.9 V).
+- **Force LOW via 1 kΩ to GND** — ST_RX ≤ 0.4 V.
+- **4800 baud test pattern** — UART RX captures correct framing with no errors.
+- **38400 baud (NMEA 0183 HS) test pattern** — UART RX captures correct framing with no errors.
+- **NMEA 0183 listener compliance** — Input current at J3 pin 3 = 2.0 V stays ≤ 2.0 mA (target ~0.36 mA).
+- **VST = 9 V (dropout) RX behaviour** — I_LED ≥ 2.0 mA; ST_RX transitions correctly with no missed edges.
+
+**Hardware bring-up (rig at the bench) — transmit (after C48 rework to 820 pF):**
+
+- **ST_EN HIGH (or undriven)** — ST_SIG sits at VST (~12 V via R37); transmitter off.
+- **ST_EN LOW, ST_TX HIGH** — ST_SIG = VST; Q10 not conducting.
+- **ST_EN LOW, ST_TX LOW** — ST_SIG &lt; 50 mV; Q10 conducting and bus pulled LOW.
+- **4800 baud rising edge** — ST_SIG reaches ≥ 80 % VST within 50 µs (rise-time assist functioning).
+- **9600 baud rising edge** — ST_SIG reaches ≥ 80 % VST within 30 µs (assist effective after C48 rework).
+- **VST = 16 V** — D9 (V_Z = 15 V) zener leakage / dissipation stays ≤ 200 mW.
+- **58 V transient on ST_SIG (clamped upstream)** — Gate driver and Q10 survive.
+
+**For V2.10 (tracked in `v2.10-improvements.md`):**
+
+- **C48 rework on existing V2.9 boards** — Change C48 from 2.2 nF to 820 pF (R59 unchanged at 12 kΩ). Same 0603 C0G footprint; update schematic value and rework all assembled units before TX bring-up.
+- **Connector swap to M12 3-pin** — Replace J3's proprietary Raymarine-compatible THT footprint with an M12 A-code or B-code 3-pin male panel-mount socket (IP67, field-wireable). The SeaTalk I pin assignment (power / ground / signal) maps directly. No circuit changes required.
+- **LDO bypass distances** — Move C55 (currently 9.2 mm from U11 VIN) and C54 (currently 5.0 mm from U11 VOUT) to within 2 mm of their respective U11 pins. Confirm via DRC.
+- **C49 / C50 schematic metadata** — KiCAD lists the wrong manufacturer part (GRM188R71H104KA93D, 100 nF); the correct part is GRM1885C1H101JA01D (100 pF). Assembled BOM is correct; fix the schematic property fields.
+- **C30 dedicated bypass at U7 pin 6** — Currently 3.3 mm; add a dedicated 100 nF 0603 adjacent to pin 6 if bring-up shows high-speed switching issues.
+- **Guard ring around U7 isolation gap** — Marine salt-spray increases ionic creepage risk on uncoated boards; add an unconnected guard trace if conformal coating is not specified.
+- **D9 proximity to ST_SIG boundary** — Confirm D9 is within 5 mm of the isolation boundary; relocate closer in V2.10 for better transient suppression.
+- **PCB creepage slot at U8 / U9** — The 1.4 mm copper-free gap meets IEC 60747-5-5; a milled PCB slot increases creepage. Evaluate when CE marking or MED certification is pursued.
+- **Rise-time-assist component placement** — C48, Q11, R36, R40, R42, R47, R59, R61 PCB positions were not recoverable from review data; confirm placement relative to Q12 in the PCB editor.
+- **38400 baud TX support** — Requires further reduction of C48 to ~220 pF (pulse too short for cable runs > 2–3 m) or a redesigned assist stage (constant-current source or firmware-adaptive baud-rate detection).
+
+:::
+
+---
+
 ## References
 
 1. Toshiba, [*TLP2309 High-Speed Logic Gate Opto-Isolator*](/assets/datasheets/mdd400-v2.9/TLP2309.pdf)

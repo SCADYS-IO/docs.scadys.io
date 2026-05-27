@@ -204,6 +204,40 @@ At NMEA 2000 minimum bus voltage (9.0 V): VS+_min ≈ 8.25 V at nominal load. Do
 
 ---
 
+## Testing & Verification
+
+:::caution
+
+V2.9 is a fabricated prototype in the bench-test phase. The MDD400 powers from NMEA 2000 cleanly on the prototype and the OVP threshold has been confirmed at 18.6 V on both MDD400 V2.9 and WTI400 V1.2 prototypes. **D7's loaded clamp voltage, the EMI-filter cap derating, the F1/D10 thermal proximity behaviour, and L3 cold-start inrush have not been quantitatively measured yet.**
+
+**Hardware bring-up (rig at the bench):**
+
+- **Reverse polarity** — Apply −12 V to NET-S. Pass if VS+ stays at 0 V with no component heating.
+- **Normal operation** — Apply 12 V. Pass if VS+ ≈ 11.25 V (within the ~750 mV drop budget).
+- **OVP trip** — Slowly raise supply voltage. Pass if VS+ drops to 0 V between 17.5 V and 19.5 V with no oscillation. *(Verified at 18.6 V on both MDD400 and WTI400 prototypes.)*
+- **OVP hysteresis** — After trip, slowly reduce supply. Pass if VS+ recovers cleanly below the trip point.
+- **PTC fuse** — Briefly short VS+. Pass if F1 trips and the board recovers without intervention after the fault clears.
+- **Bleed resistor** — Remove supply; pass if VS+ reaches &lt; 1 V in approximately 4.4 s (R54 × 44 µF).
+- **EMI filter ripple** — Scope VS+ at 242 mA load. Pass if supply ripple stays below the LMR51610 V_IN tolerance.
+- **Filter capacitance at bias** — Measure C43, C45, C46, C47 at 12 V DC bias; record actual values against the derated filter corner-frequency calculations.
+- **D7 clamp under transient** — Inject a representative fast transient onto VS+. Pass if VS+ stays below the INA219's 40 V VS abs-max.
+- **INA219 current reading** — At 242 mA nominal load, confirm the INA219 reading is within ±5 % of a bench ammeter cross-check.
+- **F1 thermal proximity to D10** — After an IEC 61000-4-5 surge sequence, confirm F1 body temperature stays below 70 °C.
+- **L3 cold-start inrush** — Confirm peak current through L3 at power-on stays below the 2.6 A saturation rating.
+
+**For V2.10 (tracked in `v2.10-improvements.md`):**
+
+- **OVP threshold margin at temperature** — At 85 °C the OVP threshold reaches 15.1 V — only 300 mV above the 14.8 V NMEA 2000 maximum charging voltage. Raise the margin by adjusting R45 / R46, or replace the divider-only comparator with a voltage-reference design for temperature-stable operation.
+- **Over-temperature disconnect** — Add a genuine thermal cutout: wire a normally-closed thermal switch (85 °C or 100 °C, e.g. Murata PKGS series) in series between R44 and GNDREF, plus a 100 kΩ pull-up from Q6's gate to its source. Place the switch adjacent to the hottest component (Q6 or L3 / L4).
+- **R33 Kelvin routing** — Verify INA219 IN+ and IN− sense traces leave the inner edges of R33's pads, separate from the main VS+ power traces, to minimise current-measurement error.
+- **D8 proximity** — Tighten D8 to within 2 mm of Q6's gate/source (currently 3.0 mm) to reduce the gate loop area.
+- **D10 sourcing for production** — Qualify a Littelfuse or STMicro equivalent SM8S36CA for CE / ABYC certification; the current FUXINSEMI part is suitable for prototype but not preferred for production compliance documentation.
+- **D7 substitution if loaded clamp exceeds 40 V** — Swap to a lower-standoff part (e.g. PESD12VL1BA, ~34 V clamp at 200 W) if the V2.9 bench measurement shows the INA219 VS abs-max could be reached.
+
+:::
+
+---
+
 ## References
 
 - Nexperia, [*PMV240SPR P-channel MOSFET*](https://assets.nexperia.com/documents/data-sheet/PMV240SPR.pdf)
