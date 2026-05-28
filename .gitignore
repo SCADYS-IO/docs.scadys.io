@@ -12,6 +12,7 @@
 site/
 .assets/docs_old/
 .assets/.olddocs/
+.assets/archive/
 
 # Docusaurus
 node_modules/
