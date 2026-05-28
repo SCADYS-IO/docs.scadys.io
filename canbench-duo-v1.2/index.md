@@ -65,6 +65,8 @@ The CANBench Duo is intended for **conducted-emissions measurement** at the engi
 | [Compliance](./compliance/index.md) | Regulatory markings, certification status |
 | [Tasks](./tasks.md) | V1.3 fixes planned, validation work outstanding |
 
+The CANBench Duo is **fully passive** — no microcontroller, no firmware, no software of any kind. There is intentionally no Firmware section.
+
 ## Related products
 
 - **MDD400, WTI400, MLI400, MDG400** — SCADYS-IO marine electronics that share the M12 N2K connector pinout. Any of these can be powered + bussed via the CANBench Duo's M12 (J10) connector.

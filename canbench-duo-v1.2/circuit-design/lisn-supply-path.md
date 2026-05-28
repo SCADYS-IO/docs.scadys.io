@@ -11,7 +11,7 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 CANBench Duo **v1.2** — Fabricated prototype, testing phase. The LISN supply path topology is identical to V1.1 (the fabricated hardware); V1.2 is the InvenTree-canonical schematic revision.
 :::
 
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/lisn_supply_path_4334ab46.svg" alt="LISN Supply Path schematic (lisn_supply_path)" />
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/lisn_supply_path_d54bc97f.svg" alt="LISN Supply Path schematic (lisn_supply_path)" initialFocus="16 22 266 129" />
 
 The LISN supply path is the four-stage passive front-end of the CANBench Duo. It implements a **CISPR 25-style dual-line 5 µH artificial network** for DC conducted-emissions measurement. The path takes a bench DC supply at the SOURCE banana sockets, delivers a filtered RF-stabilised copy of that supply to the DUT banana sockets, and presents a stable mostly-inductive source impedance to the DUT across the CISPR 25 measurement band (150 kHz to 108 MHz).
 

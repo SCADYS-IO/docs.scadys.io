@@ -1,6 +1,7 @@
 {
   "product": "canbench-duo",
   "version": "v1.2",
+  "top_level_sections": ["housing", "compliance"],
   "kicad_sheets": [
     "CANBench_Duo_V1.2",
     "block_diagrams",

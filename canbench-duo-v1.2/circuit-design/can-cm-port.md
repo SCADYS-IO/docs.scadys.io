@@ -13,7 +13,7 @@ CANBench Duo **v1.2** — Fabricated prototype, testing phase.
 
 The CAN common-mode measurement port is a **high-impedance, non-terminating tap** on the CAN bus that extracts the common-mode voltage of the CAN-H / CAN-L pair and presents it as a 50 Ω signal at SMA `J6` for spectrum-analyser measurement. Common-mode disturbance often dominates the upper-band conducted-emissions signature of a CAN-bus system, and this port makes it directly measurable.
 
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/can_cm_measurement_port_3aff91e5.svg" alt="CAN common-mode port schematic (can_cm_measurement_port)" />
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/can_cm_measurement_port_b9681fff.svg" alt="CAN common-mode port schematic (can_cm_measurement_port)" initialFocus="36 60 195 70" />
 
 :::warning[This port does not terminate the CAN bus]
 The CAN CM port is a high-impedance summing tap. The standard 120 Ω CAN-bus termination must be provided by the DUT and/or the upstream backbone. **Connecting the CAN CM port to an unterminated bus will degrade signalling and produce bus errors.** The bus-impedance perturbation when the bus is properly terminated (60 Ω each end with the standard 120 Ω terminators) is less than 3 % — negligible.

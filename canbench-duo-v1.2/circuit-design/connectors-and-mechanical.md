@@ -5,8 +5,6 @@ hw_status: prototype
 hw_status_label: "Fabricated prototype — testing phase"
 ---
 
-import SchematicViewer from '@site/src/components/SchematicViewer';
-
 :::note[Hardware version]
 CANBench Duo **v1.2** — Fabricated prototype, testing phase.
 :::
@@ -24,8 +22,6 @@ The CANBench Duo uses a **dual-face connector layout** built around the YG-H10A 
 ![CANBench Duo enclosure — top extrusion view with three SMAs, M12 N2K, indicator window, and front-faceplate chassis-ground binding post](/img/canbench-duo-v1.2/render_2.PNG)
 
 ![CANBench Duo enclosure — back faceplate showing DUT banana pair](/img/canbench-duo-v1.2/render_3.PNG)
-
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/connectors_and_mechanical_2384aa72.svg" alt="Connectors and Mechanical schematic (connectors_and_mechanical)" />
 
 ## Connector roster
 

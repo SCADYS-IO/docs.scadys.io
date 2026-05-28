@@ -1,5 +1,22 @@
 [
   {
+    "id": "docs-engineer-review",
+    "circuit": "docs",
+    "circuit_label": "Documentation",
+    "title": "Engineer review of authored V1.2 docs",
+    "description": "Read every page under docs.scadys.io/canbench-duo/v1.2/ in detail (index, quick-reference, circuit-design overview + six per-circuit pages, housing, compliance, tasks page). Catch factual errors, design-intent misrepresentations, regulatory-claim wording issues, anything that needs rewording for tone or technical accuracy. Hand back a punch list against the specific page paths.",
+    "status": "todo",
+    "date_completed": null,
+    "result": null,
+    "notes": null,
+    "evidence": [],
+    "category": "hardware",
+    "dependencies": [],
+    "assignee": null,
+    "kind": "verification",
+    "target_version": "v1.2"
+  },
+  {
     "id": "lisn-supply-path-vna-port-impedance",
     "circuit": "lisn-supply-path",
     "circuit_label": "LISN Supply Path",

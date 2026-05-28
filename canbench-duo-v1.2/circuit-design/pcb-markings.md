@@ -5,15 +5,11 @@ hw_status: prototype
 hw_status_label: "Fabricated prototype — testing phase"
 ---
 
-import SchematicViewer from '@site/src/components/SchematicViewer';
-
 :::note[Hardware version]
 CANBench Duo **v1.2** — Fabricated prototype, testing phase.
 :::
 
 The CANBench Duo uses a **two-place marking system**. Permanent traceability markings are silkscreened on the PCB underside; user-facing operational labels are etched on the enclosure top extrusion. Separating the two roles keeps the immutable PCB record clean from the day-to-day operating labels that the user actually reads in front of them.
-
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/silks_34bc49aa.svg" alt="PCB Markings & Compliance schematic (silks)" />
 
 ## What is on the PCB underside
 

@@ -13,7 +13,7 @@ CANBench Duo **v1.2** — Fabricated prototype, testing phase.
 
 A single XL-5050RGBC three-die RGB LED on the top extrusion encodes four supply-chain states. The encoding is entirely topological — there is no MCU, no firmware, no software. Each colour falls out of the rail relationships in the LISN supply-path protection chain.
 
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/power_indicator_led_76acf648.svg" alt="Power Indicator LED schematic (power_indicator_led)" />
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/power_indicator_led_9ffed5e0.svg" alt="Power Indicator LED schematic (power_indicator_led)" initialFocus="103 46 54 60" />
 
 ## State table
 

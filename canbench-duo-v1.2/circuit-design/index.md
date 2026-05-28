@@ -14,7 +14,7 @@ CANBench Duo **v1.2** — Fabricated prototype, testing phase. Topology and comp
 
 The CANBench Duo is a fully passive instrument. There is no microcontroller, no firmware, no switching converter. Everything described below is implemented with discrete components arranged on a 2-layer FR-4 board, with the layout following Jay_Diddy_B's [EEVblog 5 µH LISN design philosophy](https://www.eevblog.com/forum/projects/5uh-lisn-for-spectrum-analyzer-emcemi-work/).
 
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/block_diagrams_243b2ed7.svg" alt="CANBench Duo V1.2 system block diagram" />
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/block_diagrams_2116f4b3.svg" alt="CANBench Duo V1.2 system block diagram" initialFocus="16 16 158 130" />
 
 ## System architecture
 

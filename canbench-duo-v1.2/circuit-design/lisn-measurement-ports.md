@@ -23,11 +23,11 @@ The chain is designed to deliver:
 
 The design is derived from Jay_Diddy_B's [EEVblog 5 µH LISN reference design](https://www.eevblog.com/forum/projects/5uh-lisn-for-spectrum-analyzer-emcemi-work/), itself based on the HP / Keysight 11947A transient limiter with high-pass filter.
 
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/lisn_positive_measurement_port_174d15cb.svg" alt="LISN+ measurement port schematic (lisn_positive_measurement_port)" />
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/lisn_positive_measurement_port_222e41ab.svg" alt="LISN+ measurement port schematic (lisn_positive_measurement_port)" initialFocus="31 60 221 70" />
 
 The lower-rail mirror has identical topology with mirrored refdes (e.g. `R20` → `R29`, `C15` → `C20`, `J2` → `J4`):
 
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/lisn_negative_measurement_port_a46d92df.svg" alt="LISN− measurement port schematic (lisn_negative_measurement_port)" />
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/lisn_negative_measurement_port_9a611945.svg" alt="LISN− measurement port schematic (lisn_negative_measurement_port)" initialFocus="31 60 221 70" />
 
 ## Signal flow
 
