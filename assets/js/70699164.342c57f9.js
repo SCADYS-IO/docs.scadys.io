@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs_scadys_io=self.webpackChunkdocs_scadys_io||[]).push([["6458"],{1325(s){s.exports=JSON.parse('{"name":"docusaurus-plugin-content-docs","id":"canbench-duo-v12"}')}}]);
