@@ -65,10 +65,10 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'canbench-duo',
-        path: 'canbench-duo',
-        routeBasePath: 'canbench-duo',
-        sidebarPath: './sidebars.js',
+        id: 'canbench-duo-v12',
+        path: 'canbench-duo-v1.2',
+        routeBasePath: 'canbench-duo/v1.2',
+        sidebarPath: './sidebars-canbench-duo-v1.2.js',
       },
     ],
     [
@@ -109,7 +109,7 @@ const config = {
         items: [
           {label: 'MDD400', to: '/mdd400/v2.9', position: 'left'},
           {label: 'WTI400', to: '/wti400/v1.2', position: 'left'},
-          {label: 'CANBench Duo', to: '/canbench-duo', position: 'left'},
+          {label: 'CANBench Duo', to: '/canbench-duo/v1.2', position: 'left'},
           {label: 'CANBench TrueZ', to: '/canbench-truez', position: 'left'},
           {label: 'About', to: '/about', position: 'right'},
         ],

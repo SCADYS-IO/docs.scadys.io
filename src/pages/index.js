@@ -20,7 +20,7 @@ const products = [
     name: 'CANBench Duo',
     full: 'CANBench Duo',
     description: 'Dual-channel CAN bus development and testing tool.',
-    to: '/canbench-duo',
+    to: '/canbench-duo/v1.2',
   },
   {
     name: 'CANBench TrueZ',
