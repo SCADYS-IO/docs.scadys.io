@@ -137,7 +137,7 @@ Other layout notes:
 
 V1.2 is in service on the test vessel. Each circuit page has its own Testing & Verification list — the items below are the **system-level** items that span multiple sub-circuits or require integrated bring-up.
 
-**Heritage in service.** The WTI400 V1.2 deployment on the test vessel has accumulated approximately 1,000 sea miles with continuous Wi-Fi operation and the self-calibrating wind firmware running. The MLI400 V1.0 predecessor, installed on the same test vessel for the circumnavigation, accumulated thousands more sea miles of wind-interface operating heritage on the bespoke firmware that fed forward into the WTI400 design. The remaining bring-up tests are quantitative bench measurements that haven't yet been performed against the in-service installation.
+**Heritage in service.** The WTI400 V1.2 deployment on the test vessel has accumulated approximately 1,000 sea miles running the self-calibrating wind firmware that emits NMEA 2000. (Wi-Fi has never been enabled on any V1.2 board — see the [Firmware](../firmware/index.md) page.) The MLI400 V1.0 predecessor, installed on the same test vessel for the circumnavigation, accumulated thousands more sea miles of wind-interface operating heritage on the bespoke firmware that fed forward into the WTI400 design. The remaining bring-up tests are quantitative bench measurements that haven't yet been performed against the in-service installation.
 
 **System-level bring-up (rig at the bench, transducer attached):**
 

@@ -96,7 +96,7 @@ R55's HIGH pull-up state is the **safe state** — any GPIO floating (boot, rese
 
 #### Output filtering and bleed
 
-**C52 (10 µF X7R 0805)** is the VAS output capacitor — sole output cap on this rail, comfortably above the LP2951's 1 µF minimum stability requirement. **C48 (100 pF C0G)** is a feedforward capacitor across the upper divider leg (VAS → FEEDBACK), tightening transient response when the long masthead cable adds significant capacitive load at the connector. C48 is a candidate for an increase to 820 pF if instability is observed during bring-up — pending a corresponding part addition in InvenTree.
+**C52 (10 µF X7R 0805)** is the VAS output capacitor — sole output cap on this rail, comfortably above the LP2951's 1 µF minimum stability requirement. **C48 (100 pF C0G)** is a feedforward capacitor across the upper divider leg (VAS → FEEDBACK), tightening transient response when the long masthead cable adds significant capacitive load at the connector. C48 is a candidate for an increase to 150–220 pF if instability is observed during bring-up — the validation tuning knob noted in the power-supplies review.
 
 **R74 (39 kΩ)** is a gentle bleed across the VAS output. When the LDO is disabled, R74 discharges C52 (and the small connector-side bypass downstream) so the rail collapses promptly rather than holding a residual charge for several seconds.
 

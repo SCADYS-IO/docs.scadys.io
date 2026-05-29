@@ -79,7 +79,7 @@ The I2C bus pull-ups (R3, R4) live on this sheet rather than on the motion-senso
 
 ### Bring-up tests
 
-1. **Wi-Fi link stability under prolonged TX** — Run a 30-minute TCP iperf at typical operating distance from the access point. Pass if no Wi-Fi disconnects occur and the supply rail (measured at U3 pad 2) stays within ±3 % of 3.3 V throughout. *(Exercises antenna clearance and the VCC decoupling described below under sustained TX bursts.)*
+1. **VCC rail under sustained Wi-Fi TX (worst-case load)** — Using a Wi-Fi-enabled test build (production firmware does not enable Wi-Fi), run a 30-minute 802.11b TX burst / TCP iperf at typical operating distance. Pass if the supply rail (measured at U3 pad 2) stays within ±3 % of 3.3 V throughout, with no Wi-Fi disconnects. *(Exercises antenna clearance and the VCC decoupling described below under the hardware's worst-case TX current.)*
 
 ---
 
