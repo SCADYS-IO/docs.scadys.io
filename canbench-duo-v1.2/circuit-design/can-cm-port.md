@@ -1,14 +1,14 @@
 ---
 title: CAN Common-Mode Port
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 The CAN common-mode measurement port is a **high-impedance, non-terminating tap** on the CAN bus that extracts the common-mode voltage of the CAN-H / CAN-L pair and presents it as a 50 Ω signal at SMA `J6` for spectrum-analyser measurement. Common-mode disturbance often dominates the upper-band conducted-emissions signature of a CAN-bus system, and this port makes it directly measurable.
@@ -117,4 +117,4 @@ See `pcb_review/can-cm-port-layout.md` in the source repository for the per-comp
 - [LISN Measurement Ports](./lisn-measurement-ports.md) — the sister RF measurement chain; topologically similar but with 2-diode-series outer clamps for the higher LISN measurement-band amplitudes
 - [LISN Supply Path](./lisn-supply-path.md) — the LISN ladder also delivers DC supply to the DUT via the M12 N2K connector (J10 pin 2 / pin 3); the CAN-H / CAN-L lines (pins 4 / 5) tapped here arrive on the same connector
 - [Connectors and Mechanical](./connectors-and-mechanical.md) — J10 M12 N2K pin map (Shield, NET-S, NET-C, CAN-H, CAN-L) and J6 SMA placement on the top extrusion
-- [Quick Reference](../quick-reference.md) — operational measurement workflow including the "external 120 Ω termination required" caveat
+- [User Manual → Measurement Procedure](../user-manual/measurement-procedure.md) — operational measurement workflow including the "external 120 Ω termination required" caveat

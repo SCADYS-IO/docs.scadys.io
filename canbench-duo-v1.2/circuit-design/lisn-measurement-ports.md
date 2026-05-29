@@ -1,14 +1,14 @@
 ---
 title: LISN Measurement Ports
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase. The measurement-port topology is identical to V1.1 (the fabricated hardware); V1.2 carries the InvenTree-canonical schematic data.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 The LISN measurement ports are two mirror-image RF chains that tap the LISN-filtered DUT-side rails and present each rail's conducted-emissions signature as a 50 Ω signal at a board-mounted SMA. The upper-rail port (`RF_LISN_P`, SMA `J2`) taps `DUT+`; the lower-rail port (`RF_LISN_N`, SMA `J4`) taps `DUT−`. The two ports are full mirror images of each other across the board's Y = 90 mm axis — identical topology, identical component values, identical PCB layout.
@@ -132,7 +132,7 @@ See `pcb_review/lisn-measurement-ports-layout.md` in the source repository for t
 
 ## Measurement workflow
 
-For the operational measurement workflow (tinySA ULTRA configuration, baseline noise floor validation, LISN+ / LISN− symmetry comparison, environmental coupling considerations) see the [Quick Reference](../quick-reference.md) page. The key user-facing points:
+For the operational measurement workflow (spectrum-analyser configuration, baseline noise floor validation, LISN+ / LISN− symmetry comparison, environmental coupling considerations) see the [User Manual](../user-manual/index.md). The key user-facing points:
 
 - **Always terminate unused SMA ports with 50 Ω.** Unterminated ports cause false CM signatures, resonances, and unstable traces.
 - **Maintain repeatable geometry** between comparative sweeps. Cable routing, DUT position, and proximity to nearby electronics significantly affect low-level common-mode measurements.
@@ -143,4 +143,4 @@ For the operational measurement workflow (tinySA ULTRA configuration, baseline n
 - [LISN Supply Path](./lisn-supply-path.md) — the LISN ladder providing the `DUT+` / `DUT−` rails being tapped by these measurement ports
 - [CAN Common-Mode Port](./can-cm-port.md) — the sister measurement chain on the CAN data lines, structurally similar but with simpler clamping
 - [Connectors and Mechanical](./connectors-and-mechanical.md) — SMA Female Vertical placement on the top extrusion (J2 and J4)
-- [Quick Reference](../quick-reference.md) — operational measurement workflow and tinySA ULTRA configuration
+- [User Manual](../user-manual/index.md) — operational measurement workflow, spectrum-analyser setup, and results interpretation

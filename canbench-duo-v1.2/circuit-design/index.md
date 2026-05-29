@@ -1,15 +1,15 @@
 ---
 title: Circuit Design
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 sidebar_label: Overview
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase. Topology and component values are identical to the V1.1 fabricated board; V1.2 carries the InvenTree-canonical component metadata.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 The CANBench Duo is a fully passive instrument. There is no microcontroller, no firmware, no switching converter. Everything described below is implemented with discrete components arranged on a 2-layer FR-4 board, with the layout following Jay_Diddy_B's [EEVblog 5 µH LISN design philosophy](https://www.eevblog.com/forum/projects/5uh-lisn-for-spectrum-analyzer-emcemi-work/).
@@ -24,7 +24,7 @@ The supply chain is **mirror-symmetric** across the board's central horizontal a
 
 The three RF measurement ports share a common design pattern: a high-pass AC-couple at the input, a two-stage π attenuator giving about 10 dB of attenuation, a multi-stage clamp cascade for analyser protection, an integrated TVS at the SMA. The two LISN measurement ports tap the LISN ladder's DUT-side outputs (one per rail); the CAN common-mode port uses a 1 kΩ matched-pair summing front-end to extract the CAN bus common-mode voltage directly.
 
-A discrete state-encoder LED on the top extrusion communicates the supply-chain health — Green for normal operation, Blue for "fuse blown", Red for reverse polarity, Off for no supply.
+A discrete state-encoder LED on the top extrusion communicates the supply-chain health — Green for normal operation, Blue when the upstream protection FET (Q2) is not fully conducting (typically because F1 has blown), Red for reverse polarity, Off for no supply.
 
 ## Subsystems
 

@@ -1,12 +1,12 @@
 ---
 title: PCB Markings & Compliance
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 ---
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 The CANBench Duo uses a **two-place marking system**. Permanent traceability markings are silkscreened on the PCB underside; user-facing operational labels are etched on the enclosure top extrusion. Separating the two roles keeps the immutable PCB record clean from the day-to-day operating labels that the user actually reads in front of them.
@@ -22,7 +22,7 @@ Seven silkscreen marks on F.SilkS (the front-copper-side silkscreen). In the ass
 | `S4` | CE | (156.5, 125) | EU conformity mark |
 | `S5` | SCADYS-IO logo (9 × 9 mm, with F.Mask cutout) | (77.5, 57.5) | SCADYS-IO branding |
 | `S6` | "© 2025 GM Consolidated Holdings Pty Ltd" | (106.4, 127) | Copyright notice |
-| `S7` | QR code | (77.5, 68) | Links to the canonical docs page for this product / version |
+| `S7` | QR code | (77.5, 68) | Links to the canonical docs page for this product / version (V1.1 silkscreen carries a stale URL — see [Known V1.1 / V1.2 silkscreen issues](#known-v11--v12-silkscreen-issues) below) |
 | `S8` | RoHS (China-RoHS EFUP variant) | (148, 125) | Restriction of Hazardous Substances mark |
 
 The regulatory marks cluster at the top edge of the board (S3 + S4 + S8); the product-identification cluster sits at the bottom-left (S5 + S7 + S1).
@@ -45,7 +45,7 @@ The V1.1 fabricated prototype carries `0B-1.1-CAN`; V1.2 schematic carries `0B-1
 
 ## Certification status
 
-The V1.1 / V1.2 prototype carries the CE, UKCA, and RoHS marks on the silkscreen as a **forward-looking conformity claim**. **No formal compliance certification has been performed yet.**
+The V1.1 prototype silkscreen carries CE, UKCA, and RoHS marks (also defined in the V1.2 schematic) as a **forward-looking conformity claim**. **No formal compliance certification has been performed yet.**
 
 | Mark | Underlying directive | V1.2 status |
 | --- | --- | --- |

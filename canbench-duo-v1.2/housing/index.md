@@ -1,13 +1,13 @@
 ---
 title: Housing
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 sidebar_label: Housing
 ---
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 The CANBench Duo PCB sits inside a **Yongu YG-H10A extruded aluminium split enclosure** with black anodised finish. The extrusion forms the top and bottom faces; two vertical aluminium faceplates close the front and back. The PCB slides into milled grooves in the extrusion.
@@ -38,7 +38,7 @@ Cables emerge in the directions they need to travel — supply forward, DUT back
 
 ## Enclosure markings
 
-Per [`canbench-duo-enclosure-orientation`](#related-pages), the **user-facing operational labels** — `SRC`, `DUT`, `GRP`, and the connector reference designators — are laser-etched onto the top aluminium extrusion. Laser marking on black anodised aluminium produces a matte light-grey-on-black graphic that is durable, solvent-resistant, and UV-resistant.
+The **user-facing operational labels** — `SRC`, `DUT`, `GRP`, and the connector reference designators — are laser-etched onto the top aluminium extrusion (see [Orientation](#orientation) above for which face is up). Laser marking on black anodised aluminium produces a matte light-grey-on-black graphic that is durable, solvent-resistant, and UV-resistant.
 
 The labels live on the enclosure, **not on the PCB silkscreen**. The PCB silkscreen carries the regulatory and identification marks ([PCB Markings & Compliance](../circuit-design/pcb-markings.md)) — these are intentionally separate roles: enclosure labels are what the user reads during a measurement session; PCB silkscreen is the immutable record under the bench.
 
@@ -69,7 +69,7 @@ The intent for production assembly is to use **internal sharktooth / star lock w
 
 ## Known housing items
 
-- **Anodize removal at chassis-bond interfaces** is on the V1.3 production fixture plan. V1.1 / V1.2 prototype units rely on the wire-braid binding-post path as the primary chassis bond; the SMA / M12 secondary path may add resistance until anodize removal is in place.
+- **Anodize removal at chassis-bond interfaces** is on the V1.3 production fixture plan. V1.1 prototype units rely on the wire-braid binding-post path as the primary chassis bond; the SMA / M12 secondary path may add resistance until anodize removal is in place.
 - **PCB silkscreen vs enclosure label orientation** — the regulatory marks (CE / UKCA / RoHS) are on F.SilkS, which faces DOWN. V1.3 may migrate them to B.SilkS so they appear on the top face alongside the laser-etched operational labels, satisfying the visibility requirement of the regulatory directives more directly.
 - **Production-fixture anodize-clear pads** are sized for sharktooth-washer bonding per the recommendations above; the fixture artwork file is a separate deliverable to the PCB design files.
 

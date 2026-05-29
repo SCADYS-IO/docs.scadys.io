@@ -1,14 +1,14 @@
 ---
 title: LISN Supply Path
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase. The LISN supply path topology is identical to V1.1 (the fabricated hardware); V1.2 is the InvenTree-canonical schematic revision.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 <SchematicViewer src="/img/schematics/canbench-duo-v1.2/lisn_supply_path_d54bc97f.svg" alt="LISN Supply Path schematic (lisn_supply_path)" initialFocus="16 22 266 129" />

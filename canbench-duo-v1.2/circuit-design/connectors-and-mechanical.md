@@ -1,12 +1,12 @@
 ---
 title: Connectors & Mechanical
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 ---
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 The CANBench Duo uses a **dual-face connector layout** built around the YG-H10A extruded aluminium enclosure. Three classes of cables come and go: bench supply, DUT supply / N2K, and measurement. Each class emerges from a different face of the enclosure, so all three can lie flat on the test bench without crossing.
@@ -116,4 +116,4 @@ This orientation is unusual compared to many bench instruments where everything 
 - [LISN Measurement Ports](./lisn-measurement-ports.md) — the RF chains driving the LISN+ / LISN− SMAs (J2 / J4)
 - [CAN Common-Mode Port](./can-cm-port.md) — the RF chain driving the CAN-CM SMA (J6) and tapping J10's pins 4 / 5
 - [Power Indicator LED](./power-indicator-led.md) — the indicator visible through the top extrusion
-- [Quick Reference](../quick-reference.md) — operational workflow including cable-layout conventions
+- [User Manual → Quick Start](../user-manual/quick-start.md) — operational workflow including cable-layout conventions; [Quick Reference → Connectors](../quick-reference/connectors.md) — connector roster lookup table

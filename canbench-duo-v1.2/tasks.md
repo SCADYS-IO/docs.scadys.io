@@ -1,8 +1,8 @@
 ---
 title: Tasks
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 ---
 
 import BringupTaskList from '@site/src/components/BringupTaskList';
@@ -10,7 +10,7 @@ import tasks from './tasks.json';
 
 :::note[Hardware version]
 
-CANBench Duo **v1.2** — Fabricated prototype, testing phase. Live task list for the CANBench Duo V1.2 hardware revision and the next-version (V1.3) backlog. Underlying data: [`tasks.json`](https://github.com/SCADYS-IO/docs.scadys.io/blob/main/canbench-duo-v1.2/tasks.json) — hand-maintained, edited as work progresses.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware. Live task list for the V1.2 schematic revision and the next-version (V1.3) backlog. Underlying data: [`tasks.json`](https://github.com/SCADYS-IO/docs.scadys.io/blob/main/canbench-duo-v1.2/tasks.json) — hand-maintained, edited as work progresses.
 
 :::
 

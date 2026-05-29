@@ -1,14 +1,14 @@
 ---
 title: Power Indicator LED
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 A single XL-5050RGBC three-die RGB LED on the top extrusion encodes four supply-chain states. The encoding is entirely topological — there is no MCU, no firmware, no software. Each colour falls out of the rail relationships in the LISN supply-path protection chain.
@@ -21,7 +21,7 @@ A single XL-5050RGBC three-die RGB LED on the top extrusion encodes four supply-
 | --- | --- | --- | --- |
 | **Off** | No bench-supply voltage | The bench supply is not connected, the supply is set to 0 V, or the supply cable to the SRC sockets is open. | Check the bench supply is on and wired to the SRC banana pair (front faceplate). |
 | **Green** | Correct polarity, both protection FETs conducting, F1 intact | Normal operation. LISN delivers the filtered supply to the DUT bananas (J1 / J3) and the M12 N2K connector (J10). | Proceed with measurement. |
-| **Blue** | F1 fuse blown — DUT is no longer connected to supply | A DUT-side over-current event has blown the SRC+ rail's 5 A Nano2 Slo-Blo fuse, and the upstream protection FET (Q2) has lost its drain reference. The bench supply is still present at the SRC pair; the DUT pair is dead. | Power the bench supply down. Remove the DUT. Replace F1. Investigate the DUT for an over-current condition before reconnecting. |
+| **Blue** | Q2 protection FET not fully conducting — typically because F1 has blown | A DUT-side over-current event has usually blown the SRC+ rail's 5 A Nano2 Slo-Blo fuse, depriving the upstream P-FET (Q2) of its drain reference. The bench supply is still present at the SRC pair; the DUT pair is dead. A brief Blue flash at supply turn-on (see below) is a separate, benign variant of the same mechanism. | Power the bench supply down. Remove the DUT. Replace F1. If the LED stays Blue with no DUT attached after a fresh fuse, suspect Q2. Investigate the DUT for an over-current condition before reconnecting. |
 | **Red** | Reverse polarity at the SRC pair | The bench supply cables are reversed at the SRC banana pair — V_BLACK > V_RED. The internal protection FETs prevent current flow downstream, so the DUT pair is not energised. | Power the bench supply down. Reverse the SRC cables to the correct RED-to-`SUPPLY+`, BLACK-to-`SUPPLY−` orientation. |
 
 A brief Blue flash for ~ ms at supply turn-on is normal and benign — Q2's gate-bias divider takes a few RC time constants to bring Q2 fully ON, and during that interval V(SUPPLY+) − V(VSS+) momentarily exceeds Q1's V_BE threshold. The LED settles to Green once Q2 reaches full conduction.

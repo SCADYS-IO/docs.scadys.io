@@ -1,12 +1,12 @@
 ---
 title: CANBENCH-DUO Overview
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 ---
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase. V1.2 is the InvenTree-canonical schematic revision of the V1.1 fabricated prototype. The two are electrically identical; V1.2 carries the cleaner component-metadata linkage. The fabricated hardware is V1.1.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 The CANBench Duo is a dual-line DC LISN (Line Impedance Stabilisation Network) with an integrated CAN common-mode monitor. It supports conducted-emissions measurement on CAN-bus and similar low-voltage DC supply pairs, from 150 kHz to 108 MHz, per the CISPR 25 measurement band.
@@ -28,7 +28,7 @@ The CANBench Duo is the input stage of a three-instrument measurement chain:
 
 The DUT plugs into the back-faceplate banana pair (or via the M12 N2K connector for combined supply + CAN). The user reads conducted-emissions signatures off the spectrum analyser while the DUT operates normally.
 
-See the [Quick Reference](./quick-reference.md) page for the tinySA configuration, measurement procedure, and component list. The [Circuit Design](./circuit-design/index.md) section walks through each functional block.
+See the [User Manual](./user-manual/index.md) for the spectrum-analyser configuration and the measurement procedure, and the [Quick Reference](./quick-reference/index.md) for the full component list. The [Circuit Design](./circuit-design/index.md) section walks through each functional block.
 
 ## Operating envelope
 
@@ -53,13 +53,14 @@ The CANBench Duo is intended for **conducted-emissions measurement** at the engi
 
 - **Not for ISO 7637-2 transient testing.** The protection chain handles ESD and bench-mishap events. ISO 7637-2 Pulse 5a/5b (load dump, 100+ V sustained transients) would exceed the MOSFET protection chain's voltage rating.
 - **Not formally certified for CE / UKCA / RoHS** at the V1.1 prototype stage. The PCB silkscreen carries the regulatory marks as a forward-looking conformity claim; formal Declaration of Conformity and EMC test reports are pending.
-- **Measurement geometry matters.** Low-level common-mode measurements are sensitive to cable routing, nearby electronics, and ground coupling — maintain repeatable geometry during comparative tests. See the [Quick Reference](./quick-reference.md) page for environmental-coupling guidance.
+- **Measurement geometry matters.** Low-level common-mode measurements are sensitive to cable routing, nearby electronics, and ground coupling — maintain repeatable geometry during comparative tests. See the [User Manual → Common Pitfalls](./user-manual/common-pitfalls.md) page for environmental-coupling guidance.
 
 ## Documentation map
 
 | Section | What it covers |
 | --- | --- |
-| [Quick Reference](./quick-reference.md) | tinySA setup, measurement procedure, full BOM |
+| [User Manual](./user-manual/index.md) | Quick start, spectrum-analyser setup, measurement procedure, status LED, pitfalls, results interpretation |
+| [Quick Reference](./quick-reference/index.md) | BOM, connector roster, LED state lookup |
 | [Circuit Design](./circuit-design/index.md) | Per-block schematic, topology, and design rationale |
 | [Housing](./housing/index.md) | YG-H10A extruded aluminium enclosure, cable routing |
 | [Compliance](./compliance/index.md) | Regulatory markings, certification status |

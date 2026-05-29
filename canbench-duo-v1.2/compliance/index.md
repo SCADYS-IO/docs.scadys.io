@@ -1,17 +1,17 @@
 ---
 title: Compliance
 hw_version: v1.2
-hw_status: prototype
-hw_status_label: "Fabricated prototype — testing phase"
+hw_status: schematic
+hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 sidebar_label: Compliance
 ---
 
 :::note[Hardware version]
-CANBench Duo **v1.2** — Fabricated prototype, testing phase.
+CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 :::
 
 :::warning[Status: no formal certification yet]
-The CANBench Duo V1.1 fabricated prototype carries CE, UKCA, and RoHS marks on the PCB silkscreen as a **forward-looking conformity claim**. Formal Declaration of Conformity, EMC test report, and component-level lead-free verification are pending the V1.3 production release. The V1.1 / V1.2 prototype is **not** a certified product.
+The CANBench Duo V1.1 fabricated prototype carries CE, UKCA, and RoHS marks on the PCB silkscreen as a **forward-looking conformity claim**. Formal Declaration of Conformity, EMC test report, and component-level lead-free verification are pending the V1.3 production release. Neither the V1.1 prototype nor the V1.2 schematic is a certified product.
 :::
 
 ## Current status

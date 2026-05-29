@@ -7,9 +7,69 @@ const sidebars = {
       "label": "CANBENCH-DUO Overview (v1.2)"
     },
     {
-      "type": "doc",
-      "id": "quick-reference",
-      "label": "Quick Reference"
+      "type": "category",
+      "label": "User Manual",
+      "link": {
+        "type": "doc",
+        "id": "user-manual/index"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "user-manual/quick-start",
+          "label": "Quick Start"
+        },
+        {
+          "type": "doc",
+          "id": "user-manual/spectrum-analyser-setup",
+          "label": "Spectrum-Analyser Setup"
+        },
+        {
+          "type": "doc",
+          "id": "user-manual/measurement-procedure",
+          "label": "Measurement Procedure"
+        },
+        {
+          "type": "doc",
+          "id": "user-manual/status-led",
+          "label": "Status LED"
+        },
+        {
+          "type": "doc",
+          "id": "user-manual/common-pitfalls",
+          "label": "Common Pitfalls"
+        },
+        {
+          "type": "doc",
+          "id": "user-manual/interpreting-results",
+          "label": "Interpreting Results"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Quick Reference",
+      "link": {
+        "type": "doc",
+        "id": "quick-reference/index"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "quick-reference/bom",
+          "label": "Bill of Materials"
+        },
+        {
+          "type": "doc",
+          "id": "quick-reference/connectors",
+          "label": "External Connectors"
+        },
+        {
+          "type": "doc",
+          "id": "quick-reference/led-states",
+          "label": "LED States"
+        }
+      ]
     },
     {
       "type": "doc",
