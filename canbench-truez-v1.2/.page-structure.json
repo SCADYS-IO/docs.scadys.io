@@ -1,0 +1,29 @@
+{
+  "product": "canbench-truez",
+  "version": "v1.2",
+  "top_level_sections": [
+    "housing",
+    "compliance"
+  ],
+  "kicad_sheets": [
+    "CANBench_TrueZ_V1.2",
+    "cm_dm",
+    "connectors"
+  ],
+  "circuit_design_pages": [
+    {
+      "slug": "cm-dm",
+      "label": "CM & DM Separator",
+      "renders": [
+        "cm_dm"
+      ]
+    },
+    {
+      "slug": "connectors",
+      "label": "Connectors & Markings",
+      "renders": [
+        "connectors"
+      ]
+    }
+  ]
+}

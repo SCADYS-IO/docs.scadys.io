@@ -25,8 +25,8 @@ const products = [
   {
     name: 'CANBench TrueZ',
     full: 'CANBench TrueZ',
-    description: 'CAN bus termination and impedance verification tool.',
-    to: '/canbench-truez',
+    description: 'Common-mode / differential-mode noise separator for conducted-emissions diagnosis. Companion to the CANBench Duo LISN.',
+    to: '/canbench-truez/v1.1',
   },
 ];
 

@@ -83,10 +83,19 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'canbench-truez',
-        path: 'canbench-truez',
-        routeBasePath: 'canbench-truez',
-        sidebarPath: './sidebars.js',
+        id: 'canbench-truez-v11',
+        path: 'canbench-truez-v1.1',
+        routeBasePath: 'canbench-truez/v1.1',
+        sidebarPath: './sidebars-canbench-truez-v1.1.js',
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'canbench-truez-v12',
+        path: 'canbench-truez-v1.2',
+        routeBasePath: 'canbench-truez/v1.2',
+        sidebarPath: './sidebars-canbench-truez-v1.2.js',
       },
     ],
     [
@@ -128,7 +137,16 @@ const config = {
               {label: 'v1.2 — schematic refresh (next version)', to: '/canbench-duo/v1.2'},
             ],
           },
-          {label: 'CANBench TrueZ', to: '/canbench-truez', position: 'left'},
+          {
+            type: 'dropdown',
+            label: 'CANBench TrueZ',
+            to: '/canbench-truez/v1.1',
+            position: 'left',
+            items: [
+              {label: 'v1.1 — fabricated prototype (current)', to: '/canbench-truez/v1.1'},
+              {label: 'v1.2 — schematic refresh (next version)', to: '/canbench-truez/v1.2'},
+            ],
+          },
           {label: 'About', to: '/about', position: 'right'},
         ],
       },
