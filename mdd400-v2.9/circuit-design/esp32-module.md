@@ -91,7 +91,7 @@ The asymmetric pull-up choice (10 kΩ SCL, 5 kΩ SDA) compensates for the higher
 
 ### Bring-up tests
 
-1. **Wi-Fi link stability under prolonged TX** — Run a 30-minute TCP iperf at typical operating distance from the access point. Pass if no Wi-Fi disconnects and the VCC rail (probed at U3 pad 2) stays within ±3 % of 3.3 V throughout.
+1. **VCC rail under sustained Wi-Fi TX (worst-case load)** — Using a Wi-Fi-enabled test build (production firmware does not enable Wi-Fi), run a 30-minute 802.11b TX burst / TCP iperf at typical operating distance. Pass if the VCC rail (probed at U3 pad 2) stays within ±3 % of 3.3 V throughout, with no Wi-Fi disconnects.
 
 ---
 

@@ -59,9 +59,9 @@ I_LED = (V_C − V_F_LED) / R14
 The base divider is sized so Q1 is deeply saturated:
 
 - V<sub>B</sub> when Q1 is active: V<sub>E</sub> − 0.7 V = 3.3 − 0.7 = 2.60 V
-- Current through R8 (with LED_EN at GNDREF): (2.60 − 0) / 6.8 kΩ = 382 µA into the base
-- Current through R15 (base to GNDREF): 2.60 / 10 kΩ = 260 µA out of the base
-- Net base current I<sub>B</sub> = 382 − 260 = 122 µA... actually the divider equivalent: V<sub>B</sub> = 2.60 V via the divider with both R8 and R15 charging from LED_EN (0 V) and to GNDREF (0 V) respectively, so the net base drive current is the difference between the two paths through the base — the BC807-25 base in saturation operates with I<sub>B</sub> ≈ 642 µA from the combined paths (per the performance review evidence).
+- Current through R8 (base node to LED_EN at 0 V): (2.60 − 0) / 6.8 kΩ = 382 µA
+- Current through R15 (base node to GNDREF at 0 V): 2.60 / 10 kΩ = 260 µA
+- Both resistors pull current *out* of the base node toward 0 V, so the two paths add: I<sub>B</sub> = 382 + 260 = 642 µA, supplied through the emitter–base junction.
 - I<sub>B,required</sub> at edge of saturation: I<sub>C</sub> / h<sub>FE,min</sub> = 3.08 mA / 160 = 19.3 µA
 - Overdrive ratio: I<sub>B,actual</sub> / I<sub>B,required</sub> ≈ 33×
 

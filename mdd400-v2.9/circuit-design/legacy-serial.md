@@ -15,12 +15,12 @@ MDD400 **v2.9** — Prototype — under test
 
 The legacy serial interface provides a galvanically isolated single-wire serial connection designed for full electrical compatibility with Raymarine's Legacy Serial Protocol (e.g. SeaTalk™). It connects to legacy marine instruments via a 3-pin connector and exposes three MCU signals — `ST_RX`, `ST_TX` and `ST_EN` (for receive, transmit and transmit enable respectively), each crossing the isolation barrier via a TLP2309 opto-isolator.
 
-The primary application on the MDD400 is to receive and display data from legacy SeaTalk or single-ended NMEA 0183 instruments. Wind, compass, and boat speed data arriving via this interface are also used internally for calculations such as true wind. A future use case for the transmit path is autopilot control via SeaTalk; the hardware is capable, but firmware implementation is out of scope for this document.
+The primary application on the MDD400 is to receive and display data from Legacy Serial Protocol or single-ended NMEA 0183 instruments. Wind, compass, and boat speed data arriving via this interface are also used internally for calculations such as true wind. A future use case for the transmit path is autopilot control over the Legacy Serial Protocol; the hardware is capable, but firmware implementation is out of scope for this document.
 
 The interface has limited compatibility with single-ended NMEA 0183 operation. Receive is fully NMEA 0183 listener compliant. Transmit compatibility with NMEA 0183 receivers depends on whether the receiving device accepts single-ended 12 V logic (see [NMEA 0183 caveats](#nmea-0183-caveats)).
 
 **Sub-circuits:**
-- [3-wire connector and bus modes](#3-wire-connector-and-bus-modes) — physical interface, SeaTalk I and NMEA 0183 wiring;
+- [3-wire connector and bus modes](#3-wire-connector-and-bus-modes) — physical interface, Legacy Serial Protocol and NMEA 0183 wiring;
 - [12 V power protection and regulation](#12-v-power-protection-and-regulation) — bus supply conditioning and LDO;
 - [Receive path](#receive-path) — signal filtering and isolated receive opto; and
 - [Transmit path](#transmit-path) — isolated transmit, enable gate, and open-drain line driver.
@@ -31,7 +31,7 @@ The interface has limited compatibility with single-ended NMEA 0183 operation. R
 
 ## 3-Wire Connector and Bus Modes
 
-J3 is a 3-pin through-hole connector with a custom footprint that is pin-compatible with the Raymarine SeaTalk I connector. It accepts standard Raymarine SeaTalk plugs directly, or 1211 spade female crimp connectors.
+J3 is a 3-pin through-hole connector with a custom footprint that is pin-compatible with Raymarine's legacy 3-pin connector. It accepts standard Raymarine plugs directly, or 1211 spade female crimp connectors.
 
 | Pin | Colour | Signal | Function |
 |-----|--------|--------|----------|
@@ -39,9 +39,9 @@ J3 is a 3-pin through-hole connector with a custom footprint that is pin-compati
 | 2 | BLACK | GND | Isolated bus ground (GND_ST) |
 | 3 | YELLOW | SIG | Single-wire signal line (ST_SIG) |
 
-### SeaTalk I Mode
+### Legacy Serial Protocol Mode
 
-In SeaTalk I mode all three pins are used as supplied by the bus:
+In Legacy Serial Protocol mode all three pins are used as supplied by the bus:
 
 - pin 1 provides 12 V bus power;
 - pin 2 is the bus ground reference; and
@@ -49,7 +49,7 @@ In SeaTalk I mode all three pins are used as supplied by the bus:
 
 The MDD400 can both listen to and transmit on the bus. During transmit, Q10 (2N7002) pulls pin 3 LOW; during idle and receive, pin 3 is held HIGH by R37 (22 kΩ pull-up to VST). The protocol is half-duplex: the MCU must not transmit while another device is holding the bus LOW.
 
-SeaTalk I uses 9-bit framing: 4800 baud, 1 start bit, 8 data bits, 1 attribute bit (transmitted as the 9th data bit, conventionally mapped to the UART parity position), 1 stop bit. The attribute bit distinguishes command bytes from data bytes in a multi-byte message.
+Legacy Serial Protocol uses 9-bit framing: 4800 baud, 1 start bit, 8 data bits, 1 attribute bit (transmitted as the 9th data bit, conventionally mapped to the UART parity position), 1 stop bit. The attribute bit distinguishes command bytes from data bytes in a multi-byte message.
 
 ### NMEA 0183 Receive Mode
 
@@ -62,7 +62,7 @@ For NMEA 0183 single-ended receive, connect the talker output as follows:
 | 3 (YELLOW) | TALK-A (RS-422 A+, active signal) |
 
 :::note[12 V supply — when required]
-- **SeaTalk I** — always required; bus power on pin 1 is the only supply source;
+- **Legacy Serial Protocol** — always required; bus power on pin 1 is the only supply source;
 - **NMEA 0183 listener only** — not required; the RX buffer draws its LED drive current passively from the talker signal;
 - **NMEA 0183 talker** — required; the TX line driver (Q10, VST pull-up R37) needs VST to assert the bus LOW. Connect a 9–16 V supply to pin 1.
 :::
@@ -77,10 +77,10 @@ The receive circuit draws approximately 0.36 mA from the line at 2.0 V input, wi
 
 The TX output may work with NMEA 0183 receiving devices that accept single-ended 12 V logic (common on older Garmin, B&G, and Furuno equipment, and on many chartplotters that internally use TTL-level NMEA 0183 inputs). Confirm the receiver's input specification before relying on this connection.
 
-The TX circuit is optimised for 4800 baud (SeaTalk I). At 9600 baud the rise-time assist operates at reduced effectiveness (see [Rise-Time Assist](#rise-time-assist--q12-mmbta56lt1g-c48-r59)); 38400 baud is not supported.
+The TX circuit is optimised for 4800 baud (Legacy Serial Protocol). At 9600 baud the rise-time assist operates at reduced effectiveness (see [Rise-Time Assist](#rise-time-assist--q12-mmbta56lt1g-c48-r59)); 38400 baud is not supported.
 
 :::caution[Connector — gap for next version]
-J3 uses a proprietary Raymarine-compatible pin arrangement. For V2.10, consider replacing J3 with an M12 3-pin male waterproof connector (panel-mount, IP67). The M12 A-code or B-code 3-pin is widely available, field-wireable without special tools, and compatible with standard marine cabling. The SeaTalk I pin assignment (power / ground / signal) maps directly to a 3-pin M12. The existing 1211-compatible footprint would need to be replaced; no circuit changes are required.
+J3 uses a proprietary Raymarine-compatible pin arrangement. For V2.10, consider replacing J3 with an M12 3-pin male waterproof connector (panel-mount, IP67). The M12 A-code or B-code 3-pin is widely available, field-wireable without special tools, and compatible with standard marine cabling. The Legacy Serial Protocol pin assignment (power / ground / signal) maps directly to a 3-pin M12. The existing 1211-compatible footprint would need to be replaced; no circuit changes are required.
 :::
 
 ---
@@ -156,10 +156,10 @@ When a bus device or NMEA 0183 talker asserts a LOW on ST_SIG:
 
 ```
 I_LED = (VST − V_D6_F − V_LED_F) / R32
-      = (12.0 V − 0.45 V − 1.55 V) / 2200 Ω ≈ 4.5 mA (at VST = 12 V)
+      = (12.0 V − 0.45 V − 1.20 V) / 2200 Ω ≈ 4.70 mA (at VST = 12 V)
 ```
 
-At the NMEA 2000 minimum bus voltage of 9 V, VST drops to approximately 8.1 V (U11 in dropout), giving I_LED ≈ 2.3 mA — above the TLP2309 I_F(ON) minimum.
+At the NMEA 2000 minimum bus voltage of 9 V, VST drops to approximately 8.1 V (U11 in dropout), giving I_LED ≈ 2.93 mA — above the TLP2309 I_F(ON) minimum.
 
 #### Isolation — U7 (TLP2309)
 
@@ -181,7 +181,7 @@ R25 (2.2 kΩ, VCC to U7 output) is the output pull-up. C30 (100 nF) is the VCC b
 - **Idle bus** → `ST_RX` HIGH (≥ 2.97 V, VCC − V_OL; TLP2309 V_OL ≤ 0.4 V);
 - **Bus asserted LOW** → `ST_RX` LOW (≤ 0.4 V).
 
-Configure the ESP32 UART peripheral as follows for SeaTalk I:
+Configure the ESP32 UART peripheral as follows for Legacy Serial Protocol:
 
 | Parameter | Value |
 |-----------|-------|
@@ -246,7 +246,7 @@ D9 (BZT52C15S, 15 V zener, SOD-323) clamps ST_SIG against positive transients. T
 
 #### Rise-time assist — Q12 (MMBTA56LT1G), C48, R59
 
-When Q10 turns off, the bus rising edge is initially slow because R37 (22 kΩ) charges the cable capacitance passively. For a typical SeaTalk I installation with 10 m of cable (≈ 1 nF), the passive RC time constant is 22 kΩ × 1 nF = 22 µs — marginal against a 208 µs bit period. For longer cable runs (up to 80 m, ≈ 8 nF), the passive RC exceeds 176 µs, which is too slow for reliable reception.
+When Q10 turns off, the bus rising edge is initially slow because R37 (22 kΩ) charges the cable capacitance passively. For a typical Legacy Serial Protocol installation with 10 m of cable (≈ 1 nF), the passive RC time constant is 22 kΩ × 1 nF = 22 µs — marginal against a 208 µs bit period. For longer cable runs (up to 80 m, ≈ 8 nF), the passive RC exceeds 176 µs, which is too slow for reliable reception.
 
 Q12 (MMBTA56LT1G PNP) provides a brief high-side current pulse into ST_SIG via an AC-coupled path. C48 (2.2 nF C0G) and R59 (12 kΩ) set the pulse duration. Q12 turns on at the start of each LOW-to-HIGH transition and sources current from VST through R51 (10 Ω) into ST_SIG. Q12 turns off once C48 has charged through R59.
 
@@ -254,14 +254,14 @@ The cable charges to VST via Q12 and R51 (10 Ω): for an 8 nF cable, τ_charge =
 
 | Baud rate | Bit period | τ_assist / bit period | Rise-time assist effectiveness |
 |---|---|---|---|
-| 4800 baud (SeaTalk I) | 208 µs | 12.7 % | Effective — fully discharges between transitions |
+| 4800 baud (Legacy Serial Protocol) | 208 µs | 12.7 % | Effective — fully discharges between transitions |
 | 9600 baud | 104 µs | 25.4 % | Marginal — C48 partially discharged at next transition |
 | 38400 baud (NMEA 0183 HS) | 26 µs | ~100 % | Ineffective — C48 cannot discharge between bits |
 
 :::caution[Rise-time assist — recommended rework for V2.9]
 **Recommendation: change C48 from 2.2 nF to 820 pF.** With R59 = 12 kΩ unchanged, this gives τ_assist = 9.8 µs.
 
-- At 4800 baud: τ_assist / T = 4.7 % — fully effective; cable (8 nF) charges in ≈ 80 ns, well within the 9.8 µs pulse. No degradation for SeaTalk I long-cable installations.
+- At 4800 baud: τ_assist / T = 4.7 % — fully effective; cable (8 nF) charges in ≈ 80 ns, well within the 9.8 µs pulse. No degradation for Legacy Serial Protocol long-cable installations.
 - At 9600 baud: τ_assist / T = 9.4 % — effective. The 9.8 µs assist pulse fully discharges before the next bit.
 
 This is a component value change only. C48 is a 0603 C0G capacitor; the footprint is unchanged. The change is achievable by reworking existing V2.9 boards and updating the schematic BOM. Update the schematic value for C48 to 820 pF and fit the correct value on all assembled units.
@@ -283,11 +283,11 @@ The second transistor of the Q11 BC847BS package monitors current through Q10. W
 **Transmit sequence:**
 1. Monitor `ST_RX`; wait for bus idle (HIGH for ≥ 1 bit period).
 2. Drive `ST_EN` LOW to enable the TX path.
-3. Transmit via `ST_TX` using the UART peripheral at 4800 baud, 8E1 (SeaTalk I) or 8N1 (NMEA 0183).
+3. Transmit via `ST_TX` using the UART peripheral at 4800 baud, 8E1 (Legacy Serial Protocol) or 8N1 (NMEA 0183).
 4. After the last stop bit, return `ST_EN` HIGH to tri-state the line driver.
 5. Resume monitoring `ST_RX`.
 
-**Collision detection:** while transmitting, compare `ST_RX` against the expected `ST_TX` state. If `ST_RX` is LOW when `ST_TX` is HIGH, another device is driving the bus simultaneously. Abort transmission, release `ST_EN`, and implement a random back-off before retrying (consistent with SeaTalk I bus arbitration practice).
+**Collision detection:** while transmitting, compare `ST_RX` against the expected `ST_TX` state. If `ST_RX` is LOW when `ST_TX` is HIGH, another device is driving the bus simultaneously. Abort transmission, release `ST_EN`, and implement a random back-off before retrying (consistent with Legacy Serial Protocol bus arbitration practice).
 
 #### Bring-up tests — transmit
 
@@ -321,9 +321,9 @@ U11 ZXTR2012FF regulates at 12 V when V_IN > 12.9 V (after 0.45 V across D13 and
 |-------|-----|-------|-------|
 | 16 V (max) | 12.0 V | 4.5 mA | Regulated |
 | 12 V (nom) | 11.1 V | 4.1 mA | Dropout |
-| 9 V (min) | 8.1 V | 2.3 mA | Dropout; above TLP2309 I_F(ON) ≥ 10 mA recommended but functional |
+| 9 V (min) | 8.1 V | 2.93 mA | Dropout; above the TLP2309 1 mA minimum I_F for CTR — functional |
 
-I_LED = (VST − V_D6_F − V_LED_F) / R32; V_D6_F = 0.45 V; V_LED_F = 1.55 V (typ); R32 = 2.2 kΩ.
+I_LED = (VST − V_D6_F − V_LED_F) / R32; V_D6_F = 0.45 V; V_LED_F = 1.20 V (typ); R32 = 2.2 kΩ.
 
 U11 thermal at V_bus = 16 V, I_VST ≈ 5.4 mA: P_D = (15.31 − 12.0) × 5.4 mA = 18 mW. At 95 °C/W (SOT-23F), ΔT_j &lt; 2 °C.
 
@@ -336,7 +336,7 @@ U11 thermal at V_bus = 16 V, I_VST ≈ 5.4 mA: P_D = (15.31 − 12.0) × 5.4 mA 
 |-----------|-------|
 | LC resonant frequency (L5 × C50) | 1 / (2π√(1 µH × 100 pF)) = **15.9 MHz** |
 | Effective −3 dB (R32 × C50 dominated) | 1 / (2π × 2200 × 100 pF) = **723 kHz** |
-| SeaTalk I signal content | ≤ 50 kHz (4800 baud) |
+| Legacy Serial Protocol signal content | ≤ 50 kHz (4800 baud) |
 | NMEA 0183 HS signal content | ≤ 400 kHz (38400 baud) |
 | Filter margin above signal band (4800 baud) | > 14× |
 
@@ -383,7 +383,7 @@ Recommended rework values (C48 = 820 pF, R59 = 12 kΩ unchanged):
 
 | Signal | Formula | Result |
 |--------|---------|--------|
-| U8 / U9 LED current | (VCC − V_LED_F) / R_series = (3.3 − 1.55) / 390 Ω | **4.5 mA** — above TLP2309 I_F(ON) 10 mA recommended; functional |
+| U8 / U9 LED current | (VCC − V_LED_F) / R_series = (3.3 − 1.1) / 390 Ω | **5.6 mA** — well above the TLP2309 1 mA minimum I_F for CTR; opto saturates reliably |
 | Q10 V_DS(on) at pull-up current | 12 V / 22 kΩ × 2.8 Ω R_DS(on) | **&lt; 1.5 mV** — negligible bus LOW voltage |
 
 </details>
@@ -409,7 +409,7 @@ Recommended rework values (C48 = 820 pF, R59 = 12 kΩ unchanged):
 | Maximum input load current at 2.0 V | 2.0 mA | **0.36 mA** ✓ |
 | Maximum baud rate (TLP2309 switching) | — | 1 Mbit/s (far above 38400 baud) ✓ |
 
-Input load at 2.0 V: I = (2.0 V − V_LED_F) / R32 = (2.0 − 1.55) / 2200 = **0.36 mA** (D6 isolated from load path when bus voltage is below VST; load is from R32 and LED series path only).
+Input load at 2.0 V: I = (2.0 V − V_LED_F) / R32 = (2.0 − 1.20) / 2200 = **0.36 mA** (D6 isolated from load path when bus voltage is below VST; load is from R32 and LED series path only).
 
 </details>
 
@@ -458,7 +458,7 @@ The transmit-side component cluster occupies approximately X: 147–158 mm, Y: 7
 
 | Ref | Value | Description | Datasheet |
 |-----|-------|-------------|-----------|
-| J3 | CON-THT-SEATALK-0292 | Custom 3-pin THT, pin-compatible with Raymarine SeaTalk I connector; accepts SeaTalk plugs or 1211 spade crimp connectors | — |
+| J3 | CON-THT-SEATALK-0292 | Custom 3-pin THT, pin-compatible with Raymarine's legacy 3-pin connector; accepts Raymarine plugs or 1211 spade crimp connectors | — |
 | D13 | SS34 | MSKSEMI SS34 Schottky, SMA, 40 V / 3 A — reverse-polarity protection | [SS34](/assets/datasheets/mdd400-v2.9/SS34.pdf) |
 | R57 | 47 Ω / 1210 / 500 mW | Yageo AC1210JR-0747RL, AEC-Q200 thick-film — pulse-damping resistor at LDO_VIN entry | [AC1210JR-0747RL](/assets/datasheets/mdd400-v2.9/AC1210JR-0747RL.pdf) |
 | D15 | SMCJ36CA | Littelfuse SMCJ36CA bidirectional TVS, DO-214AB — fast transient suppression, V_clamp ≈ 58 V | [SMCJ36CA](/assets/datasheets/mdd400-v2.9/SMCJ36CA.pdf) |
@@ -513,7 +513,7 @@ The transmit-side component cluster occupies approximately X: 147–158 mm, Y: 7
 
 :::caution
 
-V2.9 is a prototype under test. The galvanically isolated legacy-serial interface (receive, transmit, and enable paths all crossing the TLP2309 opto barrier) is in place on the V2.9 board, but **end-to-end SeaTalk I receive and transmit verification on a live bus, NMEA 0183 listener compliance measurement, rise-time-assist behaviour at 4800 / 9600 baud, and U11 LDO behaviour across the 9–16 V NMEA 2000 bus range have not yet been measured on the prototype.** The V2.9 boards also need the **C48 rework from 2.2 nF to 820 pF** applied before TX timing is meaningful.
+V2.9 is a prototype under test. The galvanically isolated legacy-serial interface (receive, transmit, and enable paths all crossing the TLP2309 opto barrier) is in place on the V2.9 board, but **end-to-end Legacy Serial Protocol receive and transmit verification on a live bus, NMEA 0183 listener compliance measurement, rise-time-assist behaviour at 4800 / 9600 baud, and U11 LDO behaviour across the 9–16 V NMEA 2000 bus range have not yet been measured on the prototype.** The V2.9 boards also need the **C48 rework from 2.2 nF to 820 pF** applied before TX timing is meaningful.
 
 **Hardware bring-up (rig at the bench) — power:**
 
@@ -544,7 +544,7 @@ V2.9 is a prototype under test. The galvanically isolated legacy-serial interfac
 **For V2.10 (tracked in `v2.10-improvements.md`):**
 
 - **C48 rework on existing V2.9 boards** — Change C48 from 2.2 nF to 820 pF (R59 unchanged at 12 kΩ). Same 0603 C0G footprint; update schematic value and rework all assembled units before TX bring-up.
-- **Connector swap to M12 3-pin** — Replace J3's proprietary Raymarine-compatible THT footprint with an M12 A-code or B-code 3-pin male panel-mount socket (IP67, field-wireable). The SeaTalk I pin assignment (power / ground / signal) maps directly. No circuit changes required.
+- **Connector swap to M12 3-pin** — Replace J3's proprietary Raymarine-compatible THT footprint with an M12 A-code or B-code 3-pin male panel-mount socket (IP67, field-wireable). The Legacy Serial Protocol pin assignment (power / ground / signal) maps directly. No circuit changes required.
 - **LDO bypass distances** — Move C55 (currently 9.2 mm from U11 VIN) and C54 (currently 5.0 mm from U11 VOUT) to within 2 mm of their respective U11 pins. Confirm via DRC.
 - **C49 / C50 schematic metadata** — KiCAD lists the wrong manufacturer part (GRM188R71H104KA93D, 100 nF); the correct part is GRM1885C1H101JA01D (100 pF). Assembled BOM is correct; fix the schematic property fields.
 - **C30 dedicated bypass at U7 pin 6** — Currently 3.3 mm; add a dedicated 100 nF 0603 adjacent to pin 6 if bring-up shows high-speed switching issues.
