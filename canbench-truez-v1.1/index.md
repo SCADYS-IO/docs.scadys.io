@@ -15,6 +15,8 @@ The CANBench TrueZ is a passive **common-mode / differential-mode (CM/DM) noise 
 
 TrueZ is the **companion to the [CANBench Duo](/canbench-duo/v1.1/) DC LISN**. The Duo provides the RF coupling, attenuation and front-end protection; TrueZ deliberately does only the mode separation and keeps everything else minimal. It is **fully passive** — no MCU, no firmware, no software — built from two 1:1 RF transformers and a small resistor/capacitor network implementing the Wang–Lee–Odendaal separator method.
 
+![CANBench TrueZ assembled enclosure render](/img/canbench-truez-v1.1/canbench_truez_render.png)
+
 ## Measurement workflow
 
 TrueZ is the optional mode-separation stage of the conducted-emissions chain:
