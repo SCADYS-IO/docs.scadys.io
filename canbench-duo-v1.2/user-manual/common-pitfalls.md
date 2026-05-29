@@ -7,6 +7,8 @@ hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 
 :::note[Hardware version]
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
+
+**Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
 The CANBench Duo's protection chain catches most user errors, but a handful of mistakes produce *valid-looking but wrong* readings on the spectrum analyser. Read this list before drawing conclusions from a measurement set.

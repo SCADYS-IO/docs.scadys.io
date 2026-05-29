@@ -8,6 +8,8 @@ sidebar_label: Housing
 
 :::note[Hardware version]
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
+
+**Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
 The CANBench Duo PCB sits inside a **Yongu YG-H10A extruded aluminium split enclosure** with black anodised finish. The extrusion forms the top and bottom faces; two vertical aluminium faceplates close the front and back. The PCB slides into milled grooves in the extrusion.

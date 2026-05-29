@@ -1,0 +1,64 @@
+{
+  "product": "canbench-duo",
+  "version": "v1.1",
+  "top_level_sections": [
+    "housing",
+    "compliance"
+  ],
+  "kicad_sheets": [
+    "CANBench_Duo_V1.1",
+    "block_diagrams",
+    "lisn_supply_path",
+    "lisn_positive_measurement_port",
+    "lisn_negative_measurement_port",
+    "can_cm_measurement_port",
+    "connectors_and_mechanical",
+    "power_indicator_led",
+    "silks"
+  ],
+  "circuit_design_pages": [
+    {
+      "slug": "lisn-supply-path",
+      "label": "LISN Supply Path",
+      "renders": [
+        "lisn_supply_path"
+      ]
+    },
+    {
+      "slug": "lisn-measurement-ports",
+      "label": "LISN Measurement Ports",
+      "renders": [
+        "lisn_positive_measurement_port",
+        "lisn_negative_measurement_port"
+      ]
+    },
+    {
+      "slug": "can-cm-port",
+      "label": "CAN Common-Mode Port",
+      "renders": [
+        "can_cm_measurement_port"
+      ]
+    },
+    {
+      "slug": "connectors-and-mechanical",
+      "label": "Connectors & Mechanical",
+      "renders": [
+        "connectors_and_mechanical"
+      ]
+    },
+    {
+      "slug": "power-indicator-led",
+      "label": "Power Indicator LED",
+      "renders": [
+        "power_indicator_led"
+      ]
+    },
+    {
+      "slug": "pcb-markings",
+      "label": "PCB Markings & Compliance",
+      "renders": [
+        "silks"
+      ]
+    }
+  ]
+}

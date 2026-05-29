@@ -10,6 +10,8 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
+
+**Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
 The CANBench Duo is a fully passive instrument. There is no microcontroller, no firmware, no switching converter. Everything described below is implemented with discrete components arranged on a 2-layer FR-4 board, with the layout following Jay_Diddy_B's [EEVblog 5 µH LISN design philosophy](https://www.eevblog.com/forum/projects/5uh-lisn-for-spectrum-analyzer-emcemi-work/).

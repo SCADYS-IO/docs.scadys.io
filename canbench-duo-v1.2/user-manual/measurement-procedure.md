@@ -7,6 +7,8 @@ hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 
 :::note[Hardware version]
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
+
+**Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
 Standard sweep workflow for characterising a DUT's conducted-emissions signature on the LISN-stabilised supply rails. Assumes the bench is set up per [Quick Start](./quick-start.md) and the analyser is configured per [Spectrum-Analyser Setup](./spectrum-analyser-setup.md).

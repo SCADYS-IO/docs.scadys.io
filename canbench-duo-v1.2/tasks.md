@@ -12,6 +12,7 @@ import tasks from './tasks.json';
 
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware. Live task list for the V1.2 schematic revision and the next-version (V1.3) backlog. Underlying data: [`tasks.json`](https://github.com/SCADYS-IO/docs.scadys.io/blob/main/canbench-duo-v1.2/tasks.json) — hand-maintained, edited as work progresses.
 
+**Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
 Every actionable task for CANBench Duo V1.2 — validation work against the V1.1 fabricated hardware + the next-version (V1.3) backlog — across the relevant product domains (hardware, housing, compliance; no firmware since the instrument is fully passive). Click a row to expand details; click a column header to sort; hover any badge for help. See [Legend](#legend) below for full field meanings, or [Editing workflow](#editing-workflow) for how to update entries.

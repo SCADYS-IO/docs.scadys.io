@@ -9,6 +9,8 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
+
+**Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
 The LISN measurement ports are two mirror-image RF chains that tap the LISN-filtered DUT-side rails and present each rail's conducted-emissions signature as a 50 Ω signal at a board-mounted SMA. The upper-rail port (`RF_LISN_P`, SMA `J2`) taps `DUT+`; the lower-rail port (`RF_LISN_N`, SMA `J4`) taps `DUT−`. The two ports are full mirror images of each other across the board's Y = 90 mm axis — identical topology, identical component values, identical PCB layout.

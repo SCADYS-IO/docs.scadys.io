@@ -7,6 +7,8 @@ hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 
 :::note[Hardware version]
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
+
+**Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
 The CANBench Duo presents a 50 Ω source at each SMA output across the CISPR 25 measurement band (150 kHz – 108 MHz). Any spectrum analyser that covers this band and accepts a 50 Ω input will work; the differences are in resolution, dynamic range, and ergonomics.

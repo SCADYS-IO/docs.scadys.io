@@ -9,6 +9,8 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 
 :::note[Hardware version]
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
+
+**Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
 The CAN common-mode measurement port is a **high-impedance, non-terminating tap** on the CAN bus that extracts the common-mode voltage of the CAN-H / CAN-L pair and presents it as a 50 Ω signal at SMA `J6` for spectrum-analyser measurement. Common-mode disturbance often dominates the upper-band conducted-emissions signature of a CAN-bus system, and this port makes it directly measurable.
