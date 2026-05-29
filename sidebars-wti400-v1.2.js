@@ -7,6 +7,11 @@ const sidebars = {
       "label": "WTI400 Overview (v1.2)"
     },
     {
+      "type": "doc",
+      "id": "user-manual/index",
+      "label": "User Manual"
+    },
+    {
       "type": "category",
       "label": "Quick Reference",
       "link": {

@@ -7,6 +7,11 @@ const sidebars = {
       "label": "MDD400 Overview (v2.9)"
     },
     {
+      "type": "doc",
+      "id": "user-manual/index",
+      "label": "User Manual"
+    },
+    {
       "type": "category",
       "label": "Quick Reference",
       "link": {
