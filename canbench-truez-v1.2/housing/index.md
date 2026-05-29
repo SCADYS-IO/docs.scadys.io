@@ -1,6 +1,6 @@
 ---
 title: Housing
-hw_version: v1.1
+hw_version: v1.2
 hw_status: schematic
 hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 sidebar_label: Housing
@@ -12,7 +12,9 @@ CANBench TrueZ **v1.2** — Schematic-stage refresh of the V1.1 fabricated proto
 **Other versions:** [v1.1 — fabricated prototype (current)](/canbench-truez/v1.1/)
 :::
 
-The CANBench TrueZ is housed in a **Yongu H06** split extruded-aluminium enclosure — a small two-piece extrusion with a slide-in PCB and screwed end plates (faceplates).
+The CANBench TrueZ is housed in a **Yongu H06** split extruded-aluminium enclosure — a small two-piece extrusion with a slide-in PCB and screwed end plates (faceplates). V1.2 is electrically and mechanically identical to the fabricated V1.1; the renders below are of the V1.1 build.
+
+![CANBench TrueZ assembled enclosure render](/img/canbench-truez-v1.2/canbench_truez_render.png)
 
 ## Enclosure
 
@@ -35,6 +37,12 @@ The PCB outline is 71 × 42 mm and slides lengthwise into the 75 mm internal cha
 - **Output faceplate:** `DM-100Ω` / `CM-25Ω` (SMA).
 - **Bottom:** product label, documentation QR code, product-code barcode, compliance marks.
 
+![Input faceplate — LISN+ / LISN− SMA jacks](/img/canbench-truez-v1.2/faceplate_inputs.png)
+
+![Output faceplate — DM-100Ω / CM-25Ω SMA jacks](/img/canbench-truez-v1.2/faceplate_outputs.png)
+
+![Enclosure bottom — product label, QR code, barcode, compliance marks](/img/canbench-truez-v1.2/enclosure_bottom.png)
+
 :::caution[Pre-production markings]
 The QR code and product/version code in the current artwork are pre-production placeholders to be corrected before production release — see [Tasks](../tasks.md).
 :::
@@ -48,13 +56,36 @@ The SMA shells and mounting hardware bond the PCB GNDREF copper to the aluminium
 The SMAs are soldered in place (rather than pre-soldered then forced into the enclosure) to avoid residual stress and faceplate bending given the ~0.35 mm length clearance.
 
 1. Disassemble the enclosure.
+
+   ![Assembly step 1 — enclosure disassembled](/img/canbench-truez-v1.2/assembly_step_0.png)
+
 2. Fit the SMA connectors to the faceplates, nuts **finger-tight only**, noting SMA pin orientation.
+
+   ![Assembly step 2 — SMA connectors fitted to faceplates](/img/canbench-truez-v1.2/assembly_step_1.png)
+
 3. Fit the faceplates to the **top** extrusion, again noting SMA pin orientation.
+
+   ![Assembly step 3 — faceplates fitted to the top extrusion](/img/canbench-truez-v1.2/assembly_step_2.png)
+
 4. Slide the PCB into position between the SMA pins.
+
+   ![Assembly step 4 — PCB slid into position](/img/canbench-truez-v1.2/assembly_step_3.png)
+
 5. Solder the SMA **ground** pins to the bottom of the PCB.
+
+   ![Assembly step 5 — SMA ground pins soldered](/img/canbench-truez-v1.2/assembly_step_4.png)
+
 6. Fit the bottom extrusion, then remove the top extrusion.
+
+   ![Assembly step 6 — bottom extrusion fitted, top removed](/img/canbench-truez-v1.2/assembly_step_5.png)
+
 7. Solder the SMA **top** pins.
+
+   ![Assembly step 7 — SMA top pins soldered](/img/canbench-truez-v1.2/assembly_step_6.png)
+
 8. Reassemble the top extrusion and tighten the SMA nuts to ≈ **0.3 N·m**.
+
+   ![Assembly step 8 — top extrusion reassembled, nuts torqued](/img/canbench-truez-v1.2/assembly_step_7.png)
 
 ## Notes
 

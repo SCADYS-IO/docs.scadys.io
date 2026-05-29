@@ -1,6 +1,6 @@
 ---
 title: Compliance
-hw_version: v1.1
+hw_version: v1.2
 hw_status: schematic
 hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 sidebar_label: Compliance
