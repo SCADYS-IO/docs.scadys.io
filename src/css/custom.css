@@ -4,6 +4,10 @@
  *   Orange #DE3707  — primary interactive (links, buttons, active states)
  *
  * Site is locked to light mode — no dark theme.
+ *
+ * CANONICAL SOURCE: agentic-os/brand_context/visual_identity.md
+ * These values are derived from the brand visual identity — do not redefine
+ * the palette here; change it upstream (requires Gerhard sign-off) and sync.
  */
 
 :root {
