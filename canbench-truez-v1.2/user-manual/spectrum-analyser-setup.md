@@ -32,7 +32,7 @@ The faceplate measurement conditions — **CM-25Ω** (49.9 Ω shunt in parallel 
 
 ## Low-frequency correction
 
-The TC1-1-13M+ transformers droop below ≈ 0.5 MHz, so readings at the bottom of the CISPR conducted band (150 kHz upward) read low until corrected. Apply the TrueZ low-end **correction curve** in post-processing (a one-time curve characterised from a golden prototype; see [Tasks](../tasks.md) for the calibration status). Above ~1 MHz the transformer response is flat and no correction is needed for relative measurements.
+The TC1-1-13M+ transformers droop below ≈ 0.5 MHz, so readings at the bottom of the CISPR conducted band (150 kHz upward) read low until corrected. Apply the TrueZ low-end **correction curve** in post-processing. Note this curve is **currently a first-order simulated model** — the golden-prototype VNA measurement that will replace it is still outstanding (see [Tasks](../tasks.md)), so treat low-band absolute levels as provisional. Above ~1 MHz the transformer response is flat and no correction is needed for relative measurements.
 
 ## tinySA ULTRA (recommended)
 

@@ -31,7 +31,7 @@ All four SMA shields and the J1 banana land on the continuous GNDREF plane. Driv
 
 ## Silkscreen & PCB markings
 
-The `silks` sheet carries the standard SCADYS marking set, all graphical (no electrical function):
+The `connectors` sheet carries the standard SCADYS marking set, all graphical (no electrical function):
 
 - Regulatory marks — **CE**, **UKCA**, **China RoHS / EFUP**
 - **SCADYS.IO** logo, copyright line

@@ -31,7 +31,7 @@ Move the analyser to `DM-100Ω` (J5) and put the 50 Ω terminator on `CM-25Ω` (
 
 ## 5. Apply the low-end correction
 
-Below ≈ 0.5 MHz the transformers droop, so the bottom of the band reads low. Apply the TrueZ correction curve (post-processing) to the CM and DM traces before comparing absolute low-band levels. Above ~1 MHz no correction is needed for relative work. See [Tasks](../tasks.md) for the calibration-curve status.
+Below ≈ 0.5 MHz the transformers droop, so the bottom of the band reads low. Apply the TrueZ correction curve (post-processing) to the CM and DM traces before comparing absolute low-band levels. The curve is **currently a first-order simulated model**, pending the golden-prototype measurement that will replace it (see [Tasks](../tasks.md)) — treat low-band absolute levels as provisional. Above ~1 MHz no correction is needed for relative work.
 
 ## 6. Interpret
 
