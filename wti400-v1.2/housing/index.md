@@ -22,6 +22,10 @@ The top faceplate decal artwork is defined, showing the connector layout as inst
 
 ![WTI400 top faceplate decal — NMEA 2000 (J2), ESP-PROG header (J1), legacy serial (SERIAL, J3), wind-transducer terminal block (SH / +Ve / X / Y / SP / earth), product marking, compliance marks, and QR code](/img/wti400-v1.2/faceplate.svg)
 
+The exploded view shows the enclosure assembly stack — faceplate, housing shell, PCB, and rear:
+
+![WTI400 exploded assembly — faceplate, housing shell, PCB, and rear](/img/wti400-v1.2/exploded.png)
+
 The two facts below are confirmed from existing design records and are safe to state today; everything else is pending.
 
 :::info[Pending]

@@ -5,7 +5,7 @@ hw_status: in-service
 hw_status_label: "In service — test vessel (~1,000 sea miles)"
 ---
 
-{/* TODO: product render hero — no WTI400 render asset exists yet (add the enclosure render here when available, per the landing-page standard) */}
+![WTI400 Wind Transducer Interface — product render](/img/wti400-v1.2/render.png)
 
 :::note[Hardware version]
 

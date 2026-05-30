@@ -24,6 +24,10 @@ The rear faceplate decal shows the connector layout, status-LED window, product 
 
 ## Enclosure
 
+The exploded view shows the enclosure assembly stack — front bezel, display, PCB, and rear shell:
+
+![MDD400 exploded assembly — front bezel, display, PCB, and rear housing](/img/mdd400-v2.9/exploded.png)
+
 The housing consists of a front bezel, rear shell, and a perimeter gasket that seals the two halves together. The front surface is occupied by the DWIN 4.0-inch capacitive touchscreen. A clear window bonded to the bezel protects the display glass and provides the primary sealing surface on the front face.
 
 Rear panel penetrations include the NMEA 2000 DeviceNet Micro-C connector (J1) and the Legacy Serial 3-pin Autohelm-style connector (J3). Both connectors are rated IP67 when mated. The USB programming port (J5) and the buzzer (BZ0, membrane-vented) are routed to the rear shell.

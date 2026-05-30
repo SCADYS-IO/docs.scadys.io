@@ -5,7 +5,7 @@ hw_status: prototype
 hw_status_label: "Fabricated prototype — bench testing"
 ---
 
-{/* TODO: product render hero — no MDD400 render asset exists yet (add the enclosure render here when available, per the landing-page standard) */}
+![MDD400 Marine Data Display — product render](/img/mdd400-v2.9/render.png)
 
 :::note[Hardware version]
 
