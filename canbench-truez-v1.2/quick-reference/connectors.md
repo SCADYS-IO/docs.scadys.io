@@ -29,10 +29,10 @@ The SMA ports are laser-etched on two opposite enclosure faces. The drawings bel
 
 **Input face — LISN line inputs (from the CANBench Duo)**
 
-![CANBench TrueZ input faceplate — LISN+ and LISN− SMA jacks](/img/canbench-truez-v1.2/faceplate_inputs.svg)
+<img src="/img/canbench-truez-v1.2/faceplate_inputs.svg" alt="CANBench TrueZ input faceplate — LISN+ and LISN− SMA jacks" width="640" />
 
 **Output face — CM / DM outputs (to the analyser)**
 
-![CANBench TrueZ output faceplate — DM-100 Ω and CM-25 Ω SMA jacks](/img/canbench-truez-v1.2/faceplate_outputs.svg)
+<img src="/img/canbench-truez-v1.2/faceplate_outputs.svg" alt="CANBench TrueZ output faceplate — DM-100 Ω and CM-25 Ω SMA jacks" width="640" />
 
 For the connector design rationale and the silkscreen markings, see [Circuit Design → Connectors & Markings](../circuit-design/connectors.md).

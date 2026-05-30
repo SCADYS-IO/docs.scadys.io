@@ -34,15 +34,15 @@ The connectors are laser-etched across three enclosure faces. The drawings below
 
 **Top extrusion — measurement outputs and N2K**
 
-![CANBench Duo top faceplate — LISN+ / CAN CM / LISN− SMA jacks, CAN Micro-C M12 socket, indicator window, and SCADYS logo](/img/canbench-duo-v1.2/faceplate_top.svg)
+<img src="/img/canbench-duo-v1.2/faceplate_top.svg" alt="CANBench Duo top faceplate — LISN+ / CAN CM / LISN− SMA jacks, CAN Micro-C M12 socket, indicator window, and SCADYS logo" width="100%" />
 
 **Front faceplate — bench supply (SRC)**
 
-![CANBench Duo front faceplate — SRC+ (red) and SRC− (black) banana sockets](/img/canbench-duo-v1.2/faceplate_front.svg)
+<img src="/img/canbench-duo-v1.2/faceplate_front.svg" alt="CANBench Duo front faceplate — SRC+ (red) and SRC− (black) banana sockets" width="880" />
 
 **Back faceplate — device under test (DUT)**
 
-![CANBench Duo back faceplate — DUT+ (red) and DUT− (black) banana sockets](/img/canbench-duo-v1.2/faceplate_back.svg)
+<img src="/img/canbench-duo-v1.2/faceplate_back.svg" alt="CANBench Duo back faceplate — DUT+ (red) and DUT− (black) banana sockets" width="880" />
 
 ## M12 N2K pinout (J10)
 
