@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 300" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <title id="t">Legacy serial 3-pin connector pinout (J3)</title>
+  <desc id="d">3-pin Raymarine-compatible legacy serial connector. Pin 1 = 12 V bus supply (red wire), pin 2 = GND (black wire), pin 3 = SIG single-wire signal (yellow wire).</desc>
+
+  <text x="280" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#02235B">Legacy Serial Connector — J3</text>
+  <text x="280" y="50" text-anchor="middle" font-size="12" fill="#5b6b85">3-pin · Raymarine-compatible · Legacy Serial Protocol</text>
+
+  <!-- connector body -->
+  <rect x="108" y="92" width="344" height="96" rx="12" fill="#f5f8fc" stroke="#02235B" stroke-width="3"/>
+
+  <!-- pin 1 — 12 V (red) -->
+  <circle cx="165" cy="140" r="26" fill="#cc2b2b" stroke="#02235B" stroke-width="2.5"/>
+  <text x="165" y="147" text-anchor="middle" font-size="20" font-weight="700" fill="#ffffff">1</text>
+  <!-- pin 2 — GND (black) -->
+  <circle cx="280" cy="140" r="26" fill="#1a1a1a" stroke="#02235B" stroke-width="2.5"/>
+  <text x="280" y="147" text-anchor="middle" font-size="20" font-weight="700" fill="#ffffff">2</text>
+  <!-- pin 3 — SIG (yellow) -->
+  <circle cx="395" cy="140" r="26" fill="#f4c20d" stroke="#02235B" stroke-width="2.5"/>
+  <text x="395" y="147" text-anchor="middle" font-size="20" font-weight="700" fill="#02235B">3</text>
+
+  <!-- labels -->
+  <g text-anchor="middle">
+    <text x="165" y="214" font-size="15"><tspan fill="#DE3707" font-weight="700">1</tspan><tspan fill="#02235B"> · 12 V</tspan></text>
+    <text x="165" y="232" font-size="12" fill="#5b6b85">bus supply (red)</text>
+    <text x="280" y="214" font-size="15"><tspan fill="#DE3707" font-weight="700">2</tspan><tspan fill="#02235B"> · GND</tspan></text>
+    <text x="280" y="232" font-size="12" fill="#5b6b85">ground (black)</text>
+    <text x="395" y="214" font-size="15"><tspan fill="#DE3707" font-weight="700">3</tspan><tspan fill="#02235B"> · SIG</tspan></text>
+    <text x="395" y="232" font-size="12" fill="#5b6b85">signal (yellow)</text>
+  </g>
+
+  <text x="280" y="272" text-anchor="middle" font-size="10" fill="#8895ab">Idle-HIGH, active-LOW single-wire signal, half-duplex · accepts a Raymarine plug or 1211 spade crimps</text>
+</svg>
