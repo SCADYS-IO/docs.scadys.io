@@ -1,5 +1,5 @@
 ---
-title: CANBENCH-DUO Overview
+title: "CANBench Duo Overview"
 hw_version: v1.2
 hw_status: schematic
 hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
@@ -10,6 +10,8 @@ CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototy
 
 **Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
+
+## Overview
 
 The CANBench Duo is a dual-line DC LISN (Line Impedance Stabilisation Network) with an integrated CAN common-mode monitor. It supports conducted-emissions measurement on CAN-bus and similar low-voltage DC supply pairs, from 150 kHz to 108 MHz, per the CISPR 25 measurement band.
 
@@ -56,6 +58,13 @@ The CANBench Duo is intended for **conducted-emissions measurement** at the engi
 - **Not for ISO 7637-2 transient testing.** The protection chain handles ESD and bench-mishap events. ISO 7637-2 Pulse 5a/5b (load dump, 100+ V sustained transients) would exceed the MOSFET protection chain's voltage rating.
 - **Not formally certified for CE / UKCA / RoHS** at the V1.1 prototype stage. The PCB silkscreen carries the regulatory marks as a forward-looking conformity claim; formal Declaration of Conformity and EMC test reports are pending.
 - **Measurement geometry matters.** Low-level common-mode measurements are sensitive to cable routing, nearby electronics, and ground coupling — maintain repeatable geometry during comparative tests. See the [User Manual → Common Pitfalls](./user-manual/common-pitfalls.md) page for environmental-coupling guidance.
+
+## Version history
+
+| Version | Status | Summary |
+| --- | --- | --- |
+| v1.1 | Fabricated prototype | Sole built unit. Pre-InvenTree legacy SCADYS symbol metadata. Reference hardware for testing and bench validation. |
+| v1.2 | Schematic refresh | InvenTree-canonical component metadata. Electrically identical to V1.1; no boards fabricated. |
 
 ## Documentation map
 

@@ -12,7 +12,11 @@ CANBench TrueZ **v1.2** — Schematic-stage refresh of the V1.1 fabricated proto
 **Other versions:** [v1.1 — fabricated prototype (current)](/canbench-truez/v1.1/)
 :::
 
-The CANBench TrueZ is a **passive, non-powered RF test accessory** — no active devices, no radio, no mains connection. Its regulatory position rests primarily on the **RoHS** material basis rather than on emissions / immunity testing.
+## Overview
+
+The CANBench TrueZ is a **passive, non-powered RF test accessory** — no active devices, no radio, no mains connection. As a passive bench measurement instrument it carries **no marine / NMEA 2000 compliance obligation**. Its regulatory position rests primarily on the **RoHS** material basis rather than on emissions / immunity testing.
+
+**Status:** V1.2 is a schematic-stage refresh (no boards built); the regulatory marks remain a forward-looking conformity claim and the formal Declaration of Conformity is pending (see the table below).
 
 :::caution[Prototype status]
 V1.1 is a fabricated prototype. The PCB silkscreen carries the regulatory marks as a forward-looking conformity claim; a formal Declaration of Conformity and any required test reports are **pending**. Do not treat V1.1 as a certified product.
@@ -34,3 +38,16 @@ TrueZ contains only two RF transformers and a passive resistor/capacitor network
 Note that TrueZ is a tool used *for* conducted-emissions diagnosis (per **CISPR 25**); that standard is the measurement context, not a certification the device itself carries.
 
 The version/variant strings and QR code in the current silkscreen artwork are pre-production placeholders — see [Tasks](../tasks.md).
+
+## Related pages
+
+- [CANBench TrueZ home](/canbench-truez/v1.2/)
+- [Circuit Design](../circuit-design/index.md)
+- [Tasks](../tasks.md)
+
+## References
+
+- EU 2011/65 (RoHS, recast) and amendments — restriction of hazardous substances.
+- UK SI 2012/3032 — The Restriction of the Use of Certain Hazardous Substances in Electrical and Electronic Equipment Regulations.
+- Directive 2012/19/EU (WEEE); Regulation (EC) 1907/2006 (REACH).
+- CISPR 25 — measurement context for conducted-emissions diagnosis (the use case for the instrument, not a mark it carries).

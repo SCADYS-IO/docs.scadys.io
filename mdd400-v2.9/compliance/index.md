@@ -12,7 +12,11 @@ MDD400 **v2.9** — Fabricated prototype — testing phase
 
 :::
 
-The MDD400 is designed with reference to the standards and directives listed below. The device is currently in the prototype and pre-certification phase — independent testing will be conducted prior to commercial release.
+## Overview
+
+This page covers the regulatory and standards compliance posture of the MDD400 — CE, FCC, UKCA, RoHS/REACH/WEEE, ingress protection, and NMEA 2000.
+
+The MDD400 is designed with reference to the standards and directives listed below. The device is currently in the prototype and pre-certification phase — it is designed-for compliance with these requirements, with independent test reports pending. Formal testing and certification will be conducted on production-representative units prior to commercial release (targeted for v2.10).
 
 ## CE Marking (EU)
 
@@ -48,12 +52,18 @@ The enclosure targets **IP65** (IEC 60529) — fully dust-tight, protected again
 
 The MDD400 CAN physical interface conforms to **ISO 11898-2** and is designed for use on NMEA 2000 networks:
 
-- Galvanic isolation via SN65HVD234DR (500 Vrms) between the NMEA 2000 bus domain (GNDC) and the internal digital ground (GNDREF).
+- The CAN front end is **non-isolated**: GNDREF is referenced directly to the NMEA 2000 bus ground (NET-C), the standard topology for a bus-powered node. (V2.9 replaced the earlier isolated ISO1042 transceiver + transformer with the non-isolated SN65HVD234DR.) The only opto-isolated interface on the board is the legacy serial path (GNDS).
 - Network power draw within NMEA 2000 allowed limits for LEN=1 and LEN=2.
-- DeviceNet Micro-C M12 connector (J1) as specified by the NMEA 2000 physical standard.
+- M12 A-coded (Micro-C) 5-pin connector (J2) as specified by the NMEA 2000 physical standard.
 - PGNs assigned in accordance with MFD and general display categories.
 
 Final NMEA 2000 certification will be coordinated with the National Marine Electronics Association (NMEA) prior to commercial release.
+
+## Related pages
+
+- [Tasks](../tasks.md) — build, bring-up, and verification tasks
+- [Circuit Design → PCB markings](../circuit-design/pcb-markings.md) — regulatory and identification markings on the board
+- [MDD400 Overview](../index.md) — product home
 
 ## References
 

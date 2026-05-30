@@ -12,7 +12,11 @@ MDD400 **v2.9** — Fabricated prototype — testing phase
 
 :::
 
-The MDD400 enclosure is designed for flush or surface mounting in cockpit and helm panel installations. It targets IP65 ingress protection — fully dust-tight and protected against water jets from any direction. The PCB is 95.2 × 95.2 mm (four-layer FR4, ENIG finish).
+## Overview
+
+This section covers the MDD400 mechanical enclosure: the housing construction, ingress sealing, PCB mechanical specification, and fastening. The MDD400 enclosure is designed for flush or surface mounting in cockpit and helm panel installations. It targets IP65 ingress protection — fully dust-tight and protected against water jets from any direction. The PCB is 95.2 × 95.2 mm (four-layer FR4, ENIG finish).
+
+Status: v2.9 is a fabricated prototype in the testing phase; the figures below reflect the prototype design.
 
 ## Enclosure
 
@@ -43,6 +47,12 @@ Internal pressure equalisation is provided by a hydrophobic vent in the rear she
 ## Fasteners
 
 The PCB is secured to the rear shell with M2 or M2.5 standoffs at the four corner mounting holes. The bezel and rear shell are held together with a perimeter of self-tapping screws into the shell bosses, compressing the gasket to the rated sealing force.
+
+## Related pages
+
+- [Circuit Design — PCB markings](../circuit-design/pcb-markings.md)
+- [Compliance](../compliance/index.md)
+- [MDD400 v2.9 home](../index.md)
 
 ## References
 

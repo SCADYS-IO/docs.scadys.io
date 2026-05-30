@@ -12,6 +12,10 @@ WTI400 **v1.2** — In service on the test vessel (~1,000 sea miles). The board 
 
 :::
 
+## Overview
+
+This page covers the firmware state of the WTI400 V1.2 board and the plan for its production firmware. **V1.2 runs a simple in-service PlatformIO/Arduino NMEA 2000 firmware** that has accumulated approximately 1,000 sea miles emitting apparent-wind sentences on the test vessel. Writing a production-ready firmware in **ESP-IDF** — migrating the operational behaviour from the MLI400 V1.0 predecessor — is the next major project task; it will add the IMU-corrected output, wireless, OTA, and storage capabilities the current firmware lacks. **Wi-Fi has never been enabled** on any WTI400 V1.2 board. The sections below describe the current in-service state, the predecessor MLI400 V1.0 firmware, the planned ESP-IDF task architecture and migration plan, and the planned non-volatile storage behaviour.
+
 ## Current state (V1.2)
 
 The WTI400 V1.2 on the test vessel runs a **simple PlatformIO/Arduino firmware** that has accumulated approximately 1,000 sea miles in service. Its behaviour is intentionally narrow:
@@ -80,6 +84,12 @@ The migration is intended to be **behaviour-preserving** for the wind-output cod
 ## Non-volatile storage (planned)
 
 Configuration and calibration data will be stored in the NVS (Non-Volatile Storage) partition in flash. The current V1.2 firmware does not use NVS — the start-up constants and initial ADC limits are compiled into the firmware image. The production firmware will read them from NVS so they can be changed without re-flashing.
+
+## Related pages
+
+- [Tasks](../tasks.md) — open work items, including the production ESP-IDF firmware build and the in-service verification measurements
+- [Circuit Design → ESP32-S3 module](../circuit-design/esp32-module.md) — the controller the firmware runs on
+- [WTI400 V1.2 overview](../index.md) — product home and version history
 
 ## References
 

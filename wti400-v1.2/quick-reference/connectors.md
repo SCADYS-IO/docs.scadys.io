@@ -25,3 +25,17 @@ WTI400 **v1.2** — In service — installed on test vessel
 | JP1 — Voltage Select | 3-pin THT header 2.54 mm (PZ254V-11-03P) | WIND POWER | Positions: 8v4 = Raymarine (8.65 V), 6v8 = B&G (6.89 V); field-configurable |
 
 For per-connector design rationale see [Programming Socket](../circuit-design/programming-socket.md), [CAN Transceiver](../circuit-design/can-transceiver.md), [Wind Interface](../circuit-design/wind-interface.md), and [Legacy Serial Interface](../circuit-design/legacy-serial.md).
+
+## NMEA 2000 connector pinout
+
+The NMEA 2000 network connection (J2) is a 5-pin M12 A-coded (Micro-C) **male** panel-mount connector. The diagram shows the pin assignments viewed from the front (mating face) of the device connector.
+
+![NMEA 2000 M12 A-coded male connector — front view: pin 1 Shield, pin 2 NET-S (+V), pin 3 NET-C (−V), pin 4 NET-H (CAN-H), pin 5 NET-L (CAN-L)](/img/wti400-v1.2/nmea2000_connector_pinout.svg)
+
+| Pin | Signal | Description |
+|---|---|---|
+| 1 | Shield | Cable shield / drain — left floating inside the device (NMEA 2000 practice) |
+| 2 | NET-S | Power supply positive (+V) |
+| 3 | NET-C | Power supply common (−V) |
+| 4 | NET-H | CAN-H |
+| 5 | NET-L | CAN-L |

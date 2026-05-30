@@ -1,5 +1,5 @@
 ---
-title: CANBENCH-TRUEZ Overview
+title: "CANBench TrueZ Overview"
 hw_version: v1.2
 hw_status: schematic
 hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
@@ -11,11 +11,13 @@ CANBench TrueZ **v1.2** — Schematic-stage refresh of the V1.1 fabricated proto
 **Other versions:** [v1.1 — fabricated prototype (current)](/canbench-truez/v1.1/)
 :::
 
+![CANBench TrueZ assembled enclosure render](/img/canbench-truez-v1.2/canbench_truez_render.png)
+
+## Overview
+
 The CANBench TrueZ is a passive **common-mode / differential-mode (CM/DM) noise separator** for conducted-emissions diagnosis on DC-powered CAN-bus devices, including NMEA 2000 equipment. It takes the two RF line signals from a LISN and resolves them into their common-mode and differential-mode components, each presented on a 50 Ω SMA output for a spectrum analyser. Knowing the CM/DM split tells you *which* mitigation to reach for — a common-mode choke / ferrite, or differential filtering — instead of guessing.
 
 TrueZ is the **companion to the [CANBench Duo](/canbench-duo/v1.1/) DC LISN**. The Duo provides the RF coupling, attenuation and front-end protection; TrueZ deliberately does only the mode separation and keeps everything else minimal. It is **fully passive** — no MCU, no firmware, no software — built from two 1:1 RF transformers and a small resistor/capacitor network implementing the Wang–Lee–Odendaal separator method.
-
-![CANBench TrueZ assembled enclosure render](/img/canbench-truez-v1.2/canbench_truez_render.png)
 
 ## Measurement workflow
 
@@ -59,6 +61,13 @@ TrueZ is a **pre-compliance / diagnostic** fixture for engineering-level EMC wor
 - **Low-end accuracy needs correction.** The TC1-1-13M+ droops below ≈ 0.5 MHz, so the bottom of the CISPR conducted band requires a correction curve; the production intent is a golden-prototype measurement.
 - **Not formally certified for CE / UKCA / RoHS** at the V1.1 prototype stage — the marks are a forward-looking conformity claim on a RoHS basis (passive, non-powered accessory). See [Compliance](./compliance/index.md).
 - **Measurement geometry matters.** Use matched cables and keep a repeatable setup during comparative measurements.
+
+## Version history
+
+| Version | Status | Summary |
+| --- | --- | --- |
+| v1.1 | Fabricated prototype | Sole built unit; pre-InvenTree legacy SCADYS symbol metadata. Testing and bench validation reference this hardware. |
+| v1.2 | Next-version schematic | InvenTree symbol-library refresh; electrically identical to V1.1. No boards fabricated yet. |
 
 ## Documentation map
 

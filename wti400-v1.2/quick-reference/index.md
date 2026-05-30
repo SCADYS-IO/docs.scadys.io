@@ -20,5 +20,3 @@ Fast-lookup tables for the WTI400 v1.2 design, split by concern. Pick the page y
 | [External Connectors](./connectors.md) | Connector styles, pinouts, and electrical domain |
 | [Bill of Materials](./bom.md) | Full component list with references, values, packages, and datasheets |
 | [Flash Partitions](./flash-partitions.md) | Planned ESP32-S3 flash partition layout |
-
-For PCB-level detail — board stackup, fiducials, silkscreen marks, and compliance markings — see [PCB Markings & Compliance](../circuit-design/pcb-markings.md). For per-circuit design rationale, see the [Circuit Design](../circuit-design/index.md) section.

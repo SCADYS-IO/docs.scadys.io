@@ -16,6 +16,12 @@ The CANBench TrueZ is housed in a **Yongu H06** split extruded-aluminium enclosu
 
 ![CANBench TrueZ assembled enclosure render](/img/canbench-truez-v1.2/canbench_truez_render.png)
 
+## Overview
+
+This page covers the mechanical housing of the CANBench TrueZ — a passive measurement instrument with no active electronics. It documents the enclosure (Yongu YG-H06), the faceplate layout and markings, chassis bonding, and the build-order assembly sequence.
+
+Status: V1.2 is a schematic-stage InvenTree refresh, electrically and mechanically identical to the fabricated V1.1; no V1.2 boards exist yet, so the renders and as-built details reference the V1.1 unit. Dimensions are a working spec from the design record and the Yongu YG-H06 manufacturer drawing; the marking artwork carries pre-production placeholders.
+
 ## Enclosure
 
 | Parameter | Value |
@@ -89,4 +95,20 @@ The SMAs are soldered in place (rather than pre-soldered then forced into the en
 
 ## Notes
 
-Dimensions are a working spec from the design record and the Yongu H06 manufacturer drawing; confirm against the drawing and the as-built unit before production. No IP rating is specified — this is a bench accessory, not an environmental enclosure.
+No IP rating is specified — this is a bench accessory, not an environmental enclosure.
+
+## Gaps & next version
+
+- Dimensions are a working spec from the design record and the Yongu YG-H06 manufacturer drawing; confirm against the drawing and the as-built unit before production.
+- The QR code and product/version code in the current marking artwork are pre-production placeholders to be corrected before production release — see [Tasks](../tasks.md).
+
+## Related pages
+
+- [Circuit Design](../circuit-design/index.md) — single-GNDREF EMC philosophy behind the chassis bond
+- [Connectors (Quick Reference)](../quick-reference/connectors.md) — SMA port assignments
+- [Tasks](../tasks.md) — outstanding pre-production items
+
+## References
+
+- Yongu YG-H06 split extruded-aluminium enclosure — manufacturer drawing
+- CANBench TrueZ design record (working mechanical spec)

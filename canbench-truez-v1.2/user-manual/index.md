@@ -20,5 +20,3 @@ Operator manual for the CANBench TrueZ — the common-mode / differential-mode s
 | [Measurement Procedure](./measurement-procedure.md) | Noise-floor check, baseline, CM sweep, DM sweep, low-end correction |
 | [Common Pitfalls](./common-pitfalls.md) | Mistakes that produce wrong CM/DM readings and how to avoid them |
 | [Interpreting Results](./interpreting-results.md) | Reading the CM vs DM split and choosing the right mitigation |
-
-For engineering rationale (topology, component values, design intent) see [Circuit Design](../circuit-design/index.md). For the BOM and connector roster, see [Quick Reference](../quick-reference/index.md).

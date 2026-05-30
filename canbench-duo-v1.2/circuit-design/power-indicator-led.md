@@ -7,15 +7,29 @@ hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/power_indicator_led_9ffed5e0.svg" alt="Power Indicator LED schematic (power_indicator_led)" initialFocus="103 46 54 60" />
+
 :::note[Hardware version]
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 
 **Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
+## Overview
+
 A single XL-5050RGBC three-die RGB LED on the top extrusion encodes four supply-chain states. The encoding is entirely topological — there is no MCU, no firmware, no software. Each colour falls out of the rail relationships in the LISN supply-path protection chain.
 
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/power_indicator_led_9ffed5e0.svg" alt="Power Indicator LED schematic (power_indicator_led)" initialFocus="103 46 54 60" />
+This page covers a single sub-circuit — the **Power Indicator LED** — drawn on the `power_indicator_led` KiCad sheet. The LED is the fixture's front status indicator: it is in the operator's line of sight throughout a measurement, so the colour encoding is written to be readable at a glance during normal use.
+
+## Functional specification and design objectives
+
+The power-indicator circuit must:
+
+- give the operator an at-a-glance, always-on read of the bench-supply path state while a measurement is running;
+- encode four distinct states — supply absent, normal operation, reverse polarity, and protection-chain fault — in a single front-facing RGB LED;
+- derive every state from the LISN supply-path rail relationships alone, with no MCU, firmware, or active sensing;
+- load the bench supply negligibly (target &lt; 0.5 % of the LISN's 4 A continuous design current across the 12–48 V supply range); and
+- keep each die comfortably below its 20 mA absolute-maximum across the full 12–48 V supply range.
 
 ## State table
 
@@ -28,9 +42,13 @@ A single XL-5050RGBC three-die RGB LED on the top extrusion encodes four supply-
 
 A brief Blue flash for ~ ms at supply turn-on is normal and benign — Q2's gate-bias divider takes a few RC time constants to bring Q2 fully ON, and during that interval V(SUPPLY+) − V(VSS+) momentarily exceeds Q1's V_BE threshold. The LED settles to Green once Q2 reaches full conduction.
 
-The LED is visible through the top extrusion of the YG-H10A enclosure (see `render_1.PNG` and `render_2.PNG` on the [Connectors & Mechanical](./connectors-and-mechanical.md) page), so a technician looking down at the bench can read the state at a glance.
+The LED is visible through the top extrusion of the YG-H10A enclosure (see `render_1.PNG` and `render_2.PNG` on the [Connectors & Mechanical](./connectors-and-mechanical.md) page), so the operator looking down at the bench can read the state at a glance.
 
-## Topology
+## Power Indicator LED
+
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/power_indicator_led_9ffed5e0.svg" alt="Power Indicator LED encoder — D1 RGB LED, Q1 high-side switch, R1/R2/R3 bias and current limiting. Zoom out to see the full sheet." initialFocus="103 46 54 60" />
+
+### How it works
 
 Five components implement the encoding:
 
@@ -51,7 +69,7 @@ The rail connections determine each state:
 
 The cleverness is that the Blue-state mechanism is the **gate-protection circuit's own behaviour under fault**, not a separate fault-detection circuit.
 
-## Operating envelope
+### Performance
 
 LED current at the typical 12 V N2K supply and the maximum 48 V supply:
 
@@ -63,7 +81,7 @@ LED current at the typical 12 V N2K supply and the maximum 48 V supply:
 
 Brightness ranges from comfortably-readable at 12 V to bright but not blinding at 48 V — appropriate for an always-on indicator.
 
-### Resistor power utilisation
+#### Resistor power utilisation
 
 | Resistor | Footprint | Rated power | Worst-case dissipation @ 48 V | Utilisation |
 | --- | --- | --- | --- | --- |
@@ -71,13 +89,13 @@ Brightness ranges from comfortably-readable at 12 V to bright but not blinding a
 | R3 | 0805, 0.25 W | 250 mW | 210 mW (Red or Blue ON) | 84 % |
 | R2 | 0603, 0.1 W | 100 mW | 23 mW | 23 % |
 
-At the 48 V supply ceiling, R1 and R3 sit at 84 % of their power rating when the corresponding die is on. **V1.3 upsizes R1 and R3 to 1206 (0.4 W rating)** for better thermal margin. V1.1 / V1.2 carry the 0805 footprint as a known steady-state limit at 48 V.
+At the 48 V supply ceiling, R1 and R3 sit at 84 % of their power rating when the corresponding die is on. V1.1 / V1.2 carry the 0805 footprint as a known steady-state limit at 48 V (see [Gaps & next version](#gaps--next-version)).
 
-### Load on the supply
+#### Load on the supply
 
 Total worst-case loading of the indicator circuit on the bench supply: ≈ 4.6 mA at 48 V (one die on). Against the LISN's 4 A continuous design current that's 0.1 % loading — entirely negligible.
 
-## PCB layout notes
+## PCB Layout
 
 D1 is on **B.Cu** at (76.0, 90.0), facing up through the YG-H10A top extrusion. Q1, R1, R2, R3 are clustered on F.Cu beneath D1 inside a 5 × 3 mm island around (X = 75, Y = 90) — close to the SRC banana pair (J5 / J7 at X = 71.5) since that's the entry of the SUPPLY+ / SUPPLY− rails the indicator is sensing. The Q1.C → D1.BA trace stays under ~5 mm including one cross-layer via, keeping the high-impedance Blue-drive node short.
 
@@ -90,6 +108,22 @@ The indicator could equivalently be implemented as a single tri-colour LED drive
 3. **Cost.** Five small passives + one BJT in SOT-23 + one RGB LED beats a microcontroller + crystal + decoupling + firmware-flash effort for this single-function need.
 
 This is consistent with the broader CANBench Duo philosophy — the instrument is **fully passive**, no MCU on the board, no firmware in the field. Everything that happens, happens because of physics.
+
+## Components
+
+| Ref | Value | Function | Datasheet |
+| --- | --- | --- | --- |
+| D1 | XL-5050RGBC | Three-die RGB LED, SMD5050-6P — independent R / G / B dies, separate anode + cathode pairs | [XINGLIGHT XL-5050RGBC](https://www.lcsc.com/datasheet/C2843868.pdf) |
+| Q1 | BC807-25 | PNP BJT, SOT-23 — high-side switch driving the Blue die anode | [Nexperia BC807](https://assets.nexperia.com/documents/data-sheet/BC807_SER.pdf) |
+| R1 | 10 kΩ | 0805, 0.25 W — Green-die current limiter (anode side) | — |
+| R2 | 100 kΩ | 0603, 0.1 W — Q1 base bias (`VSS+` to `SUPPLY−` DC path) | — |
+| R3 | 10 kΩ | 0805, 0.25 W — Red + Blue shared current limiter (cathode side) | — |
+
+## Gaps & next version
+
+**Next version (V1.3)**
+
+- **Upsize R1 and R3 to 1206 (0.4 W rating).** At the 48 V supply ceiling, R1 and R3 sit at 84 % of their 0805 0.25 W rating when the corresponding die is on. V1.3 upsizes both to 1206 for better thermal margin. V1.1 / V1.2 carry the 0805 footprint as a known steady-state limit at 48 V.
 
 ## Related pages
 

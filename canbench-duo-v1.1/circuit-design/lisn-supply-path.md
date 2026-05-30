@@ -15,15 +15,32 @@ CANBench Duo **v1.1** — Fabricated prototype, sole built unit. V1.1 is electri
 
 <SchematicViewer src="/img/schematics/canbench-duo-v1.1/lisn_supply_path_118a25bf.svg" alt="LISN Supply Path schematic (lisn_supply_path)" initialFocus="16 22 266 129" />
 
+## Overview
+
 The LISN supply path is the four-stage passive front-end of the CANBench Duo. It implements a **CISPR 25-style dual-line 5 µH artificial network** for DC conducted-emissions measurement. The path takes a bench DC supply at the SOURCE banana sockets, delivers a filtered RF-stabilised copy of that supply to the DUT banana sockets, and presents a stable mostly-inductive source impedance to the DUT across the CISPR 25 measurement band (150 kHz to 108 MHz).
 
 The entire stage is passive and bidirectional with respect to RF currents. There is no MCU, no firmware, no switching converter — only fuses, MOSFETs, diodes, ferrite beads, inductors, capacitors, and resistors.
 
-## Signal flow
+This page covers a single sub-circuit — the **LISN supply path** — drawn on the `lisn_supply_path` KiCad sheet.
+
+## Functional specification and design objectives
+
+The LISN supply path must:
+
+- pass a 9–48 V DC bench supply from the SOURCE banana pair to the DUT banana pair at up to 4.0 A continuous (25 °C ambient), with a DC path drop of &lt; 0.5 V at 4 A;
+- present a **CISPR 25-style 5 µH dual-line artificial-network impedance** to the DUT across the 150 kHz – 108 MHz measurement band (≈ 4.7 Ω at 150 kHz, rising toward the inductive asymptote ≈ 31–37 Ω at 1 MHz);
+- decouple the DUT's RF disturbance behaviour from the upstream bench-supply source impedance, so the measured emission signature is repeatable independent of the supply used;
+- keep the impedance-vs-frequency curve smooth across the band (no sharp Q-peaks between ladder resonances) via frequency-staggered shunt-cap damping;
+- protect against reverse polarity at SOURCE (FET ideal-diode pair) and clamp ESD / bench-class transients (TVS) without acting as an ISO 7637-2 load-dump absorber; and
+- maintain rail-to-rail symmetry so that mode conversion does not corrupt the downstream measurement-port outputs.
+
+## LISN supply path
+
+### How it works
 
 Power flows in four stages from the bench-supply input on the front faceplate to the DUT-side banana pair at the back faceplate.
 
-### Stage 1 — Protection
+#### Stage 1 — Protection
 
 The positive rail enters from `J5` (SRC+) and is fused immediately by `F1`, a 5 A Littelfuse Nano2 Slo-Blo in an OMNI-BLOK 154 series holder. The post-fuse net is clamped by `D3` (SMCJ58CA, 58 V bidirectional TVS) to GNDREF. The negative rail (`J7`, SRC−) has its own TVS `D4` directly to GNDREF.
 
@@ -38,7 +55,7 @@ A 15 V Zener (`D2` for Q2, `D5` for Q3) clamps each FET's V_GS to a safe value a
 
 **Why the VBsemi SUD50P08 100 V variant rather than the original Vishay 80 V part?** Margin. The SMCJ58CA TVS clamps at 93.6 V peak during an ESD event. The 100 V V_DSS rating gives 6.8 % margin to the clamp voltage. The Vishay 80 V variant would have exceeded the rating by 17 % which is not acceptable for repeated events.
 
-### Stage 2 — Ferrite filter
+#### Stage 2 — Ferrite filter
 
 Each post-protection rail (`VSS+`, `VSS−`) passes through a 30 Ω @ 100 MHz power ferrite bead (`FB1` upper, `FB2` lower — muRata BLE32PN300SN1L, R_DC = 1.6 mΩ). The ferrites couple in series and present a frequency-dependent loss that decouples the DUT's RF disturbance behaviour from the upstream bench supply's source impedance — a fundamental LISN function.
 
@@ -50,7 +67,7 @@ At the ladder entry, both rails carry an identical **three-decade shunt stack to
 
 The post-ferrite rails (`VSF+`, `VSF−`) are the actual LISN-ladder inputs.
 
-### Stage 3 — 5 µH LISN ladder
+#### Stage 3 — 5 µH LISN ladder
 
 Each rail then passes through a five-stage LC ladder with Q-damped shunt caps at each intermediate node. The upper rail is:
 
@@ -74,13 +91,13 @@ A 33 pF C0G shunt (`C7`) sits at the DUT+ output direct-to-GNDREF (no series dam
 
 The lower rail is structurally identical with `L6`–`L10`, `C11`/`R16`, `C12`/`R17`, `C13`/`R18‖R19`, `C14`.
 
-### Stage 4 — Output to DUT
+#### Stage 4 — Output to DUT
 
 `L5` and `L10` hand off directly to `DUT+` and `DUT−`, which leave this sheet on global labels and reach the DUT banana sockets (`J1`, `J3`) on the [connectors-and-mechanical](./connectors-and-mechanical.md) sheet, and also pin 2 / pin 3 of the M12 N2K connector (`J10`).
 
 The `DUT+` and `DUT−` outputs are also the **RF tap points** feeding the downstream [LISN measurement-port](./lisn-measurement-ports.md) sheets. The measurement-port chain AC-couples from these nets via three parallel capacitors (`C15+C18+C19` on the upper rail, `C20+C23+C24` on the lower) and presents the RF disturbance signal at SMA outputs `J2` (RF_LISN_P) and `J4` (RF_LISN_N). This is the standard CISPR LISN measurement geometry — the measurement port samples the RF voltage at the DUT-side rail, where the DUT's disturbance currents flow.
 
-## Operating envelope
+### Performance
 
 The values below are design intent, calculated against the as-installed V1.1 component datasheet specs in `performance_review/lisn-supply-path.md`. Empirical confirmation via thermal and VNA testing on the V1.1 hardware is pending.
 
@@ -103,7 +120,16 @@ For the full breakdown of component-level dissipations, gate-bias divider analys
 The TVS clamp at 93.6 V is appropriate for ESD events and bench-class transients. ISO 7637-2 Pulse 5a/5b (load dump, 100–120 V sustained) would exceed the MOSFET V_DSS regardless of TVS behaviour. Do **not** use the CANBench Duo as a transient-injection compliance test fixture.
 :::
 
-## PCB layout notes
+### Design provenance
+
+This LISN topology follows Jay_Diddy_B's EEVblog 5 µH LISN reference design. The key inherited choices:
+
+- 5-section 1 µH ladder rather than a single 5 µH inductor — pushes each coil's self-resonance higher and spreads parasitics along the line, giving a flatter impedance vs. frequency than a lumped 5 µH would.
+- Frequency-staggered damping at the ladder shunt-cap nodes — controlled-Q damping at each natural ladder resonance.
+- F.Cu DC-filter islands + minimised pad sizes — parasitic-capacitance minimisation, keeping the ladder's HF behaviour clean.
+- Self-driven ideal-diode reverse-polarity protection with discrete passive gate bias — lower BOM than an ideal-diode IC, with better margin to the TVS clamp voltage given the 100 V VBsemi FET variant chosen here.
+
+## PCB Layout
 
 The supply chain is laid out **left-to-right** across the V1.1 PCB, signal-flow order matching the schematic. Specific layout choices worth calling out:
 
@@ -116,14 +142,55 @@ The supply chain is laid out **left-to-right** across the V1.1 PCB, signal-flow 
 
 See `pcb_review/lisn-supply-path-layout.md` in the source repository for the full per-component coordinate table and verification against the schema-review's layout requirements.
 
-## Design provenance
+## Components
 
-This LISN topology follows Jay_Diddy_B's EEVblog 5 µH LISN reference design. The key inherited choices:
+| Ref | Value | Function | Datasheet |
+|-----|-------|----------|-----------|
+| F1 | 5 A Slo-Blo (0154005.DRT) | OMNI-BLOK 154-series holder + 449-series Nano² Slo-Blo insert — primary over-current protection on SUPPLY+ | [Littelfuse 154 holder](https://www.littelfuse.com/assetdocs/littelfuse-fuse-154-series-data-sheet) / [449 insert](https://www.littelfuse.com/assetdocs/littelfuse_fuse_449_datasheet.pdf) |
+| D3, D4 | SMCJ58CA | 58 V bidirectional TVS — clamps SOURCE+ (D3) and SOURCE− (D4) transients to GNDREF | [Littelfuse SMCJ58CA](https://www.littelfuse.com/products/tvs-diodes/automotive-tvs/spa-automotive-tvs/smcj58ca.aspx) |
+| Q2 | SUD50P08 | P-channel MOSFET (TO-252, 100 V) — high-side reverse-polarity protection on positive rail | [Vishay SUD50P08](https://www.vishay.com/docs/72606/sud50p08.pdf) |
+| Q3 | STD80N10F7 | N-channel MOSFET (TO-252, 100 V) — low-side reverse-polarity protection on negative rail | [STMicroelectronics STD80N10F7](https://www.st.com/resource/en/datasheet/std80n10f7.pdf) |
+| D2, D5 | BZT52C15 | 15 V Zener — clamps Q2 (D2) / Q3 (D5) V_GS against supply transients | [Diodes Inc. BZT52C15](https://www.diodes.com/assets/Datasheets/ds18005.pdf) |
+| R4, R12 | 47 Ω | Gate series stopper for Q2 (R4) / Q3 (R12) — suppresses gate-drive oscillation | [Yageo PE1206](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-PE1206_RoHS_L_8.pdf) |
+| R5, R13 | 1 MΩ | Gate-to-source pull for Q2 (R5) / Q3 (R13) — upper leg of the 10:1 gate-bias divider | [Yageo RC0603](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R7, R15 | 100 kΩ | Gate-to-opposite-rail bias for Q2 (R7) / Q3 (R15) — lower leg of the divider | [Yageo RC0603](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R6, R14 | 100 kΩ | VSF+ (R6) / VSF− (R14) bleed resistor to GNDREF — discharges the rail when SOURCE is removed | [Yageo RC0603](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| FB1, FB2 | 30 Ω @ 100 MHz (BLE32PN300SN1L) | Power ferrite bead on VSF+ (FB1) / VSF− (FB2) — decouples DUT-side RF from the upstream supply | [Murata BLE32PN300SN1L](https://www.murata.com/en-us/products/productdetail?partno=BLE32PN300SN1L) |
+| L1–L10 | 1 µH / 7 mΩ (CYA0630-1.0UH) | LISN ladder series inductors, five per rail = 5 µH per rail (rated 12 A saturation) | Shouhan CYA0630-1.0UH — manufacturer page not publicly indexed |
+| C1, C8 | 2.2 µF / 100 V X7R | VSF+ (C1) / VSF− (C8) mid-band decoupling cap | [Murata GRM32ER72A225KA35L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER72A225KA35%23) |
+| C2, C9 | 100 nF / 100 V X7R | VSF+ (C2) / VSF− (C9) HF decoupling cap | [Murata GCM21BR72A104KA37L](https://www.murata.com/en-us/products/productdetail?partno=GCM21BR72A104KA37%23) |
+| C3, C10 | 22 µF / 100 V X7R (2220) | Bulk reservoir on VSF+ (C3) / VSF− (C10), damped through R39 / R44 | [PSA Prosperity Dielectrics FS55X](https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_PSA-Prosperity-Dielectrics-FS55X225K251EGG_C153032.pdf) |
+| R39, R44 | 1.2 Ω | Series damper between the bulk cap and rail — VSF+ (R39) / VSF− (R44) | [Yageo PE1206](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-PE1206_RoHS_L_8.pdf) |
+| C4, C11 | 220 nF / 250 V X7R | Ladder shunt cap at node B, upper (C4) / lower (C11) — damped by R8 / R16 | [Murata GRM32DR72E224KW01L](https://www.murata.com/en-us/products/productdetail?partno=GRM32DR72E224KW01%23) |
+| R8, R16 | 10 Ω (2512, 1 W) | Q-damper for C4 (R8) / C11 (R16) — 72 kHz RC corner | [Yageo RT2512](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf) |
+| C5, C12 | 33 pF / 630 V C0G | Ladder shunt cap at node D, upper (C5) / lower (C12) — damped by R9 / R17 | [Murata GCM31A5C2J330JX01D](https://www.murata.com/en-us/products/productdetail?partno=GCM31A5C2J330JX01D) |
+| R9, R17 | 470 Ω (2512, 1 W) | Q-damper for C5 (R9) / C12 (R17) — 10 MHz RC corner | [Yageo RT2512](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf) |
+| C6, C13 | 1 nF / 630 V C0G | DUT-side ladder shunt, upper (C6) / lower (C13) — damped by R10‖R11 / R18‖R19 | [Murata GRM31B5C2J102JW01L](https://www.murata.com/en-us/products/productdetail?partno=GRM31B5C2J102JW01%23) |
+| R10, R11, R18, R19 | 0.68 Ω (0805) | Parallel-pair Q-damper (0.34 Ω each pair) for C6 (R10‖R11) / C13 (R18‖R19) — ~470 MHz RC corner | [Yageo RC0805](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| C7, C14 | 33 pF / 630 V C0G | Undamped HF shunt at DUT+ (C7) / DUT− (C14) direct to GNDREF | [Murata GCM31A5C2J330JX01D](https://www.murata.com/en-us/products/productdetail?partno=GCM31A5C2J330JX01D) |
 
-- 5-section 1 µH ladder rather than a single 5 µH inductor — pushes each coil's self-resonance higher and spreads parasitics along the line, giving a flatter impedance vs. frequency than a lumped 5 µH would.
-- Frequency-staggered damping at the ladder shunt-cap nodes — controlled-Q damping at each natural ladder resonance.
-- F.Cu DC-filter islands + minimised pad sizes — parasitic-capacitance minimisation, keeping the ladder's HF behaviour clean.
-- Self-driven ideal-diode reverse-polarity protection with discrete passive gate bias — lower BOM than an ideal-diode IC, with better margin to the TVS clamp voltage given the 100 V VBsemi FET variant chosen here.
+## Gaps & next version
+
+**Before next production run**
+
+- **High-current rail trace widths** — segment widths for SUPPLY±, VSS±, VSF±, and DUT± were not extracted in the layout review pass; confirm ≥ 1.5 mm (per IPC-2152 for the actual stackup) before committing to a production run.
+- **Empirical impedance / thermal confirmation** — the operating envelope and ladder impedance figures are calculated design intent. A VNA port-impedance sweep and a thermal run at 4 A on the as-built hardware are pending to close the analytical bounds.
+
+**Next version**
+
+- **Enclosure-to-GNDREF bond** — J8 (Keystone 1211 chassis-ground stud) is the intended PCB-to-enclosure bond but is DNP on the current build; either populate it on the next revision or formally document chassis bonding through the connector shells (SMA + M12 shield).
+- **Inductor MPN metadata** — the CYA0630-1.0UH symbol carries no `mpn` property, so BOM exports omit the MPN string; add it as a library-hygiene follow-up.
+
+## References
+
+- IEC, [*CISPR 25 — Vehicles, boats and internal combustion engines: Radio disturbance characteristics*](https://webstore.iec.ch/publication/7077)
+- Jay_Diddy_B, [*EEVblog — 5 µH LISN reference design*](https://www.eevblog.com/forum/)
+- Vishay, [*SUD50P08 P-channel MOSFET*](https://www.vishay.com/docs/72606/sud50p08.pdf)
+- STMicroelectronics, [*STD80N10F7 N-channel MOSFET*](https://www.st.com/resource/en/datasheet/std80n10f7.pdf)
+- Littelfuse, [*SMCJ58CA TVS Diode*](https://www.littelfuse.com/products/tvs-diodes/automotive-tvs/spa-automotive-tvs/smcj58ca.aspx)
+- Diodes Inc., [*BZT52C15 Zener Diode*](https://www.diodes.com/assets/Datasheets/ds18005.pdf)
+- Murata, [*BLE32PN300SN1L Power Ferrite Bead*](https://www.murata.com/en-us/products/productdetail?partno=BLE32PN300SN1L)
+- Littelfuse, [*154 Series OMNI-BLOK Fuse Holder*](https://www.littelfuse.com/assetdocs/littelfuse-fuse-154-series-data-sheet) and [*449 Series Nano² Slo-Blo Fuse*](https://www.littelfuse.com/assetdocs/littelfuse_fuse_449_datasheet.pdf)
 
 ## Related pages
 

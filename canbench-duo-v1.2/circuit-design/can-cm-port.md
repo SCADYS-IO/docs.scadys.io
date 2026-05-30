@@ -7,6 +7,8 @@ hw_status_label: "Next-version schematic — InvenTree refresh of V1.1"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/can_cm_measurement_port_b9681fff.svg" alt="CAN common-mode port schematic (can_cm_measurement_port)" />
+
 :::note[Hardware version]
 CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototype. V1.2 is electrically identical to V1.1 and carries the InvenTree-canonical component metadata; no V1.2 boards exist yet — testing and bring-up reference the V1.1 hardware.
 
@@ -15,17 +17,36 @@ CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototy
 
 The CAN common-mode measurement port is a **high-impedance, non-terminating tap** on the CAN bus that extracts the common-mode voltage of the CAN-H / CAN-L pair and presents it as a 50 Ω signal at SMA `J6` for spectrum-analyser measurement. Common-mode disturbance often dominates the upper-band conducted-emissions signature of a CAN-bus system, and this port makes it directly measurable.
 
-<SchematicViewer src="/img/schematics/canbench-duo-v1.2/can_cm_measurement_port_b9681fff.svg" alt="CAN common-mode port schematic (can_cm_measurement_port)" initialFocus="36 60 195 70" />
-
 :::warning[This port does not terminate the CAN bus]
 The CAN CM port is a high-impedance summing tap. The standard 120 Ω CAN-bus termination must be provided by the DUT and/or the upstream backbone. **Connecting the CAN CM port to an unterminated bus will degrade signalling and produce bus errors.** The bus-impedance perturbation when the bus is properly terminated (60 Ω each end with the standard 120 Ω terminators) is less than 3 % — negligible.
 :::
 
-## Signal flow
+## Overview
+
+This page covers a single sub-circuit — the **CAN Common-Mode Measurement Port** — drawn on the `can_cm_measurement_port` KiCad sheet. A matched 1 kΩ summing pair extracts the bus common-mode voltage, an AC-couple pair blocks the bus DC bias, a two-stage π attenuator drops the signal to a level safe for a spectrum-analyser front end, and a multi-stage clamp / TVS cascade protects the analyser at the SMA output. The CAN-H / CAN-L lines arrive on pins 4 and 5 of the M12 N2K connector `J10`, drawn on the [connectors-and-mechanical](./connectors-and-mechanical.md) sheet.
+
+## Functional specification and design objectives
+
+The CAN common-mode measurement port must:
+
+- tap the CAN-H / CAN-L pair at the DUT-side M12 N2K connector and present the bus common-mode voltage `(V_H + V_L) / 2` as a 50 Ω signal at SMA `J6`;
+- load the bus negligibly — keep the bus-impedance perturbation below 3 % so it does **not** replace the bus's external 120 Ω termination;
+- reject the differential-mode CAN signalling, with a common-mode rejection ratio bounded by the matched summing pair (≈ 60 dB at DC, degrading at HF);
+- support the CISPR 25 measurement band, 150 kHz – 108 MHz;
+- block the CAN bus DC operating point (nominally 2.5 V common-mode, with margin to 100 V) from reaching the analyser; and
+- protect the spectrum-analyser front end from ESD and transients at the SMA via a layered clamp + TVS cascade.
+
+## CAN Common-Mode Measurement Port
+
+<SchematicViewer src="/img/schematics/canbench-duo-v1.2/can_cm_measurement_port_b9681fff.svg" alt="CAN common-mode port schematic (can_cm_measurement_port) — summing pair, AC-couple, π attenuator, protection cascade, SMA output" initialFocus="36 60 195 70" />
+
+### How it works
 
 The CAN bus enters via pins 4 (`NET-H`) and 5 (`NET-L`) of the M12 N2K connector `J10` on the [connectors-and-mechanical](./connectors-and-mechanical.md) sheet. From there, the chain runs left-to-right along the board's central Y ≈ 90 mm axis through to the SMA `J6` at the leftmost edge.
 
-### Stage 1 — Common-mode summing
+![NMEA 2000 M12 A-coded female connector — front view: pin 1 Shield, pin 2 NET-S (+V), pin 3 NET-C (−V), pin 4 NET-H (CAN-H), pin 5 NET-L (CAN-L)](/img/canbench-duo-v1.2/nmea2000_connector_pinout_female.svg)
+
+#### Stage 1 — Common-mode summing
 
 Two equal-weight 1 kΩ thin-film resistors form the summing front-end:
 
@@ -36,7 +57,7 @@ By Kirchhoff, the voltage at the summing node `RF_CAN1` is `(V_H + V_L) / 2` —
 
 The matching tolerance between R38 and R41 bounds the **common-mode rejection ratio (CMRR)** of the front-end. With 0.1 % matched thin-film, the theoretical CMRR at DC is about 60 dB. CMRR degrades at higher frequencies because the AC-couple capacitors (next stage) are X7R ±10 % — looser matching than the resistor pair — and because PCB trace asymmetry between the NET-H and NET-L paths adds further imbalance.
 
-### Stage 2 — AC-couple
+#### Stage 2 — AC-couple
 
 Two parallel 100 nF capacitors block the CAN bus's DC offset (nominally 2.5 V common-mode):
 
@@ -45,7 +66,7 @@ Two parallel 100 nF capacitors block the CAN bus's DC offset (nominally 2.5 V co
 
 Combined parallel capacitance is 200 nF. The 100 V rating leaves a huge margin over the 2.5 V CAN-bus quiescent CM and the higher transient CM voltages possible during EMC events.
 
-### Stage 3 — Two-stage π attenuator
+#### Stage 3 — Two-stage π attenuator
 
 A two-stage π attenuator brings the common-mode amplitude down to a level safe for the spectrum-analyser input:
 
@@ -63,7 +84,7 @@ Note that the full transfer function from the CAN bus's common-mode voltage to t
 
 `R40` (5.1 Ω) serves two roles: it is both the second-stage π attenuator's series element AND the current limiter between the outer and inner protection clamps in the next stage.
 
-### Stage 4 — Multi-stage protection cascade
+#### Stage 4 — Multi-stage protection cascade
 
 The protection cascade follows the same pattern as the [LISN measurement ports](./lisn-measurement-ports.md), but with **simpler 1-diode clamps at both stages** because CAN-bus signal swings are smaller than the LISN measurement-band signals — single forward V_F drops suffice without conducting at normal operating levels.
 
@@ -75,11 +96,11 @@ The protection cascade follows the same pattern as the [LISN measurement ports](
 
 4. **Integrated TVS `D24`.** Tech Public TPAZ1023-02F — same part used on the LISN measurement ports. Only Channel 1 populated; pin 1 to `RF_CAN_CM`, pin 3 to GNDREF, pins 2/4/5/6 are deliberately left unconnected for minimum parasitic capacitance.
 
-### Stage 5 — SMA output
+#### Stage 5 — SMA output
 
 `RF_CAN_CM` connects to `J6` (SMA Female Vertical, 50 Ω) at the top extrusion. `R43` (1 MΩ) ties `RF_CAN_CM` to GNDREF as a defined DC reference at the SMA when no analyser is connected.
 
-## Operating envelope
+### Performance
 
 Design intent — calculated in `performance_review/can-cm-port.md` against V1.2 BOM specs.
 
@@ -92,8 +113,8 @@ Design intent — calculated in `performance_review/can-cm-port.md` against V1.2
 | DC voltage block | up to 100 V | C25 / C26 100 V rating; CAN bus quiescent CM is 2.5 V |
 | CMRR at DC | ≈ 60 dB | Bounded by R38 / R41 0.1 % matching |
 | CMRR at 1 MHz | ~ 40 dB | Limited by C25 / C26 X7R ±10 % matching |
-| CMRR at 108 MHz | < 30 dB | Limited by PCB trace asymmetry between NET-H and NET-L paths |
-| CAN bus impedance perturbation | < 3 % | 2 kΩ inter-line load vs 60 Ω parallel terminators |
+| CMRR at 108 MHz | &lt; 30 dB | Limited by PCB trace asymmetry between NET-H and NET-L paths |
+| CAN bus impedance perturbation | &lt; 3 % | 2 kΩ inter-line load vs 60 Ω parallel terminators |
 | Stray Cj at SMA output | ≈ 4.3 pF | Same as LISN measurement ports |
 
 The CMRR vs frequency curve is bounded analytically here; SPICE / VNA characterisation on the as-built V1.2 board would close the analytical bound with measurement. The dominant HF limitation is the AC-couple capacitor matching (X7R ±10 %), not the matched-pair resistor front-end.
@@ -102,7 +123,7 @@ The CMRR vs frequency curve is bounded analytically here; SPICE / VNA characteri
 Same scope clarification as the LISN measurement ports — this is a passive measurement instrument, not a transient-injection compliance test fixture.
 :::
 
-## PCB layout notes
+## PCB Layout
 
 The CAN CM port components sit in a single left-to-right cascade along the board's Y ≈ 90 mm axis — between the upper (LISN+) and lower (LISN−) measurement ports.
 
@@ -114,9 +135,54 @@ The protection cascade follows the same component-island pattern as the LISN mea
 
 See `pcb_review/can-cm-port-layout.md` in the source repository for the per-component coordinate table.
 
+## Components
+
+| Ref | Value | Function | Datasheet |
+| --- | --- | --- | --- |
+| R41 | 1 kΩ ±0.1 % | CM summing resistor on NET-H (CAN-H) path; matched pair with R38 | [YAGEO RT0603 thin-film](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf) |
+| R38 | 1 kΩ ±0.1 % | CM summing resistor on NET-L (CAN-L) path; matched pair with R41 | [YAGEO RT0603 thin-film](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf) |
+| C25, C26 | 100 nF / 100 V X7R (0805) | AC-couple pair from summing node RF_CAN1 to RF_CAN5 (200 nF total) | [muRata GCM21BR72A104KA37L](https://www.murata.com/en-us/products/productdetail?partno=GCM21BR72A104KA37%23) |
+| R42 | 68.1 Ω ±0.1 % | π attenuator stage 1 series resistor (RF_CAN5 → RF_CAN6) | [YAGEO RT0603 thin-film](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf) |
+| R46 | 91 Ω ±0.1 % | π attenuator shunt to GNDREF at RF_CAN5 | [YAGEO RT0603 thin-film](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf) |
+| R47 | 91 Ω ±0.1 % | π attenuator shunt to GNDREF at RF_CAN6 | [YAGEO RT0603 thin-film](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf) |
+| R40 | 5.1 Ω ±1 % | π attenuator stage 2 series resistor / current limiter into the inner clamp (thick-film) | [YAGEO AC0603 thick-film](https://www.lcsc.com/datasheet/C227988.pdf) |
+| D25, D26 | 1N4148W | Outer bipolar 1-diode clamp at RF_CAN6 (anti-parallel pair to GNDREF) | [DIODES 1N4148W-7-F](https://www.lcsc.com/datasheet/C83528.pdf) |
+| D22, D23 | 1N4148W | Inner bipolar 1-diode clamp at RF_CAN_CM (anti-parallel pair to GNDREF) | [DIODES 1N4148W-7-F](https://www.lcsc.com/datasheet/C83528.pdf) |
+| D24 | TPAZ1023-02F | Integrated multi-channel TVS; only Channel 1 populated (pin 1 = RF_CAN_CM, pin 3 = GNDREF, pins 2/4/5/6 n/c) | [Tech Public TPAZ1023-02F](https://www.lcsc.com/datasheet/C41408050.pdf) |
+| R43 | 1 MΩ ±1 % | DC bleeder from RF_CAN_CM to GNDREF — defined DC reference at the SMA when no instrument is connected | [YAGEO RC0603](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| J6 | SMA Female Vertical, 50 Ω | Panel-mount output to spectrum analyser / disturbance meter at the top extrusion | [HCTL HC-SMA6565-13H-G](https://www.lcsc.com/datasheet/C5723200.pdf) |
+
+## Gaps & next version
+
+**Before next production run**
+
+- **R38 / R41 matching.** Resistor matching directly bounds the CMRR of the summing pair. Confirm the BOM specifies matched-pair-grade ±0.1 % parts and that any future substitution preserves the matching.
+- **TPAZ1023 ESD/TVS rating.** The integrated-TVS specifications (clamp voltage, per-channel capacitance, peak-pulse current) are nominal datasheet values from an LCSC-hosted redirect; the manufacturer ("Tech Public") has no publicly indexed datasheet. Treat as datasheet-cited and verify against board behaviour where measurable.
+- **SMA ground via cluster** around J6 is sparse — recurring observation across the RF ports; either fix in the next revision or accept and confirm by ESD test.
+
+**Next version (V1.3)**
+
+- **CMRR HF bound** is set by the C25 / C26 X7R ±10 % matching (looser than the R38 / R41 0.1 % pair); at 1 MHz CMRR may drop to ~ 40 dB. Switch C25 / C26 to a C0G matched pair (as on the LISN ladder) to tighten the HF CMRR.
+- **NET-H / NET-L trace asymmetry** — the as-built layout has 4 F.Cu segments on NET-H versus 2 on NET-L. Re-route for symmetric matched-length traces to improve CMRR.
+- **R40 thick-film** (AC0603 ±1 %, ±200 ppm/°C) in an otherwise thin-film RF chain — cleanup candidate (same observation as R21 on the LISN ports); acceptable for the current-limiter role today.
+
+## References
+
+- DIODES Incorporated, [*1N4148W-7-F SOD-123 switching diode* (D22, D23, D25, D26)](https://www.lcsc.com/datasheet/C83528.pdf)
+- Tech Public, [*TPAZ1023-02F multi-channel TVS* (D24)](https://www.lcsc.com/datasheet/C41408050.pdf)
+- muRata, [*GCM21BR72A104KA37L 100 nF / 100 V X7R MLCC* (C25, C26)](https://www.murata.com/en-us/products/productdetail?partno=GCM21BR72A104KA37%23)
+- YAGEO, [*RT0603 thin-film 0.1 % series* (R38, R41, R42, R46, R47)](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf)
+- YAGEO, [*AC0603 thick-film 1 % series* (R40)](https://www.lcsc.com/datasheet/C227988.pdf)
+- YAGEO, [*RC0603 1 MΩ 1 %* (R43)](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf)
+- HCTL, [*HC-SMA6565-13H-G SMA Female Vertical 50 Ω* (J6)](https://www.lcsc.com/datasheet/C5723200.pdf)
+- ISO, *ISO 11898-2 — Road vehicles — Controller area network (CAN) — Part 2: High-speed medium access unit* (the 120 Ω termination requirement this port does not replace)
+- NMEA, *NMEA 2000 Standard* — M12 Micro-C Code A pinout (J10 pin 4 = NET-H, pin 5 = NET-L)
+- IEC, *CISPR 25* — conducted-emissions measurement band (150 kHz – 108 MHz); *IEC 61000-4-2* — electrostatic discharge
+
 ## Related pages
 
 - [LISN Measurement Ports](./lisn-measurement-ports.md) — the sister RF measurement chain; topologically similar but with 2-diode-series outer clamps for the higher LISN measurement-band amplitudes
 - [LISN Supply Path](./lisn-supply-path.md) — the LISN ladder also delivers DC supply to the DUT via the M12 N2K connector (J10 pin 2 / pin 3); the CAN-H / CAN-L lines (pins 4 / 5) tapped here arrive on the same connector
 - [Connectors and Mechanical](./connectors-and-mechanical.md) — J10 M12 N2K pin map (Shield, NET-S, NET-C, CAN-H, CAN-L) and J6 SMA placement on the top extrusion
+- [Power Indicator LED](./power-indicator-led.md) — supply-fault indicator; Q1 is confirmed isolated from the CAN measurement nets
 - [User Manual → Measurement Procedure](../user-manual/measurement-procedure.md) — operational measurement workflow including the "external 120 Ω termination required" caveat

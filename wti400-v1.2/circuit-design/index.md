@@ -26,6 +26,37 @@ This page narrates the system at the board level — the block diagram, power an
 
 ---
 
+## Functional requirements and performance criteria
+
+The WTI400 is a self-contained, bus-powered NMEA 2000 wind-transducer interface. The board-level requirements below drove the architecture; each is decomposed into per-circuit objectives on the subsystem pages (the *Functional specification and design objectives* section of each).
+
+**System functional requirements**
+
+- Draw all power and data from a single NMEA 2000 Micro-C connection — no external supply or auxiliary cabling.
+- Accept a standard analog sine-wave wind transducer (WIND_X / WIND_Y angle channels + WIND_SPD anemometer pulse train) and supply it from a regulated, selectable wind rail.
+- Reconstruct apparent wind angle (`atan2` of the X / Y channels) and apparent wind speed (pulse count) and emit them as PGN 130306 on the CAN bus at ~1 Hz.
+- Sense vessel motion (6-DoF IMU) so the wind output can be referenced to the vessel's true horizon rather than the mast's instantaneous orientation.
+- Provide local UI (RGB LED + tactile button) without requiring a display.
+- Survive the marine NMEA 2000 electrical environment — bus transients, surge, reverse polarity, and over-voltage — without damage.
+- Maintain four ground domains, crossing boundaries only through defined isolators (opto-isolated legacy serial; bus-referenced, non-isolated CAN; single-star-point wind return).
+- Optionally bridge a single-wire 12 V legacy serial protocol (developer / kit tiers only).
+
+**Performance criteria (design targets)**
+
+| Criterion | Target | Basis |
+|---|---|---|
+| Supply input | 9–16 V DC from the N2K backbone | NMEA 2000 network voltage range |
+| Board current budget | &lt; 150 mA typical (design target) | N2K LEN allocation; Wi-Fi contribution to be validated once production firmware exists |
+| Wind-transducer supply rail | 8.4 V (Raymarine ST60 / E22078 family) or 6.8 V (B&G 213 supply-compatible), JP1-selectable | Transducer family setpoints; B&G 213 angle ADC fix deferred to V2.0 |
+| Operating temperature | −10 °C to +70 °C (target) | Marine masthead-interface environment; pending qualification |
+| Bus robustness | Survive bus transients, surge, reverse polarity, and over-voltage | Marine electrical environment |
+| CAN physical layer | ISO 11898-2 at 250 kbps | NMEA 2000 |
+| Conformance targets | CE RED 2014/53/EU, UKCA, FCC Part 15, RoHS, China EFUP, NMEA 2000 | Commercial-release compliance |
+
+The per-circuit pages carry the detailed objectives and the calculations that verify them; this section is the system-level parent they trace to.
+
+---
+
 ## Power flow
 
 Power enters on the NMEA 2000 backbone through a single 5-pin Micro-C connector at the bus-side edge. It travels through three stages before reaching the digital, wind-transducer, and legacy-serial rails:
@@ -128,32 +159,6 @@ Other layout notes:
 - The WIND_X and WIND_Y analog traces are routed as a matched pair, separated by 5 mm with a GNDREF copper fill between them. No deliberate shielding is required at the operating signal frequencies (&lt; 5 Hz wind sine wave) — the L4 / L5 RF chokes on each channel are for RF / EMI ingress at the masthead cable, not for inter-channel crosstalk.
 - I²C traces (I2C_SCL, I2C_SDA) run from the ESP32 module to the motion sensor without crossing any switching power domain — both are in the digital region.
 - The CAN differential pair (NET-H, NET-L) is routed as a matched pair with the common-mode filter immediately at the M12 connector. The transceiver (U5) sits on the boundary between the CAN domain and the digital domain, with the differential pair always staying in the CAN domain.
-
----
-
-## Testing & Verification
-
-:::caution
-
-V1.2 is in service on the test vessel. Each circuit page has its own Testing & Verification list — the items below are the **system-level** items that span multiple sub-circuits or require integrated bring-up.
-
-**Heritage in service.** The WTI400 V1.2 deployment on the test vessel has accumulated approximately 1,000 sea miles running the self-calibrating wind firmware that emits NMEA 2000. (Wi-Fi has never been enabled on any V1.2 board — see the [Firmware](../firmware/index.md) page.) The MLI400 V1.0 predecessor, installed on the same test vessel for the circumnavigation, accumulated thousands more sea miles of wind-interface operating heritage on the bespoke firmware that fed forward into the WTI400 design. The remaining bring-up tests are quantitative bench measurements that haven't yet been performed against the in-service installation.
-
-**System-level bring-up (rig at the bench, transducer attached):**
-
-- **NMEA 2000 round-trip** — Plug into a live N2K backbone with a known-instrumented vessel simulator. Pass if the WTI400 acquires an address, emits PGN 130306 (apparent wind), and receives heading PGNs cleanly.
-- **Wind transducer round-trip on the bench** — Connect a Raymarine ST60 / E22078 transducer at JP1 8v4, spin the vane through a known angular pattern, and confirm the firmware-reported angle matches within ±5° across all four quadrants. Repeat the speed-pulse PPR calibration at a measured RPM.
-- **IMU correction validation** — Tilt the assembled WTI400 (mounted in a representative mast-bracket orientation) through known heel / pitch angles; confirm the firmware's wind-direction output stays referenced to the vessel-frame true horizon, not the mast's instantaneous tilt.
-- **VCC rail under sustained Wi-Fi TX** — Probe at U3 pad 2 during a sustained 802.11b TX burst. Pass if the rail stays within ±3 % of 3.30 V with no individual dip below 3.10 V (covers the bypass topology under realistic load).
-- **VAS rail thermal soak** — 30-minute run at VSC = 14.8 V, JP1 6v8, 30 mA load on the LDO. Record LP2951 package temperature; pass if estimated T<sub>j</sub> stays below 110 °C at 40 °C ambient.
-- **End-to-end power-up sequence** — Brown-out the N2K supply repeatedly. Confirm the timing of: VCC stable → ESP32 boots → RGB LED initialises → firmware starts → WND_EN enables the transducer → first NMEA 2000 frame emitted. No spurious LED flicker, no transducer power glitch.
-
-**For V1.3 (tracked in `v1.3-improvements.md`):**
-
-- All per-circuit V1.3 entries documented on the individual pages, including: M12 6-pin waterproof connector replacing the Keystone 1211 tab array on the wind side; LP2951 DRG package for better thermal headroom on the wind LDO; the U12 amplifier bias rework so V1.3 supports both Raymarine 8v4 and B&G 6v8 transducers natively (currently V1.2 is Raymarine-only); shorter ESP_EN routing; per-circuit GNDREF moat carry-over from the MDD400 V2.9 layout.
-- Sister-product cross-reference: the MDD400 V2.9 uses the same buck converter, the same ESP32-S3 module, and the same CAN transceiver. Where V1.3 introduces a change that also applies to MDD400 V2.10, the items are cross-referenced between the two product backlogs.
-
-:::
 
 ---
 

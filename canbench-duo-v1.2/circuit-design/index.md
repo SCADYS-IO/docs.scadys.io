@@ -18,7 +18,7 @@ The CANBench Duo is a fully passive instrument. There is no microcontroller, no 
 
 <SchematicViewer src="/img/schematics/canbench-duo-v1.2/block_diagrams_2116f4b3.svg" alt="CANBench Duo V1.2 system block diagram" initialFocus="16 16 158 130" />
 
-## System architecture
+## Overview
 
 Power flows left-to-right across the board. The bench DC supply enters at the front-faceplate `SRC` banana pair, passes through a four-stage filter and protection chain, and emerges at the back-faceplate `DUT` banana pair (or the M12 N2K connector). RF disturbance signatures are tapped off the DUT-side rails and the CAN bus lines, attenuated and protected, and routed to three SMA outputs on the top extrusion.
 
@@ -27,6 +27,36 @@ The supply chain is **mirror-symmetric** across the board's central horizontal a
 The three RF measurement ports share a common design pattern: a high-pass AC-couple at the input, a two-stage π attenuator giving about 10 dB of attenuation, a multi-stage clamp cascade for analyser protection, an integrated TVS at the SMA. The two LISN measurement ports tap the LISN ladder's DUT-side outputs (one per rail); the CAN common-mode port uses a 1 kΩ matched-pair summing front-end to extract the CAN bus common-mode voltage directly.
 
 A discrete state-encoder LED on the top extrusion communicates the supply-chain health — Green for normal operation, Blue when the upstream protection FET (Q2) is not fully conducting (typically because F1 has blown), Red for reverse polarity, Off for no supply.
+
+## Functional requirements and performance criteria
+
+The CANBench Duo is a passive measurement fixture: a dual-line DC LISN with an integrated CAN common-mode monitor. The board-level requirements below drove the architecture; each is decomposed into per-circuit objectives on the subsystem pages.
+
+**Fixture functional requirements**
+
+- Pass a bench DC supply through to the DUT while presenting a stable, mostly-inductive LISN source impedance across the CISPR 25 measurement band, decoupling the DUT's RF disturbance behaviour from the upstream bench supply.
+- Tap the RF disturbance signature off each DUT-side rail and present it as a 50 Ω signal at a board-mounted SMA, with enough added attenuation to keep a spectrum analyser front-end in its useful dynamic range.
+- Extract the CAN-bus common-mode voltage with a high-impedance summing front-end that does not terminate or appreciably perturb the bus.
+- Block the bench supply's DC offset from reaching the analyser, and limit residual transients at every SMA to a level safe for the analyser.
+- Maintain strict upper-/lower-rail mirror symmetry so common-mode-to-differential-mode conversion in the measurement is minimised.
+- Stay fully passive — no MCU, no firmware, no switching converter — and survive bench-class ESD and supply-mishap events (reverse polarity, blown fuse) without damage.
+
+**Performance criteria (design targets)**
+
+| Criterion | Target | Basis |
+|---|---|---|
+| Measurement band | 150 kHz – 108 MHz, margin to 120 MHz | CISPR 25 conducted-emissions band |
+| LISN port impedance | ≈ 4.7 Ω at 150 kHz, rising as jωL | 5 µH artificial-network ladder (CISPR 25) |
+| RF output (SMA) impedance | 50 Ω at each of the 3 SMA ports | Spectrum-analyser input standard |
+| Added attenuation per RF port | ≈ 10 dB | Two-stage π attenuator; keeps analyser in dynamic range |
+| DC supply current rating | 4.0 A @ 25 °C ambient (3.0 A @ 40 °C) | LISN ladder R_DC, fuse + ferrite thermal limit |
+| Supply voltage range | 9–48 V continuous DC (≤ 55 V ceiling) | TVS clamps non-conductive below ~55–58 V; downstream parts ≥ 100 V rated |
+| DC voltage block (RF ports) | up to 48 V (LISN), up to 100 V (CAN CM) | AC-couple cap voltage rating (100 V X7R) |
+| CAN-bus perturbation | &lt; 3 % | High-impedance 1 kΩ summing tap vs 60 Ω parallel terminators |
+| Analyser-side residual transient | ≤ +10 dBm into 50 Ω | Multi-stage clamp + TPAZ1023 TVS cascade |
+| ESD tolerance at SMA | IEC 61000-4-2 ±8 kV air / ±6 kV contact (design target) | Topological design target; TVS datasheet verification pending |
+
+The per-circuit pages carry the detailed objectives and the calculations that verify them; this section is the system-level parent they trace to.
 
 ## Subsystems
 
@@ -39,7 +69,7 @@ A discrete state-encoder LED on the top extrusion communicates the supply-chain 
 | [Power Indicator LED](./power-indicator-led.md) | `power_indicator_led` | XL-5050RGBC three-die LED + BC807 PNP state encoder. Four-state visual indicator: Off / Green / Blue / Red. |
 | [PCB Markings](./pcb-markings.md) | `silks` | Regulatory marks (CE, UKCA, RoHS), branding (Logo, Copyright), QR code, hardware version stamp. |
 
-## PCB Layout and Stack-up
+## PCB stack-up and layer allocation
 
 The board is **99 × 79 mm**, **2-layer FR-4**, **1.6 mm overall thickness**, **1 oz copper** on both sides.
 

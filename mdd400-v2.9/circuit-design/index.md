@@ -24,6 +24,34 @@ This page narrates the system at the board level — the block diagram, power an
 
 ---
 
+## Functional requirements and performance criteria
+
+The MDD400 is a self-contained, bus-powered NMEA 2000 display node. The board-level requirements below drove the architecture; each is decomposed into per-circuit objectives on the subsystem pages (the *Functional specification and design objectives* section of each).
+
+**System functional requirements**
+
+- Draw all power and data from a single NMEA 2000 Micro-C connection — no external supply or auxiliary cabling.
+- Present network data on a helm-mounted 4.0″ capacitive-touch display that stays legible in sunlight.
+- Monitor its own bus power (voltage / current), ambient light (for auto-brightness), and board temperature (for thermal protection), and provide audible alerting.
+- Survive the marine NMEA 2000 electrical environment — bus transients, surge, reverse polarity, and over-voltage — without damage.
+- Maintain four isolated ground domains, crossing boundaries only through defined isolators (opto-isolated legacy serial; bus-referenced, non-isolated CAN).
+- Optionally bridge a single-wire 12 V legacy serial protocol and NMEA 0183 (developer / kit tiers only).
+
+**Performance criteria (design targets)**
+
+| Criterion | Target | Basis |
+|---|---|---|
+| Supply input | 9–16 V DC from the N2K backbone | NMEA 2000 network voltage range |
+| Board current budget | ~250 mA typical / ~500 mA peak (design target) | N2K LEN allocation; to be validated once Wi-Fi firmware exists |
+| Operating temperature | −10 °C to +70 °C (target) | Marine helm environment; pending qualification |
+| Bus robustness | Survive bus transients, surge, reverse polarity, and over-voltage | Marine electrical environment |
+| CAN physical layer | ISO 11898-2 at 250 kbps | NMEA 2000 |
+| Conformance targets | CE RED 2014/53/EU, UKCA, FCC Part 15, RoHS, NMEA 2000 | Commercial-release compliance |
+
+The per-circuit pages carry the detailed objectives and the calculations that verify them; this section is the system-level parent they trace to.
+
+---
+
 ## Power flow
 
 Power enters on the NMEA 2000 backbone through a single 5-pin Micro-C connector at the bus-side panel. It travels through three stages before reaching the digital and display rails:
@@ -32,7 +60,7 @@ Power enters on the NMEA 2000 backbone through a single 5-pin Micro-C connector 
 2. **Synchronous buck conversion** — two LMR51610 buck converters generate the regulated **VCC (3.3 V)** digital rail and the **VDD (5.0 V)** display / buzzer rail from the protected NMEA 2000 supply. Both converters live in a moat-bounded F.Cu / B.Cu GNDREF island that contains the switching return currents. Documented on the [Power Supplies](./power-supplies.md) page.
 3. **Digital and display distribution** — VCC feeds the ESP32 module, the three I²C sensors, the CAN transceiver, and the legacy-serial RX/TX paths. VDD feeds the display interface (through a firmware-controlled high-side P-MOSFET switch, with FB3 EMI conditioning) and the buzzer driver (through a similar P-MOSFET / NPN gate-driver combination with output low-pass filtering). Documented on the [Display Interface](./display-interface.md) and [Buzzer Driver](./buzzer-driver.md) pages.
 
-The VCC distribution exploits a deliberate **VCC – GNDREF – GNDREF – VCC** plane-pair stack-up across the digital domain: F.Cu and B.Cu carry VCC pour, and the two inner layers carry unbroken GNDREF. This creates two distributed VCC↔GNDREF plane-pair capacitors that decouple the rail at GHz frequencies with no parasitic inductance and no ESR — explained in detail on the [Power Supplies](./power-supplies.md#vcc-plane-pair-in-the-digital-area) page and exploited specifically on the [ESP32 Module](./esp32-module.md) page (force-commutated daisy-chain bypass cluster at U3 pad 2).
+The VCC distribution exploits a deliberate **VCC – GNDREF – GNDREF – VCC** plane-pair stack-up across the digital domain: F.Cu and B.Cu carry VCC pour, and the two inner layers carry unbroken GNDREF. This creates two distributed VCC↔GNDREF plane-pair capacitors that decouple the rail at GHz frequencies with no parasitic inductance and no ESR — explained in detail on the [Power Supplies](./power-supplies.md) page and exploited specifically on the [ESP32 Module](./esp32-module.md) page (force-commutated daisy-chain bypass cluster at U3 pad 2).
 
 VDD has no similar plane-pair treatment — it's used only by the display and buzzer, both of which have local bulk + HF bypass at their consumer ends.
 
@@ -46,7 +74,7 @@ The ESP32-S3-WROOM-1-N16R8 module (U3 on the [ESP32 Module](./esp32-module.md) p
 - **DWIN display** — DISP_TX / DISP_RX / DISP_EN drive the DWIN DMG48480F040 4.0-inch capacitive-touch panel over UART2 using the DGUS II proprietary serial protocol. All rendering, animation, and touch-event processing run on the display's internal T5L SoC; the ESP32 acts only as a DGUS II host. DISP_EN gives firmware control over the display's power state (default off; firmware-controlled hard reset path). Documented on the [Display Interface](./display-interface.md) page.
 - **I²C sensor bus** — I2C_SCL / I2C_SDA at I²C Standard mode (100 kHz) connect three slaves: [INA219 Power Monitor](./power-monitor.md) at 0x40 (NMEA 2000 bus current and voltage); [OPT3004 Ambient Light Sensor](./ambient-light-sensor.md) at 0x44 (drives the firmware brightness loop); [TMP112 Temperature Sensor](./temperature-sensor.md) at 0x48 (drives the three-tier thermal protection: alert / derate / graceful shutdown). Bus pull-ups (R1 / R2 / R3) physically live on the i2c_sensors sub-sheet but logically belong with the MCU — documented on the [ESP32 Module](./esp32-module.md) page.
 - **Audio output** — AUDIO_PWM drives the [Buzzer Driver](./buzzer-driver.md) page's two-transistor high-side switch. The ESP32-S3 LEDC peripheral generates the audio-frequency PWM; the R10 / C12 / R9 low-pass filter (f<sub>−3dB</sub> ≈ 7.2 kHz) shapes the PWM into clean alert tones. The buzzer is the **last audible warning** before the graceful-shutdown event powers the display down via DISP_EN.
-- **Status LED** — LED_EN drives the [LED Indicator](./led-indicator.md) page's PNP high-side switch. Default-on by hardware bias so the LED is on as soon as VCC is stable, before firmware boots — a board-up power-good indicator that doesn't depend on the MCU.
+- **Status LED** — LED_EN drives the [LED Indicator](./led-indicator.md) page's PNP high-side switch. Default-on by hardware bias so the LED is on as soon as VCC is stable, before firmware boots. It is a **rear-facing service indicator** for technician bring-up / fault-finding — not visible once the unit is bulkhead-mounted — confirming power-good independently of the MCU.
 - **Programming interface** — ESP_TX / ESP_RX / ESP_EN / ESP_BOOT terminate at the [Programming Socket](./programming-socket.md) page's J1 ESP-PROG IDC header (developer/kit build) or the J1 THT pad footprint (production pogo-pin programming, R22 zero-ohm link in place of the LDO chain).
 - **Legacy serial (optional)** — ST_TX / ST_RX / ST_EN drive opto-isolated transmit and receive paths to the legacy serial backbone (single-wire 12 V protocol and NMEA 0183 receive-only operation). Documented on the [Legacy Serial Interface](./legacy-serial.md) page.
 
@@ -78,7 +106,7 @@ Each block on the schematic block diagram above maps to one or more docs pages:
 | CAN transceiver | [CAN Transceiver](./can-transceiver.md) | `can_transceiver.kicad_sch` | SN65HVD234 transceiver; CAN common-mode filter; split-termination + TVS protection on NET-H / NET-L |
 | MCU + VCC bypass + I²C bus pull-ups | [ESP32 Module](./esp32-module.md) | `esp32_module.kicad_sch` + `i2c_sensors.kicad_sch` | ESP32-S3-WROOM-1-N16R8; force-commutated VCC bypass at U3 pad 2; EN / BOOT control-line networks; I²C bus pull-ups (R1 / R2 / R3) |
 | Programming hardware | [Programming Socket](./programming-socket.md) | `esp32_module.kicad_sch` | J1 ESP-PROG IDC header; HT7833 LDO + dual-Schottky-OR'd chain (D3 / D4 / D5); production-variant R22 zero-ohm bridge |
-| Status LED | [LED Indicator](./led-indicator.md) | `esp32_module.kicad_sch` | Q1 PNP high-side switch driving D2 amber LED via LED_EN; default-on bias |
+| Status LED | [LED Indicator](./led-indicator.md) | `esp32_module.kicad_sch` | Rear-facing service LED — Q1 PNP high-side switch driving D2 amber LED via LED_EN; default-on bias |
 | Power monitor | [Power Monitor](./power-monitor.md) | `i2c_sensors.kicad_sch` | INA219 at 0x40; 330 mΩ shunt R33 in series with post-OVP supply; firmware-driven *Power* display page |
 | Ambient light sensor | [Ambient Light Sensor](./ambient-light-sensor.md) | `i2c_sensors.kicad_sch` | OPT3004 at 0x44; photopic spectral response; drives firmware brightness loop |
 | Temperature sensor | [Temperature Sensor](./temperature-sensor.md) | `i2c_sensors.kicad_sch` | TMP112 at 0x48; PCB + display thermal coupling on B.Cu; three-tier firmware protection (alert / derate / shutdown) |
@@ -119,31 +147,6 @@ The MDD400 layout follows three principles, each grounded in a specific referenc
 3. **Preserve module pre-certification with antenna keep-out.** The ESP32-S3-WROOM-1's FCC / CE / IC pre-certification is contingent on a 3 mm copper-free area in the antenna projection. The MDD400 layout exceeds this by 2× — ≥ 6.3 mm clearance on F.Cu, ≥ 10.9 mm on B.Cu, with the antenna aligned to a dedicated board-edge slot. Documented on the [ESP32 Module](./esp32-module.md) page.
 
 The display backlight switching converter (internal to the DWIN module) is the secondary noise source. FB3 (BLM31KN601SN1L) on the VDSP rail between Q4 drain and the C37 / C38 cluster contains the display-side conducted noise behind a ferrite bead — see the [Display Interface](./display-interface.md) page.
-
----
-
-## Testing & Verification
-
-:::caution
-
-V2.9 is a fabricated prototype. Each circuit page has its own Testing & Verification list — the items below are the **system-level** items that span multiple sub-circuits or require integrated bring-up.
-
-**System-level bring-up (rig the assembled MDD400 at the bench):**
-
-- **NMEA 2000 round-trip** — Plug into a live N2K backbone. Pass if the MDD400 acquires an address, receives PGNs from other nodes, and emits its own status PGNs cleanly.
-- **End-to-end power-up sequence** — Apply N2K supply with all sensors connected. Confirm the timing of: VCC stable → ESP32 boots → status LED lights (hardware bias, before firmware) → firmware initialises → display powers on via DISP_EN → DGUS II UI appears → sensor polling starts → CAN ready.
-- **Power-cycle robustness** — Brown-out the N2K supply repeatedly (50+ cycles). Confirm: no spurious buzzer chirp during boot; no display flicker between firmware-off and firmware-on states; no I²C bus lock-up on the sensor side; ESP32 always boots cleanly.
-- **Thermal soak** — Mount the assembled MDD400 in a representative helm position (sun-loaded) for several hours. Log TMP112 reading; INA219 voltage / current. Use this data to tune the three TMP112 firmware thresholds (alert / derate / shutdown).
-- **Graceful-shutdown sequence** — Drive TMP112 reading above the shutdown threshold via heat. Confirm: buzzer annunciates *before* DISP_EN drops the display; final NMEA 2000 status message emitted; device enters low-power mode with LED still indicating.
-- **Brightness-loop characterisation** — Bench-test the ALS → DGUS II brightness lookup across the full ambient range (dark / indoor / direct sunlight). Re-fit the lookup table for the V2.9 housing aperture; apply DGUS II step-boundary hysteresis. (Carries over significant tuning effort from prior MDD400 hardware revisions.)
-
-**For V2.10 (tracked in `v2.10-improvements.md`):**
-
-- All per-circuit V2.10 entries documented on the individual pages.
-- Cross-cutting items: DISP_TX / DISP_RX series damping if routed traces exceed 50 mm; CISPR 32 conducted-emission scan; full BOM dielectric audit (specifically C37 on the Display Interface and C57 on the Temperature Sensor).
-- Sister-product cross-reference: the WTI400 V1.2 uses the same buck converter, the same ESP32-S3 module, and the same CAN transceiver. Where V2.10 introduces a change that also applies to WTI400 V1.3, the items are cross-referenced between the two product backlogs.
-
-:::
 
 ---
 

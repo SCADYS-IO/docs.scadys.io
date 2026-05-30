@@ -30,6 +30,10 @@ Connector roster for the CANBench Duo enclosure. The unit has a dual-face layout
 
 ## M12 N2K pinout (J10)
 
+J10 is a **female** M12 A-coded (Micro-C) receptacle. The diagram shows the pin layout viewed from the front (mating face) of the connector.
+
+![NMEA 2000 M12 A-coded female connector — front view: pin 1 Shield, pin 2 NET-S (+V), pin 3 NET-C (−V), pin 4 NET-H (CAN-H), pin 5 NET-L (CAN-L)](/img/canbench-duo-v1.2/nmea2000_connector_pinout_female.svg)
+
 | Pin | Net | Role |
 |---|---|---|
 | 1 | SHIELD | Cable shield / drain |

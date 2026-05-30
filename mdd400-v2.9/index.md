@@ -5,13 +5,15 @@ hw_status: prototype
 hw_status_label: "Fabricated prototype — bench testing"
 ---
 
+{/* TODO: product render hero — no MDD400 render asset exists yet (add the enclosure render here when available, per the landing-page standard) */}
+
 :::note[Hardware version]
 
 MDD400 **v2.9** — Fabricated prototype, bench-test phase. Each peripheral has been driven on the bench through dedicated hardware test routines (CAN / NMEA 2000 connectivity, the HMI display, the three I²C sensors, and the buzzer all individually functional). **No production firmware has been written for V2.9 yet** — the production ESP-IDF firmware is the next major project task, planned to migrate the operational code paths (tone library, alert taxonomy, brightness-control loop, three-tier thermal protection, NMEA 2000 PGN handling) from the **MDD400 V1.0** PlatformIO/Arduino predecessor, which ran on earlier MDD400 hardware revisions through significant in-service operating hours including extended open-ocean passages. **Wi-Fi has never been enabled** on any MDD400 board, on any version; **BLE** has only been exercised during early BLE-library development on test hardware. Bringing both radios up in production form is part of the new firmware scope.
 
 :::
 
-## What it is
+## Overview
 
 The **MDD400** is a marine multi-function display node for **NMEA 2000** vessel networks. It connects to a vessel's NMEA 2000 backbone with a single Micro-C connector — drawing power and receiving data from the bus — and presents the network data on a 4.0-inch high-contrast, sunlight-readable, wide-angle capacitive-touch TFT HMI display at the helm. It's a fully self-contained NMEA 2000 device: no external power, no auxiliary cabling, no separate display module.
 
@@ -45,7 +47,7 @@ The MDD400 ships with a fixed *core* feature set on every tier and an *optional*
 | Ambient-light sensor (OPT3004, auto brightness) | ✓ | ✓ | ✓ | ✓ |
 | Temperature sensor (TMP112, thermal protection) | ✓ | ✓ | ✓ | ✓ |
 | Audio buzzer (MLT-8530, alert tones) | ✓ | ✓ | ✓ | ✓ |
-| Status LED (front-panel power-good + firmware-controlled) | ✓ | ✓ | ✓ | ✓ |
+| Service status LED (rear-facing — technician bring-up / fault-finding; DNP candidate in production) | ✓ | ✓ | ✓ | ✓ |
 | Wi-Fi + BT 5 LE configuration (ESP32-S3-WROOM-1, pre-certified module) | ✓ | ✓ | ✓ | ✓ |
 | Marine sealed housing (target IP65 front-of-helm) | ✓ | — *(BYO)* | ✓ | ✓ |
 | **Optional features** |  |  |  |  |
@@ -91,8 +93,20 @@ The MDD400 V2.9 currently runs only hardware test routines — no production fir
 | v2.0 | Archived | First V2.x major revision |
 | v1.0 | Archived | Initial production-intent design |
 
-## Where to next
+## Documentation map
 
-- **[Circuit Design](./circuit-design/index.md)** — block diagram, ground domain map, PCB stack-up, EMC philosophy, and a page per circuit (ESP32 Module, Power Supplies, CAN Bus Power, CAN Transceiver, Display Interface, the three I²C sensors, Buzzer Driver, Programming Socket, LED Indicator, Legacy Serial, PCB Markings).
-- **[Tasks](./tasks.md)** — live tracker for verification work against V2.9 and the V2.10 next-version backlog across hardware / firmware / housing / compliance.
-- **[Quick Reference](./quick-reference/index.md)** — landing page for fast-lookup tables (pin assignments, power rails, external connectors, full component list, flash partitions).
+| Section | What's there |
+|---|---|
+| [User Manual](./user-manual/index.md) | Operator guide — setup, daily use, troubleshooting (in progress, pending production firmware) |
+| [Quick Reference](./quick-reference/index.md) | Fast-lookup tables: pin assignments, power rails, external connectors, full component list, flash partitions |
+| [Tasks](./tasks.md) | Live tracker for V2.9 verification + the V2.10 backlog across hardware / firmware / housing / compliance |
+| [Circuit Design](./circuit-design/index.md) | Block diagram, ground domain map, PCB stack-up, EMC philosophy, and a page per circuit |
+| [Compliance](./compliance/index.md) | CE / UKCA / FCC / RoHS / IP / NMEA 2000 conformance status and roadmap |
+| [Housing](./housing/index.md) | Enclosure, sealing, PCB mechanical, and fasteners |
+| [Firmware](./firmware/index.md) | Current bench-test state, the MDD400 V1.0 predecessor heritage, and the planned production ESP-IDF firmware |
+
+## Related products
+
+- **[WTI400](/wti400/v1.2)** — wind transducer interface; pairs with the MDD400 on the same NMEA 2000 backbone to add apparent-wind data.
+- **[CANBench Duo](/canbench-duo/v1.1)** — bench LISN + measurement fixture for NMEA 2000 device pre-compliance work.
+- **[CANBench TrueZ](/canbench-truez/v1.1)** — passive common-mode / differential-mode noise separator, companion to the CANBench Duo.

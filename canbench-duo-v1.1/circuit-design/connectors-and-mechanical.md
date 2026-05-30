@@ -5,11 +5,19 @@ hw_status: prototype
 hw_status_label: "Fabricated prototype — sole built unit (pre-InvenTree)"
 ---
 
+import SchematicViewer from '@site/src/components/SchematicViewer';
+
+<SchematicViewer src="/img/schematics/canbench-duo-v1.1/connectors_and_mechanical_ec700e5f.svg" alt="Connectors and Mechanical schematic (connectors_and_mechanical) — banana sockets, SMA measurement outputs, M12 N2K receptacle, chassis-ground stud, fiducials" />
+
 :::note[Hardware version]
 CANBench Duo **v1.1** — Fabricated prototype, sole built unit. V1.1 is electrically identical to the V1.2 schematic refresh but predates the InvenTree symbol-library migration; the schematic component metadata reflects legacy SCADYS naming. Testing and bench validation reference this V1.1 hardware.
 
 **Other versions:** [v1.2 — schematic refresh (next version)](/canbench-duo/v1.2/)
 :::
+
+## Overview
+
+This page covers the **connector and mechanical-feature roster** for the CANBench Duo, drawn on the `connectors_and_mechanical` KiCad sheet. It contains no active components, no passive filtering, and no signal conditioning — every component is either a connector that brings an external signal or supply onto the board, or a fiducial that registers the board for pick-and-place assembly.
 
 The CANBench Duo uses a **dual-face connector layout** built around the YG-H10A extruded aluminium enclosure. Three classes of cables come and go: bench supply, DUT supply / N2K, and measurement. Each class emerges from a different face of the enclosure, so all three can lie flat on the test bench without crossing.
 
@@ -24,6 +32,28 @@ The CANBench Duo uses a **dual-face connector layout** built around the YG-H10A 
 ![CANBench Duo enclosure — top extrusion view with three SMAs, M12 N2K, indicator window, and front-faceplate chassis-ground binding post](/img/canbench-duo-v1.1/render_2.PNG)
 
 ![CANBench Duo enclosure — back faceplate showing DUT banana pair](/img/canbench-duo-v1.1/render_3.PNG)
+
+## Functional specification and design objectives
+
+The connector and mechanical set must:
+
+- bring the bench DC supply onto the board at a clearly polarised SOURCE banana pair (`J5` RED / `J7` BLACK), and deliver the LISN-filtered DC supply back out at a DUT banana pair (`J1` RED / `J3` BLACK), with directionality enforced by the internal protection chain so a SRC↔DUT swap is structurally hard to make;
+- provide a combined NMEA 2000 / DeviceNet supply + CAN-bus interface on a single M12-5 Code A female receptacle (`J10`), pin-compatible with the rest of the SCADYS-IO range, delivering the LISN-filtered DC supply and CAN bus on one connector;
+- present three interchangeable 50 Ω SMA measurement outputs (`J2` LISN+, `J4` LISN−, `J6` CAN-CM) with a low-inductance shield-to-GNDREF bond, usable across the design's measurement band (150 kHz – 108 MHz) without degrading return loss;
+- carry the LISN supply path's **4 A continuous @ 25 °C** design-intent current through every DC connector and its board traces without exceeding any per-pin rating;
+- give the user a tool-free chassis-bond path to the enclosure body; and
+- register the board for two-point pick-and-place assembly (fiducials `FID1` / `FID2`).
+
+**Measurable targets**
+
+| Target | Value |
+| --- | --- |
+| Measurement-port characteristic impedance | 50 Ω nominal (J2 / J4 / J6) |
+| Measurement band | 150 kHz – 108 MHz (SMA return loss adequate over this band; VNA confirmation at 108 MHz pending) |
+| DC connector continuous current | 4 A continuous @ 25 °C (LISN supply path design intent) |
+| Banana socket per-pin rating | 10 A (margin over the 4 A design intent) |
+| M12 (J10) per-pin rating | 4 A (matches the 4 A design intent — zero margin) |
+| SMA DC-through rating | &lt; 500 mA (measurement ports carry RF, not DC supply) |
 
 ## Connector roster
 
@@ -57,6 +87,8 @@ All three SMAs are visually and electrically interchangeable — same part numbe
 ### M12 N2K connector (J10)
 
 A single Shenzhen STA M12-S5A-PPFM panel-mount female receptacle following the standard NMEA 2000 / DeviceNET Micro-C 5-pin Code A pinout:
+
+![NMEA 2000 M12 A-coded female connector — front view: pin 1 Shield, pin 2 NET-S (+V), pin 3 NET-C (−V), pin 4 NET-H (CAN-H), pin 5 NET-L (CAN-L)](/img/canbench-duo-v1.1/nmea2000_connector_pinout_female.svg)
 
 | Pin | Net | Standard mapping |
 | --- | --- | --- |
@@ -97,6 +129,19 @@ The PCB sits inside the YG-H10A extruded aluminium enclosure with the following 
 
 This orientation is unusual compared to many bench instruments where everything is on a single front face. The motivation is **cable layout**: measurement cables emerging upward from the top let the SMA cables drape naturally; the front + back banana pairs let bench-supply and DUT cables enter from opposite sides without crossing the SMA cables. The instrument lies flat on the GRP bench surface with all cables in their natural orientation.
 
+## PCB Layout
+
+The connectors are placed for whole-board mirror symmetry across the **Y = 90 mm axis** — the same axis that mirrors the LISN supply path's ladder, protection FETs, and measurement-port chains. The board is 99 × 79 mm (X = 70.5–169.5 mm, Y = 50.5–129.5 mm).
+
+- **Banana sockets on the front face (F.Cu), split left/right by signal flow.** The SOURCE pair (J5 RED, J7 BLACK) sits on the left edge at X = 71.5; the DUT pair (J1 RED, J3 BLACK) on the right edge at X = 168.5. Each pair straddles the Y = 90 mirror axis at Y = 99.5 / 80.5 (19 mm apart). This is a deliberate left-in / right-out layout — bench supply enters left, LISN-filtered output emerges right — so the sockets are on the same **face** but opposite **edges**.
+- **SMA verticals on the back face (B.Cu)**, aligned in the X = 110 column at Y = 116.5 (J2 LISN+), Y = 90 (J6 CAN-CM), Y = 63.5 (J4 LISN−), evenly spaced 26.5 mm apart. J2/J4 mirror across Y = 90; the TVS-to-SMA traces are inherently length-matched by that mirror geometry. The SMAs emerge through the top extrusion, separated from the front-face bananas.
+- **M12 (J10) on the back face** at (156.5, 90), on the Y = 90 axis, right of centre — a separate face from the bananas.
+- **Chassis-ground stud (J8, DNP)** on F.Cu at the board centre (100, 90); the GNDREF pad is placed even though the part is not populated, so a field-time install works.
+- **Fiducials at diagonally opposite corners**: FID1 at (73.5, 126.5) top-left, FID2 at (166.5, 53.5) bottom-right — both ~3 mm in from the corner, clear of connector bodies that could shadow the vision system.
+- **Ground continuity:** a continuous B.Cu GNDREF flood runs beneath all connector positions, providing the reference plane for the SMA shields (J2/J4/J6 pin 2) and the M12 shield (J10 pin 1). On V1.1 the enclosure bond relies on the SMA shells plus the M12 shield, since J8 is DNP.
+
+See `pcb_review/connectors-and-mechanical-layout.md` in the source repository for the full per-component coordinate table and verification against the schema-review's layout requirements.
+
 ## Connector specifications
 
 | Connector | Manufacturer / MPN | Rating | Mating cycles | IP rating |
@@ -106,11 +151,48 @@ This orientation is unusual compared to many bench instruments where everything 
 | M12 N2K (J10) | Shenzhen STA M12-S5A-PPFM | 4 A per pin | 100+ | IP67 (connector class) |
 | Chassis-ground binding post | YIYUAN YTC-3-PCB281308 (J8 pad, DNP) — wire braid to enclosure post | High-current | One-time install | N/A |
 
-## Known mechanical items
+## Components
 
-- **High-current trace widths** for the `SUPPLY±` / `DUT±` / `VSS±` / `VSF±` nets are not yet verified against IPC-2152 for the 4 A continuous design intent. Board-level minimum track width is 1.0 mm; IPC-2152 indicates ~ 1.5 mm at 4 A continuous, 30 °C rise on 1 oz outer-layer copper. V1.3 candidate.
+| Ref | Value | Function | Datasheet |
+| --- | --- | --- | --- |
+| J5 | 24.245.1 (RED) | Banana socket, horizontal edge-mount THT — bench-supply positive input (`SUPPLY+`) | [Changzhou Amass 24.245.1](https://www.lcsc.com/datasheet/C7437326.pdf) |
+| J7 | 24.245.2 (BLACK) | Banana socket, horizontal edge-mount THT — bench-supply negative input (`SUPPLY−`) | [Changzhou Amass 24.245.2](https://www.lcsc.com/datasheet/C7437327.pdf) |
+| J1 | 24.245.1 (RED) | Banana socket, horizontal edge-mount THT — DUT-side positive output (`DUT+`) | [Changzhou Amass 24.245.1](https://www.lcsc.com/datasheet/C7437326.pdf) |
+| J3 | 24.245.2 (BLACK) | Banana socket, horizontal edge-mount THT — DUT-side negative output (`DUT−`) | [Changzhou Amass 24.245.2](https://www.lcsc.com/datasheet/C7437327.pdf) |
+| J2 | SMA_Female_Vertical | SMA Female vertical THT, 50 Ω — LISN+ measurement port (`RF_LISN_P`) | [HCTL HC-SMA6565-13H-G](https://www.lcsc.com/datasheet/C5723200.pdf) |
+| J4 | SMA_Female_Vertical | SMA Female vertical THT, 50 Ω — LISN− measurement port (`RF_LISN_N`) | [HCTL HC-SMA6565-13H-G](https://www.lcsc.com/datasheet/C5723200.pdf) |
+| J6 | SMA_Female_Vertical | SMA Female vertical THT, 50 Ω — CAN common-mode measurement port (`RF_CAN_CM`) | [HCTL HC-SMA6565-13H-G](https://www.lcsc.com/datasheet/C5723200.pdf) |
+| J10 | N2K_Female | M12-5-pin Code A female panel-mount, IP67 — combined DUT supply + CAN bus | [Shenzhen STA M12-S5A-PPFM](https://www.alibaba.com/product-detail/Waterproof-IP67-M12-Panel-Mount-Connectors_1601117608604.html) |
+| J8 | 1211 (DNP) | Keystone 1211 quick-terminal — reserved chassis-ground stud, not populated | [YIYUAN YTC-3-PCB281308](https://www.lcsc.com/datasheet/C20626108.pdf) |
+| FID1 | Fiducial | Pick-and-place registration mark (top-left corner) | — |
+| FID2 | Fiducial | Pick-and-place registration mark (bottom-right corner) | — |
+
+:::note[J9 numbering gap]
+`J9` is intentionally absent from the refdes sequence — no `J9` symbol exists on this sheet or anywhere in the project. The gap is an artefact of refdes renumbering during the V1.0 → V1.1 → V1.2 evolution; references are reassigned but never reused.
+:::
+
+## Gaps & next version
+
+**Before next production run**
+
+- **High-current trace widths** for the `SUPPLY±` / `DUT±` / `VSS±` / `VSF±` nets are not yet verified against IPC-2152 for the 4 A continuous design intent. Board-level minimum track width is 1.0 mm; IPC-2152 indicates ~ 1.5 mm at 4 A continuous, 30 °C rise on 1 oz outer-layer copper.
 - **HCTL HC-SMA6565-13H-G return loss at 108 MHz** is not characterised in the manufacturer datasheet. Adequate for pre-compliance work; VNA confirmation pending for certification-grade measurement.
-- **J9 numbering gap** — intentional, an artefact of refdes renumbering during V1.0 → V1.1 → V1.2 evolution.
+- **SMA / M12 ground-via cluster density** is sparse around the connector shells — a recurring observation across the PCB reviews. Either add via stitching or verify ESD / RF chassis-bond performance.
+
+**Next version**
+
+- **High-current trace-width respin** — widen the `SUPPLY±` / `DUT±` rails to the IPC-2152 figure above; a V1.3 candidate.
+- **J8 chassis-ground stud** — decide whether to populate J8 for a dedicated screw-down chassis bond, or leave it DNP and keep relying on the SMA shells + M12 shield + external binding post.
+
+## References
+
+- Changzhou Amass Electronics, [*24.245.1 RED banana socket, horizontal edge-mount THT* (J1, J5)](https://www.lcsc.com/datasheet/C7437326.pdf)
+- Changzhou Amass Electronics, [*24.245.2 BLACK banana socket, horizontal edge-mount THT* (J3, J7)](https://www.lcsc.com/datasheet/C7437327.pdf)
+- HCTL, [*HC-SMA6565-13H-G SMA Female Vertical 50 Ω THT* (J2, J4, J6)](https://www.lcsc.com/datasheet/C5723200.pdf)
+- Shenzhen STA Electronics, [*M12-S5A-PPFM 5-pin Code A female panel-mount IP67* (J10)](https://www.alibaba.com/product-detail/Waterproof-IP67-M12-Panel-Mount-Connectors_1601117608604.html)
+- YIYUAN, [*YTC-3-PCB281308 Keystone 1211 quick-terminal* (J8, DNP)](https://www.lcsc.com/datasheet/C20626108.pdf)
+- NMEA, [*NMEA 2000 Standard*](https://www.nmea.org/nmea-2000.html) — Micro-C 5-pin Code A pinout for J10
+- IEC 62680-1-3 — DeviceNet physical layer (same Micro-C pinout family)
 
 ## Related pages
 

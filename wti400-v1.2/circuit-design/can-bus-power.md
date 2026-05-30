@@ -17,11 +17,9 @@ WTI400 **v1.2** — In service — installed on test vessel
 
 The CAN bus power circuit takes the raw NMEA 2000 bus supply (NET-S, nominally 12 V) and delivers a clean, protected supply rail (VSC) to the rest of the WTI400. Six sequential stages condition the input: primary surge clamping, a resettable fuse and reverse-polarity protection, bulk capacitor buffering, a two-stage LC EMI filter, an over-voltage protection switch, and a secondary output clamp.
 
----
+This page covers a single sub-circuit — the **CAN Bus Power** rail — drawn on the `can_bus_power` KiCad sheet.
 
-## CAN Bus Power
-
-### Functional specification and design objectives
+## Functional specification and design objectives
 
 The CAN bus power circuit must:
 
@@ -31,6 +29,10 @@ The CAN bus power circuit must:
 - suppress conducted EMI on the supply rail before it reaches the downstream regulators;
 - disconnect VSC if bus voltage rises above the LP2951 wind transducer LDO's safe operating range; and
 - deliver VSC within 300 mV of NET-S under normal operating current.
+
+## CAN Bus Power
+
+<SchematicViewer src="/img/schematics/wti400-v1.2/can_bus_power_f7564131.svg" alt="CAN bus power — full sheet, conditioning stages 1–6 from NET-S to VSC. Zoom out to see the full sheet." initialFocus="12.7 12.7 271.78 88.9" />
 
 ### How it works
 
@@ -125,7 +127,7 @@ At 85 °C the margin above the NMEA 2000 maximum charging voltage (14.8 V) is 30
 
 D2 (PESD15VL1BA) is a 15 V / 200 W bidirectional TVS across VSC and GNDREF. It catches fast transients that pass through Q2 before the OVP comparator can respond, providing a final protective barrier for the downstream regulators.
 
-### Performance review
+### Performance
 
 #### Voltage drop budget (NET-S to VSC)
 
@@ -140,33 +142,15 @@ D2 (PESD15VL1BA) is a 15 V / 200 W bidirectional TVS across VSC and GNDREF. It c
 
 At NMEA 2000 minimum bus voltage (9.0 V): VSC_min ≈ 8.54 V. The LP2951 in the 8v4 variant (Raymarine) requires ≥ 8.95 V input; it will lose regulation at absolute minimum bus voltage under full transducer load. The 6v8 variant (B&G) passes with 1.35 V margin. This is an accepted design constraint — typical operating bus voltage is 12–13 V.
 
-### Bring-up tests
+## PCB Layout
 
-1. **Reverse polarity**: apply −12 V to NET-S — pass if VSC remains at 0 V and no components become warm.
-2. **Normal operation**: apply 12 V; measure VSC — pass if VSC ≈ 11.5 V.
-3. **OVP trip**: slowly raise supply voltage — pass if VSC drops to 0 V between 17.5 V and 19.5 V with no oscillation at the threshold. *(Verified at 18.6 V on both MDD400 and WTI400 prototypes.)*
-4. **OVP hysteresis**: after trip, slowly reduce supply voltage — pass if VSC recovers cleanly at a voltage measurably below the trip point.
-5. **PTC fuse**: short VSC briefly — pass if F1 trips and the board powers up again without intervention after the fault clears.
-6. **Bleed resistor**: remove supply; measure VSC discharge time — pass if VSC reaches < 1 V in approximately 4.4 s (R42 × 44 µF).
-7. **EMI filter ripple**: scope VSC with a 65 mA load — pass if supply ripple is below the LMR51610 VIN ripple tolerance.
-8. **Filter capacitance at bias**: measure C33, C36, C37, C39 at 12 V DC bias — record actual values and compare against derated filter corner frequency calculations.
-9. **Surge**: apply an ISO 7637-2 Pulse 5b transient (or bench equivalent) to NET-S — pass if VSC remains stable and all components survive.
+All can_bus_power components are placed on F.Cu (front copper). A solid GNDREF plane fills In1.Cu across the full board extent, and a large F.Cu GNDREF pour (66.4–98.1 × 62.8–137.6 mm) covers the entire circuit area, giving every TVS, MOV, and reference component a short, low-inductance return. The circuit occupies the left column of the board (x ≈ 70–95 mm) and is laid out in reverse power-flow order — OVP output at the top (low Y), input surge clamp at the bottom (high Y). VSC leaves the OVP output region as a 0.6 mm trace routed ~45.8 mm down B.Cu to the load distribution area, keeping the front copper uncongested.
 
-### Gaps & next version
-
-**Verify at bring-up**
-
-- **F1 thermal proximity to D11**: F1 is 7.7 mm from D11 — closer than recommended for a device that dissipates surge energy as heat. Run an IEC 61000-4-5 surge sequence and confirm F1 body temperature stays below 70 °C post-surge.
-- **L2 cold-start inrush**: confirm peak current through L2 at power-on stays below the 2.6 A saturation rating.
-
-**Next version**
-
-- **OVP threshold margin at temperature**: at 85 °C the OVP threshold reaches 15.1 V — only 300 mV above the 14.8 V NMEA 2000 maximum charging voltage. Raising the margin requires either increasing the 25 °C trip point (by decreasing R28 or increasing R27, which shifts both thresholds together), or replacing the divider-only comparator with a voltage reference for temperature-stable operation.
-- **L2/L3 body spacing**: current edge-to-edge gap is 1.95 mm — 0.05 mm short of the 2 mm keepout. Increase in next layout revision.
-- **D11 sourcing for production**: qualify a Littelfuse or STMicro equivalent SM8S36CA for CE/ABYC certification — the current FUXINSEMI part is suitable for prototype but not preferred for production compliance documentation.
-- **Over-temperature disconnect**: the OVP threshold drifts with temperature (−58.7 mV/°C at the trip point) but this is not a reliable thermal cutout — it only reduces the trip voltage and still requires bus voltage to exceed the drifted threshold. At a typical 12 V bus, no amount of thermal drift causes disconnect. A two-component board modification can add a genuine over-temperature disconnect: wire a normally-closed thermal switch (85 °C or 100 °C rated, e.g. Murata PKGS series) in series between R26 and GNDREF, and add a 100 kΩ pull-up from Q2's gate to its source (V_P1). Under normal conditions R26 dominates and Q2 remains on; when the thermal switch opens on overtemperature, the pull-up holds V_GS ≈ 0 and Q2 turns off. Sensor placement is critical — the switch must be adjacent to the hottest component (Q2 or L2/L3) to reflect actual thermal stress rather than ambient temperature.
-
----
+- **Surge clamp at the connector.** M1 (MOV) is placed 8.5 mm from J2 to provide early energy absorption for slow transients. D11 (the 6.6 kW TVS, DO-218AB) sits 16.1 mm from J2 — placed adjacent to F1 (0.5 mm) rather than at the connector, because J2's mounting flange precludes closer placement. This is an accepted physical constraint, identified during the MDD400 V2.9 review and carried forward to all WTI400 revisions; the 1.8 mm NET-S trace (adding ~11 nH) is the minimum achievable given the connector geometry. D11's *.Cu multi-layer pads (9.0 × 10.0 mm primary, plus four 1 × 1 mm through-hole vias) spread surge heat into the In1.Cu and F.Cu planes.
+- **Fuse placement.** F1 is 7.7 mm from D11 — closer than recommended for a device that dissipates surge energy as heat — and 6.7 mm from D9, with adequate inductor separation (10.8 mm to L3, 16.5 mm to L2). The D11 proximity is flagged for surge-thermal verification (see Gaps).
+- **EMI filter inductors.** L2 (4.7 µH) and L3 (1 µH) share the same axis with a 5.95 mm centre-to-centre spacing, giving a 1.95 mm edge-to-edge gap — 0.05 mm short of the 2 mm keepout. The nearest other inductor (L1) is 33.7 mm away. Possible magnetic cross-coupling between the two filter inductors is flagged for the next layout revision (see Gaps).
+- **Power-path routing.** The main path NET-S → F1 → D9 → C41/C42 → L3 → L2 → V_P1 → Q2 → VSC is carried predominantly by named copper pour zones (Net-(D9-A), Net-(D9-K), Net-(C41-Pad1), Net-(L2-Pad1), V_P1), all wider than the 0.5 mm minimum. Bulk caps C41/C42 connect to the D9-cathode pour with short, wide GNDREF returns; the 0.2 mm gate-drive traces (Q3 collector → Q2 gate, via R25/D3) are signal-level (< 5 mA) and acceptable.
+- **OVP cluster.** D2 (2.7 mm from Q2 drain), D3 (3.0 mm from Q2, forming a tight gate-source clamp loop), and the divider/sense components (R25, R26, R27, R28, C28, Q3) are grouped tightly around Q2 at the top of the circuit. The V_P1 HF bypass caps C32/C34 sit 4.7–6.2 mm from the L2 output pad — beyond the 1 mm guideline but inside the V_P1 copper pour, which provides the low-impedance connection.
 
 ## Components
 
@@ -196,8 +180,6 @@ At NMEA 2000 minimum bus voltage (9.0 V): VSC_min ≈ 8.54 V. The LP2951 in the 
 | R26 | 22 kΩ | 0603 — Q2 gate pull-down; holds Q2 on under normal conditions | — |
 | D2 | PESD15VL1BA | Bidirectional TVS, SOD-323, 15 V / 200 W — secondary VSC clamp | [Nexperia PESD15VL1BA](https://assets.nexperia.com/documents/data-sheet/PESD15VL1BA.pdf) |
 
----
-
 ## Testing & Verification
 
 :::caution
@@ -218,16 +200,22 @@ The V1.2 prototype on the test vessel has been bus-powered for approximately 1,0
 - **F1 thermal proximity to D11** &mdash; Run an IEC 61000-4-5 surge sequence and confirm F1 body temperature stays below 70 &deg;C post-surge.
 - **L2 cold-start inrush** &mdash; Confirm peak current through L2 at power-on stays below the 2.6 A saturation rating.
 
-**For V1.3 (tracked in `v1.3-improvements.md`):**
-
-- **OVP threshold margin at temperature** &mdash; At 85 &deg;C the OVP threshold reaches 15.1 V &mdash; only 300 mV above the 14.8 V NMEA 2000 maximum. Either raise the 25 &deg;C trip point (decrease R28 or increase R27) or replace the divider-only comparator with a voltage reference for temperature-stable operation.
-- **L2 / L3 body spacing** &mdash; Current edge-to-edge gap is 1.95 mm &mdash; 0.05 mm short of the 2 mm keepout. Increase in next layout revision.
-- **D11 sourcing for production** &mdash; Qualify a Littelfuse or STMicro equivalent SM8S36CA for CE / ABYC certification; the current FUXINSEMI part is suitable for prototype but not preferred for production compliance.
-- **Over-temperature disconnect** &mdash; Add a 2-component mod: a normally-closed thermal switch in series between R26 and GNDREF plus a 100 k&Omega; pull-up from Q2's gate to source. Switch placement must be adjacent to the hottest component (Q2 or L2 / L3).
-
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **F1 thermal proximity to D11** &mdash; F1 is 7.7 mm from D11 &mdash; closer than recommended for a device that dissipates surge energy as heat. Run an IEC 61000-4-5 surge sequence and confirm F1 body temperature stays below 70 &deg;C post-surge; if it exceeds 70 &deg;C, add a copper thermal break in the NET-S flood between D11 and F1.
+- **L2 cold-start inrush** &mdash; Confirm peak current through L2 at power-on stays below the 2.6 A saturation rating.
+- **L2 / L3 magnetic coupling** &mdash; Measure in-circuit LCR on L2 and L3 with both installed; if mutual coupling exceeds ~5%, increase spacing in the next layout revision.
+- **D11 sourcing for production** &mdash; Qualify a Littelfuse or STMicro equivalent SM8S36CA for CE / ABYC certification; the current FUXINSEMI part is suitable for prototype but not preferred for production compliance.
+
+**Next version (V1.3)**
+
+- **OVP threshold margin at temperature** &mdash; At 85 &deg;C the OVP threshold reaches 15.1 V &mdash; only 300 mV above the 14.8 V NMEA 2000 maximum. Either raise the 25 &deg;C trip point (decrease R28 or increase R27) or replace the divider-only comparator with a voltage reference for temperature-stable operation.
+- **L2 / L3 body spacing** &mdash; Current edge-to-edge gap is 1.95 mm &mdash; 0.05 mm short of the 2 mm keepout. Increase centre-to-centre spacing from 5.95 mm to &ge; 6.05 mm in the next layout revision.
+- **Over-temperature disconnect** &mdash; Add a 2-component mod: a normally-closed thermal switch in series between R26 and GNDREF plus a 100 k&Omega; pull-up from Q2's gate to source. Switch placement must be adjacent to the hottest component (Q2 or L2 / L3).
 
 ## References
 
@@ -239,3 +227,10 @@ The V1.2 prototype on the test vessel has been bus-powered for approximately 1,0
 - cjiang, [*FHD4012S Series Power Inductors*](https://www.cjinductors.com/product/fhd4012s/)
 - ISO, *ISO 7637-2:2011 — Road vehicles — Electrical disturbances from conduction and coupling — Part 2: Electrical transient conduction*
 - NMEA / IEC, *IEC 61162-3 — Maritime navigation and radiocommunication equipment — NMEA 2000*
+
+## Related pages
+
+- [CAN Transceiver](./can-transceiver.md) — the ISO 11898-2 physical layer fed from the same bus entry
+- [Power Supplies](./power-supplies.md) — the LMR51610 buck and LP2951 LDO that consume VSC
+- [Wind Interface](./wind-interface.md) — the LP2951 transducer LDO whose 30 V limit sets the OVP trip point
+- [External Connectors](/wti400/v1.2/quick-reference/connectors) — J2 NMEA 2000 pinout and the full connector roster

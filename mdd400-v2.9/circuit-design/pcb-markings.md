@@ -7,6 +7,8 @@ hw_status_label: "Fabricated prototype — bench testing"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
+<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c0beb6b5.svg" alt="PCB markings schematic — full sheet (silkscreen labels block, fiducials block, PCB stackup block). Zoom and pan freely; per-sub-section zoomed views appear below." />
+
 :::note[Hardware version]
 
 MDD400 **v2.9** — Fabricated prototype. The silkscreen marks, fiducials, and stackup documented here are as-built on the V2.9 prototype boards. Compliance-mark *content* is locked (the marks themselves correspond to the EU RED 2014/53/EU, FCC Part 15, UKCA, RoHS, and China EFUP regulatory frameworks the MDD400 is targeted at), but final compliance-test confirmation (the test report that authorises affixing the CE / UKCA / FCC marks) is itself a V2.10 milestone — see the V2.10 backlog below.
@@ -16,8 +18,6 @@ MDD400 **v2.9** — Fabricated prototype. The silkscreen marks, fiducials, and s
 ## Overview
 
 This page documents the PCB-level markings on `pcb_markings.kicad_sch`: the **fiducial markers** that support automated assembly, the **silkscreen marks** that carry product identity and compliance information, and the **PCB stackup** that physically realises the four-layer construction described elsewhere in the docs.
-
-<SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c0beb6b5.svg" alt="PCB markings schematic — full sheet (silkscreen labels block, fiducials block, PCB stackup block). Zoom and pan freely; per-sub-section zoomed views appear below." />
 
 Three sub-sections on this page, in narrative order:
 
@@ -29,7 +29,17 @@ The fourth engineer-drawn rectangle on this sheet is an empty placeholder.
 
 Some board-level mechanical details (board outline, mounting hole positions) live in the `MDD400_V2.9.kicad_pcb` file rather than on `pcb_markings.kicad_sch` — they're summarised in the *Mounting and board outline* section below.
 
----
+## Functional specification and design objectives
+
+The board markings, fiducials, and stackup must:
+
+- carry the regulatory marks required by the target markets — EU RED 2014/53/EU (CE), UK Conformity Assessed (UKCA), FCC Part 15 (USA), RoHS (EU restricted-substances), and China EFUP (Environment Friendly Use Period);
+- carry the manufacturer identity (Scadys logo + copyright) and the product identity (board variant + revision), with the variant / revision in copper for wear-resistant traceability;
+- provide a machine-readable pointer (QR code) from the physical board to the live product documentation;
+- provide reference markers for the pick-and-place machine's vision system so it can compensate for board-to-board placement variation and skew, with a wide diagonal baseline so small absolute fiducial-detection error translates to a small angular correction error across the whole board;
+- mirror the F.Cu fiducials on B.Cu at the same XY coordinates so single-pass setup works for two-sided assembly;
+- realise a four-layer construction giving two signal layers (F.Cu, B.Cu) and two inner layers (In1.Cu, In2.Cu) for power and ground distribution, with inner layers heavier (1 oz / 35 µm) than outer layers (0.5 oz / 17.5 µm) for low-resistance power planes; and
+- hold a total board thickness of 1.6 mm — standard for marine enclosures and compatible with the panel-mount housing geometry — while letting layer roles change region-by-region so the SMPS, CAN-bus power, digital, and isolation domains each get a stack-up that suits them.
 
 ## Board specification
 
@@ -44,19 +54,9 @@ Some board-level mechanical details (board outline, mounting hole positions) liv
 | Min trace / space | Per design rules in the KiCAD project |
 | Manufacturing class | IPC-6012 Class 2 |
 
----
-
 ## Silkscreen marks and compliance
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c0beb6b5.svg" alt="Silkscreen labels sub-section — board identity (S1), CE mark (S2), RoHS / China EFUP (S3), FCC mark (S4), Scadys logo (S5), QR code (S6), UKCA mark (S7), copyright (S8)." initialFocus="19.05 13.97 127.0 88.9" />
-
-### Functional specification and design objectives
-
-- Carry the regulatory marks required by the target markets — EU RED 2014/53/EU (CE), UK Conformity Assessed (UKCA), FCC Part 15 (USA), RoHS (EU restricted-substances), and China EFUP (Environment Friendly Use Period).
-- Carry the manufacturer identity (Scadys logo + copyright) and the product identity (board variant + revision).
-- Provide a machine-readable pointer (QR code) from the physical board to the live product documentation.
-
-### How it works
 
 All marks listed below are **silkscreen** unless noted. They sit on the F.Cu (top) and / or B.Cu (bottom) silkscreen layers.
 
@@ -75,7 +75,7 @@ All marks listed below are **silkscreen** unless noted. They sit on the F.Cu (to
 
 **Why both CE and UKCA marks are present.** Post-Brexit, the UK market requires UKCA rather than CE marking on goods placed on the UK market specifically. The MDD400 carries both so a single fabrication run can serve both EU and UK markets — the compliance test reports themselves are technically equivalent (both based on the same harmonised standards under different statutory instruments).
 
-### Performance review
+**Mark permanence.**
 
 | Mark | Visible on | Permanence |
 |---|---|---|
@@ -86,25 +86,9 @@ All marks listed below are **silkscreen** unless noted. They sit on the F.Cu (to
 | S6 QR code | F.Cu silkscreen | Critical that the QR remains legible — survives operator wear under normal helm conditions |
 | S8 Copyright | F.Cu silkscreen | Standard silkscreen |
 
-### Bring-up tests
-
-1. **QR code resolves to live docs** — Scan S6 with a phone QR reader. Pass if the URL matches the live product-docs URL exactly. The schematic-side `qr_docs.scadys.io_products_mdd400_10` footprint reference must match the deployed URL — a typo or path-change here ships a broken QR on the production board.
-2. **Compliance-mark legibility** — Photograph each silkscreen mark under typical helm-position lighting. Pass if all marks are clearly readable at arm's length (Scadys logo, CE, UKCA, FCC, RoHS / EFUP all unambiguous).
-3. **Copyright year currency** — Confirm S8 reads the correct year for the production batch. The current silkscreen footprint reads "© 2025" but boards manufactured later may need a year refresh.
-
----
-
 ## Fiducial markers
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c0beb6b5.svg" alt="Fiducial markers sub-section — FID1 / FID2 on F.Cu, FID3 / FID4 on B.Cu (mirrored at the same XY positions), supporting pick-and-place machine-vision alignment." initialFocus="146.05 13.97 127.0 88.9" />
-
-### Functional specification and design objectives
-
-- Provide reference markers for the pick-and-place machine's vision system so it can compensate for board-to-board placement variation and skew.
-- Give a wide diagonal baseline (large XY separation) so that small absolute fiducial-detection error translates to a small angular correction error across the whole board.
-- Mirror the F.Cu fiducials on B.Cu at the same XY coordinates so single-pass setup works for two-sided assembly.
-
-### How it works
 
 Four 0.5 mm bare-copper fiducial markers (with 1.5 mm soldermask openings) form two mirrored pairs:
 
@@ -119,8 +103,6 @@ The diagonal between FID1 / FID2 centres is √(86² + 86²) ≈ **121.6 mm** �
 
 The **mirrored front / back placement** at identical XY coordinates means the same vision-system fixturing can index both sides without re-teaching coordinates — saves setup time on two-sided assembly runs.
 
-### Performance review
-
 | Parameter | Value | Notes |
 |---|---|---|
 | Fiducial copper diameter | 0.5 mm | Per IPC-7351 Class 2 recommendation |
@@ -129,24 +111,9 @@ The **mirrored front / back placement** at identical XY coordinates means the sa
 | F/B co-location accuracy | 0 µm (by design) | FID1 / FID3 and FID2 / FID4 share the same XY in the .kicad_pcb |
 | Vision-system suitability | Confirmed by prior production runs | Same fiducial pattern used on prior MDD400 hardware revisions through pick-and-place assembly |
 
-### Bring-up tests
-
-1. **Pick-and-place machine vision recognises all four fiducials** — Confirm at the start of each production assembly run that the pick-and-place machine successfully detects FID1–FID4 without manual override. Pass if both F.Cu and B.Cu setups complete without operator intervention.
-
----
-
 ## PCB stackup detail
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/pcb_markings_c0beb6b5.svg" alt="PCB stackup sub-section — 4-layer construction (F.Cu / In1.Cu / In2.Cu / B.Cu) with copper weights and dielectric layers." initialFocus="19.05 102.87 127.0 88.9" />
-
-### Functional specification and design objectives
-
-- Four-layer construction giving two signal layers (F.Cu, B.Cu) and two inner layers (In1.Cu, In2.Cu) for power and ground distribution.
-- Inner layers heavier (1 oz / 35 µm) than outer layers (0.5 oz / 17.5 µm) to give low-resistance power planes without inflating the cost of finer signal-layer features.
-- Total board thickness of 1.6 mm — standard for marine enclosures and compatible with the panel-mount housing geometry.
-- Layer roles change region-by-region across the board so the SMPS, CAN-bus power, digital, and isolation domains each get the stack-up that suits them.
-
-### How it works
 
 The physical stack-up, from top to bottom:
 
@@ -157,17 +124,13 @@ The physical stack-up, from top to bottom:
 | **In2.Cu** | 3 | Power plane | 35 µm (1 oz) | B.Cu prepreg | Unbroken GNDREF in the digital region (other half of the plane pair); domain-dependent fills elsewhere |
 | **B.Cu** | 4 | Signal + plane | 17.5 µm (0.5 oz) | — | Back-of-board; carries VCC pour in the digital region (mirrors F.Cu), GNDREF fills under SMPS / CAN-power / isolation islands |
 
-The **VCC – GNDREF – GNDREF – VCC** layer ordering across the digital region creates two distributed VCC↔GNDREF plane-pair capacitors (F.Cu↔In1.Cu and In2.Cu↔B.Cu, each separated by 0.1855 mm prepreg). The plane-pair capacitance is what gives the digital domain GHz-frequency bypass with no parasitic ESL or ESR — see the [Power Supplies](./power-supplies.md#vcc-plane-pair-in-the-digital-area) page for the full rationale and the [ESP32 Module](./esp32-module.md) page for the force-commutated discrete-cap topology that hands off to the plane pair above the discrete caps' self-resonance.
+The **VCC – GNDREF – GNDREF – VCC** layer ordering across the digital region creates two distributed VCC↔GNDREF plane-pair capacitors (F.Cu↔In1.Cu and In2.Cu↔B.Cu, each separated by 0.1855 mm prepreg). The plane-pair capacitance is what gives the digital domain GHz-frequency bypass with no parasitic ESL or ESR — see the [Power Supplies](./power-supplies.md) page for the full rationale and the [ESP32 Module](./esp32-module.md) page for the force-commutated discrete-cap topology that hands off to the plane pair above the discrete caps' self-resonance.
 
 In the **SMPS and CAN-bus power islands**, all four layers carry GNDREF inside a copper-keepout moat that contains switching return currents.
 
 Across **isolation boundaries** (CAN domain to digital domain; legacy-serial domain to digital domain), all four layers carry copper-free 1.4 mm creepage gaps.
 
-### Performance review
-
 The stackup specification has been validated by prior MDD400 hardware revisions in production through pick-and-place assembly. No quantitative impedance / capacitance measurements have been re-taken on V2.9 specifically — see the V2.10 backlog.
-
----
 
 ## Mounting and board outline
 
@@ -188,7 +151,14 @@ The MDD400 V2.9 board has a non-rectangular outline shared with the WTI400 V1.2 
 
 Each hole has a 4.065 mm courtyard radius — consistent with M3 hardware plus standoffs. The four mounting holes engage the housing's panel-mount inserts; no additional mechanical retention is needed.
 
----
+## PCB Layout
+
+The board is a 4-layer stack-up (F.Cu / In1.Cu / In2.Cu / B.Cu) of 1.6 mm total thickness on FR4 (ε_r 4.5, prepreg 0.1855 mm, core 1.1 mm), with ENIG finish and dark-blue epoxy solder mask plus white direct-print silkscreen on both sides. F.Cu and B.Cu are the signal / component layers; In1.Cu and In2.Cu are dedicated GNDREF power planes carrying a solid ground pour beneath the entire SMPS region (the "VST" zone, 66.4–88.3 × 42.4–82.8 mm), giving a low-impedance return and EMI shielding between the switching converters on F.Cu and any signals on B.Cu.
+
+- **Grounding / via stitching.** 195 GNDREF vias (0.3 mm drill) in the SMPS area (x 70–90, y 45–85 mm) stitch the F.Cu GNDREF pour to the In1.Cu and In2.Cu planes; all 1081 board vias use a uniform 0.3 mm drill / 0.6 mm size (0.15 mm annular ring).
+- **Converter isolation.** Each buck converter (U1, U6) is enclosed by a 0.4 mm copper-keepout moat on F.Cu + In1.Cu + In2.Cu so no external pour enters the cell; SW nodes are copper pours (not traces) to minimise inductance; ferrite beads FB1 / FB2 at x = 89 mm and FB4 at (71.1, 82.9) are the sole HF connections between the SMPS copper and the digital VCC / VDD and CAN domains.
+- **Mask / silkscreen.** Pad-to-mask clearance is 0.075 mm; soldermask is tented front and back; soldermask min width is not explicitly set (KiCAD default applies). Silkscreen marks and fiducials sit on these mask / silk layers — fiducials are bare-copper apertures in the mask for vision contrast.
+- **DRC.** The configured-rule DRC (KiCAD 10.0.1, default constraints) returns 0 violations, 0 unconnected items, 0 schematic-parity errors. Zone refill was not re-run from the CLI (`--refill-zones` unavailable in this build) — a GUI refill is recommended before tape-out.
 
 ## Components
 
@@ -207,30 +177,35 @@ Each hole has a 4.065 mm courtyard radius — consistent with M3 hardware plus s
 | FID3 | Fiducial marker | B.Cu | Mirror of FID1 on the back | 0.5 mm copper, 1.5 mm mask opening |
 | FID4 | Fiducial marker | B.Cu | Mirror of FID2 on the back | 0.5 mm copper, 1.5 mm mask opening |
 
----
-
 ## Testing & Verification
 
 :::caution
 
 V2.9 is a fabricated prototype. The marks and fiducials are present on the prototype board, but a few items need verification before the V2.10 production fabrication run.
 
-**Hardware bring-up:**
+**Hardware bring-up (rig at the bench):**
 
-- **QR-code URL resolution** — Scan S6 with a phone. Pass if the resolved URL matches the live docs URL exactly. *(Earlier MDD400 hardware revisions had a `docs.scadys.com` → `docs.scadys.io` URL transition; the V2.9 schematic footprint reads `docs.scadys.io` but verify on the as-fabricated board.)*
-- **Compliance-mark legibility** — Photograph all silkscreen marks at typical helm-position lighting. Pass if every mark is clearly readable at arm's length.
-- **Copyright year currency** — S8 reads "© 2025". The V2.10 production run should refresh the year if it's manufactured after 2026.
-- **Pick-and-place fiducial recognition** — Confirm at the start of the V2.10 production assembly run that the pick-and-place machine successfully detects FID1–FID4 on both F.Cu and B.Cu without manual override.
-
-**For V2.10 (tracked in `v2.10-improvements.md`):**
-
-- **Compliance test reports** — The CE, UKCA, and FCC marks on the silkscreen indicate the device is designed for compliance with the corresponding standards. The actual *test reports* that authorise affixing those marks are part of the V2.10 compliance pre-screening campaign (CISPR 32 conducted emissions, FCC Part 15 radiated, RED 2014/53/EU harmonised standards). The marks should not be affixed on production boards until the test reports are signed off.
-- **Copyright year update** — Refresh S8 to the V2.10 production year if it differs from 2025.
-- **Re-scan QR code URL** — Confirm the deployed URL still matches the silkscreen QR on the V2.10 PCB before fabrication.
+- **QR-code URL resolution** — Scan S6 with a phone QR reader. Pass if the resolved URL matches the live docs URL exactly. *(Earlier MDD400 hardware revisions had a `docs.scadys.com` → `docs.scadys.io` URL transition; the V2.9 schematic footprint reads `docs.scadys.io` but verify on the as-fabricated board.)*
+- **Compliance-mark legibility** — Photograph each silkscreen mark under typical helm-position lighting. Pass if all marks (Scadys logo, CE, UKCA, FCC, RoHS / EFUP) are clearly readable and unambiguous at arm's length.
+- **Copyright year currency** — Confirm S8 reads the correct year for the production batch. Pass if it reads "© 2025" on the V2.9 prototype; refresh for later batches.
+- **Pick-and-place fiducial recognition** — Confirm at the start of the assembly run that the pick-and-place machine detects FID1–FID4. Pass if both F.Cu and B.Cu setups complete without operator override.
 
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **Solder mask min width** — Not explicitly set in the KiCAD setup block, so the default applies. Confirm with the fab house against the 0.012 mm mask thickness specified in the stackup.
+- **Finished copper weight** — F.Cu / B.Cu are 0.0175 mm = 18 µm (≈ ½ oz) starting weight; ENIG adds a negligible ~0.075–0.12 µm Au. If the fab requires a minimum *finished* copper weight, confirm 0.5 oz + plating meets the requirement for the 1 A converter current.
+- **DRC zone refill** — DRC ran on the existing filled zones; the CLI build lacks `--refill-zones`. Run a manual zone refill in the KiCAD GUI before tape-out to confirm no fill changes.
+- **Re-scan QR code URL** — Confirm the deployed docs URL still matches the silkscreen QR (S6) on the V2.10 PCB before fabrication.
+
+**Next version (V2.10)**
+
+- **Compliance test reports** — The CE, UKCA, and FCC silkscreen marks indicate design intent only. The actual test reports that authorise affixing those marks are part of the V2.10 compliance pre-screening campaign (CISPR 32 conducted emissions, FCC Part 15 radiated, RED 2014/53/EU harmonised standards). The marks must not be affixed on production boards until the reports are signed off.
+- **Copyright year update** — Refresh S8 to the V2.10 production year if it differs from 2025.
+- **Stackup re-validation** — No quantitative impedance / plane-pair-capacitance measurements have been taken on V2.9 specifically; re-validate against the prior-revision production data if the stack-up changes.
 
 ## References
 
@@ -242,5 +217,10 @@ V2.9 is a fabricated prototype. The marks and fiducials are present on the proto
 - UK Government, [*UKCA Marking*](https://www.gov.uk/guidance/using-the-ukca-marking).
 - EU, [*RoHS Directive 2011/65/EU*](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32011L0065).
 - China SJ/T 11364-2014, *Marking for the Restricted Use of Hazardous Substances in Electronic and Electrical Products* (EFUP / China RoHS).
-- [Circuit Design Overview](./index.md) — the system-level stack-up rationale that this page realises physically.
-- Sister-product reference: [WTI400 V1.2 PCB Markings & Compliance](/wti400/v1.2/circuit-design/pcb-markings) — same board outline and stack-up; minor differences in board-identity and QR-code URL.
+
+## Related pages
+
+- [Power Supplies](./power-supplies.md) — the SMPS converters and VCC plane-pair this stack-up physically realises
+- [ESP32 Module](./esp32-module.md) — the RF module whose pre-certification covers the board-level FCC mark, plus its antenna keep-out
+- [Circuit Design Overview](./index.md) — the system-level stack-up rationale that this page realises physically
+- Sister-product reference: [WTI400 V1.2 PCB Markings & Compliance](/wti400/v1.2/circuit-design/pcb-markings) — same board outline and stack-up; minor differences in board-identity and QR-code URL

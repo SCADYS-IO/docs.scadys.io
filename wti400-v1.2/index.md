@@ -5,13 +5,15 @@ hw_status: in-service
 hw_status_label: "In service — test vessel (~1,000 sea miles)"
 ---
 
+{/* TODO: product render hero — no WTI400 render asset exists yet (add the enclosure render here when available, per the landing-page standard) */}
+
 :::note[Hardware version]
 
 WTI400 **v1.2** — In service on the test vessel. The board has accumulated approximately 1,000 sea miles running a simple PlatformIO/Arduino firmware that emits NMEA 2000 wind sentences with a self-calibrating ADC limits / midpoint scheme layered on top of hard-coded start-up constants. **Wi-Fi has never been enabled** on any WTI400 V1.2 board (on the in-service deployment or any other); **BLE** has only been exercised during early BLE-library development on test hardware. V1.2 evolved from the **MLI400 V1.0** (Marine Legacy Interface), which carried a bespoke PlatformIO/Arduino wind-interface firmware through a global circumnavigation on the same test vessel. The next major project task is a production ESP-IDF firmware for V1.2, migrating the operational code paths from this predecessor.
 
 :::
 
-## What it is
+## Overview
 
 The **WTI400** is a marine **Wind Transducer Interface** for **NMEA 2000** networks. It connects directly to a standard analog sine-wave wind transducer at the masthead and outputs calibrated **Apparent Wind Speed** and **Apparent Wind Angle** as NMEA 2000 PGN 130306 messages on the vessel CAN bus. An onboard 6-DoF IMU (LSM6DSLTR) is fitted for heel / pitch / dynamic correction — to reference the wind output to the vessel's true horizon rather than the mast's instantaneous orientation — though this correction is **not yet enabled in the current in-service firmware** (see [Firmware](./firmware/index.md)).
 
@@ -91,9 +93,21 @@ The WTI400 V1.2 is the production-intent **evolution of the MLI400 V1.0** (Marin
 | **v1.2** | **Current — in service on test vessel** | First fabricated revision, in service on the test vessel for ~1,000 sea miles. Full nine-sub-sheet design: power supplies, CAN bus power, CAN transceiver, wind interface, ESP32 module, motion sensor, legacy serial RX/TX, button + LED, PCB markings |
 | **MLI400 v1.0** | Predecessor — retired | Marine Legacy Interface predecessor: single-purpose wind-interface device that served the test vessel through a global circumnavigation. Bespoke firmware lineage feeds forward into the WTI400 V1.2 |
 
-## Where to next
+## Documentation map
 
-- **[Circuit Design](./circuit-design/index.md)** — block diagram, four-domain ground map (GNDC / GNDREF / GND_WIND / GNDS), PCB stack-up, EMC philosophy, and a page per circuit (ESP32 Module, Power Supply, CAN Bus Power, CAN Transceiver, Wind Interface, Motion Sensor, Button Input, LED Indicator, Programming Socket, Legacy Serial, PCB Markings).
-- **[Tasks](./tasks.md)** — live tracker for verification work against V1.2 in service and the V1.3 / V2.0 next-version backlog across hardware / firmware / housing / compliance.
-- **[Quick Reference](./quick-reference/index.md)** — landing page for fast-lookup tables (pin assignments, power rails, external connectors, full component list, flash partitions).
-- **[Transducer Compatibility](./transducer-compatibility.md)** — per-transducer pin-outs, supply requirements, signal-level characteristics, and V1.2 compatibility matrix.
+| Section | What's there |
+|---|---|
+| [User Manual](./user-manual/index.md) | Operator guide — installation, calibration, daily use, fault-finding (in progress) |
+| [Quick Reference](./quick-reference/index.md) | Fast-lookup tables: pin assignments, power rails, external connectors, full component list, flash partitions |
+| [Transducer Compatibility](./transducer-compatibility.md) | Per-transducer pin-outs, supply requirements, signal-level characteristics, and the V1.2 compatibility matrix (Raymarine / B&G) |
+| [Tasks](./tasks.md) | Live tracker for V1.2 in-service verification + the V1.3 / V2.0 backlog across hardware / firmware / housing / compliance |
+| [Circuit Design](./circuit-design/index.md) | Block diagram, four-domain ground map (GNDC / GNDREF / GND_WIND / GNDS), PCB stack-up, EMC philosophy, and a page per circuit |
+| [Compliance](./compliance/index.md) | CE / UKCA / FCC / RoHS / IP / NMEA 2000 conformance status and roadmap |
+| [Housing](./housing/index.md) | Enclosure, sealing, PCB mechanical, and fasteners |
+| [Firmware](./firmware/index.md) | Current in-service firmware, the MLI400 V1.0 predecessor heritage, and the planned production ESP-IDF firmware |
+
+## Related products
+
+- **[MDD400](/mdd400/v2.9)** — sister NMEA 2000 multi-function display node (shared PCB outline and platform); pairs with the WTI400 on the same backbone to show wind data at the helm.
+- **[CANBench Duo](/canbench-duo/v1.1)** — bench LISN + measurement fixture for NMEA 2000 device pre-compliance work.
+- **[CANBench TrueZ](/canbench-truez/v1.1)** — passive common-mode / differential-mode noise separator, companion to the CANBench Duo.

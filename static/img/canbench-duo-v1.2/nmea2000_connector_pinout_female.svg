@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 390" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <title id="t">NMEA 2000 M12 A-coded Micro-C female connector pinout</title>
+  <desc id="d">Front (mating face) view of the female M12 5-pin A-coded NMEA 2000 receptacle. Pin 1 Shield, pin 2 NET-S power positive, pin 3 NET-C power common, pin 4 NET-H CAN-H, pin 5 NET-L CAN-L. Pin 5 is the centre socket; keyway at top. The socket layout is the left-right mirror of the male connector.</desc>
+
+  <text x="280" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#02235B">NMEA 2000 · M12 A-coded (Micro-C)</text>
+  <text x="280" y="47" text-anchor="middle" font-size="12" fill="#5b6b85">Female receptacle — front view (mating face)</text>
+
+  <!-- leaders -->
+  <g stroke="#8895ab" stroke-width="1.2" fill="none">
+    <path d="M238 146 L150 122"/>
+    <path d="M322 146 L410 122"/>
+    <path d="M238 234 L150 262"/>
+    <path d="M322 234 L410 262"/>
+    <path d="M280 190 L280 330"/>
+  </g>
+
+  <!-- connector shell -->
+  <circle cx="280" cy="190" r="100" fill="#f5f8fc" stroke="#02235B" stroke-width="3"/>
+  <circle cx="280" cy="190" r="86" fill="#ffffff" stroke="#02235B" stroke-width="1.5"/>
+  <!-- keyway (orientation key) -->
+  <rect x="261" y="96" width="38" height="16" rx="2" fill="#DE3707" stroke="#02235B" stroke-width="1.2"/>
+
+  <!-- sockets (hollow = female), mirrored layout -->
+  <g>
+    <circle cx="238" cy="146" r="20" fill="#ffffff" stroke="#02235B" stroke-width="2.5"/>
+    <circle cx="238" cy="146" r="12" fill="#eef2f7"/>
+    <text x="238" y="152" text-anchor="middle" font-size="17" font-weight="700" fill="#02235B">1</text>
+    <circle cx="322" cy="146" r="20" fill="#ffffff" stroke="#02235B" stroke-width="2.5"/>
+    <circle cx="322" cy="146" r="12" fill="#eef2f7"/>
+    <text x="322" y="152" text-anchor="middle" font-size="17" font-weight="700" fill="#02235B">2</text>
+    <circle cx="322" cy="234" r="20" fill="#ffffff" stroke="#02235B" stroke-width="2.5"/>
+    <circle cx="322" cy="234" r="12" fill="#eef2f7"/>
+    <text x="322" y="240" text-anchor="middle" font-size="17" font-weight="700" fill="#02235B">3</text>
+    <circle cx="238" cy="234" r="20" fill="#ffffff" stroke="#02235B" stroke-width="2.5"/>
+    <circle cx="238" cy="234" r="12" fill="#eef2f7"/>
+    <text x="238" y="240" text-anchor="middle" font-size="17" font-weight="700" fill="#02235B">4</text>
+    <circle cx="280" cy="190" r="20" fill="#ffffff" stroke="#02235B" stroke-width="2.5"/>
+    <circle cx="280" cy="190" r="12" fill="#eef2f7"/>
+    <text x="280" y="196" text-anchor="middle" font-size="17" font-weight="700" fill="#02235B">5</text>
+  </g>
+
+  <!-- labels -->
+  <g font-size="14">
+    <text x="142" y="126" text-anchor="end"><tspan fill="#DE3707" font-weight="700">1</tspan><tspan fill="#02235B"> · Shield</tspan></text>
+    <text x="418" y="126" text-anchor="start"><tspan fill="#DE3707" font-weight="700">2</tspan><tspan fill="#02235B"> · NET-S (+V)</tspan></text>
+    <text x="142" y="266" text-anchor="end"><tspan fill="#DE3707" font-weight="700">4</tspan><tspan fill="#02235B"> · NET-H (CAN-H)</tspan></text>
+    <text x="418" y="266" text-anchor="start"><tspan fill="#DE3707" font-weight="700">3</tspan><tspan fill="#02235B"> · NET-C (−V)</tspan></text>
+    <text x="280" y="350" text-anchor="middle"><tspan fill="#DE3707" font-weight="700">5</tspan><tspan fill="#02235B"> · NET-L (CAN-L)</tspan></text>
+  </g>
+
+  <text x="280" y="376" text-anchor="middle" font-size="10" fill="#8895ab">Standard NMEA 2000 / DeviceNet Micro-C pinout — keyway at top</text>
+</svg>

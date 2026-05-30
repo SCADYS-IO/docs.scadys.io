@@ -2123,5 +2123,22 @@
     "evidence": [],
     "dependencies": [],
     "assignee": null
+  },
+  {
+    "id": "esp32-module-next-move-i2c-pullups-to-esp32-sheet",
+    "category": "hardware",
+    "kind": "next-version",
+    "target_version": "v2.10",
+    "circuit": "esp32-module",
+    "circuit_label": "ESP32 Module",
+    "title": "Move I²C pull-up sub-circuit onto the esp32_module sheet",
+    "description": "Relocate the I²C bus pull-ups — R1 (SCL) and R2 / R3 (SDA, parallel) — from the i2c_sensors KiCad sheet onto esp32_module.kicad_sch alongside U3, so the schematic places the pull-ups where they logically belong (with the MCU / bus master) and they appear in the ESP32 Module page's schematic view. WTI400 already places its I²C pull-ups on the ESP32 module sheet; this aligns MDD400 with that convention.",
+    "status": "todo",
+    "date_completed": null,
+    "result": null,
+    "notes": null,
+    "evidence": [],
+    "dependencies": [],
+    "assignee": null
   }
 ]

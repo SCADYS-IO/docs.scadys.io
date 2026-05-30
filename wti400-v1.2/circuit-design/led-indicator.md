@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/button_led_2240df5e.svg" alt="LED indicator schematic" initialFocus="12.7 106.68 139.7 90.17" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/button_led_2240df5e.svg" alt="LED indicator — full sheet" />
 
 :::note[Hardware version]
 WTI400 **v1.2** — In service — installed on test vessel
@@ -19,11 +19,9 @@ The RGB LED is the WTI400's sole visual output — it gives the user feedback on
 
 Red serves a secondary role: it illuminates by default at power-on, before firmware initialises, acting as a power-good indicator.
 
----
+This page covers a single sub-circuit — the **RGB LED Indicator** — drawn on the `button_led` KiCad sheet (shared with the [Button](./button.md) input).
 
-## RGB LED Indicator
-
-### Functional specification and design objectives
+## Functional specification and design objectives
 
 The LED indicator circuit must:
 
@@ -31,6 +29,10 @@ The LED indicator circuit must:
 - default to red ON and green/blue OFF at power-up, before the ESP32 has initialised its GPIOs;
 - provide a visible power-good indication with no firmware involvement; and
 - limit current through each channel to a safe level that gives approximately equal perceived brightness.
+
+## RGB LED Indicator
+
+<SchematicViewer src="/img/schematics/wti400-v1.2/button_led_2240df5e.svg" alt="RGB LED Indicator — D1 common-anode RGB LED, Q1 red-channel switch, R5–R12 drive network. Zoom out to see the full sheet." initialFocus="12.7 106.68 139.7 90.17" />
 
 ### How it works
 
@@ -61,7 +63,7 @@ R7 (10 kΩ) connects LED_GRN to VCC. R8 (10 kΩ) connects LED_BLU to VCC. When t
 
 To illuminate a channel, the ESP32 drives the corresponding GPIO LOW. This pulls the cathode through the current-limiting resistor (R11 for green, R10 for blue) toward GNDREF, forward-biasing D1 and allowing current to flow.
 
-### Performance review
+### Performance
 
 #### Datasheet values (at IF = 20 mA, Ta = 25 °C)
 
@@ -103,27 +105,15 @@ Predicted balance at typical operating point: **12.9 : 13.8 : 12.5 mcd** — eff
 
 These calculations use Vf values read from the datasheet V-A curve at low current. Actual operating-point Vf must be measured at bring-up and resistor values adjusted if needed.
 
-### Bring-up tests
+## PCB Layout
 
-1. **Power-good indication**: apply VCC with no firmware running — pass if red illuminates immediately and green and blue remain off.
-2. **Red off**: run firmware that asserts LED_RED HIGH — pass if red extinguishes completely.
-3. **Green on/off**: drive LED_GRN LOW — pass if green illuminates; drive HIGH — pass if green extinguishes.
-4. **Blue on/off**: drive LED_BLU LOW — pass if blue illuminates; drive HIGH — pass if blue extinguishes.
-5. **Brightness balance**: illuminate each channel in turn at the corrected resistor values. Measure Vf across each LED die and record actual operating current. Assess perceived brightness — pass if no channel appears more than 2× brighter than the others. Adjust R10 or R11 in firmware or with further rework if needed.
-6. **Fail-safe states**: cycle power several times and confirm that red always illuminates before firmware asserts control, and that green and blue never flicker on during boot.
+All seventeen `button_led` components sit on F.Cu of the four-layer board. The LED drive network is grouped into two clusters, with D1 placed for front-panel visibility.
 
-### Gaps & next version
-
-**Before next production run**
-
-- **R10 and R11 correction**: R11 must change from 220 Ω to 1 kΩ and R10 from 220 Ω to 270 Ω before the next fabrication run. The 220 Ω values do not account for green's luminous efficiency relative to red and blue. Rework the existing prototype (hand-solder replacement 0603 resistors) and verify brightness balance at bring-up.
-
-**Next version**
-
-- **Verify Vf at operating point**: the resistor calculations above use Vf estimated from the V-A curve at low current. Measure actual Vf for each channel at operating current on the prototype and refine resistor values if the predicted brightness balance is not achieved.
-- **R12 (red) balance review**: R12 was originally 680 Ω to compensate for red's lower Vf relative to green/blue. With R11 now corrected to 1 kΩ, re-verify red vs green/blue balance and adjust R12 if needed.
-
----
+- **D1 placement.** D1 (119.0, 57.0) is positioned at board centre so it aligns with the enclosure's backlit Scadys logo aperture — D1 illuminates the logo from behind. Aperture alignment is confirmed by the enclosure design.
+- **Current-limiting cluster.** R10, R11, R12 are co-located in a 2.8 mm row at y = 51.2, immediately south of D1 (5.8–6.2 mm away), interposed between the drive nets and the D1 cathode pins. Q1 sits 6.4 mm south of D1 on the same x-axis, with a short 1.5 mm Net-(Q1-E) stub to R12.
+- **Base-drive / pull-up cluster.** R5, R6, R7, R8 are co-located in a 4.2 mm row at x ≈ 142–146, near the F.Cu–B.Cu via transitions for the LED_RED / LED_GRN / LED_BLU signals. R5/R6 (Q1 base drive) sit ~20 mm west of Q1, and Net-(Q1-B) runs 25 mm total (18.8 mm on B.Cu). At the slow LED switching rates (&lt; 10 kHz) this causes no signal-integrity issue, but it is flagged to move R5/R6 closer to Q1 in the next layout revision.
+- **LED drive traces.** LED_GRN and LED_BLU each span ~40 mm total, dominated by a long B.Cu horizontal run between R7/R8 (x ≈ 144–146) and R11/R10 (x ≈ 116–117). At PWM dimming frequencies (&lt; 10 kHz) these lengths present no signal-integrity concern and no damping resistors are required. All `button_led` signal traces are 0.2 mm wide, appropriate for the &lt; 5 mA channel currents.
+- **Power and ground.** D1's common anode (pad 2) connects to the VCC zone (F.Cu + B.Cu); a VCC stitching via sits within 1 mm of D1. Q1's collector and R6 return to the large F.Cu GNDREF zone that covers the whole component area, supplemented by In1.Cu GNDREF fill and local stitching vias.
 
 ## Components
 
@@ -138,8 +128,6 @@ These calculations use Vf values read from the datasheet V-A curve at low curren
 | R10 | **270 Ω** *(rework from 220 Ω)* | 0603 — blue channel current limiter | — |
 | R11 | **1 kΩ** *(rework from 220 Ω)* | 0603 — green channel current limiter | — |
 | R12 | 680 Ω | 0603 — red channel current limiter (Q1 emitter path) | — |
-
----
 
 ## Testing & Verification
 
@@ -156,20 +144,28 @@ The V1.2 prototype on the test vessel has accumulated approximately 1,000 sea mi
 - **Brightness balance** &mdash; Illuminate each channel in turn at the corrected resistor values. Measure Vf across each LED die and record actual operating current. Assess perceived brightness; pass if no channel appears more than 2&times; brighter than the others.
 - **Fail-safe states** &mdash; Cycle power several times. Pass if red always illuminates before firmware asserts control and green / blue never flicker on during boot.
 
-**Before next production run:**
-
-- **R10 and R11 correction** &mdash; R11 must change from 220 &Omega; to 1 k&Omega; and R10 from 220 &Omega; to 270 &Omega; before the next fabrication run. Rework existing prototypes by hand and verify brightness balance at bring-up.
-
-**For V1.3 (tracked in `v1.3-improvements.md`):**
-
-- **Verify Vf at operating point** &mdash; The resistor calculations use Vf estimated from the V-A curve at low current. Measure actual Vf at operating current on the reworked prototype and refine resistor values if predicted balance is not achieved.
-- **R12 (red) balance review** &mdash; With R11 corrected to 1 k&Omega;, re-verify red vs green / blue balance and adjust R12 if needed.
-
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **R10 and R11 correction** — R11 must change from 220 Ω to 1 kΩ and R10 from 220 Ω to 270 Ω before the next fabrication run. The 220 Ω values do not account for green's luminous efficiency relative to red and blue. Rework existing prototypes by hand (replacement 0603 resistors) and verify brightness balance at bring-up.
+
+**Next version (V1.3)**
+
+- **Verify Vf at operating point** — The resistor calculations use Vf estimated from the V-A curve at low current. Measure actual Vf for each channel at operating current on the reworked prototype and refine resistor values if the predicted brightness balance is not achieved.
+- **R12 (red) balance review** — With R11 corrected to 1 kΩ, re-verify red vs green / blue balance and adjust R12 if needed.
+- **Move R5/R6 closer to Q1** — R5/R6 (Q1 base drive) are ~20 mm west of Q1, giving a 25 mm Net-(Q1-B) trace. No functional impact at LED switching rates, but tighten the placement to reduce the base switching-loop area in the next layout revision.
 
 ## References
 
 - XINGLIGHT, [*XL-3528RGBW-HM Technical Data Sheet*](/assets/datasheets/wti400-v1.2/xinglight_xl-3528RGBW-HM.pdf)
 - JSMSEMI, [*BC807-25 PNP Bipolar Transistor*](https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_JSMSEMI-BC807-25_C2669132.pdf)
+
+## Related pages
+
+- [Button](./button.md) — the other half of the button/LED UI, sharing the `button_led` sheet
+- [ESP32-S3 Module](./esp32-module.md) — the LED_RED / LED_GRN / LED_BLU GPIOs driving D1
+- [Power Supplies](./power-supplies.md) — derives the 3.3 V VCC rail that feeds the LED anode
+- [Pin Assignments](/wti400/v1.2/quick-reference/pin-assignments) — the LED GPIO assignments

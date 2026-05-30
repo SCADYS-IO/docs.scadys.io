@@ -7,6 +7,8 @@ hw_status_label: "In service — test vessel (~1,000 sea miles)"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
+<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_c80e2b2a.svg" alt="Wind Interface schematic — full sheet (connectors, protection, conditioning, X/Y channels, speed pulse). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
+
 :::note[Hardware version]
 
 WTI400 **v1.2** — In service on the test vessel. Approximately 1,000 sea miles accumulated with basic self-calibrating firmware. Subjective in-service performance satisfactory; **no quantitative bench measurements yet** for angle accuracy, ADC clipping, atan2 reconstruction, speed-pulse PPR, VAS rail under load, or LP2951 thermal soak. The Testing & Verification section lists the measurements required.
@@ -20,8 +22,6 @@ This page documents the **wind transducer interface**: everything between the ma
 - **`wind_interface.kicad_sch`** — the analog signal chain, the connector ring, cable shield conditioning, the supply path from the LDO to the transducer, and the speed-pulse conditioning.
 - **A portion of `power_supplies.kicad_sch`** — the LP2951 LDO (sub-block titled *"8V / 6v5 LDO REGULATOR (35mA max)"*) that produces the VAS rail. The Power Supply page documents only the LMR51610 SMPS portion of that sheet and cross-links here for the LDO.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_c80e2b2a.svg" alt="Wind Interface schematic — full sheet (connectors, protection, conditioning, X/Y channels, speed pulse). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
-
 Five sub-circuits in narrative order:
 
 1. **Wind transducer supply (VAS rail)** — LP2951 LDO from the power_supplies sheet. JP1 selects between two output setpoints; WND_EN / WND_ERR firmware handshake controls and monitors the rail.
@@ -30,27 +30,30 @@ Five sub-circuits in narrative order:
 4. **Wind angle X and Y channels** — two functionally identical mirrored channels: protection chain, RF/EMI filter, non-inverting amplifier with input attenuation and DC bias.
 5. **Wind speed pulse conditioning** — TVS, RF choke, divider to U11 input, Schmitt-trigger output to the ESP32.
 
-**Scope limitation, V1.2:** the U12 amplifier bias is referenced to VCC rather than WIND_8V, so the operating point does not track the JP1 setpoint. **WTI400 V1.2 supports the Raymarine ST60 / E22078 family at JP1 8v4 only.** The 6v8 setting correctly supplies B&G 213 transducers but the X / Y channel output clips on negative half-cycles. The V2.0 fix is to tie R48 to WIND_8V and rescale.
+## Functional specification and design objectives
 
----
+The wind interface must:
+
+- deliver **8.65 V or 6.89 V** to the transducer connector (after the series D17 drop: 8.30 V or 6.54 V respectively at the connector), user-selectable via **JP1** or hard-wired via **R79** at the factory;
+- provide **software-controlled enable** (WND_EN GPIO → LP2951 SHUTDOWN) and **fault reporting** (LP2951 ERROR → WND_ERR GPIO) so firmware can power-cycle and monitor the transducer independent of the digital VCC rail;
+- keep LDO output noise and ripple low enough that the high-impedance op-amp input chain on the same board does not pick up LDO noise;
+- clamp every incoming conductor — supply, X, Y, P, shield — with a TVS sized for the expected operating voltage on that conductor, and prevent the cable shield from floating;
+- keep the **GND_WIND** transducer return domain electrically isolated from the board **GNDREF** except at a single deliberate star point (FL2 winding 2);
+- block back-EMF and reverse current from the transducer or its long cable reaching the VAS rail, and strip common-mode EMI conducted on the supply and ground conductors before it reaches the LDO or the board analog reference;
+- take each transducer Hall-sensor output (referenced to GND_WIND) and deliver it to an ESP32 ADC GPIO (referenced to GNDREF) over the full 0–3.3 V range, with matched gain and offset between the X and Y channels so `atan2(WIND_Y, WIND_X)` direction reconstruction is symmetric;
+- convert the anemometer reed-switch pulse (open-circuit HIGH at ~8 V, momentary LOW during contact) into a clean 3.3 V logic edge for interrupt-driven pulse counting, with Schmitt-trigger hysteresis as a hardware fallback against contact bounce.
+
+**Scope limitation, V1.2:** the U12 amplifier bias is referenced to VCC rather than WIND_8V, so the operating point does not track the JP1 setpoint. **WTI400 V1.2 supports the Raymarine ST60 / E22078 family at JP1 8v4 only.** The 6v8 setting correctly supplies B&G 213 transducers but the X / Y channel output clips on negative half-cycles. The V2.0 fix is to tie R48 to WIND_8V and rescale.
 
 ## Wind transducer supply (VAS rail)
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/power_supplies_dd047260.svg" alt="LP2951 LDO sub-circuit — U13 (LP2951-50DR adjustable), feedback divider (R72 upper, R77/R78 selectable lower legs), JP1 (Vsel jumper), R79 (factory-select 0 Ω alternative), D16 (Vout-to-Vin protection diode), R55 (SHUTDOWN pull-up), R65 (ERROR pull-up), R74 (VAS bleed), C48 (feedforward), C51 (input bypass), C52 (output bypass), FB2 (LDO output to VAS digital-domain boundary ferrite). Zoom out to see the full power_supplies sheet." initialFocus="12.7 96.52 139.7 97.79" />
 
-### Functional specification and design objectives
-
-- Deliver **8.65 V or 6.89 V** to the transducer connector (after the series D17 drop documented in the *Wind transducer power conditioning* section below: 8.30 V or 6.54 V respectively).
-- User-selectable setpoint via **JP1** (or hard-wired via **R79** at the factory).
-- **Software-controlled enable** (WND_EN GPIO from ESP32 → LP2951 SHUTDOWN) so firmware can power-cycle the transducer independent of the digital VCC rail.
-- **Fault reporting** (LP2951 ERROR → WND_ERR GPIO to ESP32) for overcurrent or undervoltage detection.
-- Output noise and ripple low enough that the high-impedance op-amp input chain on the same board doesn't pick up LDO noise.
-
 ### How it works
 
 #### The LDO and its supply
 
-**U13 — LP2951-50DR** is the adjustable variant of TI's classic LP2951 micropower LDO (100 mA rated, 30 V max input, SOIC-8). It is operated in adjustable mode with an external feedback divider so the output voltage can be programmed by jumper. The input rail is **VSC** (the CAN-domain unregulated supply, nominally 9.0–14.8 V), which arrives via FB2 from the upstream protection chain documented on the [CAN Bus Power page](./can-bus-power). C51 (4.7 µF X7R 0805) bypasses VSC at the LP2951 input pin.
+**U13 — LP2951-50DR** is the adjustable variant of TI's classic LP2951 micropower LDO (100 mA rated, 30 V max input, SOIC-8). It is operated in adjustable mode with an external feedback divider so the output voltage can be programmed by jumper. The input rail is **VSC** (the CAN-domain unregulated supply, nominally 9.0–14.8 V), which arrives via FB2 from the upstream protection chain documented on the [CAN Bus Power page](./can-bus-power.md). C51 (4.7 µF X7R 0805) bypasses VSC at the LP2951 input pin.
 
 #### Voltage selection — JP1 and R79
 
@@ -102,7 +105,7 @@ R55's HIGH pull-up state is the **safe state** — any GPIO floating (boot, rese
 
 **FB2 (BLM31KN601SN1L, 1206, 600 Ω @ 100 MHz, 80 mΩ DCR)** is the ferrite bead at the LDO output / wind-interface domain boundary. It is the only copper path between the LP2951 output node (POWER domain on the schematic) and the VAS rail that feeds the wind_interface sheet (DIGITAL domain label). This isolates any residual switching artefacts from the upstream SMPS / CAN-domain from the high-impedance op-amp input chain.
 
-### Performance review
+### Performance
 
 | Parameter | Value | Condition | Notes |
 |-----------|-------|-----------|-------|
@@ -112,7 +115,7 @@ R55's HIGH pull-up state is the **safe state** — any GPIO floating (boot, rese
 | LP2951 rated I_out | 100 mA | Datasheet | 65–75 mA headroom over typical transducer loads |
 | Expected transducer load — Raymarine E22078 | ~22–25 mA | Hall + dual op-amp quiescent | Measured |
 | Expected transducer load — B&G 213 | 25–30 mA | Per `wind.md` empirical data | V2.0-only at correct ADC bias |
-| LP2951 dropout @ 30 mA | < 0.4 V | Datasheet | VSC ≥ ~9 V required to regulate 8v4 setpoint |
+| LP2951 dropout @ 30 mA | &lt; 0.4 V | Datasheet | VSC ≥ ~9 V required to regulate 8v4 setpoint |
 | LDO dissipation @ VSC = 14.8 V, 25 mA, 8v4 | 154 mW | (14.8 − 8.65) × 25 mA | Continuous worst-case |
 | LDO dissipation @ VSC = 14.8 V, 30 mA, 6v8 | 237 mW | (14.8 − 6.89) × 30 mA | Continuous worst-case |
 | LP2951 SOIC-8 θJA | 123 °C/W | Datasheet, D package | No exposed pad |
@@ -122,25 +125,9 @@ R55's HIGH pull-up state is the **safe state** — any GPIO floating (boot, rese
 
 A V1.3 / V2.0 candidate is the **DRG package** of the LP2951 (LP2951CSDRG, exposed pad, θJA = 48 °C/W) — would more than halve the junction-temperature rise. Tracked in `v2.0-improvements.md`.
 
-### Bring-up tests
-
-1. **VAS rail voltage under load** — at each JP1 position, load VAS to 25 mA (Raymarine) and 30 mA (B&G) with a precision bench load. Sweep VSC across 9.0–14.8 V. Pass if VAS holds within ±2 % of 8.65 V / 6.89 V across the full range. Measure at the LP2951 output pad **and** at the J5 connector tab (after D17 and FL2). *(testing-checklist.md — power_supplies)*
-2. **U13 thermal soak** — VSC = 14.8 V, JP1 6v8, 30 mA load, 30-minute run. Record LP2951 package temperature with a thermal probe. Pass if Tj_estimated stays below 110 °C at 40 °C ambient (gives margin for 85 °C ambient operation). *(testing-checklist.md — power_supplies)*
-3. **WND_EN / WND_ERR handshake** — verify that VAS is off at boot (WND_EN floating), comes up when firmware drives WND_EN low, and that disconnecting the transducer (load step to open-circuit) asserts WND_ERR via ESP32 GPIO. *(testing-checklist.md — wind_interface)*
-4. **C48 stability check** — with the longest representative mast cable attached (transducer at end), monitor VAS for sustained oscillation at JP1 6v8 / 30 mA load. If observed, populate C48 = 820 pF as the V1.2 tuning knob. *(testing-checklist.md — power_supplies)*
-
----
-
 ## Connector and cable shield
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_c80e2b2a.svg" alt="Connector and cable shield sub-circuits — six Keystone 1211 quick-connect tabs (J4 shield, J5 WIND_8V, J6 X analog, J7 Y analog, J8 P pulse, J9 GND_WIND), connector-side TVS row (D18 WIND_8V, D20 X, D21 Y, D22 P), cable shield conditioning (D19 PESD15VL1BA TVS, R75 1 MΩ DC bleed, C57 1 nF HF bypass)." initialFocus="13.97 152.4 132.08 44.45" />
-
-### Functional specification and design objectives
-
-- Provide a service-friendly transducer connection: individual quick-connect tabs the marine installer can wire in the field, with clear silkscreen identification (no keyed housing).
-- Clamp every incoming conductor at the connector entry — supply, X, Y, P, shield — with a TVS sized for the expected operating voltage on that conductor.
-- Prevent the cable shield from floating (a floating shield can accumulate charge and discharge destructively through the first thing it touches when reconnected).
-- Keep the **GND_WIND** transducer return domain electrically isolated from the board's **GNDREF** except at a single deliberate star point.
 
 ### How it works
 
@@ -180,7 +167,7 @@ The 9 V standoff is the right size for the 8.3 V or 6.5 V operating voltage on t
 
 The schematic carries an explicit placement instruction: *"Place C44, C45 and D20 at the connector in the order shown."* This means the cap–TVS–choke topological order on the X and Y lines is a fixed layout constraint, not a routing convenience.
 
-### Performance review
+### Performance
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -190,24 +177,9 @@ The schematic carries an explicit placement instruction: *"Place C44, C45 and D2
 | C57 impedance at 1 MHz | 159 Ω | Adequate HF shield-to-ground shunt |
 | R75 leakage at fault (8 V) | 8 µA | Negligible |
 
-### Bring-up tests
-
-1. **Connector silkscreen verification** — visually confirm tab labels (SHLD / 8V / X / Y / P / GND) match the J4–J9 net assignments before first transducer connection.
-2. **Shield continuity** — with no transducer attached, measure R75 from WIND_SHLD to GND_WIND. Pass if 0.95–1.05 MΩ. *(testing-checklist.md — wind_interface)*
-
----
-
 ## Wind transducer power conditioning
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_c80e2b2a.svg" alt="Wind transducer power conditioning sub-circuit — D17 (BAT54 series Schottky, anode=VAS, cathode=FL2 pin 3), FL2 (SMCM7060-132T common-mode filter; also the GND_WIND ↔ GNDREF star point through winding 2), C55 (100 nF X7R broadband bypass on WIND_8V), C56 (15 pF C0G HF bypass on WIND_8V). Adjacent cable shield conditioning (D19, R75, C57) and WIND_8V connector-side TVS (D18) shown to the right." initialFocus="146.05 82.55 127.0 82.55" />
-
-### Functional specification and design objectives
-
-- Reduce the VAS rail (8.65 V or 6.89 V at the LDO) to a connector-side WIND_8V net that lives at approximately 8.0 V (Raymarine) or 6.5 V (B&G nominal) — both within the respective transducer's accepted supply range.
-- Block back-EMF and reverse-current from the transducer or its long cable reaching the VAS rail during transients or power-down.
-- Strip common-mode EMI conducted on the supply and ground conductors of the mast cable before it reaches the LDO or the board analog reference.
-- Establish a **single GND_WIND ↔ GNDREF star point** so transducer-side return currents do not flow through the analog measurement reference.
-- Provide local broadband decoupling on WIND_8V at the connector for any load step driven from the transducer side.
 
 ### How it works
 
@@ -255,7 +227,7 @@ The 21 mΩ winding 2 DCR translates to a 0.5 mV drop at 25 mA — well below 0.1
 
 Together they supplement the FL2 common-mode filtering with a local energy reservoir for transducer-side transients. At 25 mA load and a 100 mV allowable rail droop, the 100 nF holds the rail for ~2 µs — adequate for any transducer-internal transient.
 
-### Performance review
+### Performance
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -264,11 +236,9 @@ Together they supplement the FL2 common-mode filtering with a local energy reser
 | D17 dissipation @ 25 mA | 8.75 mW | I × V_f; SOD-323F θJA ≈ 300 °C/W |
 | D17 ΔTj @ 25 mA | 2.6 °C | Negligible |
 | FL2 winding 1 DCR drop @ 25 mA | 0.5 mV | Negligible |
-| FL2 winding 2 GND offset @ 25 mA | 0.5 mV | < 0.1 ADC LSB; analog accuracy preserved |
+| FL2 winding 2 GND offset @ 25 mA | 0.5 mV | &lt; 0.1 ADC LSB; analog accuracy preserved |
 | C55+C56 stored energy | 3.24 µJ | Available for transducer-side load step |
 | GND_WIND ↔ GNDREF copper paths outside FL2 | 0 | PCB verified 2026-05-08 |
-
----
 
 ## Wind angle X and Y channels
 
@@ -276,7 +246,9 @@ Together they supplement the FL2 common-mode filtering with a local energy reser
 
 The two analog wind angle channels are functionally and electrically identical — exact mirrors of each other, so that the firmware `atan2(WIND_Y, WIND_X)` direction reconstruction sees a symmetric pair. The pair occupies the top half of the schematic with X on the left and Y on the right; the PCB layout mirrors trace lengths and component orientations around U12's vertical centreline. Any systematic offset or gain mismatch between the two would appear as a fixed angular error in atan2 output, so symmetry is a first-class requirement.
 
-### Designator map (X ↔ Y)
+### How it works
+
+#### Designator map (X ↔ Y)
 
 | Function | X channel | Y channel |
 |----------|-----------|-----------|
@@ -294,14 +266,6 @@ The two analog wind angle channels are functionally and electrically identical �
 | Output to ESP32 | WIND_X | WIND_Y |
 
 The remainder of this section describes the X channel; everything applies identically to the Y channel with the designator substitutions above.
-
-### Functional specification and design objectives
-
-- Take the transducer's analog X-channel Hall sensor output (referenced to GND_WIND) and deliver it to an ESP32 ADC GPIO (referenced to GNDREF) over the full 0–3.3 V ADC input range.
-- Survive ESD and conducted transients on the mast cable.
-- Maintain matched gain and offset against the Y channel — atan2 angular accuracy depends on the X/Y pair behaving identically.
-
-### How it works
 
 #### Protection chain ordering
 
@@ -321,7 +285,7 @@ The LC corner is:
 f_c = 1 / (2π √(L × C)) = 1 / (2π √(1 µH × 1 nF)) ≈ 5.03 MHz
 ```
 
-5 MHz is **five orders of magnitude above the wind signal bandwidth** (< 10 Hz — a 50-knot wind through a typical anemometer produces a few hertz of angle modulation at most). The role of L4/C44 is **RF/EMI mitigation** — attenuating conducted noise arriving on the 10–20 m mast cable acting as a long antenna for VHF, marine SSB, and broadcast band signals. The large aliasing margin over the ESP32 ADC's sample rate is a free side-effect, not the design intent. Calling these "anti-aliasing" caps in earlier evidence understated the role.
+5 MHz is **five orders of magnitude above the wind signal bandwidth** (&lt; 10 Hz — a 50-knot wind through a typical anemometer produces a few hertz of angle modulation at most). The role of L4/C44 is **RF/EMI mitigation** — attenuating conducted noise arriving on the 10–20 m mast cable acting as a long antenna for VHF, marine SSB, and broadcast band signals. The large aliasing margin over the ESP32 ADC's sample rate is a free side-effect, not the design intent. Calling these "anti-aliasing" caps in earlier evidence understated the role.
 
 The Murata LQM18FN1R0M00D self-resonant frequency is ~350 MHz — five decades above the LC corner, so L4 behaves as a pure inductor at the filter operating frequency.
 
@@ -384,11 +348,11 @@ The U12 TLV9002 is RRIO, so its output saturates at the supply rails (≈ 20 mV 
 V_out_mid (6v8) = 1.64 × 2.107 − 2.49 × (62/56) = 0.69 V
 ```
 
-The amplifier is no longer ADC-centred. The negative half-wave of the X signal (V_signal < 2.62 V) clips to 0 V, the atan2 reconstruction loses the lower half of every direction cycle, and the firmware cannot recover a usable angle.
+The amplifier is no longer ADC-centred. The negative half-wave of the X signal (V_signal &lt; 2.62 V) clips to 0 V, the atan2 reconstruction loses the lower half of every direction cycle, and the firmware cannot recover a usable angle.
 
 **WTI400 V1.2 supports the Raymarine ST60 / E22078 family at JP1 8v4 only.** JP1 6v8 produces the correct WIND_8V supply for B&G 213 but the U12 output is not usable. The V2.0 fix is to tie R48 to WIND_8V instead of VCC and rescale R47/R48 so V_bias tracks the setpoint — tracked in `v2.0-improvements.md`.
 
-### Performance review
+### Performance
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -406,23 +370,9 @@ The amplifier is no longer ADC-centred. The negative half-wave of the X signal (
 | LC filter corner | 5.03 MHz | Five decades above wind signal BW |
 | Inductor SRF margin | 70× | L4 SRF ~350 MHz / 5 MHz operating |
 
-### Bring-up tests
-
-1. **ADC range characterisation** — rotate the vane through a full 360°, log raw WIND_X and WIND_Y ADC counts. Identify the compass bearings where clipping occurs and quantify the resulting atan2 reconstruction error. If unacceptable, reduce R50/R51 (Rf, currently 62 kΩ) to bring the full measured swing within the 3.3 V ADC range; otherwise let firmware compensate. *(testing-checklist.md — wind_interface)*
-2. **atan2 zero-angle calibration** — hold vane at 0°, 90°, 180°, 270° (referenced to a marked vessel heading), record firmware-reported angle. Confirm zero offset and maximum reconstruction error across all four quadrants. *(testing-checklist.md — wind_interface)*
-3. **Inter-channel crosstalk** — drive WIND_X with a 1 kHz, 1 V_pk test signal at the J6 tab, leave WIND_Y open. Pass if WIND_Y ADC counts show < 1 LSB of 1 kHz content. *(testing-checklist.md — wind_interface)*
-
----
-
 ## Wind speed pulse conditioning
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/wind_interface_c80e2b2a.svg" alt="Wind speed pulse conditioning sub-circuit — D22 (SD09C-7 TVS at J8), L7 (10 µH RF choke in P line), R76 (22 kΩ pull-up to WIND_8V), R63 (150 kΩ upper divider), R62 (100 kΩ shunt to GNDREF), VSENSE node, R64 (330 Ω series current-limit to U11 input), D10 (BZT52C3V6S 3.6 V zener clamp), C46 (15 pF C0G HF filter), U11 (74LVC1G17 Schmitt-trigger buffer), output WIND_SPD to ESP32 GPIO." initialFocus="13.97 82.55 132.08 69.85" />
-
-### Functional specification and design objectives
-
-- Convert the transducer's anemometer reed-switch pulse (open-circuit HIGH at ~8 V, momentary LOW during the reed contact) into a clean 3.3 V logic edge for ESP32 interrupt-driven pulse counting.
-- Survive ESD and RF on the P line at the masthead cable.
-- Use Schmitt-trigger hysteresis as a hardware fallback against contact bounce (with firmware as the primary debounce).
 
 ### How it works
 
@@ -452,13 +402,13 @@ VSENSE at 3.2 V is just below VCC = 3.3 V, well above U11's V_IH (≈ 1.65 V at 
 
 **R64 (330 Ω)** is the series current-limit between the divider output and U11's input pin. If a fault drives VSENSE above U11's V_in,max, R64 holds the fault current below the input clamp diode rating until D10 conducts.
 
-**D10 (BZT52C3V6S, 3.6 V zener)** clamps VSENSE during transients. Normal operation: V_VSENSE = 3.2 V < V_Z = 3.6 V → D10 off. Fault: V_VSENSE driven above 3.6 V → D10 conducts, capping VSENSE at ~3.6 V. With R63 = 150 kΩ in series, the worst-case fault current at V_P = 18 V into the divider is (18 − 3.6) / 150 kΩ = 96 µA → D10 dissipation = 0.35 mW — well below the 200 mW rating.
+**D10 (BZT52C3V6S, 3.6 V zener)** clamps VSENSE during transients. Normal operation: V_VSENSE = 3.2 V &lt; V_Z = 3.6 V → D10 off. Fault: V_VSENSE driven above 3.6 V → D10 conducts, capping VSENSE at ~3.6 V. With R63 = 150 kΩ in series, the worst-case fault current at V_P = 18 V into the divider is (18 − 3.6) / 150 kΩ = 96 µA → D10 dissipation = 0.35 mW — well below the 200 mW rating.
 
 **C46 (15 pF C0G)** filters HF noise at the VSENSE node — important because R64 + the U11 input capacitance + C46 form a low-pass filter that smooths the very fast leading edge of the divided P signal before it crosses U11's Schmitt threshold.
 
 **U11 (Nexperia 74LVC1G17GW, TSSOP-5)** is a Schmitt-trigger buffer with ~0.8 V hysteresis at VCC = 3.3 V (V_T+ ≈ 1.6 V, V_T− ≈ 0.8 V). The hysteresis is a hardware safety net: a slowly-changing input from a marginal reed-switch contact gets cleanly squared up at the output. **Firmware does the primary debounce** by interrupt-timing the WIND_SPD edges — but U11 ensures the interrupt sees a single clean edge per actual reed contact, not a burst of micro-edges from contact bounce.
 
-### Performance review
+### Performance
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -471,12 +421,17 @@ VSENSE at 3.2 V is just below VCC = 3.3 V, well above U11's V_IH (≈ 1.65 V at 
 | R76 P-line risetime constant | 0.45 ns | L7/R76; orders of magnitude faster than reed bounce |
 | Expected reed-switch pulse rate | 1–100 Hz | 2 pulses per anemometer rotation (Raymarine) |
 
-### Bring-up tests
+## PCB Layout
 
-1. **Speed pulse PPR calibration** — spin the anemometer at a measured rate (bench tachometer or known wind tunnel). Log WIND_SPD ISR rate vs RPM. Confirm 2 PPR (Raymarine spec) and derive the firmware calibration constant. *(testing-checklist.md — wind_interface)*
-2. **VSENSE voltage at P HIGH** — measure VSENSE with the transducer connected and the reed switch open. Expected 3.0–3.3 V (slightly below 3.2 V calculated value due to R76 loading). *(testing-checklist.md — wind_interface)*
+The wind interface occupies approximately x:80–133, y:100–126 on the 95.2 × 95.2 mm four-layer board (ENIG, dark blue mask). All 44 wind_interface footprints sit on F.Cu. The layout uses **three horizontal rows** to separate power/protection from analog conditioning: connector tabs J4–J9 at y=116, the protection/power-conditioning devices (D18–D22, D19, FL2, D17) at y=121.5–122.5, and the signal processing (L4/L5, divider resistors, U12, U11) at y=103–106 — roughly 16 mm of vertical separation that keeps connector and clamp-energy coupling out of the analog inputs.
 
----
+- **Two isolated ground domains, one star point.** GND_WIND (transducer cable return) and GNDREF (board analog/digital ground) are filled as separate zones. GND_WIND occupies the connector/TVS row on all four layers (F.Cu+B.Cu at x:88.1–101.9, y:121.8–124.0; In1/In2 at x:88.1–132.5, y:111.2–124.0); GNDREF fills the rest. The **sole** GND_WIND ↔ GNDREF connection is FL2 winding 2 (pin 4 GNDREF → pin 1 GND_WIND), with FL2 at (88.0, 121.5) sitting exactly on the x=88.1 zone boundary. No parallel copper bridge was found (verified 2026-05-08). 46 GNDREF vias and 11 GND_WIND vias stitch F.Cu to B.Cu in the wind zone.
+- **Connector-first protection.** All connector TVS (D18 WIND_8V, D20 X, D21 Y, D22 P, D19 shield) clamp to GND_WIND. The X/Y signal pad-to-TVS trace is 3 mm (meets the ≤ 3 mm guideline; the earlier 6 mm reading was to the connector body, not the signal pad). The X line runs J6 → D20 → via to B.Cu → via back to L4 → C44/R58 divider → U12A; the Y line is the mirror via B.Cu to L5. X/Y signal traces are routed at 0.2 mm and kept ≥ 16 mm clear of FL2.
+- **Power conditioning order.** VAS → D17 (at 80.07, 119.8, in the LDO region, 8 mm from FL2, 28 mm from the connector — acceptable because D17 is a series reverse-current block, not a surge clamp) → FL2 pin 3 → FL2 pin 2 WIND_8V → C55/C56 bypass → D18 TVS → J5. The WIND_8V net is distributed as a copper pour (F.Cu+B.Cu, priority 12) rather than a routed trace; at 30 mA there is no width concern.
+- **P (speed-pulse) line.** L7 (10 µH) sits in the P line, not the supply: J8 → D22 TVS → L7 → R76 pull-up node / R63 divider → VSENSE (R62 shunt, D10 zener, C46 HF cap) → R64 series → U11. The VSENSE cluster is compact (4.6 mm span). The schema review had mis-described L7 as a WIND_8V supply choke; the PCB places it correctly in the P line.
+- **Decoupling and digital/analog separation.** C40 (100 nF) is 1.88 mm from U12 VCC (the SOIC-8 GND pin is necessarily on the far side); C43 (100 nF) is 2.31 mm from U11. The X/Y pre-amp clusters are mirror-symmetric about U12's centreline (±5.5 mm) with equal L→divider→input trace lengths (~6.7 mm each side). WIND_SPD routes ≥ 14–15 mm east of the X/Y analog traces. WIND_X and WIND_Y route to the ESP32 5 mm apart with pour fill between them — negligible mutual capacitance.
+
+**As-built note — schema-review designator corrections.** The PCB netlist resolved six designator/role discrepancies that were wrong in the original schema review: D18 = WIND_8V TVS (not a secondary Y TVS), D22 = P-line TVS (not WIND_8V), D19 = cable-shield TVS (not WIND_Y ADC), L7 = P-line choke (not supply choke), R75 = WIND_SHLD-to-GND_WIND bleed (not WIND_Y ADC bleed), C57 = WIND_SHLD-to-GND_WIND HF bypass (not Y anti-aliasing). The protection coverage is complete and correctly ordered; these were documentation errors only. The page above reflects the corrected PCB connectivity throughout.
 
 ## Components
 
@@ -542,8 +497,6 @@ VSENSE at 3.2 V is just below VCC = 3.3 V, well above U11's V_IH (≈ 1.65 V at 
 | C56 | 15 pF / 100 V C0G 0603 | WIND_8V HF bypass at connector side of FL2 (with C55) | [Murata GCM1885C2A150JA16D](https://www.murata.com/en-us/products/productdetail?partno=GCM1885C2A150JA16D) |
 | C57 | 1 nF / 50 V C0G 0603 | Cable shield HF bypass (WIND_SHLD → GND_WIND) | [Murata GRM1885C1H102JA01D](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H102JA01D) |
 
----
-
 ## Testing & Verification
 
 :::caution
@@ -560,16 +513,25 @@ The V1.2 prototype on the test vessel has accumulated ~1,000 sea miles with basi
 - **ADC range characterisation** — Rotate vane through full 360°, log raw WIND_X / WIND_Y ADC counts. Identify clipping bearings and quantify atan2 reconstruction error. Decision point: if clipping is unacceptable, reduce R50/R51 (Rf) in a V2.0 spin; if acceptable, document the angular error budget for firmware compensation.
 - **atan2 zero-angle calibration** — Hold vane at 0°, 90°, 180°, 270° (referenced to a marked heading). Record firmware-reported angle. Document zero offset and maximum reconstruction error across all four quadrants.
 - **Speed pulse PPR calibration** — Drive anemometer at measured RPM, log WIND_SPD ISR rate, confirm 2 PPR (Raymarine spec), derive firmware calibration constant.
-- **Inter-channel crosstalk** — 1 kHz, 1 V_pk on WIND_X with WIND_Y open. Pass if < 1 LSB of 1 kHz content appears on WIND_Y.
-
-**For V2.0:**
-
-- **Tie R48 (and R53 mirror) to WIND_8V instead of VCC** and rescale R47/R48 so V_bias tracks the JP1 setpoint. Centres V_out at the ADC mid-range at *both* setpoints, enabling B&G 213 (and similar 6.5 V Hall-bias transducers) on the same hardware.
-- **Re-prioritise the F.Cu GND_WIND zone to priority 16** (currently 15, same as GNDREF unnamed fill) so domain separation is enforced by zone priority rather than the clearance rule alone.
+- **Inter-channel crosstalk** — 1 kHz, 1 V_pk on WIND_X with WIND_Y open. Pass if &lt; 1 LSB of 1 kHz content appears on WIND_Y.
 
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **C48 stability tuning** — With the longest representative mast cable attached, monitor VAS for sustained oscillation at JP1 6v8 / 30 mA. If observed, increase C48 from 100 pF toward 150–820 pF as the V1.2 tuning knob.
+- **F.Cu GND_WIND / GNDREF zone clearance** — On F.Cu the GND_WIND fill (priority 15, x:88.1–101.9) and the GNDREF unnamed fill (priority 15) share equal priority, so they are separated only by the 0.2 mm zone clearance. Verify the Gerber output shows a ≥ 0.2 mm copper-free gap along the x=88.1 boundary; if the fills merge, GND_WIND and GNDREF would short. Re-prioritise the F.Cu GND_WIND zone to priority 16 so domain separation is enforced by zone priority rather than the clearance rule alone.
+
+**Next version (V1.3)**
+
+- **LP2951 DRG (exposed-pad) package** — Move U13 to LP2951CSDRG (θJA = 48 °C/W vs 123 °C/W) to more than halve the junction-temperature rise at the worst-case B&G operating point. Tracked in `v2.0-improvements.md`.
+
+**Next version (V2.0)**
+
+- **B&G 213 X/Y ADC-bias fix** — Tie R48 (and the R53 mirror) to WIND_8V instead of VCC and rescale R47/R48 so V_bias tracks the JP1 setpoint. This centres V_out at the ADC mid-range at *both* setpoints, enabling B&G 213 (and similar 6.5 V Hall-bias transducers) on the same hardware. Until this lands, WTI400 V1.2 supports the Raymarine ST60 / E22078 family at JP1 8v4 only.
+- **Rf rescale (conditional)** — If ADC range characterisation shows unacceptable clipping at the measured Raymarine swing, reduce R50/R51 (Rf, currently 62 kΩ) to bring the full swing inside the 3.3 V ADC range in the same spin.
 
 ## References
 
@@ -585,3 +547,10 @@ The V1.2 prototype on the test vessel has accumulated ~1,000 sea miles with basi
 - Murata Electronics, [*LQM18FN1R0M00D 1 µH Inductor*](https://www.murata.com/en-us/products/productdetail?partno=LQM18FN1R0M00D).
 - Murata Electronics, [*LQM18FN100M00D 10 µH Inductor*](https://www.murata.com/en-us/products/productdetail?partno=LQM18FN100M00D).
 - [Transducer Compatibility Reference](../transducer-compatibility) — per-transducer pin-outs, supply requirements, signal-level characteristics, and WTI400 V1.2 compatibility for the Raymarine ST60 / E22078 / E22079 / ST50 / Autohelm family, B&G 213 and Network units, and the Navman 3150.
+
+## Related pages
+
+- [Power Supplies](./power-supplies.md) — the LMR51610 SMPS and VSC rail that feed the LP2951 LDO documented here
+- [CAN Bus Power](./can-bus-power.md) — derives the VSC unregulated supply at the LDO input
+- [ESP32 Module](./esp32-module.md) — the WND_EN / WND_ERR GPIOs and the WIND_X / WIND_Y / WIND_SPD ADC and pulse inputs
+- [External Connectors](/wti400/v1.2/quick-reference/connectors) — the J4–J9 transducer tab roster and pin-outs

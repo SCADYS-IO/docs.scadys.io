@@ -17,11 +17,9 @@ MDD400 **v2.9** — Fabricated prototype — testing phase
 
 The CAN bus power circuit takes the raw NMEA 2000 bus supply (NET-S, nominally 12 V) and delivers a clean, protected supply rail (VS+) to the rest of the MDD400. Six sequential stages condition the input: primary surge clamping, a resettable fuse and reverse-polarity protection, bulk capacitor buffering, a two-stage LC EMI filter, an over-voltage protection switch with current shunt, and a secondary output clamp.
 
----
+This page covers a single sub-circuit — the **CAN Bus Power** conditioning chain — drawn on the `can_bus_power` KiCad sheet.
 
-## CAN Bus Power
-
-### Functional specification and design objectives
+## Functional specification and design objectives
 
 The CAN bus power circuit must:
 
@@ -31,6 +29,8 @@ The CAN bus power circuit must:
 - suppress conducted EMI on the supply rail before it reaches the downstream circuits;
 - disconnect VS+ if bus voltage rises above the INA219 current monitor's safe operating range; and
 - deliver VS+ within 800 mV of NET-S under nominal operating current.
+
+## CAN Bus Power
 
 ### How it works
 
@@ -125,7 +125,7 @@ D7 (PESD15VL1BA) is a 15 V / 200 W bidirectional TVS across VS+ and GNDREF. It c
 D7's open-circuit clamp voltage is approximately 44 V — above the INA219's 40 V absolute maximum on the VS pin. Under a real transient, the clamped voltage will be lower because D7 conducts into the INA219 input impedance; the actual loaded clamp has not been quantitatively confirmed. Verify at bring-up — see Gaps.
 :::
 
-### Performance review
+### Performance
 
 #### Voltage drop budget (NET-S to VS+)
 
@@ -141,36 +141,15 @@ D7's open-circuit clamp voltage is approximately 44 V — above the INA219's 40 
 
 At NMEA 2000 minimum bus voltage (9.0 V): VS+_min ≈ 8.25 V at nominal load. Downstream regulators (LMR51610 rated to 65 V, LP5907 LDO) are unaffected by this margin. This is an accepted design constraint — typical operating bus voltage is 12–13 V.
 
-### Bring-up tests
+## PCB Layout
 
-1. **Reverse polarity**: apply −12 V to NET-S — pass if VS+ remains at 0 V and no components become warm.
-2. **Normal operation**: apply 12 V; measure VS+ — pass if VS+ ≈ 11.25 V (within the ~750 mV drop budget).
-3. **OVP trip**: slowly raise supply voltage — pass if VS+ drops to 0 V between 17.5 V and 19.5 V with no oscillation at the threshold. *(Verified at 18.6 V on both MDD400 and WTI400 prototypes.)*
-4. **OVP hysteresis**: after trip, slowly reduce supply voltage — pass if VS+ recovers cleanly at a voltage measurably below the trip point.
-5. **PTC fuse**: short VS+ briefly — pass if F1 trips and the board powers up again without intervention after the fault clears.
-6. **Bleed resistor**: remove supply; measure VS+ discharge time — pass if VS+ reaches < 1 V in approximately 4.4 s (R54 × 44 µF).
-7. **EMI filter ripple**: scope VS+ with a 242 mA load — pass if supply ripple is below the LMR51610 VIN ripple tolerance.
-8. **Filter capacitance at bias**: measure C43, C45, C46, C47 at 12 V DC bias — record actual values and compare against derated filter corner frequency calculations.
-9. **D7 clamp under transient**: inject a fast transient onto VS+ representative of OVP turn-off spike or cable-coupled ESD; measure peak VS+ voltage — pass if VS+ stays below 40 V (INA219 VS abs max).
-10. **INA219 current reading**: at 242 mA nominal load, confirm the INA219 reads within ±5% of the expected value (cross-check against a bench ammeter).
+The conditioning chain is laid out as a linear input-to-output sequence: **J2 → D10/M2/D12/F1 input-protection cluster → C51/C52 bulk → L4/C47/C45 → L3/C46/C43/C44 EMI filter → OVP block (Q6/Q7/divider) → R33/D7 output**. The input-protection cluster sits within x:[86–95], y:[105–116]; the OVP block is tightly grouped in a 3.4 mm × 9 mm footprint at x:[74–77.4], y:[87–96].
 
-### Gaps & next version
-
-**Verify at bring-up**
-
-- **D7 clamp margin**: D7 (PESD15VL1BA) clamps at approximately 44 V open-circuit — above the INA219 VS absolute maximum of 40 V. The loaded clamp will be lower, but this has not been quantitatively confirmed. If the loaded clamp voltage exceeds 40 V under a representative transient, substitute D7 with a part with a lower standoff (e.g. PESD12VL1BA, ~34 V clamp at 200 W).
-- **F1 thermal proximity to D10**: confirm F1 body temperature stays below 70 °C after an IEC 61000-4-5 surge sequence — D10 dissipates surge energy as heat and F1 is in the same vicinity.
-- **L3 cold-start inrush**: confirm peak current through L3 at power-on stays below the 2.6 A saturation rating.
-
-**Next version**
-
-- **OVP threshold margin at temperature**: at 85 °C the OVP threshold reaches 15.1 V — only 300 mV above the 14.8 V NMEA 2000 maximum charging voltage. Raising the margin requires either increasing the 25 °C trip point (by decreasing R46 or increasing R45, which shifts both thresholds together), or replacing the divider-only comparator with a voltage reference for temperature-stable operation.
-- **Over-temperature disconnect**: the OVP threshold drift with temperature is not a reliable thermal cutout — at typical bus voltages the threshold never drops to the operating voltage. A two-component board modification can add a genuine over-temperature disconnect: wire a normally-closed thermal switch (85 °C or 100 °C rated, e.g. Murata PKGS series) in series between R44 and GNDREF, and add a 100 kΩ pull-up from Q6's gate to its source (V_P1). Under normal conditions R44 dominates and Q6 remains on; when the switch opens on overtemperature, the pull-up holds V_GS ≈ 0 and Q6 turns off. Sensor placement is critical — the switch must be adjacent to the hottest component (Q6 or L3/L4).
-- **R33 Kelvin routing**: verify that INA219 IN+ and IN− sense traces connect from the inner edges of R33's pads, separate from the main VS+ power traces, to minimise current measurement error.
-- **D8 proximity**: tighten D8 to within 2 mm of Q6's gate/source (currently 3.0 mm) to reduce gate loop area.
-- **D10 sourcing for production**: qualify a Littelfuse or STMicro equivalent SM8S36CA for CE/ABYC certification — the current FUXINSEMI part is suitable for prototype but not preferred for production compliance documentation.
-
----
+- **Input protection.** D10 (TVS) is 17.4 mm from the J2 NET-S pad and M2 (MOV) 27.3 mm — the DeviceNet connector body and mounting flange prevent the tall DO-218AB package from sitting at the 3–5 mm target. A 1.8 mm-wide NET-S trace plus a 27 mm² copper pour around the D10/D12/M2 cluster minimise inductive path length within the available space; the SM8S36CA's 6.6 kW rating covers the ~150 mV of extra clamp overshoot this adds.
+- **EMI filter.** The two LC stages run in a strict linear input→output sequence with no interleaving. L4 and L3 share the IND-4012 footprint, are identically oriented (rotation 90°), and are spaced 6.0 mm centre-to-centre (target ≥ 5 mm) to avoid magnetic coupling. Inductors sit in a column at x≈80.5; all filter capacitors are on the opposite side at x≈74–80, each with its GNDREF return via adjacent to the capacitor body.
+- **Ground.** A single board-level GNDREF copper pour covers the whole CAN power domain and stitches to the In1.Cu/In2.Cu inner planes. The D10 anode region carries 23 stitching vias — the lowest-impedance node in the topology. No GNDC or isolated-domain ground appears on this sheet; no split plane or guard ring is needed.
+- **OVP and output.** Q7's collector reaches Q6's gate through R39 over a short trace; the gate clamp loop (Q6 gate → R39 → Q7 collector, D8) measures ≈ 5.1 mm² — far inside the 50 mm² budget. V_P1 (Q6 source) and VS+ (Q6 drain) are on separate pour islands so the pass switch is cleanly delineated. R33 (VS+ shunt) and D7 sit adjacent at the output; D7's anode ties to GNDREF through a short via.
+- **Thermal isolation.** F1 (PTC) is kept ~24 mm from C41 and the Q7 base divider so surge-dissipated heat does not bias the OVP sense node.
 
 ## Components
 
@@ -202,8 +181,6 @@ At NMEA 2000 minimum bus voltage (9.0 V): VS+_min ≈ 8.25 V at nominal load. Do
 | R33 | 330 mΩ | 0603 — VS+ current-sense shunt (feeds INA219 U11) | — |
 | D7 | PESD15VL1BA | Bidirectional TVS, SOD-323, 15 V / 200 W — secondary VS+ clamp | [Nexperia PESD15VL1BA](https://assets.nexperia.com/documents/data-sheet/PESD15VL1BA.pdf) |
 
----
-
 ## Testing & Verification
 
 :::caution
@@ -225,18 +202,24 @@ V2.9 is a fabricated prototype in the bench-test phase. The MDD400 powers from N
 - **F1 thermal proximity to D10** — After an IEC 61000-4-5 surge sequence, confirm F1 body temperature stays below 70 °C.
 - **L3 cold-start inrush** — Confirm peak current through L3 at power-on stays below the 2.6 A saturation rating.
 
-**For V2.10 (tracked in `v2.10-improvements.md`):**
-
-- **OVP threshold margin at temperature** — At 85 °C the OVP threshold reaches 15.1 V — only 300 mV above the 14.8 V NMEA 2000 maximum charging voltage. Raise the margin by adjusting R45 / R46, or replace the divider-only comparator with a voltage-reference design for temperature-stable operation.
-- **Over-temperature disconnect** — Add a genuine thermal cutout: wire a normally-closed thermal switch (85 °C or 100 °C, e.g. Murata PKGS series) in series between R44 and GNDREF, plus a 100 kΩ pull-up from Q6's gate to its source. Place the switch adjacent to the hottest component (Q6 or L3 / L4).
-- **R33 Kelvin routing** — Verify INA219 IN+ and IN− sense traces leave the inner edges of R33's pads, separate from the main VS+ power traces, to minimise current-measurement error.
-- **D8 proximity** — Tighten D8 to within 2 mm of Q6's gate/source (currently 3.0 mm) to reduce the gate loop area.
-- **D10 sourcing for production** — Qualify a Littelfuse or STMicro equivalent SM8S36CA for CE / ABYC certification; the current FUXINSEMI part is suitable for prototype but not preferred for production compliance documentation.
-- **D7 substitution if loaded clamp exceeds 40 V** — Swap to a lower-standoff part (e.g. PESD12VL1BA, ~34 V clamp at 200 W) if the V2.9 bench measurement shows the INA219 VS abs-max could be reached.
-
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **D7 clamp margin** — D7 (PESD15VL1BA) clamps at approximately 44 V open-circuit — above the INA219 VS absolute maximum of 40 V. The loaded clamp will be lower, but this has not been quantitatively confirmed. If the loaded clamp voltage exceeds 40 V under a representative transient, substitute D7 with a part with a lower standoff (e.g. PESD12VL1BA, ~34 V clamp at 200 W).
+- **F1 thermal proximity to D10** — Confirm F1 body temperature stays below 70 °C after an IEC 61000-4-5 surge sequence — D10 dissipates surge energy as heat and F1 is in the same vicinity.
+- **L3 cold-start inrush** — Confirm peak current through L3 at power-on stays below the 2.6 A saturation rating.
+
+**Next version (V2.10)**
+
+- **OVP threshold margin at temperature** — At 85 °C the OVP threshold reaches 15.1 V — only 300 mV above the 14.8 V NMEA 2000 maximum charging voltage. Raise the margin by adjusting R45 / R46 (decreasing R46 or increasing R45 shifts both thresholds together), or replace the divider-only comparator with a voltage-reference design for temperature-stable operation.
+- **Over-temperature disconnect** — The OVP threshold drift with temperature is not a reliable thermal cutout — at typical bus voltages the threshold never drops to the operating voltage. Add a genuine thermal cutout: wire a normally-closed thermal switch (85 °C or 100 °C, e.g. Murata PKGS series) in series between R44 and GNDREF, plus a 100 kΩ pull-up from Q6's gate to its source (V_P1). Under normal conditions R44 dominates and Q6 remains on; when the switch opens on overtemperature, the pull-up holds V_GS ≈ 0 and Q6 turns off. Place the switch adjacent to the hottest component (Q6 or L3 / L4).
+- **R33 Kelvin routing** — Route INA219 IN+ and IN− sense traces from the inner edges of R33's pads, separate from the main VS+ / VSC power traces, to minimise current-measurement error. Visual inspection confirms the current routing is acceptable for V2.9 but not optimal.
+- **C41 and D8 proximity** — Tighten C41 to within 2 mm of Q7's base (currently 3.6 mm) and D8 to within 2 mm of Q6's gate/source (currently 3.0 mm), to reduce filter-node and gate-loop inductance. Both deviations are functionally benign at OVP timescales; the change is precautionary.
+- **D10 sourcing for production** — Qualify a Littelfuse or STMicro equivalent SM8S36CA for CE / ABYC certification; the current FUXINSEMI part is suitable for prototype but not preferred for production compliance documentation.
+- **D7 substitution if loaded clamp exceeds 40 V** — Swap to a lower-standoff part (e.g. PESD12VL1BA, ~34 V clamp at 200 W) if the V2.9 bench measurement shows the INA219 VS abs-max could be reached.
 
 ## References
 
@@ -249,3 +232,10 @@ V2.9 is a fabricated prototype in the bench-test phase. The MDD400 powers from N
 - Texas Instruments, [*INA219 Zero-Drift Bidirectional Current/Power Monitor*](https://www.ti.com/lit/ds/symlink/ina219.pdf)
 - ISO, *ISO 7637-2:2011 — Road vehicles — Electrical disturbances from conduction and coupling — Part 2: Electrical transient conduction*
 - NMEA / IEC, *IEC 61162-3 — Maritime navigation and radiocommunication equipment — NMEA 2000*
+
+## Related pages
+
+- [Power Supplies](./power-supplies.md) — the LMR51610 buck and LP5907 LDO that convert VS+ into the board rails
+- [Power Monitor](./power-monitor.md) — the INA219 (U11) reading the R33 current shunt this circuit feeds
+- [CAN Transceiver](./can-transceiver.md) — the NMEA 2000 physical-layer interface sharing the J2 connector and GNDREF node
+- [External Connectors](/mdd400/v2.9/quick-reference/connectors) — J2 pinout and the NET-S / NET-C bus-power pins

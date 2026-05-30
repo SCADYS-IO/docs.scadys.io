@@ -7,7 +7,7 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/motion_sensor_e46ea369.svg" alt="Motion sensor schematic" initialFocus="12.7 12.7 139.7 92.71" />
+<SchematicViewer src="/img/schematics/wti400-v1.2/motion_sensor_e46ea369.svg" alt="Motion sensor schematic — full sheet" initialFocus="12.7 12.7 139.7 92.71" />
 
 :::note[Hardware version]
 WTI400 **v1.2** — In service — installed on test vessel
@@ -15,7 +15,7 @@ WTI400 **v1.2** — In service — installed on test vessel
 
 ## Overview
 
-The WTI400 connects to analog wind transducers. It reads the analog apparent wind angle and anemometer rotations,  outputting digital wind data on the vessel network(s). On sailboats, wind transducers are often mounted at the top of the mast. The masthead placement is in relatively clear air flow, but it also means that movement of the vessel is amplified. A boat rolling just a few degrees at deck level can cause the masthead to swing through an arc of several metres. This movement directly affects both the apparent wind speed and the apparent wind direction reported by the transducer.
+The WTI400 connects to analog wind transducers. It reads the analog apparent wind angle and anemometer rotations, outputting digital wind data on the vessel network(s). On sailboats, wind transducers are often mounted at the top of the mast. The masthead placement is in relatively clear air flow, but it also means that movement of the vessel is amplified. A boat rolling just a few degrees at deck level can cause the masthead to swing through an arc of several metres. This movement directly affects both the apparent wind speed and the apparent wind direction reported by the transducer.
 
 The LSM6DSLTR motion sensor on the WTI400 measures vessel roll, pitch and yaw. It provides three-axis acceleration and three-axis angular rate (rotation speed) data, which the firmware uses to compute the instantaneous velocity of the masthead sensor in the horizontal plane. That velocity is then subtracted from each wind reading, producing a stabilised output that reflects the corrected apparent wind rather than the combined effect of wind plus boat movement.
 
@@ -27,18 +27,17 @@ For a mast 18 m above the waterline, ±10° roll at a 7-second period produces a
 These errors oscillate at the roll frequency and are large enough to render the raw transducer data unreliable for performance sailing or accurate wind logging.
 :::
 
-This page covers two aspects of the motion sensor implementation:
+:::caution[Motion compensation not yet enabled]
+The masthead-velocity compensation algorithm is still in firmware development. The in-service firmware on the test vessel exercises the LSM6DSLTR as a polled sensor only — it does **not** yet apply heel/pitch/dynamic wind correction to the wind output. The hardware is in place and validated; the correction loop is a future firmware deliverable.
+:::
 
-- **Inertial measurement unit (IMU)** — the electrical circuit: the sensor IC, its power supply, and its I2C interface to the ESP32.
-- **PCB design and assembly** — the mechanical and soldering requirements specific to MEMS devices. These requirements are more demanding than for ordinary ICs, and failing to follow them caused assembly problems in V1.1.
+This page covers a single sub-circuit — the **Inertial Measurement Unit (IMU)** — drawn on the `motion_sensor` KiCad sheet: the sensor IC, its dual power supply, and its I2C interface to the ESP32.
+
+- **Inertial measurement unit (IMU)** — the LSM6DSLTR 6-DoF sensor, its VDD / VDDIO decoupling, and its fixed-address I2C interface to the ESP32.
 
 The PCB carries an axis diagram (silk-screen) showing the X, Y, Z directions and the corresponding pitch (P), roll (R), and yaw (Y) rotation directions. U1 is oriented on the board for the **default installation orientation**: mounted vertically on a transverse bulkhead — that is, on a flat surface facing forward or aft in the vessel, with the board standing upright. The firmware supports other mounting orientations, but this is the reference orientation for the default calibration.
 
----
-
-## Inertial Measurement Unit
-
-### Functional specification and design objectives
+## Functional specification and design objectives
 
 The IMU must:
 
@@ -47,6 +46,10 @@ The IMU must:
 - communicate with the ESP32 over I2C, appearing as a slave device at a fixed address of 0x6A;
 - operate reliably across the marine operating range (−10 °C to +55 °C, extended); and
 - consume minimal power — the WTI400 is bus-powered from the NMEA 2000 backbone, which has a limited supply budget per node.
+
+## Inertial Measurement Unit
+
+<SchematicViewer src="/img/schematics/wti400-v1.2/motion_sensor_e46ea369.svg" alt="Inertial Measurement Unit — U1 LSM6DSLTR, C5/C6/C12 decoupling, I2C interface. Zoom out to see the full sheet." initialFocus="12.7 12.7 139.7 92.71" />
 
 ### How it works
 
@@ -99,7 +102,7 @@ Two pins are tied at assembly time to configure the interface permanently:
 - **SA0/SDO (pin 1)** is connected to GNDREF (ground). This sets the I2C slave address to **0x6A**. If this pin were tied to VDDIO instead, the address would be 0x6B. The address is fixed in hardware — it cannot be changed by firmware after the board is assembled. No other I2C device on the WTI400 uses address 0x6A, so there is no conflict.
 - **CS (pin 12)** is tied to VDDIO (3.3 V). This selects I2C mode and disables the SPI interface. The LSM6DSLTR supports both I2C and SPI; tying CS high permanently selects I2C.
 
-The I2C signals — SCL (clock) and SDA (data) — are global net labels on this sheet. They connect to the ESP32 I2C master on the `esp32_module` sheet. The pull-up resistors for the bus — R3 and R4, each 10 kΩ — are also on the `esp32_module` sheet. The current firmware operates in Standard Mode at 100 kHz, which is confirmed working. The LSM6DSLTR also supports Fast Mode at 400 kHz; however, the 10 kΩ pull-ups are on the high side for Fast Mode and may cause reliability issues at that speed. If the firmware is upgraded to 400 kHz, the pull-up values should be verified — see Bring-up tests.
+The I2C signals — SCL (clock) and SDA (data) — are global net labels on this sheet. They connect to the ESP32 I2C master on the `esp32_module` sheet. The pull-up resistors for the bus — R3 and R4, each 10 kΩ — are also on the `esp32_module` sheet. The current firmware operates in Standard Mode at 100 kHz, which is confirmed working. The LSM6DSLTR also supports Fast Mode at 400 kHz; however, the 10 kΩ pull-ups are on the high side for Fast Mode and may cause reliability issues at that speed. If the firmware is upgraded to 400 kHz, the pull-up values should be verified — see Testing & Verification.
 
 #### Interrupt outputs
 
@@ -109,9 +112,7 @@ On the WTI400 V1.2, both INT1 and INT2 are **left unconnected**. The firmware re
 
 The interrupt pins are available for a future firmware version. If the masthead velocity compensation algorithm turns out to require precise, interrupt-driven sample timing for accurate integration, INT1 would need to be routed to a spare ESP32 GPIO. This would require a PCB change — see Gaps & next version.
 
----
-
-### Performance review
+### Performance
 
 **Power consumption and thermal analysis**
 
@@ -134,7 +135,7 @@ The V1.2 layout meets all three requirements. C5 (1 µF) is within 1.2 mm of VDD
 | Supply voltage — VDDIO | 3.3 V | Rated 1.62–3.6 V ✓ |
 | Supply current (normal mode, both axes) | 0.4 mA | — |
 | Power dissipation (normal mode) | 1.3 mW | P = 0.4 mA × 3.3 V |
-| Junction temperature rise at 85 °C ambient | < 0.4 °C | θ_JA ≈ 180 °C/W |
+| Junction temperature rise at 85 °C ambient | &lt; 0.4 °C | θ_JA ≈ 180 °C/W |
 | I2C slave address | 0x6A | SA0 tied to GND |
 | I2C clock — Standard Mode | 100 kHz | Confirmed working |
 | I2C clock — Fast Mode | 400 kHz | Supported; pull-ups may need reduction |
@@ -169,30 +170,11 @@ Recommended for WTI400: ±500 dps at 52 Hz (covers typical roll/pitch rates; val
 
 </details>
 
----
-
-### Bring-up tests
-
-1. **I2C device detection**: Scan the I2C bus. U1 must respond at address 0x6A — pass if the `WHO_AM_I` register (address 0x0F) returns `0x6A`.
-2. **Register round-trip**: Write a known value to a writable register (e.g. CTRL1_XL at 0x10) and read it back — pass if the read value matches what was written.
-3. **Live data output**: Configure accelerometer and gyroscope at 52 Hz, read 10 consecutive samples — pass if all six axes produce non-zero readings, with the accelerometer Z axis showing approximately ±1 g at rest (direction depends on board orientation).
-4. **VDD supply ripple**: Measure VDD at U1 pin 8 with a 100 MHz oscilloscope under normal I2C polling load — pass if ripple is less than 50 mV peak-to-peak.
-5. **Fast Mode I2C** *(if firmware is upgraded to 400 kHz)*: Verify stable communication at 400 kHz — pass if no I2C NACK errors occur over 1000 consecutive transactions. If failures occur, reduce the pull-up resistors R3/R4 from 10 kΩ to 4.7 kΩ on the `esp32_module` sheet.
-
----
-
-### Gaps & next version
-
-**Next version**
-
-- **ODR adequacy for velocity algorithm**: The 52 Hz ODR was selected for a Nyquist margin on 5 Hz wave heave. Once the masthead velocity compensation algorithm is designed, verify that 52 Hz provides sufficient temporal resolution for accurate integration over the intended rolling time window. The LSM6DSLTR supports ODR up to 6664 Hz; increasing the rate requires only a firmware register change — no hardware revision needed.
-- **Interrupt routing for algorithm timing**: INT1 and INT2 are currently unconnected. If the compensation algorithm requires precise interrupt-driven sample timing (rather than polled I2C), route INT1 to a spare ESP32 GPIO in the next PCB revision. This is a track-and-pin-assignment change only.
-
----
-
-## PCB Design and Assembly
+## PCB Layout
 
 The LSM6DSLTR is a MEMS device — *microelectromechanical systems*. Inside the small 2.5 × 3.0 mm LGA-14 package are actual moving mechanical structures: tiny proof masses suspended on microfabricated springs, whose displacement is measured electrically to determine acceleration and angular rate. These internal structures make MEMS sensors fundamentally different from conventional ICs, and they require extra care during both PCB design and assembly.
+
+All four motion-sensor components (U1, C5, C6, C12) are on the F.Cu component layer of the four-layer (1.6 mm, ENIG) board. U1 sits at (127.5, 50.0) mm at 0° rotation, approximately 50 mm from the nearest switching power supply cell and ~15 mm from the nearest board edge — keeping it clear of both thermal gradients and board-strain sources. C5 (1 µF bulk) is ~2.0 mm from the VDD pin, C6 directly adjacent, and C12 ~2.1 mm from the VDDIO pin — all at the courtyard-constrained minimum for the LGA-14 footprint. The In1.Cu inner layer carries a continuous GNDREF plane under U1, and an F.Cu copper-pour keepout zone (X: 125.7–129.3, Y: 48.4–51.6 mm) surrounds the package so no fill fragments the ground reference beneath it.
 
 ### Why MEMS devices need special treatment
 
@@ -268,8 +250,6 @@ U1 is mounted at 0° rotation on the board, so the sensor axes are aligned with 
 
 The **default installation orientation** is vertical mounting on a transverse bulkhead — the board stands upright, fixed to a surface that faces forward or aft in the vessel. The firmware's default calibration is referenced to this orientation. If the WTI400 is installed at a different angle, the firmware orientation offset must be configured accordingly. The firmware will document the supported orientations and the configuration procedure.
 
----
-
 ## Components
 
 | Ref | Value | Function | Datasheet |
@@ -278,8 +258,6 @@ The **default installation orientation** is vertical mounting on a transverse bu
 | C5 | 1 µF / 25 V / 0603 | VDD bulk decoupling capacitor | — |
 | C6 | 100 nF / 50 V / 0603 | VDD high-frequency bypass capacitor | — |
 | C12 | 100 nF / 50 V / 0603 | VDDIO high-frequency bypass capacitor | — |
-
----
 
 ## Testing & Verification
 
@@ -299,17 +277,30 @@ The V1.2 prototype on the test vessel has the LSM6DSL polled over Standard-mode 
 
 - **Fast-mode robustness** &mdash; Verify stable communication at 400 kHz. Pass if no I2C NACK errors occur over 1000 consecutive transactions. If failures occur, reduce R3 / R4 from 10 k&Omega; to 4.7 k&Omega; on the `esp32_module` sheet (tracked as a V1.3 backlog item on the ESP32 Module page).
 
-**For V1.3 (tracked in `v1.3-improvements.md`):**
-
-- **ODR adequacy for velocity algorithm** &mdash; Once the masthead-velocity compensation algorithm is designed, verify that 52 Hz provides sufficient temporal resolution for accurate integration. The LSM6DSL supports ODR up to 6664 Hz; increasing requires only a firmware register change.
-- **Interrupt routing for algorithm timing** &mdash; INT1 and INT2 are currently unconnected. If the compensation algorithm requires precise interrupt-driven sample timing, route INT1 to a spare ESP32 GPIO in the next PCB revision.
-
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **VDD ripple measurement** &mdash; Measure VDD at U1 under polling load during bring-up. Target: &lt; 50 mV peak-to-peak.
+- **Zero-g / zero-rate offset characterisation** &mdash; Capture stationary accelerometer and gyroscope readings after reflow to confirm the V1.2 land-pattern fix has eliminated the V1.1 thermomechanical stress.
+
+**Next version (V1.3)**
+
+- **ODR adequacy for velocity algorithm** &mdash; Once the masthead-velocity compensation algorithm is designed, verify that 52 Hz provides sufficient temporal resolution for accurate integration over the intended rolling time window. The LSM6DSL supports ODR up to 6664 Hz; increasing the rate requires only a firmware register change — no hardware revision needed.
+- **Interrupt routing for algorithm timing** &mdash; INT1 and INT2 are currently unconnected. If the compensation algorithm requires precise interrupt-driven sample timing (rather than polled I2C), route INT1 to a spare ESP32 GPIO in the next PCB revision. This is a track-and-pin-assignment change only.
+- **Reduce I2C pull-ups for Fast mode** &mdash; If firmware upgrades the I2C clock to 400 kHz, reduce R3 / R4 from 10 kΩ to 4.7 kΩ on the `esp32_module` sheet. Harmless at Standard mode; tracked on the ESP32 Module page.
 
 ## References
 
 1. ST Microelectronics, [*LSM6DSL iNEMO Inertial Module Datasheet*](https://www.st.com/resource/en/datasheet/lsm6dsl.pdf)
 2. ST Microelectronics, [*AN5040 — LSM6DSL Always-On 3D Accelerometer and 3D Gyroscope*](https://www.st.com/resource/en/application_note/an5040-lsm6dsl-alwayson-3d-accelerometer-and-3d-gyroscope-stmicroelectronics.pdf)
-3. ST Microelectronics, *TN0018 — Handling, mounting, and soldering guidelines for MEMS devices* (Rev 8, March 2025) — copy at `WTI400/research/MEMS_PCB_design_guidelines.pdf`
+3. ST Microelectronics, *TN0018 — Handling, mounting, and soldering guidelines for MEMS devices* (Rev 8, March 2025)
+
+## Related pages
+
+- [ESP32-S3 Module](./esp32-module.md) — hosts the I2C master and the R3 / R4 bus pull-ups serving U1
+- [Wind Interface](./wind-interface.md) — the analog wind input that the IMU correction stabilises
+- [Power Supplies](./power-supplies.md) — derives the 3.3 V VCC rail feeding VDD and VDDIO
+- [Pin Assignments](/wti400/v1.2/quick-reference/pin-assignments) — the I2C bus and GPIO map for U1

@@ -7,13 +7,15 @@ hw_status_label: "In service — installed on test vessel"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
+<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_6b651028.svg" alt="Legacy serial interface — full sheet" />
+
 :::note[Hardware version]
 WTI400 **v1.2** — In service — installed on test vessel
 :::
 
 ## Overview
 
-The legacy serial interface provides a galvanically isolated single-wire serial connection designed for full electrical compatibility with Raymarine's Legacy Serial Protocol (e.g. SeaTalk™). It connects to legacy marine instruments via a 3-pin connector and exposes three MCU signals — `ST_RX`, `ST_TX` and `ST_EN` (for receive, transmit and transmit enable respectively), each crossing the isolation barrier via a TLP2309 opto-isolator.
+The legacy serial interface provides a galvanically isolated single-wire serial connection designed for full electrical compatibility with Raymarine's Legacy Serial Protocol (e.g. SeaTalk™). It connects to legacy marine instruments via a 3-pin connector and exposes three MCU signals — `ST_RX`, `ST_TX` and `ST_EN` (for receive, transmit and transmit enable respectively), each crossing the isolation barrier via a TLP2309 opto-isolator. The circuit is drawn across the `legacy_serial_rx` and `legacy_serial_tx` KiCad sheets.
 
 The primary application on the WTI400 is to place apparent wind data onto a Legacy Serial Protocol bus as a direct drop-in replacement for an ST60 wind instrument.
 
@@ -25,11 +27,24 @@ The interface has limited compatibility with single-ended NMEA 0183 operation. R
 - [Receive path](#receive-path) — signal filtering and isolated receive opto; and
 - [Transmit path](#transmit-path) — isolated transmit, enable gate, and open-drain line driver.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_6b651028.svg" alt="Legacy Serial RX — block diagram overview" initialFocus="158.75 101.6 125.73 63.5" />
+## Functional specification and design objectives
 
----
+The legacy serial interface must:
+
+- present a 3-pin connector that is pin-compatible with Raymarine's legacy plug and accepts standard Raymarine plugs or 1211 spade crimp connectors;
+- operate as both a listener and a transmitter on a Legacy Serial Protocol bus at 4800 baud with 9-bit framing;
+- maintain a galvanic isolation barrier between the legacy bus domain (VST / GND_ST) and the digital domain (VCC / GNDREF), with the opto-isolators as the only electrical link across the boundary;
+- regulate the 12 V bus supply to a stable VST rail across the full NMEA 2000 bus-voltage range (9–16 V), holding sufficient opto LED drive current even in dropout;
+- protect the bus entry against reverse polarity, fast transients, high-energy surges, ESD, and conducted HF EMI before any active device;
+- hold the transmit line driver off by default — during MCU boot, reset, firmware fault, and any GPIO float condition — so the bus can only be driven by an explicit firmware action;
+- accelerate the bus rising edge so long-cable installations meet the 4800 baud bit timing; and
+- provide limited single-ended NMEA 0183 compatibility (full listener compliance at 4800 / 38400 baud; talker subject to receiver input type).
 
 ## 3-Wire Connector and Bus Modes
+
+<SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_6b651028.svg" alt="Legacy serial — connector and bus modes" initialFocus="158.75 101.6 125.73 63.5" />
+
+### How it works
 
 J3 is a 3-pin through-hole connector with a custom footprint that is pin-compatible with Raymarine's legacy 3-pin connector. It accepts standard Raymarine plugs directly, or 1211 spade female crimp connectors.
 
@@ -39,7 +54,7 @@ J3 is a 3-pin through-hole connector with a custom footprint that is pin-compati
 | 2 | BLACK | GND | Isolated bus ground (GND_ST) |
 | 3 | YELLOW | SIG | Single-wire signal line (ST_SIG) |
 
-### Legacy Serial Protocol Mode
+#### Legacy Serial Protocol Mode
 
 In Legacy Serial Protocol mode all three pins are used as supplied by the bus:
 
@@ -51,7 +66,7 @@ The WTI400 can both listen to and transmit on the bus. During transmit, Q6 (2N70
 
 Legacy Serial Protocol uses 9-bit framing: 4800 baud, 1 start bit, 8 data bits, 1 attribute bit (transmitted as the 9th data bit, conventionally mapped to the UART parity position), 1 stop bit. The attribute bit distinguishes command bytes from data bytes in a multi-byte message.
 
-### NMEA 0183 Receive Mode
+#### NMEA 0183 Receive Mode
 
 For NMEA 0183 single-ended receive, connect the talker output as follows:
 
@@ -69,7 +84,7 @@ For NMEA 0183 single-ended receive, connect the talker output as follows:
 
 The receive circuit draws approximately 0.36 mA from the line at 2.0 V input, within the NMEA 0183 listener limit of 2.0 mA. The TLP2309 propagation delay (≤ 1 µs) and signal filter cut-off (723 kHz) both support NMEA 0183 at 4800 baud and at 38400 baud (high-speed).
 
-### NMEA 0183 Caveats
+#### NMEA 0183 Caveats
 
 **Receive (listener) — compatible.** The receive circuit meets the NMEA 0183 listener electrical specification at 4800 baud and 38400 baud. The connection is single-ended (TALK-A referenced to GND_ST); it is not a true RS-422 differential receiver. In installations with a shared, low-impedance ground between the WTI400 and the NMEA 0183 talker, this is functionally equivalent. In installations with floating or noisy grounds, common-mode noise rejection will be lower than a proper RS-422 differential front-end.
 
@@ -79,15 +94,11 @@ The TX output may work with NMEA 0183 receiving devices that accept single-ended
 
 The TX circuit is optimised for 4800 baud (Legacy Serial Protocol). At 9600 baud the rise-time assist operates at reduced effectiveness (see [Rise-Time Assist](#rise-time-assist--q8-mmbta56lt1g-c47-r71)); 38400 baud is not supported.
 
-:::caution[Connector — gap for next version]
-J3 uses a proprietary Raymarine-compatible pin arrangement. For V2.0, consider replacing J3 with an M12 3-pin male waterproof connector (panel-mount, IP67). The M12 A-code or B-code 3-pin is widely available, field-wireable without special tools, and compatible with standard marine cabling. The Legacy Serial Protocol pin assignment (power / ground / signal) maps directly to a 3-pin M12. The existing 1211-compatible footprint would need to be replaced; no circuit changes are required.
-:::
-
----
-
 ## 12 V Power Protection and Regulation
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_6b651028.svg" alt="Legacy Serial RX — connector and filter section" initialFocus="12.7 101.6 146.05 95.25" />
+
+### How it works
 
 The 12 V bus supply on J3 pin 1 passes through a six-stage protection chain before reaching the LDO regulator.
 
@@ -117,30 +128,13 @@ U14 is a 100 V-input, 12 V / 30 mA linear regulator in SOT-23F. It generates VST
 
 Below 12.9 V (down to the NMEA 2000 minimum of 9 V), U14 operates in dropout and VST tracks approximately V_bus − 0.9 V. This ensures sufficient LED forward current across the full NMEA 2000 bus voltage range (see [Design Calculations](#design-calculations)).
 
-#### Firmware notes — power domain
-
 The VST rail is not MCU-controlled. It is live whenever the Legacy Serial Protocol bus supplies power on J3 pin 1. The VST domain (GND_ST) is electrically isolated from GNDREF (digital ground) — there is no DC or capacitive path between the two domains on the PCB. The opto-isolators are the only electrical link across the boundary.
-
-#### Bring-up tests — power
-
-| Test | Expected result | Pass criterion |
-|------|----------------|----------------|
-| Apply 12 V to J3 pin 1 with pin 2 to GND | VST = 12.0 ± 0.5 V | Within range |
-| Apply 9 V to J3 pin 1 | VST ≈ 8.1 V (dropout) | LED current still ≥ 2.9 mA; ST_RX responds to bus signal |
-| Apply 16 V to J3 pin 1 | VST = 12.0 ± 0.5 V | Regulated; U14 junction ΔT &lt; 2 °C |
-| Reverse polarity: −12 V on pin 1, GND on pin 2 | VST = 0 V; no damage | No component failure |
-| Apply 12 V with pin 1 and pin 2 swapped | VST = 0 V; no damage | No component failure |
-
-#### Gaps — power
-
-- **C58 and C54 bypass distance:** C58 is 7.70 mm from U14 VIN pin; C54 is 5.46 mm from U14 VOUT pin. Both exceed the ≤ 2 mm guideline. Monitor VST under transient load during bring-up; rework both capacitors to within 2 mm of U14 pins if oscillation is observed.
-- **LDO_VIN trace width:** Confirm via Gerber or DRC that the trace from R69 pad 1 to the D13/D15/M2 cluster is ≥ 0.5 mm.
-
----
 
 ## Receive Path
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_rx_6b651028.svg" alt="Legacy Serial RX — receive buffer section" initialFocus="12.7 12.7 146.05 88.9" />
+
+### How it works
 
 The signal on J3 pin 3 (ST_SIG) passes through a two-stage RF filter and ESD clamp before reaching the TLP2309 opto-isolator.
 
@@ -174,49 +168,11 @@ The TLP2309 has inverter logic (LED ON → output LOW). In the circuit, bus LOW 
 
 R19 (2.2 kΩ, VCC to U6 output) is the output pull-up. C23 (100 nF) is the VCC bypass at the output side of U6.
 
-#### Firmware notes — receive
-
-`ST_RX` presents as a standard UART-compatible signal to the ESP32:
-
-- **Idle bus** → `ST_RX` HIGH (≥ 2.97 V, VCC − V_OL; TLP2309 V_OL ≤ 0.4 V);
-- **Bus asserted LOW** → `ST_RX` LOW (≤ 0.4 V).
-
-Configure the ESP32 UART peripheral as follows for Legacy Serial Protocol:
-
-| Parameter | Value |
-|-----------|-------|
-| Baud rate | 4800 |
-| Data bits | 8 |
-| Parity | even (maps the 9th attribute bit to the parity position) |
-| Stop bits | 1 |
-| Line idle level | HIGH |
-
-For NMEA 0183: 4800 baud or 38400 baud, 8N1, no parity.
-
-`ST_RX` can be assigned to any GPIO configured as a UART RX input. No inversion is needed.
-
-#### Bring-up tests — receive
-
-| Test | Expected result | Pass criterion |
-|------|----------------|----------------|
-| Bus idle (no transmitter): measure ST_RX | ST_RX ≈ VCC (3.3 V) | ≥ 2.9 V |
-| Pull J3 pin 3 to GND via 1 kΩ resistor | ST_RX ≤ 0.4 V | Low detected |
-| Apply 4800 baud test pattern on J3 pin 3 | Correct framing captured on UART RX | No framing errors |
-| Apply signal at 38400 baud (NMEA 0183 HS) | Correct framing captured | No framing errors |
-| Measure input current at J3 pin 3 = 2.0 V | ≤ 2.0 mA | NMEA 0183 listener compliant |
-| Measure VST and I_LED at V_bus = 9 V | I_LED ≥ 2.0 mA; ST_RX transitions correctly | No missed transitions |
-
-#### Gaps — receive
-
-- **C49/C50 schematic datasheet reference:** The KiCAD schematic lists the wrong manufacturer part number for C49 and C50 (GRM188R71H104KA93D, 100 nF). The correct part is GRM1885C1H101JA01D (100 pF). The assembled BOM value is correct; this is a metadata-only error to fix in the schematic.
-- **C23 bypass distance:** C23 is 9.4 mm from U6 VCC pad (pin 6). Add a dedicated 100 nF 0603 bypass adjacent to pin 6 in V2.0.
-- **Guard ring:** No guard ring is present around the U6 isolation gap. Marine salt-spray environments increase ionic creepage risk on uncoated boards. Add an unconnected guard trace at V2.0 if conformal coating is not applied.
-
----
-
 ## Transmit Path
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/legacy_serial_tx_7e83f909.svg" alt="Legacy Serial TX schematic" initialFocus="12.7 12.7 138.43 177.8" />
+
+### How it works
 
 The TX circuit has four functional stages: an enable opto-isolator (U8) that gates the transmitter by default, a TX opto-isolator (U7) that transfers the UART data signal across the isolation barrier, a two-transistor push-pull gate driver (Q4, Q7) with a PMOS high-side switch (Q5) that drives the NMOS line driver (Q6), and a rise-time assist stage (Q8) that accelerates bus rising edges.
 
@@ -273,7 +229,34 @@ This is a component value change only. C47 is a 0603 C0G capacitor; the footprin
 
 The second transistor of the Q7 BC847BS package monitors current through Q6. When Q6 sinks significant drain current, the voltage across R57 rises and turns on Q7 TR2, which steals base drive from the push-pull stage, limiting Q6 gate voltage and preventing excessive drain current. This protects the gate driver chain during output shorts or bus faults.
 
-#### Firmware notes — transmit
+## Firmware notes
+
+### Power domain
+
+The VST rail is not MCU-controlled. It is live whenever the Legacy Serial Protocol bus supplies power on J3 pin 1, independent of any MCU action.
+
+### Receive
+
+`ST_RX` presents as a standard UART-compatible signal to the ESP32:
+
+- **Idle bus** → `ST_RX` HIGH (≥ 2.97 V, VCC − V_OL; TLP2309 V_OL ≤ 0.4 V);
+- **Bus asserted LOW** → `ST_RX` LOW (≤ 0.4 V).
+
+Configure the ESP32 UART peripheral as follows for Legacy Serial Protocol:
+
+| Parameter | Value |
+|-----------|-------|
+| Baud rate | 4800 |
+| Data bits | 8 |
+| Parity | even (maps the 9th attribute bit to the parity position) |
+| Stop bits | 1 |
+| Line idle level | HIGH |
+
+For NMEA 0183: 4800 baud or 38400 baud, 8N1, no parity.
+
+`ST_RX` can be assigned to any GPIO configured as a UART RX input. No inversion is needed.
+
+### Transmit
 
 | Signal | Direction | Active level | Description |
 |--------|-----------|--------------|-------------|
@@ -288,27 +271,6 @@ The second transistor of the Q7 BC847BS package monitors current through Q6. Whe
 5. Resume monitoring `ST_RX`.
 
 **Collision detection:** while transmitting, compare `ST_RX` against the expected `ST_TX` state. If `ST_RX` is LOW when `ST_TX` is HIGH, another device is driving the bus simultaneously. Abort transmission, release `ST_EN`, and implement a random back-off before retrying (consistent with Legacy Serial Protocol bus arbitration practice).
-
-#### Bring-up tests — transmit
-
-| Test | Expected result | Pass criterion |
-|------|----------------|----------------|
-| Assert `ST_EN` HIGH (or undriven), measure ST_SIG | ST_SIG = VST (≈ 12 V via R33) | Transmitter is off |
-| Assert `ST_EN` LOW, `ST_TX` HIGH | ST_SIG = VST; Q6 off | Q6 not conducting |
-| Assert `ST_EN` LOW, `ST_TX` LOW | ST_SIG &lt; 50 mV | Q6 conducting; bus pulled LOW |
-| Toggle `ST_TX` at 4800 baud; measure rising edge at ST_SIG | Edge reaches ≥ 80 % VST within 50 µs | Rise-time assist functioning |
-| Toggle `ST_TX` at 9600 baud (after C47 rework to 820 pF) | Edge reaches ≥ 80 % VST within 30 µs | Assist effective at 9600 baud |
-| Measure D8 current at VST = 16 V (max NMEA 2000) | D8 zener begins to conduct (V_Z = 15 V); confirm dissipation ≤ 200 mW | Within D8 rating |
-| Apply 58 V transient on ST_SIG (clamped by upstream TVS) | No gate driver or Q6 damage | Circuit survives |
-
-#### Gaps — transmit
-
-- **D8 proximity:** D8 is 10.7 mm from the ST_SIG isolation boundary via. Functional at 4800 baud; relocate to within 3 mm of the via in V2.0 for better transient suppression.
-- **D8 static current at 16 V:** At VST = 16 V (top of NMEA 2000 range), D8 (V_Z = 15 V) begins to conduct. Measure zener leakage and continuous dissipation at V_bus = 16 V during bring-up.
-- **PCB creepage slot:** The 1.4 mm copper-free gap at the U7/U8 isolation boundary meets IEC 60747-5-5 clearance. A milled PCB slot would increase creepage distance. Evaluate for V2.0 if CE marking or MED certification is pursued.
-- **Dedicated VCC bypass at U7:** C31 (100 nF VCC) is 4.0 mm from U8 and 9.9 mm from U7. U7 lacks a dedicated VCC bypass at its supply pin. Add a 100 nF 0603 adjacent to U7 VCC pin (pin 6) in V2.0.
-
----
 
 ## Design Calculations
 
@@ -413,46 +375,54 @@ Input load at 2.0 V: I = (2.0 V − V_LED_F) / R30 = (2.0 − 1.20) / 2200 = **0
 
 </details>
 
----
-
 ## PCB Layout
+
+Both the receive and transmit sub-circuits sit on the right-hand side of the 95.2 × 95.2 mm four-layer board, downstream of J3 at (140.0, 97.0). All circuit components are on F.Cu. The defining feature of the layout is a horizontal isolation boundary that separates the legacy bus domain (GND_ST / VST) from the digital domain (GNDREF / VCC).
 
 ### Isolation boundary
 
-The isolation boundary runs horizontally across the PCB, separating the GND_ST (legacy) domain from GNDREF (digital). A 1.4 mm copper-free zone passes through the bodies of U6, U7, and U8 on both F.Cu and In1.Cu. No copper fill, trace, or via crosses this zone on any layer. B.Cu carries GNDREF only on the digital side; GND_ST is confined to F.Cu and In1.Cu on the legacy side.
+The isolation boundary runs horizontally across the PCB. A 1.4 mm copper-free zone passes through the bodies of U6, U7, and U8 on both F.Cu and In1.Cu — the GNDREF zone stops at Y = 78.8 and the GND_ST zone starts at Y = 80.2. No copper fill, trace, or via crosses this zone on any layer. B.Cu carries GNDREF only on the digital side; GND_ST is confined to F.Cu and In1.Cu on the legacy side.
 
 | Requirement | Status | Evidence |
 |-------------|--------|---------|
-| U6 straddles GND_ST/GNDREF boundary; 1.4 mm gap confirmed | ✅ Met | LED pads at Y = 76.35 (GNDREF side); output pads at Y = 82.85 (GND_ST side) |
+| U6 straddles GND_ST/GNDREF boundary; 1.4 mm gap | ✅ Met | LED-side pads (1, 3) at Y = 76.35 (GNDREF side); output pads (4, 5, 6) at Y = 82.85 (GND_ST side) |
 | U7/U8 co-linear; 1.4 mm gap; no shared vias | ✅ Met | U7 and U8 at Y = 79.6, 6.5 mm apart; GNDREF vias at Y = 78.5; GND_ST vias at Y = 80.5 |
+| Isolation gap ≥ 0.4 mm (IEC 60747-5-5) | ✅ Met | 1.4 mm zone-to-zone; via edge-to-edge clearance 1.4 mm — 3.5× margin |
 | GND_ST and GNDREF zones do not share vias | ✅ Met | Confirmed on F.Cu and In1.Cu |
 | No fill or trace crosses isolation gap on any layer | ✅ Met | Verified on all layers |
+
+No milled PCB creepage slot is present; isolation relies on the 1.4 mm copper-free zone plus the TLP2309 SO-6 package body, which satisfies the rated clearance for the 12 V bus.
 
 ### Component placement — receive side
 
 | Requirement | Status | Evidence |
 |-------------|--------|---------|
+| R69 / D13 / D15 / M2 power protection close to J3 | ⚠️ Partial | R69 14.5 mm (closest power-chain part), M2 14.2 mm, D13 20.6 mm; J3 THT body clearance limits proximity; cluster order correct |
 | R29 / D6 / R30 close to U6 LED input | ✅ Met | R29 4.0 mm, R30 5.1 mm, D6 7.2 mm from U6 centroid |
-| D14 (ESD) and C49 (RF bypass) near J3 | ⚠️ Partial | D14 22.8 mm, C49 21.4 mm from J3; J3 THT footprint clearance prevents closer placement; chain order correct |
-| C58 (1 µF LDO input bypass) ≤ 2 mm from U14 VIN | ⚠️ Not met | 7.70 mm; validate under transient load at bring-up |
-| C54 (10 µF VST output) ≤ 2 mm from U14 VOUT | ⚠️ Not met | 5.46 mm; validate under transient load at bring-up |
+| D14 (ESD) and C49 (RF bypass) near J3 on ST_SIG | ⚠️ Partial | D14 22.8 mm, C49 21.4 mm from J3; THT clearance prevents closer placement; chain order correct |
+| C58 (1 µF LDO input bypass) ≤ 2 mm from U14 VIN | ⚠️ Not met | 7.70 mm pad-to-pin; validate under transient load at bring-up |
+| C54 (10 µF VST output) ≤ 2 mm from U14 VOUT | ⚠️ Not met | 5.46 mm pad-to-pin; validate under transient load at bring-up |
+| C53 (100 nF HF bypass) ≤ 2 mm from U14 VOUT | ⚠️ Not met | 6.92 mm pad-to-pin; validate under transient load at bring-up |
 | C23 (VCC bypass) ≤ 2 mm from U6 VCC pin | ⚠️ Not met | 9.4 mm; add dedicated bypass at U6 pin 6 in V2.0 |
+
+The protection chain is laid out connector-first as **J3 → R69 → D13/D15/M2 (shared anode node) → FB3 → C58 → U14 → C54/C53 → VST**. R69 is electrically first, limiting surge current before the clamp devices; D13 then provides reverse-polarity blocking and D15/M2 clamp the shared node to GND_ST.
 
 ### Component placement — transmit side
 
 | Requirement | Status | Evidence |
 |-------------|--------|---------|
-| C30 (100 nF VST bypass) adjacent to U7 | ⚠️ Partial | 4.0 mm from U7 centroid; equidistant from U7 and U8; no dedicated U7 VCC bypass |
-| C31 (100 nF VCC bypass) adjacent to U8 | ✅ Met | 4.0 mm from U8 |
-| Q4 / Q7 / Q6 gate driver cluster compact | ✅ Met | Q4–Q6 6.9 mm; Q6–Q7 3.4 mm; bias resistors within 3.3 mm |
-| C47 (rise-time assist timing) close to Q8 | ✅ Met | C47 5.5 mm from Q8; R71 4.3 mm from Q8 |
-| D8 (zener clamp) close to ST_SIG isolation via | ⚠️ Partial | D8 10.7 mm from via at (148.0, 86.75); functional at 4800 baud; relocate in V2.0 |
+| C30 (100 nF VST bypass) adjacent to U7 | ⚠️ Partial | 4.0 mm from U7, 4.4 mm from U8; serves both optos; no dedicated U7 VCC bypass |
+| C31 (100 nF VCC bypass) adjacent to U8 | ✅ Met | 4.0 mm from U8 (9.9 mm to U7) |
+| Q4 / Q5 / Q6 / Q7 / D12 gate driver cluster compact | ✅ Met | 3.5 × 10.8 mm cluster; Q6–Q7 3.4 mm; bias resistors within 3.3 mm |
+| C47 / R71 / R68 rise-time assist cluster close to Q8 | ✅ Met | C47 5.5 mm, R71 4.3 mm, R68 1.6 mm from Q8 |
+| D8 (zener clamp) close to ST_SIG isolation via | ⚠️ Partial | 10.7 mm from via at (148.0, 86.75); functional at 4800 baud; relocate in V2.0 |
+| R57 (10 Ω series) in output path near Q6 | ✅ Met | 4.2 mm from Q6, in the driver column |
 
 ### Signal routing
 
-ST_SIG crosses to B.Cu via a via at (148.0, 86.75) and runs 17.3 mm on B.Cu before returning to F.Cu at Q6's drain. This B.Cu segment keeps ST_SIG out of the dense F.Cu component area without violating the isolation zone. VST supply traces on B.Cu are 0.6 mm wide; all signal traces are 0.2 mm.
+ST_SIG exits the opto output cluster at (148.0, 86.75), crosses to B.Cu via a via at that location, runs 17.3 mm south on B.Cu, then returns to F.Cu at Q6's drain area. This B.Cu segment keeps ST_SIG out of the dense F.Cu component area without violating the isolation zone. VST supply traces are 0.6 mm wide on both F.Cu and B.Cu; all signal traces are 0.2 mm. NET-side stitching-via rows at Y = 78.5 (GNDREF) and Y = 80.5 (GND_ST) reinforce the zone edges immediately above and below the opto row.
 
----
+The minimum 0.5 mm trace width on the surge-carrying LDO_VIN entry segment (R69 output through the D13/D15/M2 cluster) could not be confirmed from text-level PCB data and must be verified by Gerber or DRC review.
 
 ## Components
 
@@ -507,8 +477,6 @@ ST_SIG crosses to B.Cu via a via at (148.0, 86.75) and runs 17.3 mm on B.Cu befo
 | D8 | BZT52C15S | Diodes Inc. BZT52C15S 15 V zener, SOD-323 — ST_SIG line clamp | [BZT52C15S](/assets/datasheets/wti400-v1.2/BZT52C15S.pdf) |
 | D12 | BAT54S | Nexperia BAT54S dual series Schottky, SOT-23, 30 V — gate circuit protection | [BAT54S](https://assets.nexperia.com/documents/data-sheet/BAT54_SER.pdf) |
 
----
-
 ## Testing & Verification
 
 :::caution
@@ -541,25 +509,30 @@ Transmit:
 - **D8 static current at 16 V** &mdash; Measure D8 zener leakage and continuous dissipation at V_bus = 16 V. Pass if dissipation &le; 200 mW.
 - **Surge survivability** &mdash; Apply 58 V transient on ST_SIG (clamped by upstream TVS). Pass if no gate-driver or Q6 damage.
 
-**Before next production run (rework required on V1.2):**
-
-- **C47 rework: 2.2 nF &rarr; 820 pF** &mdash; Update the schematic BOM and rework all assembled V1.2 units. Component value change only (0603 C0G footprint unchanged). Restores rise-time-assist effectiveness at 4800 baud on long cables and adds 9600 baud capability.
-- **C58 and C54 bypass distance** &mdash; C58 is 7.70 mm from U14 VIN; C54 is 5.46 mm from U14 VOUT. Both exceed the &le; 2 mm guideline. If VST oscillation is observed under transient load at bring-up, rework both caps to within 2 mm of U14 pins.
-- **C49 / C50 schematic part-number fix** &mdash; KiCAD schematic lists the wrong manufacturer P/N (GRM188R71H104KA93D, 100 nF) for C49 / C50; assembled BOM value (100 pF) is correct. Metadata-only fix in the schematic.
-
-**For V2.0 / V1.3 (tracked in `v1.3-improvements.md`):**
-
-- **Replace J3 with M12 3-pin waterproof connector** &mdash; M12 A-code or B-code, panel-mount, IP67, field-wireable; the Legacy Serial Protocol pin assignment (power / ground / signal) maps directly.
-- **C23 bypass distance** &mdash; Add a dedicated 100 nF 0603 bypass adjacent to U6 pin 6 (currently 9.4 mm away).
-- **Guard ring around U6 isolation gap** &mdash; Add an unconnected guard trace if conformal coating is not applied; reduces ionic creepage risk in marine salt-spray.
-- **D8 proximity** &mdash; Relocate D8 to within 3 mm of the ST_SIG isolation via for better transient suppression (currently 10.7 mm).
-- **PCB creepage slot** &mdash; Evaluate adding a milled slot at the U7 / U8 isolation boundary if CE / MED certification is pursued.
-- **Dedicated VCC bypass at U7** &mdash; Add a 100 nF 0603 adjacent to U7 VCC pin (pin 6).
-- **HS NMEA 0183 TX support** &mdash; Robust 38400 baud TX requires a redesigned rise-time-assist stage (e.g. constant-current source) &mdash; not achievable with a simple C47 value change.
-
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **C47 rework: 2.2 nF → 820 pF** — Update the schematic BOM and rework all assembled V1.2 units. Component value change only (0603 C0G footprint unchanged). Restores rise-time-assist effectiveness at 4800 baud on long cables and adds 9600 baud capability.
+- **C58 and C54 bypass distance** — C58 is 7.70 mm from U14 VIN; C54 is 5.46 mm from U14 VOUT (C53 is 6.92 mm). All exceed the ≤ 2 mm guideline. If VST oscillation is observed under transient load at bring-up, rework the caps to within 2 mm of U14 pins.
+- **C49 / C50 schematic part-number fix** — KiCAD schematic lists the wrong manufacturer P/N (GRM188R71H104KA93D, 100 nF) for C49 / C50; assembled BOM value (100 pF) is correct. Metadata-only fix in the schematic.
+- **R66 KiCAD symbol series** — KiCAD symbol shows RT-series thin-film; the RC-series thick-film 1 kΩ is correct and matches the BOM. Metadata-only fix in the schematic.
+- **LDO_VIN surge trace width** — Confirm via Gerber or DRC that the surge-carrying trace from R69 to the D13/D15/M2 cluster is ≥ 0.5 mm (not extractable from text-level PCB data).
+- **DRC run** — DRC was not run during the PCB review. Run `kicad-cli pcb drc --severity-error --severity-warning`, particularly around the isolation gap.
+
+**Next version (V1.3 / V2.0)**
+
+- **Replace J3 with M12 3-pin waterproof connector** — M12 A-code or B-code, panel-mount, IP67, field-wireable; the Legacy Serial Protocol pin assignment (power / ground / signal) maps directly. The 1211-compatible footprint is replaced; no circuit changes required.
+- **C23 bypass distance** — Add a dedicated 100 nF 0603 bypass adjacent to U6 pin 6 (currently 9.4 mm away).
+- **Dedicated VCC bypass at U7** — Add a 100 nF 0603 adjacent to U7 VCC pin (pin 6); C31 (the nearest discrete bypass) is 9.9 mm from U7.
+- **Dedicated bypass at U6 LED supply** — No bypass is placed at U6's LED supply node (pad 1); add a 100 nF cap for HF immunity in the marine environment.
+- **Guard ring around U6 isolation gap** — Add an unconnected guard trace if conformal coating is not applied; reduces ionic creepage risk in marine salt-spray.
+- **D8 proximity** — Relocate D8 to within ≈ 3 mm of the ST_SIG isolation via (currently 10.7 mm) for better transient suppression.
+- **Front-end protection distance from J3** — D14 / C49 / D13 are 14–23 mm from J3 due to THT body clearance; review whether a revised connector placement or rear-side protection could reduce the unprotected trace length.
+- **PCB creepage slot** — Evaluate a milled slot at the U6 and U7 / U8 isolation boundaries if CE / MED certification is pursued.
+- **HS NMEA 0183 TX support** — Robust 38400 baud TX requires a redesigned rise-time-assist stage (e.g. a constant-current source) — not achievable with a simple C47 value change.
 
 ## References
 
@@ -579,5 +552,13 @@ Transmit:
 14. Murata, [*LQM18FN1R0M00D 1 µH Inductor*](https://www.murata.com/en-us/api/pdfdownloadapi?cate=&partno=LQM18FN1R0M00D)
 15. Yageo, [*AC1210JR-0747RL AEC-Q200 Thick-Film Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-AC_Group_52_RoHS_L_12.pdf)
 16. IPC, *IPC-2221 Generic Standard on Printed Board Design*, Table 6-1
-17. Noland Engineering, [*Understanding and Implementing NMEA 0183 and RS422*](https://www.nolandeng.com/downloads/Interfaces.pdf)
-18. Raymarine, [*SeaTalk Interface Overview*](https://web.archive.org/web/20090902021951/http://raymarine.custhelp.com/app/answers/detail/a_id/1016/~/seatalk-communications---overview)
+17. IEC, *IEC 60747-5-5 — Semiconductor devices — Optoelectronic devices — Isolation voltage*
+18. Noland Engineering, [*Understanding and Implementing NMEA 0183 and RS422*](https://www.nolandeng.com/downloads/Interfaces.pdf)
+19. Raymarine, [*SeaTalk Interface Overview*](https://web.archive.org/web/20090902021951/http://raymarine.custhelp.com/app/answers/detail/a_id/1016/~/seatalk-communications---overview)
+
+## Related pages
+
+- [Wind Interface](./wind-interface.md) — the transducer front-end whose apparent-wind data this interface places on the bus
+- [Power Supplies](./power-supplies.md) — the digital VCC rail that powers the opto-isolator MCU side
+- [ESP32 Module](./esp32-module.md) — the UART GPIOs driving `ST_RX` / `ST_TX` / `ST_EN`
+- [External Connectors](/wti400/v1.2/quick-reference/connectors) — J3 pinout and the full connector roster

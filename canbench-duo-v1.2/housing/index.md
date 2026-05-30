@@ -12,7 +12,11 @@ CANBench Duo **v1.2** — Schematic-stage refresh of the V1.1 fabricated prototy
 **Other versions:** [v1.1 — fabricated prototype (current)](/canbench-duo/v1.1/)
 :::
 
-The CANBench Duo PCB sits inside a **Yongu YG-H10A extruded aluminium split enclosure** with black anodised finish. The extrusion forms the top and bottom faces; two vertical aluminium faceplates close the front and back. The PCB slides into milled grooves in the extrusion.
+## Overview
+
+This page covers the mechanical housing for the CANBench Duo passive instrument: enclosure type and orientation, the dual-face cable layout convention, surface markings, chassis bonding, and material specifications. Housing items deferred to the next physical revision are tracked under [Gaps & next version](#gaps--next-version).
+
+The CANBench Duo PCB sits inside a **Yongu YG-H10A extruded aluminium split enclosure** with black anodised finish. The extrusion forms the top and bottom faces; two vertical aluminium faceplates close the front and back. The PCB slides into milled grooves in the extrusion. V1.2 is a schematic-stage refresh that is mechanically identical to the V1.1 prototype; no V1.2 enclosure has been built yet.
 
 ## Orientation
 
@@ -69,7 +73,7 @@ The intent for production assembly is to use **internal sharktooth / star lock w
 | Internal mounting | PCB slides into milled grooves; no internal standoffs needed |
 | Surface markings | Laser-etched, light-grey on black anodised, matte finish |
 
-## Known housing items
+## Gaps & next version
 
 - **Anodize removal at chassis-bond interfaces** is on the V1.3 production fixture plan. V1.1 prototype units rely on the wire-braid binding-post path as the primary chassis bond; the SMA / M12 secondary path may add resistance until anodize removal is in place.
 - **PCB silkscreen vs enclosure label orientation** — the regulatory marks (CE / UKCA / RoHS) are on F.SilkS, which faces DOWN. V1.3 may migrate them to B.SilkS so they appear on the top face alongside the laser-etched operational labels, satisfying the visibility requirement of the regulatory directives more directly.

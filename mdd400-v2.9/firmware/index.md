@@ -12,6 +12,10 @@ MDD400 **v2.9** — Fabricated prototype, bench-test phase. **No production firm
 
 :::
 
+## Overview
+
+This page covers the firmware state of the MDD400 V2.9 prototype and the plan for its production firmware. **V2.9 runs only ad-hoc hardware test routines today** — per-peripheral bring-up code that confirms the board design, with no integrated application loop. Writing a production-ready firmware in **ESP-IDF** is the next major project task; it will migrate the operational behaviour from the mature MDD400 V1.0 PlatformIO / Arduino codebase while adding the wireless, OTA, and storage capabilities V1.0 lacked. The sections below describe the current bench-test state, the predecessor V1.0 firmware, the planned ESP-IDF task architecture and migration plan, and the planned non-volatile storage, display-protocol, and power/fault-management behaviour.
+
 ## Current state (V2.9)
 
 The MDD400 V2.9 prototype runs only **hardware test routines** at the moment — small, dedicated programs used to exercise each peripheral during bring-up:
@@ -94,6 +98,12 @@ All UI rendering is handled by the HMI display's internal microcontroller. The E
 At startup, the firmware will assert DISP_EN (GPIO21) to enable the display power switch after initialisation. The TWAI_EN signal (GPIO2) will be driven high to enable the CAN transceiver after bus enumeration. The Legacy Serial TX enable (ST_EN, GPIO1) defaults to high (transmitter disabled) and will be asserted only during active transmit windows.
 
 The INA219 current monitor will provide the firmware with continuous supply current and voltage readings. If supply voltage falls outside the 9–16 V operating window or current exceeds the 250 mA design maximum, the firmware will log the event to NVS and optionally trigger an audio alert.
+
+## Related pages
+
+- [Tasks](../tasks.md) — open work items, including the production ESP-IDF firmware build
+- [Circuit Design → ESP32-S3 module](../circuit-design/esp32-module.md) — the controller the firmware runs on
+- [MDD400 V2.9 overview](../index.md) — product home and version history
 
 ## References
 

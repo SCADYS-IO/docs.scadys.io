@@ -16,6 +16,12 @@ CANBench Duo **v1.1** — Fabricated prototype, sole built unit. V1.1 is electri
 The CANBench Duo V1.1 fabricated prototype carries CE, UKCA, and RoHS marks on the PCB silkscreen as a **forward-looking conformity claim**. Formal Declaration of Conformity, EMC test report, and component-level lead-free verification are pending the V1.3 production release. Neither the V1.1 prototype nor the V1.1 schematic is a certified product.
 :::
 
+## Overview
+
+This page covers the regulatory and conformity status of the CANBench Duo V1.1. The CANBench Duo is a **passive bench measurement instrument**, not a marine-deployed product — it carries no NMEA 2000 or other marine compliance claim. The M12 connector form factor and J10 pinout are N2K-compatible for bench interfacing only; the instrument itself is not N2K-certified.
+
+The V1.1 fabricated prototype carries CE, UKCA, and RoHS marks on its silkscreen as a forward-looking conformity claim. Formal certification — Declaration of Conformity, accredited EMC test report, and component-level lead-free verification — is pending the V1.3 production release. The sections below summarise the current per-directive status, the engineering artefacts already in place, what remains pending, the prototype-scope limitations, and the ISO 7637-2 (vehicle transient) scope, which does not apply to this instrument.
+
 ## Current status
 
 | Directive / standard | V1.1 status |

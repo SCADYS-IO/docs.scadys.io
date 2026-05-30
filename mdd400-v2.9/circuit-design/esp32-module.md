@@ -7,6 +7,8 @@ hw_status_label: "Fabricated prototype — testing phase"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_4d7d3825.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket, status LED). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
+
 :::note[Hardware version]
 
 MDD400 **v2.9** — Fabricated prototype, bench-test phase. The board is the **developer/kit** assembly variant. The firmware-programming hardware (J1 / U4 / D3 / D4 / D5 populated, R22 DNP) is documented on its own [Programming Socket](./programming-socket) page.
@@ -20,24 +22,23 @@ This page documents the MDD400's main application processor — an Espressif ESP
 - The **firmware programming socket** (J1 IDC header, the optional HT7833 LDO U4, the three OR'ing Schottky diodes D3 / D4 / D5, and the production-variant zero-ohm bridge R22) → [Programming Socket](./programming-socket).
 - The **status LED** (Q1 PNP switching the amber D2 LED via the LED_EN signal) → [LED Indicator](./led-indicator).
 
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_4d7d3825.svg" alt="ESP32 module schematic — full sheet (MCU module, supply bypass, ESP-PROG programming socket, status LED). Zoom and pan freely; per-sub-circuit zoomed views appear below." />
+Two sub-circuits are covered on this page, in narrative order:
 
-Two sub-circuits on this page, in narrative order:
+- **ESP32-S3 module and signal map** — U3 itself, its global-label fan-out to every other sub-sheet, the I²C bus pull-ups (logically the MCU's, physically on the sensor sub-sheet), and the antenna-end clearance treatment.
+- **VCC supply bypass and control-line RC networks** — multi-stage VCC decoupling at U3's 3V3 pad, the EN power-on RC, and the IO0 boot-strap pull-up.
 
-1. **ESP32-S3 module and signal map** — U3 itself, its global-label fan-out to every other sub-sheet, and the antenna-end clearance treatment.
-2. **VCC supply bypass and control-line RC networks** — multi-stage VCC decoupling at U3's 3V3 pad, the EN power-on RC, and the IO0 boot-strap pull-up.
-
----
-
-## ESP32-S3 module and signal map
-
-<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_4d7d3825.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
-
-### Functional specification and design objectives
+## Functional specification and design objectives
 
 - House a pre-certified, dual-core Wi-Fi/Bluetooth MCU module with enough on-board flash and PSRAM to run the MDD400 firmware (DGUS UI assets in flash, OTA dual-image layout, SPIFFS) without external memory.
 - Expose the module's I/O cleanly to every other sub-sheet via hierarchical global labels so the system-level schematic stays readable.
 - Maintain the module's pre-certification by satisfying Espressif's antenna keep-out requirement on the PCB.
+- Provide multi-stage VCC bypass at U3's 3V3 castellated pad, sized to handle ESP32-S3 Wi-Fi TX current pulses without sagging the 3.3 V rail.
+- Hold ESP_EN (CHIP_PU) and ESP_BOOT (IO0) at clean, well-defined logic states during power-up and during normal operation.
+- Time the EN release after VCC stabilises, satisfying Espressif's minimum reset-extension requirement.
+
+## ESP32-S3 module and signal map
+
+<SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_4d7d3825.svg" alt="ESP32-S3 module sub-circuit — U3 (ESP32-S3-WROOM-1-N16R8) with all hierarchical global labels for inter-sheet signal fan-out." initialFocus="13.335 12.7 132.715 95.25" />
 
 ### How it works
 
@@ -74,9 +75,11 @@ The MDD400 I²C bus is shared across three sensor slaves on the `i2c_sensors.kic
 
 The asymmetric pull-up choice (10 kΩ SCL, 5 kΩ SDA) compensates for the higher capacitive load on SDA — every slave on the bus contributes capacitance on SDA when it acknowledges, but only the master drives SCL. The bus runs at I²C **Standard Mode (100 kHz)**; rise-time at 5 kΩ ∥ 50 pF bus capacitance is τ ≈ 250 ns, well inside the 1000 ns Standard-Mode limit.
 
-**Antenna-end clearance.** The Espressif module datasheet requires the antenna projection area to be free of copper on all PCB layers. The MDD400 V2.9 layout satisfies this with generous keep-out: the F.Cu GNDREF pour boundary sits ≥ 6.3 mm beyond the antenna end, the B.Cu GNDREF pour ≥ 10.9 mm, and the antenna is aligned with a dedicated board-edge slot. The 3 mm minimum is exceeded by a factor of two. Module pre-certification is preserved.
+#### Antenna-end clearance
 
-### Performance review
+The Espressif module datasheet requires the antenna projection area to be free of copper on all PCB layers. The MDD400 V2.9 layout satisfies this with generous keep-out: the F.Cu GNDREF pour boundary sits ≥ 6.3 mm beyond the antenna end, the B.Cu GNDREF pour ≥ 10.9 mm, and the antenna is aligned with a dedicated board-edge slot. The 3 mm minimum is exceeded by a factor of two. Module pre-certification is preserved.
+
+### Performance
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -89,21 +92,9 @@ The asymmetric pull-up choice (10 kΩ SCL, 5 kΩ SDA) compensates for the higher
 | Antenna keep-out (B.Cu) | ≥ 10.9 mm | Exceeds 3 mm Espressif minimum |
 | GND stitching vias under U3 | 41 vias, ~1.0 mm spacing at the right-column edge | ≤ 1.5 mm guideline met |
 
-### Bring-up tests
-
-1. **VCC rail under sustained Wi-Fi TX (worst-case load)** — Using a Wi-Fi-enabled test build (production firmware does not enable Wi-Fi), run a 30-minute 802.11b TX burst / TCP iperf at typical operating distance. Pass if the VCC rail (probed at U3 pad 2) stays within ±3 % of 3.3 V throughout, with no Wi-Fi disconnects.
-
----
-
 ## VCC supply bypass and control-line RC networks
 
 <SchematicViewer src="/img/schematics/mdd400-v2.9/esp32_module_4d7d3825.svg" alt="VCC supply bypass and control-line RC networks sub-circuit — main 3V3 bypass cluster (C4 100 pF C0G, C2 100 nF, C1 10 µF) at U3 pad 2, additional bulk and mid-frequency bypass on the VCC pour (C16 / C26 10 µF, C17 / C22 / C29 100 nF, C3 1 µF), EN pull-up (R4 + C3 RC), and BOOT pull-up (R24)." initialFocus="146.05 12.7 137.16 76.2" />
-
-### Functional specification and design objectives
-
-- Provide multi-stage VCC bypass at U3's 3V3 castellated pad, sized to handle ESP32-S3 Wi-Fi TX current pulses without sagging the 3.3 V rail.
-- Hold ESP_EN (CHIP_PU) and ESP_BOOT (IO0) at clean, well-defined logic states during power-up and during normal operation.
-- Time the EN release after VCC stabilises, satisfying Espressif's minimum reset-extension requirement.
 
 ### How it works
 
@@ -138,7 +129,7 @@ Time to reach the ESP32-S3's valid-HIGH threshold (≥ 0.75 × VCC ≈ 2.48 V) i
 
 **BOOT strap.** R24 (10 kΩ) pulls ESP_BOOT (U3 IO0) up to VCC. Unlike the EN net, **there is no RC capacitor on IO0** — adding one would slow IO0's rise and could delay response to programmer-driven boot-mode entry (where the ESP-PROG tool pulls IO0 LOW via J1 just before toggling EN). The pull-up alone is sufficient: parasitic trace + pin capacitance (~ 15 pF) charges through R24 in &lt; 1 µs, so IO0 is valid HIGH well before EN releases at ~14 ms. During programming, ESP-PROG overrides R24 by pulling IO0 LOW through J1 pin 5, and the module enters ROM download mode when EN is toggled.
 
-### Performance review
+### Performance
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -153,13 +144,14 @@ Time to reach the ESP32-S3's valid-HIGH threshold (≥ 0.75 × VCC ≈ 2.48 V) i
 | BOOT pull-up | R24 = 10 kΩ, no RC cap | t<sub>r</sub> (parasitic) &lt; 1 µs |
 | GPIO strapping conflict check | None on this sheet | Compliant with ESP32-S3 boot requirements |
 
-### Bring-up tests
+## PCB Layout
 
-1. **VCC rail under Wi-Fi TX** — Probe at U3 pad 2 during a sustained 802.11b TX burst. Pass if the rail stays within ±3 % of 3.30 V with no individual dip below 3.10 V (covers the C1 / C16 / C26 bulk reservoir behaviour combined with the plane-pair).
-2. **EN release timing** — Trigger oscilloscope on VCC rising; capture ESP_EN. Pass if ESP_EN crosses 2.48 V (valid HIGH threshold) ≥ 10 ms after VCC reaches 3.0 V.
-3. **BOOT pull-up integrity** — With the board in normal operation, probe ESP_BOOT. Pass if it sits stable at VCC (≥ 3.10 V) with no glitches over a 60 s capture.
+U3 sits with its castellated antenna end aligned to a dedicated board-edge slot, so the antenna projection is copper-free on every layer — the F.Cu GNDREF pour clears the antenna end by 6.3 mm, the B.Cu pour by 10.9 mm, well beyond the 3 mm Espressif minimum. A solid GNDREF plane is held continuous beneath the module body, with no signal traces broken through it; 41 stitching vias (0.3 mm drill, ~1.0 mm spacing in the tight right-column run) bond U3's castellated and exposed-pad grounds down to the two inner GNDREF planes.
 
----
+- **VCC bypass placement.** The C4 / C2 / C1 cluster sits immediately below U3's right-column 3V3 pad, in-line at minimum package spacing — C4 (100 pF C0G) pad 2 is < 1 mm from U3 pin 2 (3V3), then C2 (100 nF), then C1 (10 µF). The private daisy-chain trace ties into the F.Cu VCC pour through a single via at C1's far end (see *VCC supply bypass*). C16 / C17 / C22 / C26 form a second bulk/mid-frequency ring on the VCC pour near the LDO output.
+- **VCC rail.** VCC is a copper pour (not a trace), far exceeding the 0.5 mm minimum width, spanning the digital area from the U4 LDO output to U3's supply pads so the RF-frequency return path stays low-impedance.
+- **Signal routing.** ESP_TX / ESP_RX to J1 are kept direct and short (straight-line ~29.5 mm; target < 50 mm — routed length not yet extracted). TWAI_TX/RX route directly to the CAN sub-sheet pads; I2C_SDA / I2C_SCL use 0.2 mm traces routed away from the SMPS switching node and the antenna area, to the pull-up points near the sensor cluster.
+- **Ground.** No isolation on this sheet — all components share the VCC / GNDREF domain. The unbroken inner GNDREF planes also provide the antenna's RF reference under its full projection back into the board.
 
 ## Components
 
@@ -180,40 +172,49 @@ Time to reach the ESP32-S3's valid-HIGH threshold (≥ 0.75 × VCC ≈ 2.48 V) i
 
 Programming-socket components (U4, D3, D4, D5, J1, R22) are listed on the [Programming Socket](./programming-socket) page. Status-LED components (Q1, R8, R14, R15, D2) are on the [LED Indicator](./led-indicator) page.
 
----
-
 ## Testing & Verification
 
 :::caution
 
-V2.9 is a fabricated prototype in the bench-test phase. Programming via the ESP-PROG adapter has been confirmed working on both MDD400 V2.9 and WTI400 V1.2. **No quantitative bench measurements have been performed on the VCC bypass, EN RC, BOOT pull-up, or LDO thermal behaviour yet.** The following are required.
+V2.9 is a fabricated prototype in the bench-test phase. Programming via the ESP-PROG adapter has been confirmed working on both MDD400 V2.9 and WTI400 V1.2. **No quantitative bench measurements have been performed on the VCC bypass, EN RC, or BOOT pull-up yet.** The following are required.
 
 **Hardware bring-up (rig at the bench):**
 
-- **VCC rail under Wi-Fi TX** — Probe at U3 pad 2 during a sustained 802.11b TX burst. Pass if the rail stays within ±3 % of 3.30 V with no individual dip below 3.10 V.
-- **EN release timing** — Trigger on VCC rising; capture ESP_EN. Pass if ESP_EN crosses 2.48 V ≥ 10 ms after VCC reaches 3.0 V.
-- **BOOT pull-up integrity** — Capture ESP_BOOT over a 60 s window during normal operation. Pass if it sits stable at VCC with no glitches.
+- **VCC rail under Wi-Fi TX** — Using a Wi-Fi-enabled test build (production firmware does not enable Wi-Fi), probe at U3 pad 2 during a sustained 30-minute 802.11b TX burst / TCP iperf at typical operating distance. Pass if the rail stays within ±3 % of 3.30 V with no individual dip below 3.10 V and no Wi-Fi disconnects (covers the C1 / C16 / C26 bulk reservoir combined with the plane-pair).
+- **EN release timing** — Trigger the oscilloscope on VCC rising; capture ESP_EN. Pass if ESP_EN crosses 2.48 V (valid-HIGH threshold) ≥ 10 ms after VCC reaches 3.0 V.
+- **BOOT pull-up integrity** — Capture ESP_BOOT over a 60 s window during normal operation. Pass if it sits stable at VCC (≥ 3.10 V) with no glitches.
 
 Programmer-side bring-up (end-to-end programming, VDD-only operation, D3 back-feed check, U4 thermal soak) is on the [Programming Socket](./programming-socket) page.
 
-**For V2.10 (tracked in `v2.10-improvements.md`):**
-
-- **ESP_TX / ESP_RX trace length verification** — Measure actual routed length in the KiCAD PCB editor. If either trace exceeds 50 mm, add 33 Ω series damping at the U3 output pads per the ESP-PROG Hardware Guide. (Straight-line distance is ~29.5 mm; routed length not yet extracted.)
-- **DISP_TX / DISP_RX series damping** — Likely longer traces than the J1 path; same 33 Ω damping policy if > 50 mm. The damping resistors belong adjacent to the *transmitter* output (U3 DISP_TX pad and the display module TX pad respectively).
-
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **ESP_TX / ESP_RX routed length** — Actual trace lengths from U3's pads to J1 cannot be measured from the KiCAD segment data without full routing extraction (straight-line ~29.5 mm). Measure in the KiCAD PCB editor; if either exceeds 50 mm, 33 Ω series damping at the U3 output pads is required per the ESP-PROG Hardware Guide.
+
+**Next version (V2.10)**
+
+- **ESP_TX / ESP_RX trace length verification** — Confirm routed length in the KiCAD PCB editor and add 33 Ω series damping at the U3 output pads if either trace exceeds 50 mm.
+- **DISP_TX / DISP_RX series damping** — Likely longer traces than the J1 path; apply the same 33 Ω damping policy if > 50 mm. The damping resistors belong adjacent to the *transmitter* output (the U3 DISP_TX pad and the display module TX pad respectively).
+- **Move the I²C pull-up sub-circuit onto the `esp32_module` sheet** — R1 (SCL) and R2 / R3 (SDA, parallel) are the bus pull-ups; they belong to the MCU but are currently drawn on the `i2c_sensors` KiCad sheet, so they sit with the sensor cluster and do not appear in this page's schematic view. In the next schematic revision, relocate the pull-up sub-circuit onto `esp32_module.kicad_sch` alongside U3 so the schematic matches where the pull-ups logically belong. (The WTI400 already places its I²C pull-ups on the ESP32 module sheet — this aligns MDD400 with that convention.)
 
 ## References
 
 - Espressif Systems, [*ESP32-S3-WROOM-1 & WROOM-1U Module Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf).
 - Espressif Systems, [*ESP32-S3 Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf).
 - Espressif Systems, [*ESP-IDF API Reference — GPIO & RTC GPIO*](https://docs.espressif.com/projects/esp-idf/en/v5.5/esp32s3/api-reference/peripherals/gpio.html).
+- Espressif Systems, [*ESP-PROG Hardware Guide*](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html).
 - Yageo, [*RC Group Chip Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf).
 - Murata Electronics, [*GRM21BZ71E106KE15L — 10 µF X7R 0805*](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L).
 - Murata Electronics, [*GCM188R71H104KA57D — 100 nF X7R 0603*](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D).
 - Murata Electronics, [*GCM188R71E105KA64D — 1 µF X7R 0603*](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71E105KA64D).
 - Murata Electronics, [*GRM1885C1H101JA01D — 100 pF C0G 0603*](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H101JA01D).
-- [Programming Socket](./programming-socket) — J1 IDC header; HT7833 LDO; dual-Schottky-OR'd chain; programming bring-up.
-- [LED Indicator](./led-indicator) — Status LED (Q1 PNP, D2 amber, LED_EN behaviour).
+
+## Related pages
+
+- [Programming Socket](./programming-socket) — J1 IDC header, HT7833 LDO, dual-Schottky-OR'd chain, and programming bring-up (same sheet).
+- [LED Indicator](./led-indicator) — status LED (Q1 PNP, D2 amber, LED_EN behaviour) driven by U3 (same sheet).
+- [CAN Transceiver](./can-transceiver) — consumes the TWAI_TX / TWAI_RX / TWAI_EN signals mapped here.
+- [Pin Assignments](/mdd400/v2.9/quick-reference/pin-assignments) — the full GPIO signal map for U3.

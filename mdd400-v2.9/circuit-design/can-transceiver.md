@@ -17,11 +17,9 @@ MDD400 **v2.9** — Fabricated prototype — testing phase
 
 The CAN transceiver connects the MDD400 to an NMEA 2000 network. It implements the ISO 11898-2 physical layer using a TI SN65HVD234DR 3.3 V transceiver driven directly by the ESP32-S3 TWAI peripheral. An NUP2105LT1G TVS and TDK ACT45B common-mode choke sit between the Micro-C connector and the transceiver, protecting against bus transients and conducted EMI before they reach the silicon.
 
----
+This page covers a single sub-circuit — the **CAN Transceiver** — drawn on the `can_transceiver` KiCad sheet.
 
-## CAN Transceiver
-
-### Functional specification and design objectives
+## Functional specification and design objectives
 
 The CAN transceiver circuit must:
 
@@ -31,6 +29,8 @@ The CAN transceiver circuit must:
 - limit bus edge slew rate to reduce radiated emissions at NMEA 2000's 250 kbps operating speed;
 - hold the bus recessive during boot, before firmware has initialised the TWAI peripheral; and
 - keep the transceiver in standby until firmware explicitly enables it.
+
+## CAN Transceiver
 
 ### How it works
 
@@ -45,6 +45,8 @@ The ESP32-S3 implements CAN via its TWAI (Two-Wire Automotive Interface) periphe
 <SchematicViewer src="/img/schematics/mdd400-v2.9/can_transceiver_9be6f6e3.svg" alt="NMEA 2000 Connector and Shield block — J2 Micro-C panel-mount socket, shield handling. Zoom out to see the full sheet." initialFocus="19.05 101.6 127 88.9" />
 
 J2 is an M12 A-coded 5-pin male panel-mount socket (NMEA 2000 Micro-C) rated IP67. Full pin assignments are in the [External Connectors](/mdd400/v2.9/quick-reference/connectors) reference. The shield pin is left floating inside the device, consistent with NMEA 2000 practice of connecting the drain wire to vessel ground at a single external point only.
+
+![NMEA 2000 M12 A-coded male connector — front view: pin 1 Shield, pin 2 NET-S (+V), pin 3 NET-C (−V), pin 4 NET-H (CAN-H), pin 5 NET-L (CAN-L)](/img/mdd400-v2.9/nmea2000_connector_pinout.svg)
 
 #### EMC protection chain
 
@@ -88,7 +90,7 @@ V2.9 replaced an isolated CAN transceiver (ISO1042) with the SN65HVD234DR and re
 
 U5's VCC (pin 3) is decoupled by C19 (100 nF, X7R, placed immediately adjacent to U5) and C18 (10 µF, X7R, bulk bypass), following the SN65HVD234 datasheet recommendation. In V2.9, C18 centre-to-centre distance from U5 is ~5.6 mm — flagged for tightening in V2.10.
 
-### Performance review
+### Performance
 
 | Parameter | Calculation | Result |
 |-----------|-------------|--------|
@@ -101,31 +103,6 @@ U5's VCC (pin 3) is decoupled by C19 (100 nF, X7R, placed immediately adjacent t
 | RXD filter f−3dB (R16 = 47 Ω, C_GPIO ≈ 5 pF) | 1 / (2π × 47 Ω × 5 pF) | 677 MHz — no impact on CAN signal |
 | U10 junction capacitance per node | 30 pF × 2 lines | 60 pF (ISO 11898-2 node budget: 100 pF) ✓ |
 | U10 clamp voltage vs. U5 bus fault spec | 40 V @ 5 A vs. ±36 V | ⚠ 4 V excess — verify survivability at bring-up |
-
-### Bring-up tests
-
-1. **Bus idle — recessive state**: with TWAI_EN LOW, measure CANH and CANL at J2 — pass if both sit at approximately 2.5 V.
-2. **Transceiver enable**: assert TWAI_EN HIGH — pass if U5 enters normal mode with no bus disturbance visible on a scope.
-3. **TXD default**: before TWAI initialised, measure TXD at U5 pin 1 — pass if HIGH (R17 holding recessive).
-4. **TWAI loopback**: configure TWAI peripheral in self-test/loopback mode; transmit a frame — pass if received without error.
-5. **Receive on live network**: connect to an NMEA 2000 network; capture traffic with a CAN analyser — pass if frames are received at 250 kbps with no error frames.
-6. **Transmit on live network**: send a test PGN — pass if the frame appears on the network and is acknowledged by another node.
-7. **Bus fault survivability**: apply a brief over-voltage to CANH/CANL at J2; confirm U10 clamps and U5 survives. Note the 4 V clamp-vs-spec margin — see Gaps.
-
-### Gaps & next version
-
-**Verify at bring-up**
-
-- **U10 clamp margin**: U10 clamps at 40 V @ 5 A; the SN65HVD234DR bus fault specification is ±36 V. U5 relies on its internal clamping structures above 36 V. Verify U5 survives the worst-case bus fault scenario before committing to a production run.
-
-**Next version**
-
-- **TWAI_TX damping footprint**: no series resistor is fitted on TXD. Add a DNP 0603 footprint to allow evaluation at bring-up without a board respin.
-- **C36 population decision**: resolve DNP status after EMC testing; either populate or remove the footprint.
-- **Tighten C18 placement**: move C18 adjacent to U5 pin 3 to reduce the bulk bypass trace from ~5.6 mm to ≤ 3 mm.
-- **NMEA 2000 certification**: the physical layer meets ISO 11898-2, but formal NMEA 2000 certification has not been pursued. Required before any commercial release.
-
----
 
 ## Firmware notes
 
@@ -145,7 +122,13 @@ NMEA 2000 uses 11-bit (standard frame) CAN identifiers. Configure the TWAI accep
 
 The CAN physical layer is the scope of this page. PGN encoding, fast-packet reassembly, and ISO 11783-3 network address claiming are handled at a higher layer and are not covered here.
 
----
+## PCB Layout
+
+The protection and filter chain is laid out connector-first, in the same order as the signal flows: **J2 → U10 → C36 → C34/C35 → FL1 → C27/C28 → U5**. All protection and filter components sit within 12–20 mm of J2, with U10 (the TVS) closest at 11.9 mm — clamping transients at the connector entry point per TI SLLA271.
+
+- **Differential symmetry.** C34/C35 (pre-CMC) and C27/C28 (post-CMC) are placed symmetrically about the NET-H/NET-L centreline (±2.8 mm), with FL1 centred on the same axis. NET-H and NET-L are routed at ≥ 0.2 mm width and length-matched through the filter section, so common-mode interference is not converted into differential-mode signal error.
+- **Ground.** A solid GNDREF plane runs under the entire circuit on both copper layers. NET-C (J2 pin 3) is bonded directly to GNDREF — the standard non-isolated NMEA 2000 node topology. U10's GNDREF return needs a short, low-inductance via adjacent to the SOT-23 pad so ESD transients are shunted before they reach the silicon.
+- **Decoupling.** C19 (100 nF) sits adjacent to U5's VCC pin; C18 (10 µF bulk) is ~5.6 mm centre-to-centre from U5 — above the 3 mm datasheet guideline and flagged for tightening in V2.10. R16 (47 Ω) is placed at U5's RXD output side, not the MCU side, to terminate the transceiver's output capacitance at the source.
 
 ## Components
 
@@ -165,8 +148,6 @@ The CAN physical layer is the scope of this page. PGN encoding, fast-packet reas
 | R20 | 10 kΩ | 0603 — EN pull-down to GNDREF; holds transceiver in standby at boot | — |
 | R21 | 10 kΩ | 0603 — Rs slope-control resistor (U5 pin 8 to GNDREF) | — |
 
----
-
 ## Testing & Verification
 
 :::caution
@@ -183,17 +164,22 @@ V2.9 is a fabricated prototype in the bench-test phase. The CAN transceiver sect
 - **Transmit on live network** — Send a test PGN. Pass if the frame appears on the network and is acknowledged by another node.
 - **Bus fault survivability** — Apply a brief over-voltage to CANH / CANL at J2; confirm U10 clamps and U5 survives. Note the 4 V clamp-vs-spec margin.
 
-**For V2.10 (tracked in `v2.10-improvements.md`):**
-
-- **U10 clamp margin** — U10 clamps at 40 V @ 5 A while the SN65HVD234DR bus-fault spec is ±36 V. Confirm U5 survives the worst-case bus fault before committing to a production run; if marginal, swap U10 for a lower-clamping CAN TVS array.
-- **TWAI_TX damping footprint** — No series resistor is fitted on TXD. Add a DNP 0603 footprint to allow evaluation at bring-up without a board respin.
-- **C36 population decision** — Resolve DNP status after EMC testing; either populate or remove the footprint.
-- **Tighten C18 placement** — Move C18 adjacent to U5 pin 3 to reduce the bulk-bypass trace from ~5.6 mm to ≤ 3 mm.
-- **NMEA 2000 certification** — The physical layer meets ISO 11898-2 but formal NMEA 2000 certification has not been pursued; required before any commercial release.
-
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **U10 clamp margin** — U10 clamps at 40 V @ 5 A while the SN65HVD234DR bus-fault spec is ±36 V. U5 relies on its internal clamping structures above 36 V. Confirm U5 survives the worst-case bus fault before committing to a production run; if marginal, swap U10 for a lower-clamping CAN TVS array.
+- **U10 ground via quality** — A short, low-inductance via adjacent to U10 pin 3 is critical for ESD clamping effectiveness. Verify in Gerber review.
+
+**Next version (V2.10)**
+
+- **TWAI_TX damping footprint** — No series resistor is fitted on TXD. Add a DNP 0603 footprint to allow evaluation at bring-up without a board respin.
+- **C36 population decision** — Resolve DNP status after EMC testing; either populate or remove the footprint.
+- **Tighten C18 placement** — Move C18 adjacent to U5 pin 3 to reduce the bulk-bypass trace from ~5.6 mm to ≤ 3 mm, per the SN65HVD234 datasheet.
+- **NET-H/NET-L length match** — A segment-count difference between the two traces warrants a trace-length measurement in the layout tool to confirm the ±0.5 mm match.
+- **NMEA 2000 certification** — The physical layer meets ISO 11898-2, but formal NMEA 2000 certification has not been pursued. Required before any commercial release.
 
 ## References
 
@@ -203,3 +189,9 @@ V2.9 is a fabricated prototype in the bench-test phase. The CAN transceiver sect
 - TDK, [*ACT45B Type Common Mode Filter/Choke*](https://product.tdk.com/en/search/emc/emc/cmfc_auto/info?part_no=ACT45B-510-2P-TL003)
 - NMEA, [*NMEA 2000 Standard*](https://www.nmea.org/nmea-2000.html)
 - ISO, *ISO 11898-2:2016 — Road vehicles — Controller area network (CAN) — Part 2: High-speed medium access unit*
+
+## Related pages
+
+- [CAN Bus Power](./can-bus-power.md) — derives VCC and the bus-power entry that feeds this transceiver
+- [ESP32-S3 Module](./esp32-module.md) — the TWAI_TX / TWAI_RX / TWAI_EN GPIO assignments driving U5
+- [External Connectors](/mdd400/v2.9/quick-reference/connectors) — J2 pinout and the full connector roster

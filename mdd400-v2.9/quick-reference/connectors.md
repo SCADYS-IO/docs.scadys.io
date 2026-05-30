@@ -19,3 +19,17 @@ MDD400 **v2.9** — Fabricated prototype — testing phase
 | Legacy Serial / NMEA 0183 | 3-pin Autohelm-style connector | LEGACY IO | 29.0 | 10.5 |
 
 X and Y are PCB-frame coordinates of the connector's reference point. For pinouts and electrical detail see [CAN Transceiver](../circuit-design/can-transceiver.md), [Programming Socket](../circuit-design/programming-socket.md), [Display Interface](../circuit-design/display-interface.md), and [Legacy Serial Interface](../circuit-design/legacy-serial.md).
+
+## NMEA 2000 connector pinout
+
+The NMEA 2000 network connection (J2) is a 5-pin M12 A-coded (Micro-C) **male** panel-mount connector. The diagram shows the pin assignments viewed from the front (mating face) of the device connector.
+
+![NMEA 2000 M12 A-coded male connector — front view: pin 1 Shield, pin 2 NET-S (+V), pin 3 NET-C (−V), pin 4 NET-H (CAN-H), pin 5 NET-L (CAN-L)](/img/mdd400-v2.9/nmea2000_connector_pinout.svg)
+
+| Pin | Signal | Description |
+|---|---|---|
+| 1 | Shield | Cable shield / drain — left floating inside the device (NMEA 2000 practice) |
+| 2 | NET-S | Power supply positive (+V) |
+| 3 | NET-C | Power supply common (−V) |
+| 4 | NET-H | CAN-H |
+| 5 | NET-L | CAN-L |

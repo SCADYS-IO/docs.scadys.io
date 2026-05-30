@@ -29,6 +29,17 @@ The fourth engineer-drawn rectangle on this sheet is an empty placeholder.
 
 The WTI400 board outline, mounting-hole positions, and overall mechanical interface match the **shared housing concept** that the WTI400 and MDD400 sister product both fit. Mechanical details live in `WTI400_V1.2.kicad_pcb` and are summarised in the *Mounting and board outline* section below.
 
+## Functional specification and design objectives
+
+The board-level markings and physical construction must:
+
+- carry the regulatory marks required by the target markets — EU RED 2014/53/EU (CE), UK Conformity Assessed (UKCA), FCC Part 15 (USA), RoHS (EU restricted-substances), and China EFUP (Environment Friendly Use Period);
+- carry the manufacturer identity (Scadys logo + copyright) and the product identity (board variant + revision), with the variant / revision in copper so it survives silkscreen wear;
+- provide a machine-readable pointer (QR code) from the physical board to the live product documentation;
+- provide pick-and-place fiducial references with a wide diagonal baseline, mirrored on both copper layers at identical XY coordinates so single-pass setup serves two-sided assembly;
+- realise a four-layer stack-up that gives two signal layers and two heavier inner power planes, with the **VCC – GNDREF – GNDREF – VCC** ordering that forms the digital domain's plane-pair bypass capacitance; and
+- present a non-rectangular outline and four-corner M3 mounting pattern compatible with the shared WTI400 / MDD400 panel-mount housing.
+
 ---
 
 ## Board specification
@@ -50,14 +61,6 @@ The WTI400 board outline, mounting-hole positions, and overall mechanical interf
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/pcb_markings_d21d2cbc.svg" alt="Silkscreen labels sub-section — board identity (S1), CE mark (S2), RoHS / China EFUP (S3), FCC mark (S4), Scadys logo (S5), QR code (S6), UKCA mark (S7), copyright (S8)." initialFocus="19.05 13.97 127.0 88.9" />
 
-### Functional specification and design objectives
-
-- Carry the regulatory marks required by the target markets — EU RED 2014/53/EU (CE), UK Conformity Assessed (UKCA), FCC Part 15 (USA), RoHS (EU restricted-substances), and China EFUP (Environment Friendly Use Period).
-- Carry the manufacturer identity (Scadys logo + copyright) and the product identity (board variant + revision).
-- Provide a machine-readable pointer (QR code) from the physical board to the live product documentation.
-
-### How it works
-
 All marks listed below are **silkscreen** unless noted. They sit on the F.Cu (top) and / or B.Cu (bottom) silkscreen layers.
 
 | Ref | Mark | Footprint | Purpose / placement |
@@ -75,7 +78,7 @@ All marks listed below are **silkscreen** unless noted. They sit on the F.Cu (to
 
 **Why both CE and UKCA marks are present.** Post-Brexit, the UK market requires UKCA rather than CE marking on goods placed on the UK market specifically. The WTI400 carries both so a single fabrication run can serve both EU and UK markets — the compliance test reports themselves are technically equivalent (both based on the same harmonised standards under different statutory instruments).
 
-### Performance review
+**Mark permanence.**
 
 | Mark | Visible on | Permanence |
 |---|---|---|
@@ -88,25 +91,11 @@ All marks listed below are **silkscreen** unless noted. They sit on the F.Cu (to
 
 **Field heritage.** The WTI400 V1.2 silkscreen has been in service on the test vessel for approximately 1,000 sea miles. Subjective inspection confirms the marks remain legible after that field exposure (open-deck installation, salt environment, UV exposure). The prior MLI400 V1.0 hardware revision (the WTI400's predecessor — installed on the same test vessel during the circumnavigation) used the same silkscreen process and survived an order of magnitude more sea miles without mark degradation.
 
-### Bring-up tests
-
-1. **QR code resolves to live docs** — Scan S6 with a phone QR reader. Pass if the URL matches the live product-docs URL exactly. The schematic-side `qr_docs.scadys.io_products_wti400_10` footprint reference must match the deployed URL — a typo or path-change here ships a broken QR on the production board.
-2. **Compliance-mark legibility** — Photograph each silkscreen mark under typical installation lighting. Pass if all marks are clearly readable at arm's length (Scadys logo, CE, UKCA, FCC, RoHS / EFUP all unambiguous).
-3. **Copyright year currency** — Confirm S8 reads the correct year for the production batch. The current silkscreen footprint reads "© 2025" but boards manufactured later may need a year refresh.
-
 ---
 
 ## Fiducial markers
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/pcb_markings_d21d2cbc.svg" alt="Fiducial markers sub-section — FID1 / FID2 on F.Cu, FID3 / FID4 on B.Cu (mirrored at the same XY positions), supporting pick-and-place machine-vision alignment." initialFocus="146.05 13.97 127.0 88.9" />
-
-### Functional specification and design objectives
-
-- Provide reference markers for the pick-and-place machine's vision system so it can compensate for board-to-board placement variation and skew.
-- Give a wide diagonal baseline (large XY separation) so that small absolute fiducial-detection error translates to a small angular correction error across the whole board.
-- Mirror the F.Cu fiducials on B.Cu at the same XY coordinates so single-pass setup works for two-sided assembly.
-
-### How it works
 
 Four 0.5 mm bare-copper fiducial markers (with 1.5 mm soldermask openings) form two mirrored pairs:
 
@@ -121,8 +110,6 @@ The pattern mirrors the MDD400 sister product's fiducial layout because the two 
 
 The **mirrored front / back placement** at identical XY coordinates means the same vision-system fixturing can index both sides without re-teaching coordinates — saves setup time on two-sided assembly runs.
 
-### Performance review
-
 | Parameter | Value | Notes |
 |---|---|---|
 | Fiducial copper diameter | 0.5 mm | Per IPC-7351 Class 2 recommendation |
@@ -130,24 +117,11 @@ The **mirrored front / back placement** at identical XY coordinates means the sa
 | F/B co-location accuracy | 0 µm (by design) | FID1 / FID3 and FID2 / FID4 share the same XY in the .kicad_pcb |
 | Vision-system suitability | Confirmed by V1.2 production assembly | Same fiducial pattern used on MDD400 sister product |
 
-### Bring-up tests
-
-1. **Pick-and-place machine vision recognises all four fiducials** — Confirm at the start of each production assembly run that the pick-and-place machine successfully detects FID1–FID4 without manual override. Pass if both F.Cu and B.Cu setups complete without operator intervention. *(Already confirmed for the V1.2 production batch installed on the test vessel.)*
-
 ---
 
 ## PCB stackup detail
 
 <SchematicViewer src="/img/schematics/wti400-v1.2/pcb_markings_d21d2cbc.svg" alt="PCB stackup sub-section — 4-layer construction (F.Cu / In1.Cu / In2.Cu / B.Cu) with copper weights and dielectric layers." initialFocus="19.05 102.87 127.0 88.9" />
-
-### Functional specification and design objectives
-
-- Four-layer construction giving two signal layers (F.Cu, B.Cu) and two inner layers (In1.Cu, In2.Cu) for power and ground distribution.
-- Inner layers heavier (1 oz / 35 µm) than outer layers (0.5 oz / 17.5 µm) to give low-resistance power planes without inflating the cost of finer signal-layer features.
-- Total board thickness of 1.6 mm — standard for marine enclosures and compatible with the panel-mount housing geometry.
-- Layer roles change region-by-region across the board so the SMPS, CAN-bus power, wind-LDO, digital, and isolation domains each get the stack-up that suits them.
-
-### How it works
 
 The physical stack-up, from top to bottom:
 
@@ -164,13 +138,15 @@ In the **SMPS, CAN-bus power, and wind-LDO islands**, all four layers carry GNDR
 
 Across **isolation boundaries** (CAN domain to digital domain; legacy-serial domain to digital domain), all four layers carry copper-free 1.4 mm creepage gaps. The wind-transducer connector also has a copper-free isolation gap up to the FL2 common-mode filter's GND_WIND ↔ GNDREF star point — see the [Wind Interface](./wind-interface.md) page.
 
-### Performance review
-
 The stackup specification has been validated by the V1.2 production assembly and the ~1,000 sea miles of in-service operation on the test vessel. Quantitative impedance / capacitance measurements have not been re-taken explicitly — the in-service performance (Wi-Fi link stability, no observed EMC issues from co-located equipment, no field-failure modes attributable to the stackup) is the empirical confirmation.
 
 ---
 
-## Mounting and board outline
+## PCB Layout
+
+No per-circuit `pcb_review` layout file exists for the board-level markings; the layout notes below are consolidated from this page's own mounting, outline, and stackup remarks (the per-region copper-fill and isolation-gap detail is in the *PCB stackup detail* section above).
+
+### Mounting and board outline
 
 The WTI400 V1.2 board has a non-rectangular outline shared with the MDD400 V2.9 sister product (both fit the same housing concept). Board extent:
 
@@ -211,21 +187,26 @@ The right-side edge step accommodates the wind-transducer connector tab cluster 
 
 V1.2 is in service. The marks and fiducials have been validated by the V1.2 production assembly and by the in-service deployment on the test vessel. A few items remain open for the V1.3 production fabrication run.
 
-**Hardware bring-up (already validated on V1.2 production):**
+**Hardware bring-up (rig at the bench):**
 
-- ~~QR-code URL resolution~~ — Validated on the V1.2 boards in service.
-- ~~Compliance-mark legibility~~ — Validated; marks survive open-deck installation.
-- ~~Pick-and-place fiducial recognition~~ — Validated through V1.2 production assembly.
-
-**For V1.3 (tracked in `v1.3-improvements.md`):**
-
-- **Compliance test reports** — The CE, UKCA, and FCC marks on the silkscreen indicate the device is designed for compliance with the corresponding standards. The actual *test reports* that authorise affixing those marks are part of the V1.3 compliance pre-screening campaign (CISPR 32 conducted emissions, FCC Part 15 radiated, RED 2014/53/EU harmonised standards, NMEA 2000 conformance). The marks should not be affixed on production boards until the test reports are signed off.
-- **Copyright year update** — Refresh S8 to the V1.3 production year if it differs from 2025.
-- **Re-scan QR code URL** — Confirm the deployed URL still matches the silkscreen QR on the V1.3 PCB before fabrication.
+- ~~QR-code URL resolution~~ — Validated on the V1.2 boards in service. Scan S6 with a phone QR reader; pass if the URL matches the live product-docs URL exactly.
+- ~~Compliance-mark legibility~~ — Validated; marks survive open-deck installation. Photograph each mark under typical installation lighting; pass if all are readable at arm's length.
+- ~~Pick-and-place fiducial recognition~~ — Validated through V1.2 production assembly; pick-and-place detected FID1–FID4 on both F.Cu and B.Cu setups without operator override.
 
 :::
 
 ---
+
+## Gaps & next version
+
+**Before next production run**
+
+- **Copyright year update** — Refresh S8 to the production year if it differs from 2025. The current silkscreen footprint reads "© 2025".
+- **Re-scan QR code URL** — Confirm the deployed URL still matches the silkscreen QR (`qr_docs.scadys.io_products_wti400_10`) on the PCB before fabrication; a typo or path change ships a broken QR.
+
+**Next version (V1.3)**
+
+- **Compliance test reports** — The CE, UKCA, and FCC marks on the silkscreen indicate the device is *designed for* compliance with the corresponding standards. The actual *test reports* that authorise affixing those marks are part of the V1.3 compliance pre-screening campaign (CISPR 32 conducted emissions, FCC Part 15 radiated, RED 2014/53/EU harmonised standards, NMEA 2000 conformance). The marks should not be affixed on production boards until the test reports are signed off.
 
 ## References
 
@@ -238,5 +219,11 @@ V1.2 is in service. The marks and fiducials have been validated by the V1.2 prod
 - EU, [*RoHS Directive 2011/65/EU*](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32011L0065).
 - China SJ/T 11364-2014, *Marking for the Restricted Use of Hazardous Substances in Electronic and Electrical Products* (EFUP / China RoHS).
 - NMEA 2000 Network Specification — IEC 61162-1 / SAE J1939 family.
-- [Circuit Design Overview](./index.md) — the system-level stack-up rationale that this page realises physically.
-- Sister-product reference: [MDD400 V2.9 PCB Markings & Compliance](/mdd400/v2.9/circuit-design/pcb-markings) — same board outline and stack-up; minor differences in board-identity and QR-code URL.
+
+## Related pages
+
+- [Power Supplies](./power-supplies.md) — the VCC-digital plane-pair bypass that the four-layer stack-up physically realises
+- [ESP32-S3 Module](./esp32-module.md) — the antenna keep-out cutout and the force-commutated discrete-cap topology that hands off to the plane pair
+- [Wind Interface](./wind-interface.md) — the right-side edge-step connector cluster and the GND_WIND ↔ GNDREF isolation gap
+- [External Connectors](/wti400/v1.2/quick-reference/connectors) — the connector roster behind the board-outline tab cluster
+- Sister-product reference: [MDD400 V2.9 PCB Markings & Compliance](/mdd400/v2.9/circuit-design/pcb-markings) — same board outline and stack-up; minor differences in board-identity and QR-code URL

@@ -7,6 +7,8 @@ hw_status_label: "In service — test vessel (~1,000 sea miles)"
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
 
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_d5db8452.svg" alt="Programming socket — full esp32_module sheet" />
+
 :::note[Hardware version]
 
 WTI400 **v1.2** — In service on the test vessel. The page covers the **developer/kit** assembly variant currently fitted (U4 / D4 / D5 / J1 populated, R24 DNP); the *Production variant* section below describes the configuration the same PCB will carry once volume builds use the pogo-pin fixture.
@@ -15,9 +17,9 @@ WTI400 **v1.2** — In service on the test vessel. The page covers the **develop
 
 ## Overview
 
-This page documents the WTI400 firmware-programming hardware on `esp32_module.kicad_sch`: the ESP-PROG-compatible IDC header J1, the optional HT7833 LDO (U4) with its isolation Schottky diodes (D4, D5), and the production-variant zero-ohm bridge (R24) that takes their place. The host MCU and its supply bypass are on the [ESP32 Module](./esp32-module) page.
+This page documents the WTI400 firmware-programming hardware on `esp32_module.kicad_sch`: the ESP-PROG-compatible IDC header J1, the optional HT7833 LDO (U4) with its isolation Schottky diodes (D4, D5), and the production-variant zero-ohm bridge (R24) that takes their place. The host MCU and its supply bypass are on the [ESP32 Module](./esp32-module.md) page.
 
-<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_d5db8452.svg" alt="ESP-PROG programming socket sub-circuit — J1 (2×3 2.54 mm IDC header, ESP-PROG-compatible), D4 (input isolation Schottky), U4 (HT7833 3.3 V LDO), D5 (Vout-to-Vin protection Schottky), R24 (zero-ohm production-variant link), and LDO-input decoupling C20 + C21." initialFocus="13.335 107.95 132.715 82.55" />
+This page covers a single sub-circuit — the **Programming Socket** — drawn on the `esp32_module` KiCad sheet.
 
 The two assembly variants share the same footprint:
 
@@ -26,8 +28,6 @@ The two assembly variants share the same footprint:
 
 The two variants are **mutually exclusive — never populate both R24 and U4** (would short the LDO output to its own input through R24 in an uncontrolled way).
 
----
-
 ## Functional specification and design objectives
 
 - Expose a programming interface compatible with Espressif's standard ESP-PROG 6-pin adapter for the developer/kit build, so off-the-shelf tools can flash and debug the device.
@@ -35,11 +35,13 @@ The two variants are **mutually exclusive — never populate both R24 and U4** (
 - Prevent the programmer from being back-fed by the board's own VCC rail when both are connected.
 - Provide a zero-cost path to delete all programmer-side parts in volume production where a pogo-pin fixture replaces the IDC socket.
 
----
+## Programming Socket
 
-## How it works
+<SchematicViewer src="/img/schematics/wti400-v1.2/esp32_module_d5db8452.svg" alt="ESP-PROG programming socket sub-circuit — J1 (2×3 2.54 mm IDC header, ESP-PROG-compatible), D4 (input isolation Schottky), U4 (HT7833 3.3 V LDO), D5 (Vout-to-Vin protection Schottky), R24 (zero-ohm production-variant link), and LDO-input decoupling C20 + C21." initialFocus="13.335 107.95 132.715 82.55" />
 
-### J1 — ESP-PROG-compatible IDC header
+### How it works
+
+#### J1 — ESP-PROG-compatible IDC header
 
 J1 (XFCN BH254V-6P) is a 2×3, 2.54 mm pitch through-hole IDC header matching the standard Espressif ESP-PROG pinout. From the module's frame of reference:
 
@@ -54,7 +56,7 @@ J1 (XFCN BH254V-6P) is a 2×3, 2.54 mm pitch through-hole IDC header matching th
 
 TX and RX are named from the module's perspective; the ESP-PROG adapter performs the crossover internally. The pinout has been verified working with the standard ESP-PROG cable on both WTI400 V1.2 and MDD400 V2.9.
 
-### Developer/kit V_PROG path
+#### Developer/kit V_PROG path
 
 The current path from the programmer to VCC is a single forward-isolation Schottky followed by an LDO:
 
@@ -68,21 +70,19 @@ J1 pin 2 V_PROG (5 V from programmer)
 
 **D4 — forward isolation / back-feed protection.** When the programmer is disconnected and the board is powered normally (VCC = 3.3 V from the on-board SMPS), D4's anode sits at 0 V (J1 pin 2 unloaded) while its cathode is at U4 V<sub>IN</sub> ≈ VCC during start-up. D4 is reverse-biased and prevents any current path from board VCC back into the programmer's V_PROG pin.
 
-**D5 — Vout-to-Vin protection.** Cathode at Net-(D4-K) (U4 V<sub>IN</sub>), anode at VCC. During normal LDO operation, U4 V<sub>IN</sub> sits ~1.35 V above VCC and D5 is reverse-biased (no current). During programmer-disconnection, the LDO input collapses while the VCC output capacitors (notably the C1 + C16 cluster) hold VCC for a few milliseconds. When VCC > U4 V<sub>IN</sub>, D5 conducts and bleeds VCC back through D5 to U4 V<sub>IN</sub>, preventing the output caps from back-charging U4 through its internal body diode. Same topology as D16 on the [Power Supply](./power-supplies) sheet.
+**D5 — Vout-to-Vin protection.** Cathode at Net-(D4-K) (U4 V<sub>IN</sub>), anode at VCC. During normal LDO operation, U4 V<sub>IN</sub> sits ~1.35 V above VCC and D5 is reverse-biased (no current). During programmer-disconnection, the LDO input collapses while the VCC output capacitors (notably the C1 + C16 cluster) hold VCC for a few milliseconds. When VCC > U4 V<sub>IN</sub>, D5 conducts and bleeds VCC back through D5 to U4 V<sub>IN</sub>, preventing the output caps from back-charging U4 through its internal body diode. Same topology as D16 on the [Power Supply](./power-supplies.md) sheet.
 
 The WTI400 LDO path has **one** isolation Schottky in the forward direction (D4), as opposed to MDD400's two in series — the WTI400 has no separate 5 V VDD bus that needs OR-ing protection at the same node, so the simpler chain suffices.
 
-### LDO input decoupling
+#### LDO input decoupling
 
-C20 (100 nF X7R 0603) and C21 (10 µF X7R 0805) sit on Net-(D4-K), 3.6 mm and 5.4 mm from U4 V<sub>IN</sub> respectively. Two-tier decoupling on the LDO input is required by the HT7833 datasheet for stable regulation. The LDO output decoupling (C16 / C17) is described on the [ESP32 Module](./esp32-module) page — those caps double as VCC bypass on the host side.
+C20 (100 nF X7R 0603) and C21 (10 µF X7R 0805) sit on Net-(D4-K), 3.6 mm and 5.4 mm from U4 V<sub>IN</sub> respectively. Two-tier decoupling on the LDO input is required by the HT7833 datasheet for stable regulation. The LDO output decoupling (C16 / C17) is described on the [ESP32 Module](./esp32-module.md) page — those caps double as VCC bypass on the host side.
 
-### Production variant
+#### Production variant
 
 R24 (0 Ω 0805) is populated, J1 / U4 / D4 / D5 are DNP. The zero-ohm link bridges VCC directly to V_PROG. A custom pogo-pin fixture contacts the J1 THT pad footprint from the top side; the board's own VCC supplies the programming session current, so no external 5 V source is needed during flashing. Once production-flashed and the cover is fitted, no further programmer access is required for normal field operation.
 
----
-
-## Performance review
+### Performance
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -103,15 +103,16 @@ R24 (0 Ω 0805) is populated, J1 / U4 / D4 / D5 are DNP. The zero-ohm link bridg
 
 **Why thermal is fine even at modest copper spreading.** U4 is only active during programming sessions. During normal operation (Wi-Fi running, programmer disconnected) the V_PROG path is at 0 V, D4 is reverse-biased, U4 sees no input voltage, and U4 dissipates nothing. The 76.8 °C / 100 mA / 70 °C-ambient figure above is for a worst-case programming session in a hot enclosure — outside that window U4 is dormant.
 
----
+## PCB Layout
 
-## Bring-up tests
+The programmer-power parts form a compact cluster on the left side of the board (x ≈ 107–111 mm, y ≈ 63–78 mm), with U4 (HT7833 LDO) at its centre and J1 12.8 mm away. The V_PROG isolation path is short and runs left across the board: J1 (pin 2) → D4 → Net-(D4-K) → U4 V<sub>IN</sub>, a span of about 12 mm.
 
-1. **End-to-end programming via ESP-PROG** — Flash a known firmware image at 921600 baud over the standard ESP-PROG adapter and cable. Pass if the image flashes cleanly, the device boots, and Wi-Fi associates. *(Confirmed working on WTI400 V1.2 and MDD400 V2.9.)*
-2. **D4 back-feed check** — Power the board from its own SMPS only, with the programmer disconnected. Probe J1 pin 2 (V_PROG). Pass if pin 2 measures &lt; 0.1 V (any voltage above this indicates leakage through D4 or contamination).
-3. **U4 thermal soak during programming** — Hold the SoC in ROM download mode while the programmer drives sustained UART traffic for 60 s. Probe U4 body temperature with a contact thermocouple. Record peak. Pass if peak ≤ 95 °C in a 70 °C ambient (≥ 30 °C T<sub>j</sub> margin).
-
----
+- **V_PROG isolation path.** D4 sits 7.3 mm from U4 and 11.5 mm from J1; D5 is 9.1 mm from U4. D4, D5 and U4 form a vertical stack at x ≈ 107–108 mm, keeping the LDO input node (Net-(D4-K)) localised. The Net-(D4-K) copper has a dedicated F.Cu fill zone over the U4 V<sub>IN</sub> area. V_PROG traces use 0.2–0.4 mm widths; at the 450 mA programmer-supply maximum the 0.4 mm segments are marginal but safe for the short runs involved.
+- **LDO decoupling.** C20 (100 nF) is 3.6 mm from U4 V<sub>IN</sub> and C21 (10 µF) is 5.4 mm — the input two-tier decoupling cluster is compact and adjacent to the LDO. C16 (10 µF) and C17 (100 nF), the VCC/LDO-output decoupling, sit 3.5 mm from U4 (their VCC role is described on the ESP32 Module page).
+- **U4 thermal.** The tab pad (Net-(D4-K) = V<sub>IN</sub>, **not GND**) spreads onto all four layers — about 14 mm² per layer, 56 mm² total — bonded by 9 thermal vias. Because U4 is energised only during programming, this gives an effective R<sub>θJA</sub> of roughly 50 °C/W and ample margin (T<sub>j</sub> ≈ 76.8 °C at 100 mA / 70 °C ambient).
+- **R24 (DNP).** Placed at the LDO/V_PROG cluster (2.9 mm from D4, 7.4 mm from U4), where the production-variant zero-ohm link would bridge VCC to V_PROG; its DNP attribute is confirmed in the layout.
+- **J1 placement.** J1 is in the board interior (119.0, 72.5) rather than at an edge — nearest edge 30.1 mm (top), with the right, left and bottom edges 42–65 mm away. No high-dV/dt switching nodes are adjacent. Interior placement means programmer access needs a cable or a top-side pogo-pin fixture rather than an edge-mounted connector; this is functional but not at a board edge as Espressif guidance prefers.
+- **ESP_EN routing.** The ESP_EN net runs 57.1 mm from J1 through the R9 / C7 RC pair to U3's EN pad, exceeding the 50 mm guideline. As an RC-limited (R9 10 kΩ + C7 1 µF) signal the integrity risk is negligible and the path is confirmed working on the test vessel; a shorter route is tracked for V1.3.
 
 ## Components
 
@@ -125,9 +126,7 @@ R24 (0 Ω 0805) is populated, J1 / U4 / D4 / D5 are DNP. The zero-ohm link bridg
 | C20 | 100 nF / 50 V X7R 0603 | LDO input bypass (Net-(D4-K) to GNDREF), 3.6 mm from U4 V<sub>IN</sub> | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C21 | 10 µF / 25 V X7R 0805 | LDO input bulk bypass (Net-(D4-K) to GNDREF), 5.4 mm from U4 V<sub>IN</sub> | [Murata GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
 
-The LDO **output**-side decoupling caps (C16 / C17) double as VCC bypass on the host side and are listed in the Components table on the [ESP32 Module](./esp32-module) page.
-
----
+The LDO **output**-side decoupling caps (C16 / C17) double as VCC bypass on the host side and are listed in the Components table on the [ESP32 Module](./esp32-module.md) page.
 
 ## Testing & Verification
 
@@ -141,17 +140,17 @@ The developer/kit assembly variant (J1 / U4 / D4 / D5 populated, R24 DNP) is the
 - **D4 back-feed check** &mdash; Power the board from its own SMPS only, with the programmer disconnected. Probe J1 pin 2 (V_PROG). Pass if pin 2 measures &lt; 0.1 V (any voltage above this indicates leakage through D4 or contamination).
 - **U4 thermal soak during programming** &mdash; Hold the SoC in ROM download mode while the programmer drives sustained UART traffic for 60 s. Probe U4 body temperature with a contact thermocouple and record peak. Pass if peak &le; 95 &deg;C in a 70 &deg;C ambient (&ge; 30 &deg;C Tj margin).
 
-**For production variant (R24 populated, J1 / U4 / D4 / D5 DNP):**
-
-- **Pogo-pin fixture programming** &mdash; Once the pogo-pin fixture exists, verify end-to-end flashing through it using the board's own VCC for the programming session. Confirm no contamination, no over-stress, and matching pinout to the J1 THT pad footprint.
-
-**For V1.3 (tracked in `v1.3-improvements.md`):**
-
-- **Shorten the ESP_EN routing** &mdash; V1.2 has a 57.1 mm ESP_EN trace from J1 through R9 / C7 to U3 pad 3 (EN). Re-route R9 / C7 closer to U3's EN pad to bring the trace below the 50 mm guideline. (Also tracked on the [ESP32 Module](./esp32-module) page.)
-
 :::
 
----
+## Gaps & next version
+
+**Before next production run**
+
+- **Pogo-pin fixture programming** — Once the pogo-pin fixture exists, verify end-to-end flashing of the production variant (R24 populated, J1 / U4 / D4 / D5 DNP) through it using the board's own VCC for the programming session. Confirm no contamination, no over-stress, and matching pinout to the J1 THT pad footprint.
+
+**Next version (V1.3)**
+
+- **Shorten the ESP_EN routing** — V1.2 has a 57.1 mm ESP_EN trace from J1 through R9 / C7 to U3 pad 3 (EN). Re-route R9 / C7 closer to U3's EN pad to bring the trace below the 50 mm guideline. (Also tracked on the [ESP32 Module](./esp32-module.md) page; tracked in `v1.3-improvements.md`.)
 
 ## References
 
@@ -160,5 +159,9 @@ The developer/kit assembly variant (J1 / U4 / D4 / D5 populated, R24 DNP) is the
 - JSMSEMI, [*1N5819WS SOD-323 Schottky*](/assets/datasheets/wti400-v1.2/1N5819WS.pdf).
 - XFCN, [*BH254V-6P 2×3 2.54 mm IDC Header*](/assets/datasheets/wti400-v1.2/XFCN-BH254V-6P.pdf).
 - Yageo, [*RC Group Chip Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf).
-- [ESP32 Module](./esp32-module) — host MCU; VCC bypass; EN / BOOT control-line networks.
-- [Power Supply](./power-supplies) — VCC rail generation; D5 mirrors D16 (Vout-to-Vin protection) on that sheet.
+
+## Related pages
+
+- [ESP32 Module](./esp32-module.md) — host MCU; VCC bypass; EN / BOOT control-line networks
+- [Power Supplies](./power-supplies.md) — VCC rail generation; D5 mirrors D16 (Vout-to-Vin protection) on that sheet
+- [Pin Assignments](/wti400/v1.2/quick-reference/pin-assignments) — UART0 / EN / BOOT / I²C GPIO map for the host module
