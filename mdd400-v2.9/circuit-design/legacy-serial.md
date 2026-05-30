@@ -54,6 +54,8 @@ J3 is a 3-pin through-hole connector with a custom footprint that is pin-compati
 | 2 | BLACK | GND | Isolated bus ground (GND_ST) |
 | 3 | YELLOW | SIG | Single-wire signal line (ST_SIG) |
 
+![Legacy serial 3-pin connector — pin 1 12 V (red), pin 2 GND (black), pin 3 SIG (yellow)](/img/mdd400-v2.9/legacy_serial_pinout.svg)
+
 #### Legacy Serial Protocol Mode
 
 In Legacy Serial Protocol mode all three pins are used as supplied by the bus:

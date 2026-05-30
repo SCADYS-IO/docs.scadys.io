@@ -33,3 +33,21 @@ The NMEA 2000 network connection (J2) is a 5-pin M12 A-coded (Micro-C) **male** 
 | 3 | NET-C | Power supply common (−V) |
 | 4 | NET-H | CAN-H |
 | 5 | NET-L | CAN-L |
+
+## ESP-PROG programming header pinout
+
+The programming socket (J1) is a 2×3 IDC header following the Espressif ESP-Prog "Program" convention. Full circuit detail is on the [Programming Socket](../circuit-design/programming-socket.md) page.
+
+![ESP-PROG 2×3 programming header — pin 1 ESP_EN, 2 V_PROG (5 V), 3 ESP_TX, 4 GND, 5 ESP_RX, 6 ESP_BOOT (IO0)](/img/mdd400-v2.9/esp_prog_pinout.svg)
+
+## Legacy serial connector pinout
+
+The legacy serial connector (J3) is a 3-pin Raymarine-compatible connector. See the [Legacy Serial Interface](../circuit-design/legacy-serial.md) page for the isolation and signalling detail.
+
+![Legacy serial 3-pin connector — pin 1 12 V (red), pin 2 GND (black), pin 3 SIG (yellow)](/img/mdd400-v2.9/legacy_serial_pinout.svg)
+
+## Rear connector panel
+
+The connectors accessible from the rear face of the MDD400 housing: NMEA 2000 (J2), the ESP-PROG programming header (J1), and the legacy serial connector (J3).
+
+![MDD400 rear connector panel — 1 J2 NMEA 2000 (M12 A-coded), 2 J1 ESP-PROG programming header, 3 J3 legacy serial](/img/mdd400-v2.9/rear_connector_panel.svg)

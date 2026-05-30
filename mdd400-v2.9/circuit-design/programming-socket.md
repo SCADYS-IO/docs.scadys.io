@@ -52,12 +52,14 @@ J1 (XFCN BH254V-6P) is a 2×3, 2.54 mm pitch through-hole IDC header matching th
 
 | Pin | Net | ESP-PROG function |
 |---|---|---|
-| 1 | V_PROG | Programmer 5 V supply |
-| 2 | ESP_TX | UART0 TX (out from module) |
-| 3 | ESP_RX | UART0 RX (in to module) |
+| 1 | ESP_EN | Reset / EN |
+| 2 | V_PROG | Programmer 5 V supply |
+| 3 | ESP_TX | UART0 TX (out from module) |
 | 4 | GNDREF | Ground |
-| 5 | ESP_BOOT | IO0 boot-strap |
-| 6 | ESP_EN | Reset / EN |
+| 5 | ESP_RX | UART0 RX (in to module) |
+| 6 | ESP_BOOT | IO0 boot-strap |
+
+![ESP-PROG 2×3 programming header — pin 1 ESP_EN, 2 V_PROG (5 V), 3 ESP_TX, 4 GND, 5 ESP_RX, 6 ESP_BOOT (IO0)](/img/mdd400-v2.9/esp_prog_pinout.svg)
 
 TX and RX are named from the module's perspective; the ESP-PROG adapter handles the crossover internally.
 
@@ -68,7 +70,7 @@ Three 1N5819WS Schottky diodes (D3, D4, D5) form a supply-OR'ing and protection 
 ```
 VDD (5 V from board)  ─┐
                        ├─ D4 (anode VDD,   cathode V_PROG)
-J1 pin 1 V_PROG       ─┴────────────────────────────┐
+J1 pin 2 V_PROG       ─┴────────────────────────────┐
                                                     │
                        D3 (anode V_PROG, cathode Net-(D3-K))
                                                     │
@@ -151,7 +153,7 @@ V2.9 is a fabricated prototype in the bench-test phase, assembled in the **devel
 
 - **End-to-end programming via ESP-PROG** — Flash a known image at 921600 baud through the standard ESP-PROG adapter and cable. Pass if the image flashes cleanly, the device boots, and Wi-Fi associates.
 - **VDD-only operation** — Disconnect the ESP-PROG cable; power the board from VDD alone. Pass if the LDO produces 3.30 V ± 2 % and the ESP32 boots normally (confirms the D4 OR'ing path).
-- **D3 back-feed check** — Power the board from its own VDD only; probe J1 pin 1 (V_PROG). Pass if pin 1 measures &lt; 0.1 V above VDD − V_F(D4); any larger reading indicates leakage on the OR'd node.
+- **D3 back-feed check** — Power the board from its own VDD only; probe J1 pin 2 (V_PROG). Pass if pin 2 measures &lt; 0.1 V above VDD − V_F(D4); any larger reading indicates leakage on the OR'd node.
 - **U4 thermal soak under Wi-Fi TX** — Sustained 802.11b TX for 30 minutes from cold start; record U4 body temperature with a thermocouple every 5 minutes. Pass if peak Tj stays below 110 °C in a 70 °C-ambient soak chamber, or below 80 °C at room ambient. Tj > 110 °C is a strong V2.10 signal to expand the F.Cu pour or add thermal vias.
 
 :::

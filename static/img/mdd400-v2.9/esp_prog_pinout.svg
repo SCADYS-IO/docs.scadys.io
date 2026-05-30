@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 360" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <title id="t">ESP-PROG 2x3 programming header pinout (J1)</title>
+  <desc id="d">2x3 2.54 mm IDC header, Espressif ESP-Prog Program-header convention. Pin 1 ESP_EN, pin 2 V_PROG (5 V), pin 3 ESP_TX, pin 4 GND, pin 5 ESP_RX, pin 6 ESP_BOOT (IO0). Odd pins in the left column, even pins in the right column; pin 1 marked.</desc>
+
+  <text x="280" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#02235B">ESP-PROG Programming Header — J1</text>
+  <text x="280" y="50" text-anchor="middle" font-size="12" fill="#5b6b85">2×3 · 2.54 mm IDC · Espressif ESP-Prog "Program" convention</text>
+
+  <!-- leaders -->
+  <g stroke="#8895ab" stroke-width="1.2" fill="none">
+    <path d="M248 130 L176 130"/>
+    <path d="M248 180 L176 180"/>
+    <path d="M248 230 L176 230"/>
+    <path d="M312 130 L384 130"/>
+    <path d="M312 180 L384 180"/>
+    <path d="M312 230 L384 230"/>
+  </g>
+
+  <!-- header shroud -->
+  <rect x="210" y="98" width="140" height="166" rx="10" fill="#f5f8fc" stroke="#02235B" stroke-width="3"/>
+  <!-- polarising key slot (top edge) -->
+  <rect x="262" y="91" width="36" height="14" rx="2" fill="#DE3707" stroke="#02235B" stroke-width="1.2"/>
+
+  <!-- pin 1 marker -->
+  <path d="M222 112 l12 0 l-6 11 z" fill="#DE3707"/>
+
+  <!-- pins: pin 1 square (marked), rest round -->
+  <rect x="231" y="113" width="34" height="34" rx="3" fill="#02235B"/>
+  <text x="248" y="136" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">1</text>
+  <circle cx="312" cy="130" r="17" fill="#02235B"/>
+  <text x="312" y="136" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">2</text>
+  <circle cx="248" cy="180" r="17" fill="#02235B"/>
+  <text x="248" y="186" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">3</text>
+  <circle cx="312" cy="180" r="17" fill="#02235B"/>
+  <text x="312" y="186" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">4</text>
+  <circle cx="248" cy="230" r="17" fill="#02235B"/>
+  <text x="248" y="236" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">5</text>
+  <circle cx="312" cy="230" r="17" fill="#02235B"/>
+  <text x="312" y="236" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">6</text>
+
+  <!-- labels -->
+  <g font-size="14">
+    <text x="168" y="134" text-anchor="end"><tspan fill="#DE3707" font-weight="700">1</tspan><tspan fill="#02235B"> · ESP_EN</tspan></text>
+    <text x="168" y="184" text-anchor="end"><tspan fill="#DE3707" font-weight="700">3</tspan><tspan fill="#02235B"> · ESP_TX</tspan></text>
+    <text x="168" y="234" text-anchor="end"><tspan fill="#DE3707" font-weight="700">5</tspan><tspan fill="#02235B"> · ESP_RX</tspan></text>
+    <text x="392" y="134" text-anchor="start"><tspan fill="#DE3707" font-weight="700">2</tspan><tspan fill="#02235B"> · V_PROG (5 V)</tspan></text>
+    <text x="392" y="184" text-anchor="start"><tspan fill="#DE3707" font-weight="700">4</tspan><tspan fill="#02235B"> · GND</tspan></text>
+    <text x="392" y="234" text-anchor="start"><tspan fill="#DE3707" font-weight="700">6</tspan><tspan fill="#02235B"> · ESP_BOOT (IO0)</tspan></text>
+  </g>
+
+  <text x="280" y="322" text-anchor="middle" font-size="10" fill="#8895ab">Pin 1 (▲) marked · view onto the header from the component side · TX/RX named from the module</text>
+</svg>

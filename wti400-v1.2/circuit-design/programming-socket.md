@@ -54,6 +54,8 @@ J1 (XFCN BH254V-6P) is a 2×3, 2.54 mm pitch through-hole IDC header matching th
 | 5 | ESP_RX | UART0 RX (in to module) |
 | 6 | ESP_BOOT | IO0 boot-strap |
 
+![ESP-PROG 2×3 programming header — pin 1 ESP_EN, 2 V_PROG (5 V), 3 ESP_TX, 4 GND, 5 ESP_RX, 6 ESP_BOOT (IO0)](/img/wti400-v1.2/esp_prog_pinout.svg)
+
 TX and RX are named from the module's perspective; the ESP-PROG adapter performs the crossover internally. The pinout has been verified working with the standard ESP-PROG cable on both WTI400 V1.2 and MDD400 V2.9.
 
 #### Developer/kit V_PROG path
