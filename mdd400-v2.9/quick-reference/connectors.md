@@ -48,6 +48,6 @@ The legacy serial connector (J3) is a 3-pin Raymarine-compatible connector. See 
 
 ## Rear connector panel
 
-The connectors accessible from the rear face of the MDD400 housing: NMEA 2000 (J2), the ESP-PROG programming header (J1), and the legacy serial connector (J3).
+The faceplate decal on the rear face of the MDD400 housing, showing the connector layout as installed: the NMEA 2000 socket (J2), the ESP-PROG programming header (J1), the legacy serial connector (J3), and the status-LED window — alongside the product marking, compliance marks, and documentation QR code.
 
-![MDD400 rear connector panel — 1 J2 NMEA 2000 (M12 A-coded), 2 J1 ESP-PROG programming header, 3 J3 legacy serial](/img/mdd400-v2.9/rear_connector_panel.svg)
+![MDD400 rear faceplate decal — NMEA 2000 (J2), ESP-PROG header (J1), legacy serial (J3), status-LED window, product marking, compliance marks, and QR code](/img/mdd400-v2.9/faceplate.svg)

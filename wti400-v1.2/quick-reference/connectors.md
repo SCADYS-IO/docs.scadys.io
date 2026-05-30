@@ -51,3 +51,9 @@ The programming socket (J1) is a 2×3 IDC header following the Espressif ESP-Pro
 The legacy serial connector (J3) is a 3-pin Raymarine-compatible connector. See the [Legacy Serial Interface](../circuit-design/legacy-serial.md) page for the isolation and signalling detail.
 
 ![Legacy serial 3-pin connector — pin 1 12 V (red), pin 2 GND (black), pin 3 SIG (yellow)](/img/wti400-v1.2/legacy_serial_pinout.svg)
+
+## Connector face layout
+
+The faceplate decal on the top face of the WTI400 housing, showing the full connector layout as installed: the NMEA 2000 socket (J2), the ESP-PROG programming header (J1), the legacy serial connector (SERIAL, J3), and the six-tab wind-transducer terminal block (J4–J9, labelled `SH`, `+Ve`, `X`, `Y`, `SP`, ⏚) — alongside the product marking, compliance marks, and documentation QR code.
+
+![WTI400 top faceplate decal — NMEA 2000 (J2), ESP-PROG header (J1), legacy serial (SERIAL, J3), wind-transducer terminal block (SH / +Ve / X / Y / SP / earth), product marking, compliance marks, and QR code](/img/wti400-v1.2/faceplate.svg)
