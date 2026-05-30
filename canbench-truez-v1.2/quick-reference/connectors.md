@@ -23,4 +23,16 @@ Five external connections: two SMA inputs, two SMA outputs, one ground banana. A
 
 **Cabling:** drive J2/J3 from the CANBench Duo's two LISN-output SMAs with two identical cables (matched length). Connect one output (J4 *or* J5) at a time to the analyser's 50 Ω input. The CM-25Ω / DM-100Ω impedance labels are valid only with a 50 Ω analyser input.
 
+## Faceplate layouts
+
+The SMA ports are laser-etched on two opposite enclosure faces. The drawings below show each face as etched.
+
+**Input face — LISN line inputs (from the CANBench Duo)**
+
+![CANBench TrueZ input faceplate — LISN+ and LISN− SMA jacks](/img/canbench-truez-v1.2/faceplate_inputs.svg)
+
+**Output face — CM / DM outputs (to the analyser)**
+
+![CANBench TrueZ output faceplate — DM-100 Ω and CM-25 Ω SMA jacks](/img/canbench-truez-v1.2/faceplate_outputs.svg)
+
 For the connector design rationale and the silkscreen markings, see [Circuit Design → Connectors & Markings](../circuit-design/connectors.md).
