@@ -28,6 +28,22 @@ Connector roster for the CANBench Duo enclosure. The unit has a dual-face layout
 | Binding post | Front | Knurled-knob with wire-braid to PCB GNDREF | Chassis-ground bond | Not current-rated; reference connection only |
 | `J8` | (footprint, DNP) | Keystone 1211 THT pad | Reserved alternative chassis-bond — **NOT POPULATED on V1.1 / V1.2** | — |
 
+## Faceplate layouts
+
+The connectors are laser-etched across three enclosure faces. The drawings below show each face as etched.
+
+**Top extrusion — measurement outputs and N2K**
+
+![CANBench Duo top faceplate — LISN+ / CAN CM / LISN− SMA jacks, CAN Micro-C M12 socket, indicator window, and SCADYS logo](/img/canbench-duo-v1.1/faceplate_top.svg)
+
+**Front faceplate — bench supply (SRC)**
+
+![CANBench Duo front faceplate — SRC+ (red) and SRC− (black) banana sockets](/img/canbench-duo-v1.1/faceplate_front.svg)
+
+**Back faceplate — device under test (DUT)**
+
+![CANBench Duo back faceplate — DUT+ (red) and DUT− (black) banana sockets](/img/canbench-duo-v1.1/faceplate_back.svg)
+
 ## M12 N2K pinout (J10)
 
 J10 is a **female** M12 A-coded (Micro-C) receptacle. The diagram shows the pin layout viewed from the front (mating face) of the connector.
