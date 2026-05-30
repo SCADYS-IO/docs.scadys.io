@@ -18,6 +18,10 @@ This section covers the WTI400 mechanical enclosure: the housing construction, i
 
 **Status: the housing design is not yet documented.** The WTI400 V1.2 board is in service on the test vessel, but a formal enclosure selection, sealing scheme, and mechanical specification have not been captured in the evidence pipeline. The **IP65 ingress rating** and **−10 °C to +70 °C operating temperature** quoted on the [product home page](../index.md) are **design *targets*, not validated results** — no enclosure has been qualified against them, and no IP-rated part has been selected and recorded. They are reproduced here only as design intent and must not be read as achieved figures.
 
+The top faceplate decal artwork is defined, showing the connector layout as installed — the NMEA 2000 socket, the ESP-PROG header, the legacy serial connector, and the six-tab wind-transducer terminal block — with the product marking, compliance marks, and documentation QR code:
+
+![WTI400 top faceplate decal — NMEA 2000 (J2), ESP-PROG header (J1), legacy serial (SERIAL, J3), wind-transducer terminal block (SH / +Ve / X / Y / SP / earth), product marking, compliance marks, and QR code](/img/wti400-v1.2/faceplate.svg)
+
 The two facts below are confirmed from existing design records and are safe to state today; everything else is pending.
 
 :::info[Pending]

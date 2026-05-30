@@ -18,6 +18,10 @@ This section covers the MDD400 mechanical enclosure: the housing construction, i
 
 Status: v2.9 is a fabricated prototype in the testing phase; the figures below reflect the prototype design.
 
+The rear faceplate decal shows the connector layout, status-LED window, product marking, compliance marks, and documentation QR code as they appear on the unit:
+
+![MDD400 rear faceplate decal — NMEA 2000 (J2), ESP-PROG header (J1), legacy serial (J3), status-LED window, product marking, compliance marks, and QR code](/img/mdd400-v2.9/faceplate.svg)
+
 ## Enclosure
 
 The housing consists of a front bezel, rear shell, and a perimeter gasket that seals the two halves together. The front surface is occupied by the DWIN 4.0-inch capacitive touchscreen. A clear window bonded to the bezel protects the display glass and provides the primary sealing surface on the front face.
