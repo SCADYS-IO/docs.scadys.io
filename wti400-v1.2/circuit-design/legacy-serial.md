@@ -19,7 +19,7 @@ The legacy serial interface provides a galvanically isolated single-wire serial 
 
 The primary application on the WTI400 is to place apparent wind data onto a Legacy Serial Protocol bus as a direct drop-in replacement for an ST60 wind instrument.
 
-The interface has limited compatibility with single-ended NMEA 0183 operation. Receive is fully NMEA 0183 listener compliant. Transmit compatibility with NMEA 0183 receivers depends on whether the receiving device accepts single-ended 12 V logic (see [NMEA 0183 caveats](#nmea-0183-caveats)).
+The interface is a single signal wire and is therefore half-duplex: it either receives or transmits, never both at once. Receive is NMEA 0183 listener compliant at 4800 and 38400 baud. The transmit path carries the Legacy Serial Protocol only; it is not NMEA 0183 compliant, and the firmware transmits SeaTalk only (see [NMEA 0183 caveats](#nmea-0183-caveats)).
 
 **Sub-circuits:**
 - [3-wire connector and bus modes](#3-wire-connector-and-bus-modes) — physical interface, Legacy Serial Protocol and NMEA 0183 wiring;
@@ -38,7 +38,7 @@ The legacy serial interface must:
 - protect the bus entry against reverse polarity, fast transients, high-energy surges, ESD, and conducted HF EMI before any active device;
 - hold the transmit line driver off by default — during MCU boot, reset, firmware fault, and any GPIO float condition — so the bus can only be driven by an explicit firmware action;
 - accelerate the bus rising edge so long-cable installations meet the 4800 baud bit timing; and
-- provide limited single-ended NMEA 0183 compatibility (full listener compliance at 4800 / 38400 baud; talker subject to receiver input type).
+- provide single-ended NMEA 0183 receive compatibility (listener compliance at 4800 / 38400 baud), with transmit restricted to the Legacy Serial Protocol (SeaTalk) and not NMEA 0183 compliant.
 
 ## 3-Wire Connector and Bus Modes
 
@@ -88,11 +88,13 @@ The receive circuit draws approximately 0.36 mA from the line at 2.0 V input, wi
 
 #### NMEA 0183 Caveats
 
+**Single wire — receive or transmit, never both.** The interface is one signal wire and is half-duplex; it either listens or talks, never simultaneously. NMEA 0183 assumes separate talker and listener lines, so this single wire cannot act as a standard bidirectional NMEA 0183 node, and NMEA 0183 is supported as a listener (receive) only.
+
 **Receive (listener) — compatible.** The receive circuit meets the NMEA 0183 listener electrical specification at 4800 baud and 38400 baud. The connection is single-ended (TALK-A referenced to GND_ST); it is not a true RS-422 differential receiver. In installations with a shared, low-impedance ground between the WTI400 and the NMEA 0183 talker, this is functionally equivalent. In installations with floating or noisy grounds, common-mode noise rejection will be lower than a proper RS-422 differential front-end.
 
 **Transmit (talker) — not RS-422 compliant.** The TX output is a single-wire open-drain signal: pin 3 is pulled to GND_ST (≈ 0 V) by Q6 during a logic 0, and pulled to VST (≈ 12 V) by R33 during idle and logic 1. Standard RS-422 NMEA 0183 talkers produce a differential signal of ≥ ±2 V between TALK-A and TALK-B. When this circuit's output is connected to a strict RS-422 receiver (TALK-A = pin 3, TALK-B = GND_ST), the logic 0 state produces a differential of ≈ 0 V — outside the RS-422 mark/space threshold — and the receiver will not detect it correctly.
 
-The TX output may work with NMEA 0183 receiving devices that accept single-ended 12 V logic (common on older Garmin, B&G, and Furuno equipment, and on many chartplotters that internally use TTL-level NMEA 0183 inputs). Confirm the receiver's input specification before relying on this connection.
+The transmit path is not NMEA 0183 compliant. The single-ended open-drain output can drive some non-standard NMEA 0183 inputs that accept single-ended 12 V logic (for example older Garmin, B&G, and Furuno equipment, and chartplotters with TTL-level NMEA 0183 inputs), but this is not a supported mode; confirm the receiver's input specification before relying on it. In normal operation the firmware transmits on the Legacy Serial Protocol (SeaTalk) only.
 
 The TX circuit is optimised for 4800 baud (Legacy Serial Protocol). At 9600 baud the rise-time assist operates at reduced effectiveness (see [Rise-Time Assist](#rise-time-assist--q8-mmbta56lt1g-c47-r71)); 38400 baud is not supported.
 
