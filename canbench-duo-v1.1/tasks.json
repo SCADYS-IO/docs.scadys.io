@@ -90,6 +90,25 @@
     "target_version": "v1.1"
   },
   {
+    "id": "lisn-supply-path-noise-floor-lna",
+    "circuit": "lisn-supply-path",
+    "circuit_label": "LISN Supply Path",
+    "title": "Noise floor with HT004 LNA \u2014 low-band recovery",
+    "description": "Repeat the baseline noise-floor sweep with the HT004 20 dB LNA inline (J2 \u2192 LNA \u2192 tinySA). Quantify how much it lowers the overall floor and, specifically, whether it recovers sensitivity in the 150 kHz\u20131 MHz low band where the bare-tinySA floor rises to \u221267 dBm. Watch for LNA overload. Determines whether the LNA is needed for low-band conducted-emissions measurement.",
+    "status": "todo",
+    "date_completed": null,
+    "result": null,
+    "notes": "Surfaced by the 2026-06-04 baseline noise-floor measurement (see lisn-supply-path-baseline-noise-floor): bare tinySA floor is \u2212110 dBm flat above ~1 MHz but rises to \u221267 dBm at 150 kHz (the tinySA's own LF noise, not the board). The LNA may recover that low band.",
+    "evidence": [],
+    "category": "hardware",
+    "dependencies": [
+      "lisn-supply-path-baseline-noise-floor"
+    ],
+    "assignee": null,
+    "kind": "verification",
+    "target_version": "v1.1"
+  },
+  {
     "id": "lisn-supply-path-ferrite-datasheet",
     "circuit": "lisn-supply-path",
     "circuit_label": "LISN Supply Path",
