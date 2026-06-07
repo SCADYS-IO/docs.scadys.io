@@ -391,6 +391,23 @@
     "target_version": "v1.3"
   },
   {
+    "id": "connectors-and-mechanical-fibre-laser-marking-fixture",
+    "circuit": "connectors-and-mechanical",
+    "circuit_label": "Connectors & Mechanical",
+    "title": "Commission V1.3 fibre-laser marking + bonding fixture",
+    "description": "Move enclosure marking from the V1.1 / V1.2 prototype process (Creality Falcon 5 W diode laser, user-facing labels only) to the V1.3 production fixture: a fibre laser running two functions per pass — (i) the same user-facing labels (SRC / DUT / GRP / connector refdes) on the black-anodised top extrusion, and (ii) anodize-removal pads at the SMA bulkhead, M12 thread, and binding-post bonding sites so the connector shells make low-resistance contact to the aluminium body. Each cleared pad is sized larger than the sharktooth / star lock washer's inner tooth diameter and smaller than its outer diameter (hidden under the washer after assembly). Validate with a torque-vs-bond-resistance campaign at fixture commissioning to close the working-spec torque values (SMA 0.6-0.9 N.m, binding post 2-3 N.m). Source: design-intent/housing.md (V1.2).",
+    "status": "todo",
+    "date_completed": null,
+    "result": null,
+    "notes": "Captured from the housing design-intent during the 2026-06-07 next-PCB backlog check-in; the prototype-vs-production laser-marking split was documented but had no live task entry.",
+    "evidence": [],
+    "category": "housing",
+    "dependencies": [],
+    "assignee": null,
+    "kind": "next-version",
+    "target_version": "v1.3"
+  },
+  {
     "id": "compliance-emc-lab-test",
     "circuit": "compliance",
     "circuit_label": "Compliance",
