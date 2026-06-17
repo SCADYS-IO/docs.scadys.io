@@ -13,6 +13,22 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 MDD400 **v2.9** — Prototype — under test
 :::
 
+:::warning[Correction — `ST_EN` is active-HIGH (bench-validated 2026-06-17)]
+The statements below that describe `ST_EN` as **active-LOW are incorrect.** The fabricated MDD400
+V2.9 board — verified against the kicad-cli netlist and confirmed on the bench — establishes:
+
+- **`ST_EN` is active-HIGH:** drive the GPIO **HIGH to enable** the transmitter; **LOW or undriven
+  disables** it.
+- **R28 (100 kΩ) is a pull-DOWN from `ST_EN` to GNDREF** (not a pull-up), so the transmitter is
+  default-disabled on reset, boot, and GPIO float. **R29 (390 Ω)** is the U9 enable-LED series
+  resistor; driving `ST_EN` HIGH lights the U9 LED and asserts enable.
+
+The active-LOW wording in *Transmit path → Enable isolator*, *Firmware integration*, and *Bench
+validation*, and the R28 entry in the component table, predate this board revision and are pending a
+full re-review of this page against the V2.9 netlist. Validated on MDD400 V2.9 and WTI400 V1.2 with
+the `legacy_serial_troubleshooting/` bench-test app.
+:::
+
 ## Overview
 
 The legacy serial interface provides a galvanically isolated single-wire serial connection designed for full electrical compatibility with Raymarine's Legacy Serial Protocol (e.g. SeaTalk™). It connects to legacy marine instruments via a 3-pin connector and exposes three MCU signals — `ST_RX`, `ST_TX` and `ST_EN` (for receive, transmit and transmit enable respectively), each crossing the isolation barrier via a TLP2309 opto-isolator.
