@@ -95,7 +95,7 @@ All UI rendering is handled by the HMI display's internal microcontroller. The E
 
 ## Power and fault management (planned)
 
-At startup, the firmware will assert DISP_EN (GPIO21) to enable the display power switch after initialisation. The TWAI_EN signal (GPIO2) will be driven high to enable the CAN transceiver after bus enumeration. The Legacy Serial TX enable (ST_EN, GPIO1) defaults to high (transmitter disabled) and will be asserted only during active transmit windows.
+At startup, the firmware will assert DISP_EN (GPIO21) to enable the display power switch after initialisation. The TWAI_EN signal (GPIO2) will be driven high to enable the CAN transceiver after bus enumeration. The Legacy Serial TX enable (ST_EN, GPIO1) is active-HIGH: it defaults low (transmitter disabled) and is driven high only during active transmit windows.
 
 The INA219 current monitor will provide the firmware with continuous supply current and voltage readings. If supply voltage falls outside the 9–16 V operating window or current exceeds the 250 mA design maximum, the firmware will log the event to NVS and optionally trigger an audio alert.
 

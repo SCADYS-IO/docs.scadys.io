@@ -5,8 +5,8 @@
 *.d
 
 # Archives
-# *.zip
-# *.rar
+*.zip
+*.rar
 
 # MkDocs
 site/

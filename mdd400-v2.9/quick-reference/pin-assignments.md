@@ -26,7 +26,7 @@ MDD400 **v2.9** — Fabricated prototype — testing phase
 | I2C_SCL | GPIO8 | VCC | I²C | I²C clock line |
 | I2C_SDA | GPIO18 | VCC | I²C | I²C data line |
 | LED_EN | GPIO9 | GNDREF | OUTPUT | LED enable (ENABLE = LOW) |
-| ST_EN | GPIO1 | VCC | OUTPUT | Legacy serial TX enable (ENABLE = LOW) |
+| ST_EN | GPIO1 | VCC | OUTPUT | Legacy serial TX enable (ENABLE = HIGH) |
 | ST_RX | GPIO39 | float | UART1 | From legacy serial RX |
 | ST_TX | GPIO41 | float | UART1 | To legacy serial TX |
 | TWAI_RX | GPIO12 | float | TWAI | From CAN transceiver RXD pin |

@@ -1,0 +1,33 @@
+{
+  "product": "mdd400",
+  "version": "v3.0",
+  "kicad_sheets": [
+    "MDD400_V3.0",
+    "esp32_module",
+    "power_supplies",
+    "can_bus_power",
+    "can_transceiver",
+    "display_interface",
+    "i2c_sensors",
+    "buzzer_driver",
+    "legacy_serial_rx",
+    "legacy_serial_tx",
+    "pcb_markings"
+  ],
+  "circuit_design_pages": [
+    { "slug": "esp32-module",       "label": "ESP32-P4 Module",          "renders": ["esp32_module", "i2c_sensors"], "v30_status": "cleared-stub",  "note": "S3 module -> chip-down P4; flash folded in" },
+    { "slug": "radio",              "label": "Wi-Fi / BLE Radio",        "renders": ["esp32_module"],                "v30_status": "new-stub",      "note": "NEW: ESP32-C6 companion radio" },
+    { "slug": "led-indicator",      "label": "LED Indicator",            "renders": ["esp32_module"],                "v30_status": "retained",      "note": "LED_EN GPIO6 carries; re-point pending" },
+    { "slug": "programming-socket", "label": "Programming Socket",       "renders": ["esp32_module"],                "v30_status": "cleared-stub",  "note": "ESP-PROG header, no USB-C" },
+    { "slug": "power-supplies",     "label": "Power Supplies",           "renders": ["power_supplies"],              "v30_status": "cleared-stub",  "note": "multi-rail cascade rework" },
+    { "slug": "can-bus-power",      "label": "CAN Bus Power Protection", "renders": ["can_bus_power"],               "v30_status": "retained",      "note": "carry-over" },
+    { "slug": "can-transceiver",    "label": "CAN Transceiver",          "renders": ["can_transceiver"],             "v30_status": "retained",      "note": "carry-over; re-point TWAI pins" },
+    { "slug": "display-interface",  "label": "Display Interface",        "renders": ["display_interface"],           "v30_status": "cleared-stub",  "note": "MIPI-DSI + CTP + backlight rework" },
+    { "slug": "power-monitor",      "label": "Power Monitor",            "renders": ["i2c_sensors"],                 "v30_status": "retained",      "note": "INA219 carries; re-point I2C" },
+    { "slug": "ambient-light-sensor","label": "Ambient Light Sensor",    "renders": ["i2c_sensors"],                 "v30_status": "retained",      "note": "OPT3004 carries; re-point I2C" },
+    { "slug": "temperature-sensor", "label": "Temperature Sensor",       "renders": ["i2c_sensors"],                 "v30_status": "retained",      "note": "TMP112 carries; re-point I2C" },
+    { "slug": "buzzer-driver",      "label": "Buzzer Driver",            "renders": ["buzzer_driver"],               "v30_status": "cleared-stub",  "note": "audio decision open (PWM vs PDM)" },
+    { "slug": "legacy-serial",      "label": "Legacy Serial Interface",  "renders": ["legacy_serial_rx", "legacy_serial_tx"], "v30_status": "retained", "note": "carry-over; re-point + ST_EN active-HIGH correction owed" },
+    { "slug": "pcb-markings",       "label": "PCB Markings & Compliance","renders": ["pcb_markings"],                "v30_status": "retained",      "note": "silk bumped v2.9->v3.0" }
+  ]
+}

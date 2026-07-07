@@ -1,8 +1,8 @@
 ---
 title: Legacy Serial Interface
-hw_version: v2.9
-hw_status: prototype
-hw_status_label: "Prototype — under test"
+hw_version: v3.0
+hw_status: schematic
+hw_status_label: "In design — V3.0 schematic capture in progress"
 ---
 
 import SchematicViewer from '@site/src/components/SchematicViewer';
@@ -13,10 +13,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 MDD400 **v2.9** — Prototype — under test
 :::
 
-:::note[`ST_EN` polarity corrected 2026-07-07 — active-HIGH]
-This page previously described `ST_EN` as active-LOW. It has been corrected against the fabricated MDD400 V2.9 board and its KiCad netlist: **`ST_EN` is active-HIGH** — drive the GPIO HIGH to enable the transmitter; LOW or undriven disables it. R28 (100 kΩ) is a pull-down from `ST_EN` to GNDREF (default-disable on reset, boot, and GPIO float); R29 (390 Ω) is the U9 enable-LED series resistor.
+:::note[`ST_EN` polarity — active-HIGH (carried from V2.9)]
+**`ST_EN` is active-HIGH** — drive the GPIO HIGH to enable the transmitter; LOW or undriven disables it. This was validated on the fabricated MDD400 V2.9 board and its KiCad netlist and carries over to V3.0. R28 (100 kΩ) is a pull-down from `ST_EN` to GNDREF (default-disable); R29 (390 Ω) is the U9 enable-LED series resistor.
 
-A broader netlist re-review of the TX-isolator legacy-side output network (the R28 / R37 / R38 refdes roles in the U8 and U9 sections) remains pending under the legacy-serial re-author task; it does not affect the `ST_EN` polarity corrected here.
+This sheet is a **carry-over** from V2.9 and is still being re-pointed to the ESP32-P4 (`ST_EN` → GPIO4); the pin and refdes references in the body below reflect V2.9 until that pass. A broader netlist re-review of the TX-isolator output network also remains pending.
 :::
 
 ## Overview
