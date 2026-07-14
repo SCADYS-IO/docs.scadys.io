@@ -75,6 +75,37 @@ In V1.1 the entire electrical circuit — including the four SMA connectors and 
 
 ---
 
+## Part selection and design for reliability
+
+Components are selected against a written policy rather than by availability or price. The policy exists because the
+failure modes that matter on a Scadys board are not the ones that show up on a bench: they appear months later, in the
+field, after thermal cycling and vibration.
+
+Three rules shape the passive selection on every board.
+
+**Dielectric and voltage derating.** Ceramic capacitors are X7R or C0G, never X5R, because X5R is rated only to 85 °C
+and the inside of a sealed housing reaches that. Bulk ceramics are run at or below 25 % of their rated voltage, which
+bounds DC-bias capacitance loss and removes any dependence on the exact capacitance-versus-voltage curve.
+
+**Land patterns come from the component manufacturer, not from the PCB tool.** A ceramic capacitor that cracks under
+board flexure fails as a **short circuit**. On a supply rail, that stops the instrument working, with no warning and no
+field diagnosis. The amount of solder in the joint controls how much force reaches the ceramic, and the amount of
+solder is set by the copper land pattern. Scadys uses the land windows published by Murata and Samsung, which are
+narrower than the IPC-7351 defaults that PCB tools generate.
+
+**Inductor saturation current is specified against the regulator's current limit, not against the load.** A switching
+regulator drives its inductor to the current limit during a short circuit, a hard load step, or inrush, regardless of
+what the steady load is.
+
+:::note[Design standard]
+
+The reasoning behind the capacitor land patterns, including the manufacturers' own statements on solder volume and
+cracking, is set out in the engineering note **[MLCC Land Patterns and Flex Cracking](/engineering/mlcc-land-patterns)**.
+
+:::
+
+---
+
 ## PCB stack-up and layer allocation
 
 The board is **71 × 42 mm**, **2-layer FR-4**, **1.6 mm overall thickness**, **1 oz copper** on both sides.

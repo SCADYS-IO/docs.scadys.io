@@ -110,6 +110,15 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
+        id: 'engineering',
+        path: 'engineering',
+        routeBasePath: 'engineering',
+        sidebarPath: './sidebars.js',
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
         id: 'about',
         path: 'about',
         routeBasePath: 'about',
@@ -165,6 +174,7 @@ const config = {
               {label: 'v1.2 — schematic refresh (next version)', to: '/canbench-truez/v1.2'},
             ],
           },
+          {label: 'Engineering', to: '/engineering', position: 'right'},
           {label: 'About', to: '/about', position: 'right'},
         ],
       },
