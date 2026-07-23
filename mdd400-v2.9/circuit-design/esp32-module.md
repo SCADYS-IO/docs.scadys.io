@@ -158,11 +158,11 @@ U3 sits with its castellated antenna end aligned to a dedicated board-edge slot,
 | Ref | Value | Function | Datasheet |
 |-----|-------|----------|-----------|
 | U3 | ESP32-S3-WROOM-1-N16R8 | Espressif dual-core Xtensa LX7 MCU module, 240 MHz, 16 MB QSPI flash, 8 MB PSRAM, 2.4 GHz Wi-Fi + BT 5 LE, pre-certified | [Espressif ESP32-S3-WROOM-1](https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf) |
-| R4 | 10 kΩ 0603 ±1 % | EN pull-up — VCC to ESP_EN (U3 CHIP_PU). With C3 forms power-on RC delay (τ = 10 ms) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R24 | 10 kΩ 0603 ±1 % | BOOT pull-up — VCC to ESP_BOOT (U3 IO0). Selects SPI flash boot mode during normal operation; no RC cap, by design | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R1 | 10 kΩ 0603 ±1 % | I²C bus pull-up on SCL to VCC. Physically placed on `i2c_sensors.kicad_sch` near the sensor cluster | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R2 | 10 kΩ 0603 ±1 % | I²C bus pull-up on SDA to VCC (parallel with R3). Physically on `i2c_sensors.kicad_sch` | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R3 | 10 kΩ 0603 ±1 % | Second I²C bus pull-up on SDA to VCC (parallel with R2 → 5 kΩ effective). Physically on `i2c_sensors.kicad_sch` | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R4 | 10 kΩ 0603 ±1 % | EN pull-up — VCC to ESP_EN (U3 CHIP_PU). With C3 forms power-on RC delay (τ = 10 ms) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R24 | 10 kΩ 0603 ±1 % | BOOT pull-up — VCC to ESP_BOOT (U3 IO0). Selects SPI flash boot mode during normal operation; no RC cap, by design | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R1 | 10 kΩ 0603 ±1 % | I²C bus pull-up on SCL to VCC. Physically placed on `i2c_sensors.kicad_sch` near the sensor cluster | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R2 | 10 kΩ 0603 ±1 % | I²C bus pull-up on SDA to VCC (parallel with R3). Physically on `i2c_sensors.kicad_sch` | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R3 | 10 kΩ 0603 ±1 % | Second I²C bus pull-up on SDA to VCC (parallel with R2 → 5 kΩ effective). Physically on `i2c_sensors.kicad_sch` | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | C1 | 10 µF / 25 V X7R 0805 | VCC main-cluster bulk bypass, third in chain (courtyard-touching adjacent to C2); single via to F.Cu VCC pour at far end | [Murata GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
 | C2 | 100 nF / 50 V X7R 0603 | VCC main-cluster mid-frequency bypass, second in chain (between C4 and C1) | [Murata GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C3 | 1 µF / 25 V X7R 0603 | EN RC timing capacitor (ESP_EN to GNDREF). τ = 10 ms with R4 | [Murata GCM188R71E105KA64D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71E105KA64D) |
@@ -206,7 +206,7 @@ Programmer-side bring-up (end-to-end programming, VDD-only operation, D3 back-fe
 - Espressif Systems, [*ESP32-S3 Datasheet*](https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf).
 - Espressif Systems, [*ESP-IDF API Reference — GPIO & RTC GPIO*](https://docs.espressif.com/projects/esp-idf/en/v5.5/esp32s3/api-reference/peripherals/gpio.html).
 - Espressif Systems, [*ESP-PROG Hardware Guide*](https://docs.espressif.com/projects/esp-iot-solution/en/latest/hw-reference/ESP-Prog_guide.html).
-- Yageo, [*RC Group Chip Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf).
+- Yageo, [*RC Group Chip Resistor*](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L).
 - Murata Electronics, [*GRM21BZ71E106KE15L — 10 µF X7R 0805*](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L).
 - Murata Electronics, [*GCM188R71H104KA57D — 100 nF X7R 0603*](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D).
 - Murata Electronics, [*GCM188R71E105KA64D — 1 µF X7R 0603*](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71E105KA64D).

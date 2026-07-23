@@ -438,35 +438,35 @@ The protection chain is built connector-first: J3 → R57 → D13-anode (with D1
 | U11 | ZXTR2012FF | Diodes Inc. ZXTR2012FF, SOT-23F, 100 V input / 12 V / 30 mA LDO — generates VST from LDO_VIN | [ZXTR2012FF](/assets/datasheets/mdd400-v2.9/ZXTR2012.pdf) |
 | C54 | 10 µF / 25 V / 0805 / X7R | Murata GRM21BZ71E106KE15L — bulk output reservoir, VST rail | [GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
 | C53 | 100 nF / 50 V / 0603 / X7R | Murata GRM188R71H104KA93D — HF bypass, VST rail | [GRM188R71H104KA93D](/assets/datasheets/mdd400-v2.9/GRM188R71H104KA93D.pdf) |
-| R30 | 22 kΩ / 0603 | Yageo RC Series, ±1% — bus pull-up from VST to ST_SIG | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R30 | 22 kΩ / 0603 | Yageo RC Series, ±1% — bus pull-up from VST to ST_SIG | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | D6 | BAT54J | Nexperia BAT54J Schottky, SOD-323F — blocks VST pull-up from loading bus during idle | [BAT54J](/assets/datasheets/mdd400-v2.9/BAT54J.pdf) |
 | C49 | 100 pF / 50 V / 0603 / C0G | Murata GRM1885C1H101JA01D — RF bypass on ST_SIG at J3 | [GRM1885C1H101JA01D](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H101JA01D) |
 | D14 | PESD15VL1BA | Nexperia PESD15VL1BA ESD TVS, SOD-323 — clamps ESD events on ST_SIG | [PESD15VL1BA](/assets/datasheets/mdd400-v2.9/PESD15VL1BA.pdf) |
 | L5 | 1 µH / 0603 | Murata LQM18FN1R0M00D — series inductor, LC filter on ST_SIG | [LQM18FN1R0M00D](/assets/datasheets/mdd400-v2.9/LQM18FN1R0M00D.pdf) |
 | C50 | 100 pF / 50 V / 0603 / C0G | Murata GRM1885C1H101JA01D — shunt cap, LC filter on ST_SIG | [GRM1885C1H101JA01D](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H101JA01D) |
-| R32 | 2.2 kΩ / 0603 | Yageo RC Series, ±1% — LED current-limiting resistor, RX opto input | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R32 | 2.2 kΩ / 0603 | Yageo RC Series, ±1% — LED current-limiting resistor, RX opto input | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | U7 | TLP2309 | Toshiba TLP2309, SO-6, 3750 Vrms — RX galvanic isolation opto | [TLP2309](/assets/datasheets/mdd400-v2.9/TLP2309.pdf) |
-| R25 | 2.2 kΩ / 0603 | Yageo RC Series, ±1% — pull-up from VCC to U7 output; defines ST_RX HIGH level | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R25 | 2.2 kΩ / 0603 | Yageo RC Series, ±1% — pull-up from VCC to U7 output; defines ST_RX HIGH level | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | C30 | 100 nF / 50 V / 0603 | VCC bypass at U7 output side | — |
 | U8 | TLP2309 | Toshiba TLP2309, SO-6, 3750 Vrms — TX signal isolator (digital → legacy) | [TLP2309](/assets/datasheets/mdd400-v2.9/TLP2309.pdf) |
 | U9 | TLP2309 | Toshiba TLP2309, SO-6, 3750 Vrms — TX enable isolator (default-disable) | [TLP2309](/assets/datasheets/mdd400-v2.9/TLP2309.pdf) |
-| R26 | 10 kΩ / 0603 | Yageo RC Series — ST_TX pull-up to VCC; holds LED off at default | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R27, R29 | 390 Ω / 0603 | Yageo RC Series — LED current-limiting (R27 = U8 TX; R29 = U9 EN) | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R28 | 100 kΩ / 0603 | Yageo RC Series — pull-down from `ST_EN` to GNDREF; holds TX default-disabled on reset / boot / GPIO float | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R36 | 390 Ω / 0603 | Yageo RC Series — U9 EN opto secondary bias | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R37 | 22 kΩ / 0603 | Yageo RC Series — ST_SIG pull-up to VST; sets bus idle-HIGH | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R38 | 100 kΩ / 0603 | Yageo RC Series — EN opto output pull-down on legacy side | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R40 | 56 kΩ / 0603 | Yageo RC Series — gate driver bias | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R41, R43 | 1 MΩ / 0603 | Yageo RC Series — high-impedance bias, driver chain | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R42 | 30.9 kΩ / 0603 | Yageo RC Series — gate driver bias | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R47 | 22 kΩ / 0603 | Yageo RC Series — base/gate pull-down | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R48, R49, R56 | 39 kΩ / 0603 | Yageo RC Series — timing / bias network | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R50, R58 | 2.2 kΩ / 0603 | Yageo RC Series — output and legacy-side base resistors | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R51 | 10 Ω / 0603 | Yageo RC0603FR-0710RL — series resistor, Q12 rise-time assist output | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R52 | 1 kΩ / 0603 | Yageo RC0603FR-071KL, thick-film, ±1% — driver chain bias | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R55 | 390 Ω / 0603 | Yageo RC Series — Q10 gate drive resistor | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R59 | 12 kΩ / 0603 | Yageo RC Series — C48 discharge path, rise-time assist RC | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R61 | 10 kΩ / 0603 | Yageo RC Series — feedback current-limit bias | [RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R26 | 10 kΩ / 0603 | Yageo RC Series — ST_TX pull-up to VCC; holds LED off at default | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R27, R29 | 390 Ω / 0603 | Yageo RC Series — LED current-limiting (R27 = U8 TX; R29 = U9 EN) | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R28 | 100 kΩ / 0603 | Yageo RC Series — pull-down from `ST_EN` to GNDREF; holds TX default-disabled on reset / boot / GPIO float | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R36 | 390 Ω / 0603 | Yageo RC Series — U9 EN opto secondary bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R37 | 22 kΩ / 0603 | Yageo RC Series — ST_SIG pull-up to VST; sets bus idle-HIGH | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R38 | 100 kΩ / 0603 | Yageo RC Series — EN opto output pull-down on legacy side | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R40 | 56 kΩ / 0603 | Yageo RC Series — gate driver bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R41, R43 | 1 MΩ / 0603 | Yageo RC Series — high-impedance bias, driver chain | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R42 | 30.9 kΩ / 0603 | Yageo RC Series — gate driver bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R47 | 22 kΩ / 0603 | Yageo RC Series — base/gate pull-down | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R48, R49, R56 | 39 kΩ / 0603 | Yageo RC Series — timing / bias network | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R50, R58 | 2.2 kΩ / 0603 | Yageo RC Series — output and legacy-side base resistors | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R51 | 10 Ω / 0603 | Yageo RC0603FR-0710RL — series resistor, Q12 rise-time assist output | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R52 | 1 kΩ / 0603 | Yageo RC0603FR-071KL, thick-film, ±1% — driver chain bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R55 | 390 Ω / 0603 | Yageo RC Series — Q10 gate drive resistor | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R59 | 12 kΩ / 0603 | Yageo RC Series — C48 discharge path, rise-time assist RC | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R61 | 10 kΩ / 0603 | Yageo RC Series — feedback current-limit bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | C39 | 100 nF / 50 V / 0603 / X7R | Murata GCM188R71H104KA57D — VST bypass at U8 | [GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C40 | 100 nF / 50 V / 0603 / X7R | Murata GCM188R71H104KA57D — VCC bypass at U9 | [GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C48 | **820 pF** / 50 V / 0603 / C0G | Murata GRM1885C1H821JA01D (or equivalent) — rise-time assist timing capacitor (**updated from 2.2 nF; rework required**) | — |

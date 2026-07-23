@@ -139,7 +139,7 @@ The programmer-side parts sit on the `esp32_module` sheet, between the ESP32-S3 
 | D4 | 1N5819WS | JSMSEMI Schottky, SOD-323. VDD-to-V_PROG OR'ing diode (anode VDD, cathode V_PROG). Lets the on-board 5 V VDD bus feed U4 when no external programmer is connected. **Developer/kit variant only** — DNP in production | [JSMSEMI 1N5819WS](/assets/datasheets/mdd400-v2.9/1N5819WS.pdf) |
 | D5 | 1N5819WS | JSMSEMI Schottky, SOD-323. Vout-to-Vin protection on the LDO (cathode = U4 V<sub>IN</sub>, anode = VCC). Conducts only during power-down to discharge VCC output caps without back-charging U4. Same topology as D16 on the power_supplies sheet. **Developer/kit variant only** — DNP in production | [JSMSEMI 1N5819WS](/assets/datasheets/mdd400-v2.9/1N5819WS.pdf) |
 | J1 | XFCN BH254V-6P | 2×3, 2.54 mm pitch THT IDC header — ESP-PROG-compatible programming interface. Maker/kit builds: socket fitted, rear-port housing access. **Production: DNP**, pogo-pin fixture used instead | [XFCN BH254V-6P](/assets/datasheets/mdd400-v2.9/BH254V-6P.pdf) |
-| R22 | 0 Ω 0603 (DNP on V2.9) | Production-variant zero-ohm bridge: VCC ↔ regulated 3.3 V supply directly. Populated only when U4 / D3 / D4 / D5 / J1 are DNP. **Never populate alongside U4** | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R22 | 0 Ω 0603 (DNP on V2.9) | Production-variant zero-ohm bridge: VCC ↔ regulated 3.3 V supply directly. Populated only when U4 / D3 / D4 / D5 / J1 are DNP. **Never populate alongside U4** | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 
 The LDO **output**-side decoupling (C16 / C17 plus the distributed VCC-pour bypass) doubles as VCC bypass on the host side and is listed in the Components table on the [ESP32 Module](./esp32-module.md) page.
 
@@ -176,7 +176,7 @@ V2.9 is a fabricated prototype in the bench-test phase, assembled in the **devel
 - UMW, [*HT7833-A SOT-89 LDO*](/assets/datasheets/mdd400-v2.9/HT7833.pdf).
 - JSMSEMI, [*1N5819WS SOD-323 Schottky*](/assets/datasheets/mdd400-v2.9/1N5819WS.pdf).
 - XFCN, [*BH254V-6P 2×3 2.54 mm IDC Header*](/assets/datasheets/mdd400-v2.9/BH254V-6P.pdf).
-- Yageo, [*RC Group Chip Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf).
+- Yageo, [*RC Group Chip Resistor*](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L).
 
 ## Related pages
 

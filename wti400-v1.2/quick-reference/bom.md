@@ -74,51 +74,51 @@ WTI400 **v1.2** — In service — installed on test vessel
 | C57 | 1 nF / 50 V | 1 | 0603 C0G MLCC (wind shield HF bypass) | — |
 | C10 (SW snubber), C29 (CAN diff) | 100 nF / 50 V or 100 pF / 50 V | — | **DNP** — see circuit docs for conditions | — |
 | R1 | 32 kΩ | 1 | 0603 thin-film ±0.1 % (VCC feedback lower) | [Yageo Thin Film](https://www.lcsc.com/product-detail/C861839.html) |
-| R2, R42, R55, R65, R74 | 100 kΩ | 5 | 0603 thick-film ±1 % | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R3, R4, R9, R15, R16, R18, R20, R31, R41 | 10 kΩ | 9 | 0603 thick-film ±1 % | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R5, R7, R8 | 10 kΩ | 3 | 0603 thick-film ±1 % (LED drive / pull-ups) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R19 | 2.2 kΩ | 1 | 0603 thick-film ±1 % (legacy RX pull-up) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R6 | 68 kΩ | 1 | 0603 thick-film ±1 % (Q1 base bias) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R10, R11 | 220 Ω | 2 | 0603 thick-film ±1 % (blue/green LED) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R12 | 680 Ω | 1 | 0603 thick-film ±1 % (red LED, Q1 path) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R14 | 47 Ω | 1 | 0603 thick-film ±1 % (SN65HVD234 RXD damping) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R17 | 10 kΩ | 1 | 0603 thick-film ±1 % (SN65HVD234 Rs slope) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R21, R23 | 390 Ω | 2 | 0603 thick-film ±1 % (legacy TX/EN opto LED limit) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R22 | 100 kΩ | 1 | 0603 thick-film ±1 % (legacy TX opto output VST pull-up) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R24 | 0 Ω (DNP) | 1 | 0603 zero-ohm — **production variant only** | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R25 | 4.7 Ω | 1 | 0603 thick-film ±1 % (OVP collector series) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R26, R34 | 22 kΩ | 2 | 0603 thick-film ±1 % | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R27 | 68 kΩ | 1 | 0603 thick-film ±1 % (OVP divider lower) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R28 | 2.4 kΩ | 1 | 0603 thick-film ±1 % (OVP divider upper) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R29, R33 | 22 kΩ | 2 | 0603 thick-film ±1 % (legacy RX/TX ST_SIG pull-up to VST) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R30 | 2.2 kΩ | 1 | 0603 thick-film ±1 % (legacy RX opto LED limit) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R32 | 390 Ω | 1 | 0603 thick-film ±1 % (legacy TX EN secondary) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R35, R68 | 39 kΩ | 2 | 0603 thick-film ±1 % | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R36, R38 | 1 MΩ | 2 | 0603 thick-film ±1 % (legacy TX high-Z bias) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R37 | 30.9 kΩ | 1 | 0603 thick-film ±1 % (legacy TX gate driver) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R2, R42, R55, R65, R74 | 100 kΩ | 5 | 0603 thick-film ±1 % | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R3, R4, R9, R15, R16, R18, R20, R31, R41 | 10 kΩ | 9 | 0603 thick-film ±1 % | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R5, R7, R8 | 10 kΩ | 3 | 0603 thick-film ±1 % (LED drive / pull-ups) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R19 | 2.2 kΩ | 1 | 0603 thick-film ±1 % (legacy RX pull-up) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R6 | 68 kΩ | 1 | 0603 thick-film ±1 % (Q1 base bias) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R10, R11 | 220 Ω | 2 | 0603 thick-film ±1 % (blue/green LED) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R12 | 680 Ω | 1 | 0603 thick-film ±1 % (red LED, Q1 path) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R14 | 47 Ω | 1 | 0603 thick-film ±1 % (SN65HVD234 RXD damping) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R17 | 10 kΩ | 1 | 0603 thick-film ±1 % (SN65HVD234 Rs slope) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R21, R23 | 390 Ω | 2 | 0603 thick-film ±1 % (legacy TX/EN opto LED limit) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R22 | 100 kΩ | 1 | 0603 thick-film ±1 % (legacy TX opto output VST pull-up) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R24 | 0 Ω (DNP) | 1 | 0603 zero-ohm — **production variant only** | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R25 | 4.7 Ω | 1 | 0603 thick-film ±1 % (OVP collector series) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R26, R34 | 22 kΩ | 2 | 0603 thick-film ±1 % | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R27 | 68 kΩ | 1 | 0603 thick-film ±1 % (OVP divider lower) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R28 | 2.4 kΩ | 1 | 0603 thick-film ±1 % (OVP divider upper) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R29, R33 | 22 kΩ | 2 | 0603 thick-film ±1 % (legacy RX/TX ST_SIG pull-up to VST) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R30 | 2.2 kΩ | 1 | 0603 thick-film ±1 % (legacy RX opto LED limit) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R32 | 390 Ω | 1 | 0603 thick-film ±1 % (legacy TX EN secondary) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R35, R68 | 39 kΩ | 2 | 0603 thick-film ±1 % | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R36, R38 | 1 MΩ | 2 | 0603 thick-film ±1 % (legacy TX high-Z bias) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R37 | 30.9 kΩ | 1 | 0603 thick-film ±1 % (legacy TX gate driver) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R39 | 220 mΩ | 1 | 0603 thick-film ±1 % (CAN LC input damping) | [Yageo RC Series](https://www.lcsc.com/product-detail/C326952.html) |
-| R40 | 39 kΩ | 1 | 0603 thick-film ±1 % (button debounce R) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R40 | 39 kΩ | 1 | 0603 thick-film ±1 % (button debounce R) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R43 | 100 mΩ | 1 | 0603 thick-film ±1 % (CAN bulk ESR damping) | [Yageo RC Series](https://www.lcsc.com/product-detail/C326946.html) |
-| R44, R45, R46 | 39 kΩ | 3 | 0603 thick-film ±1 % (legacy TX bias/timing) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R47, R54 | 22 kΩ | 2 | 0603 thick-film ±1 % (U12 bias divider upper) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R48, R53 | 68 kΩ | 2 | 0603 thick-film ±1 % (U12 bias divider lower) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R49, R52 | 56 kΩ | 2 | 0603 thick-film ±1 % (U12 Rg gain) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R50, R51 | 62 kΩ | 2 | 0603 thick-film ±1 % (U12 Rf feedback) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R56, R70 | 2.2 kΩ | 2 | 0603 thick-film ±1 % (legacy TX output stage) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R57 | 10 Ω | 1 | 0603 thick-film ±1 % (legacy TX series) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R58, R59, R60, R61 | 56 kΩ | 4 | 0603 thick-film ±1 % (U12 input attenuator/shunt) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R62 | 100 kΩ | 1 | 0603 thick-film ±1 % (wind speed divider lower) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R63 | 150 kΩ | 1 | 0603 thick-film ±1 % (wind speed divider upper) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R64 | 330 Ω | 1 | 0603 thick-film ±1 % (U11 input current limit) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R66 | 1 kΩ | 1 | 0603 thick-film ±1 % (legacy TX driver bias) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R67 | 390 Ω | 1 | 0603 thick-film ±1 % (Q6 gate drive) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R44, R45, R46 | 39 kΩ | 3 | 0603 thick-film ±1 % (legacy TX bias/timing) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R47, R54 | 22 kΩ | 2 | 0603 thick-film ±1 % (U12 bias divider upper) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R48, R53 | 68 kΩ | 2 | 0603 thick-film ±1 % (U12 bias divider lower) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R49, R52 | 56 kΩ | 2 | 0603 thick-film ±1 % (U12 Rg gain) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R50, R51 | 62 kΩ | 2 | 0603 thick-film ±1 % (U12 Rf feedback) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R56, R70 | 2.2 kΩ | 2 | 0603 thick-film ±1 % (legacy TX output stage) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R57 | 10 Ω | 1 | 0603 thick-film ±1 % (legacy TX series) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R58, R59, R60, R61 | 56 kΩ | 4 | 0603 thick-film ±1 % (U12 input attenuator/shunt) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R62 | 100 kΩ | 1 | 0603 thick-film ±1 % (wind speed divider lower) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R63 | 150 kΩ | 1 | 0603 thick-film ±1 % (wind speed divider upper) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R64 | 330 Ω | 1 | 0603 thick-film ±1 % (U11 input current limit) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R66 | 1 kΩ | 1 | 0603 thick-film ±1 % (legacy TX driver bias) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R67 | 390 Ω | 1 | 0603 thick-film ±1 % (Q6 gate drive) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R69 | 47 Ω | 1 | 1210 thick-film ±1 %, 500 mW (legacy RX LDO_VIN pulse damping) | [Yageo RC Series](https://www.lcsc.com/product-detail/C230466.html) |
-| R71 | 12 kΩ | 1 | 0603 thick-film ±1 % (legacy TX rise-time RC discharge) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R72 | 120 kΩ | 1 | 0603 thick-film ±1 % (LP2951 upper feedback) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R73 | 39 kΩ | 1 | 0603 thick-film ±1 % (legacy TX feedback bias) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R75 | 1 MΩ | 1 | 0603 thick-film ±1 % (wind shield DC bleed) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R76 | 22 kΩ | 1 | 0603 thick-film ±1 % (WIND_SPD P-line pull-up to WIND_8V) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R77 | 6.2 kΩ | 1 | 0603 thick-film ±1 % (LP2951 lower feedback shunt, B&G) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R78 | 20 kΩ | 1 | 0603 thick-film ±1 % (LP2951 lower feedback main) | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R71 | 12 kΩ | 1 | 0603 thick-film ±1 % (legacy TX rise-time RC discharge) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R72 | 120 kΩ | 1 | 0603 thick-film ±1 % (LP2951 upper feedback) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R73 | 39 kΩ | 1 | 0603 thick-film ±1 % (legacy TX feedback bias) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R75 | 1 MΩ | 1 | 0603 thick-film ±1 % (wind shield DC bleed) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R76 | 22 kΩ | 1 | 0603 thick-film ±1 % (WIND_SPD P-line pull-up to WIND_8V) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R77 | 6.2 kΩ | 1 | 0603 thick-film ±1 % (LP2951 lower feedback shunt, B&G) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R78 | 20 kΩ | 1 | 0603 thick-film ±1 % (LP2951 lower feedback main) | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R79 | 0 Ω (DNP) | 1 | 0805 zero-ohm — **factory voltage select link** | — |
 | SW1 | Tactile 6×6×12 mm | 1 | SPST N.O., 50 mA / 12 V, SMD | — |

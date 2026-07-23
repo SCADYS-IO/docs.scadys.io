@@ -242,12 +242,12 @@ The schematic carries an **"Isolation of Power Domains"** sub-diagram that lays 
 | C32 | 10 µF / 50 V X7R 1210 | VDD output bulk capacitor — flanks L2 (symmetric with C20) | [Murata GRM32ER71H106KA12L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER71H106KA12L%40D) |
 | C13 | 100 pF / 50 V C0G 0603 | VCC rail output bypass — 3v3 → GNDREF just before FB1 | — |
 | C31 | 100 pF / 50 V C0G 0603 | VDD rail output bypass — 5v0 → GNDREF just before FB2 | — |
-| R5 | 32 kΩ 0603 thin film ±0.1 % | VCC feedback divider lower (sets 3.30 V with R6) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R6 | 100 kΩ 0603 thick film ±1 % | VCC feedback divider upper (3v3 → FB) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R7 | 22 Ω 0603 thick film ±1 % | VCC SW-node snubber resistor (with C9) — **DNP** | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R18 | 19.1 kΩ 0603 thin film ±0.1 % | VDD feedback divider lower (sets 4.99 V with R19) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R19 | 100 kΩ 0603 thick film ±1 % | VDD feedback divider upper (5v0 → FB) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R23 | 22 Ω 0603 thick film ±1 % | VDD SW-node snubber resistor (with C24) — **DNP** | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R5 | 32 kΩ 0603 thin film ±0.1 % | VCC feedback divider lower (sets 3.30 V with R6) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R6 | 100 kΩ 0603 thick film ±1 % | VCC feedback divider upper (3v3 → FB) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R7 | 22 Ω 0603 thick film ±1 % | VCC SW-node snubber resistor (with C9) — **DNP** | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R18 | 19.1 kΩ 0603 thin film ±0.1 % | VDD feedback divider lower (sets 4.99 V with R19) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R19 | 100 kΩ 0603 thick film ±1 % | VDD feedback divider upper (5v0 → FB) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R23 | 22 Ω 0603 thick film ±1 % | VDD SW-node snubber resistor (with C24) — **DNP** | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | TP1 | — | GNDREF test point — **DNP** | — |
 
 ## Testing & Verification

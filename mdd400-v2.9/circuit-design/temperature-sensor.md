@@ -97,7 +97,7 @@ U13 sits in the sensor cluster on B.Cu at approximately (129.0, 65.0), with its 
 | Ref | Value | Function | Datasheet |
 |-----|-------|----------|-----------|
 | U13 | TMP112AIDRLR | TI ±0.5 °C digital temperature sensor, SOT-563, I²C address 0x48 | [TI TMP112 (SBOS473)](https://www.ti.com/lit/ds/symlink/tmp112.pdf) |
-| R62 | 10 kΩ 0603 ±1 % | TMP112 ALERT open-drain pull-up to VCC | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R62 | 10 kΩ 0603 ±1 % | TMP112 ALERT open-drain pull-up to VCC | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | C57 | 100 pF / 50 V C0G 0603 | TMP112 V<sub>CC</sub> HF bypass. **Under-spec per datasheet** — V2.10 adds 100 nF X7R in parallel | [Murata GRM1885C1H101JA01D](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H101JA01D) |
 
 The I²C bus pull-ups (R1, R2, R3) are listed in the [ESP32 Module](./esp32-module) Components table.
@@ -131,7 +131,7 @@ V2.9 is a fabricated prototype in the bench-test phase. The TMP112 acknowledges 
 ## References
 
 - Texas Instruments, [*TMP112 High-Accuracy, Low-Power Digital Temperature Sensor (SBOS473)*](https://www.ti.com/lit/ds/symlink/tmp112.pdf).
-- Yageo, [*RC Group Chip Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf).
+- Yageo, [*RC Group Chip Resistor*](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L).
 - Murata, [*GRM1885C1H101JA01D — 100 pF C0G 0603*](https://www.murata.com/en-us/products/productdetail?partno=GRM1885C1H101JA01D).
 - NXP Semiconductors, [*I²C-bus specification and user manual (UM10204)*](https://www.nxp.com/docs/en/user-guide/UM10204.pdf).
 

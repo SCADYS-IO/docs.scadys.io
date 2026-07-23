@@ -152,9 +152,9 @@ See `pcb_review/lisn-supply-path-layout.md` in the source repository for the ful
 | Q3 | STD80N10F7 | N-channel MOSFET (TO-252, 100 V) — low-side reverse-polarity protection on negative rail | [STMicroelectronics STD80N10F7](https://www.st.com/resource/en/datasheet/std80n10f7.pdf) |
 | D2, D5 | BZT52C15 | 15 V Zener — clamps Q2 (D2) / Q3 (D5) V_GS against supply transients | [Diodes Inc. BZT52C15](https://www.diodes.com/assets/Datasheets/ds18005.pdf) |
 | R4, R12 | 47 Ω | Gate series stopper for Q2 (R4) / Q3 (R12) — suppresses gate-drive oscillation | [Yageo PE1206](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-PE1206_RoHS_L_8.pdf) |
-| R5, R13 | 1 MΩ | Gate-to-source pull for Q2 (R5) / Q3 (R13) — upper leg of the 10:1 gate-bias divider | [Yageo RC0603](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R7, R15 | 100 kΩ | Gate-to-opposite-rail bias for Q2 (R7) / Q3 (R15) — lower leg of the divider | [Yageo RC0603](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R6, R14 | 100 kΩ | VSF+ (R6) / VSF− (R14) bleed resistor to GNDREF — discharges the rail when SOURCE is removed | [Yageo RC0603](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R5, R13 | 1 MΩ | Gate-to-source pull for Q2 (R5) / Q3 (R13) — upper leg of the 10:1 gate-bias divider | [Yageo RC0603](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R7, R15 | 100 kΩ | Gate-to-opposite-rail bias for Q2 (R7) / Q3 (R15) — lower leg of the divider | [Yageo RC0603](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R6, R14 | 100 kΩ | VSF+ (R6) / VSF− (R14) bleed resistor to GNDREF — discharges the rail when SOURCE is removed | [Yageo RC0603](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | FB1, FB2 | 30 Ω @ 100 MHz (BLE32PN300SN1L) | Power ferrite bead on VSF+ (FB1) / VSF− (FB2) — decouples DUT-side RF from the upstream supply | [Murata BLE32PN300SN1L](https://www.murata.com/en-us/products/productdetail?partno=BLE32PN300SN1L) |
 | L1–L10 | 1 µH / 7 mΩ (CYA0630-1.0UH) | LISN ladder series inductors, five per rail = 5 µH per rail (rated 12 A saturation) | Shouhan CYA0630-1.0UH — manufacturer page not publicly indexed |
 | C1, C8 | 2.2 µF / 100 V X7R | VSF+ (C1) / VSF− (C8) mid-band decoupling cap | [Murata GRM32ER72A225KA35L](https://www.murata.com/en-us/products/productdetail?partno=GRM32ER72A225KA35%23) |
@@ -166,7 +166,7 @@ See `pcb_review/lisn-supply-path-layout.md` in the source repository for the ful
 | C5, C12 | 33 pF / 630 V C0G | Ladder shunt cap at node D, upper (C5) / lower (C12) — damped by R9 / R17 | [Murata GCM31A5C2J330JX01D](https://www.murata.com/en-us/products/productdetail?partno=GCM31A5C2J330JX01D) |
 | R9, R17 | 470 Ω (2512, 1 W) | Q-damper for C5 (R9) / C12 (R17) — 10 MHz RC corner | [Yageo RT2512](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf) |
 | C6, C13 | 1 nF / 630 V C0G | DUT-side ladder shunt, upper (C6) / lower (C13) — damped by R10‖R11 / R18‖R19 | [Murata GRM31B5C2J102JW01L](https://www.murata.com/en-us/products/productdetail?partno=GRM31B5C2J102JW01%23) |
-| R10, R11, R18, R19 | 0.68 Ω (0805) | Parallel-pair Q-damper (0.34 Ω each pair) for C6 (R10‖R11) / C13 (R18‖R19) — ~470 MHz RC corner | [Yageo RC0805](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R10, R11, R18, R19 | 0.68 Ω (0805) | Parallel-pair Q-damper (0.34 Ω each pair) for C6 (R10‖R11) / C13 (R18‖R19) — ~470 MHz RC corner | [Yageo RC0805](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | C7, C14 | 33 pF / 630 V C0G | Undamped HF shunt at DUT+ (C7) / DUT− (C14) direct to GNDREF | [Murata GCM31A5C2J330JX01D](https://www.murata.com/en-us/products/productdetail?partno=GCM31A5C2J330JX01D) |
 
 ## Gaps & next version

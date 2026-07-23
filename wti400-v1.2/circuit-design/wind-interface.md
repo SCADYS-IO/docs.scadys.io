@@ -443,12 +443,12 @@ The wind interface occupies approximately x:80–133, y:100–126 on the 95.2 ×
 | D16 | RBR3MM60BTR | Schottky barrier, 60 V / 3 A, SOD-123FL — LP2951 Vout-to-Vin protection diode (anode=VAS, cathode=VSC) | [ROHM RBR3MM60BTR](https://fscdn.rohm.com/en/products/databook/datasheet/discrete/diode/schottky_barrier/rbr3mm60btr-e.pdf) |
 | JP1 | Vsel | 3-pin 2.54 mm pin header — Raymarine / B&G transducer setpoint selector | [LCSC C2937625](https://www.lcsc.com/datasheet/C2937625.pdf) |
 | FB2 | BLM31KN601SN1L | 1206 ferrite bead, 600 Ω @ 100 MHz, 80 mΩ DCR — LDO output / VAS domain boundary | [Murata BLM31KN601SN1L](https://www.lcsc.com/datasheet/lcsc_datasheet_2209271730_Murata-Electronics-BLM31KN601SN1L_C668306.pdf) |
-| R55 | 39 kΩ 0603 ±1 % | LP2951 SHUTDOWN pull-up to VCC (rail off at boot) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R65 | 10 kΩ 0603 ±1 % | LP2951 ERROR pull-up to VCC (open-drain output) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R72 | 120 kΩ 0603 ±1 % | LP2951 feedback divider upper leg | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R74 | 39 kΩ 0603 ±1 % | VAS output bleed (discharges C52 when LDO disabled) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R77 | 6.2 kΩ 0603 ±1 % | Feedback divider lower-leg option for 6v8 setpoint | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R78 | 20 kΩ 0603 ±1 % | Feedback divider lower-leg main resistor (always present) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R55 | 39 kΩ 0603 ±1 % | LP2951 SHUTDOWN pull-up to VCC (rail off at boot) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R65 | 10 kΩ 0603 ±1 % | LP2951 ERROR pull-up to VCC (open-drain output) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R72 | 120 kΩ 0603 ±1 % | LP2951 feedback divider upper leg | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R74 | 39 kΩ 0603 ±1 % | VAS output bleed (discharges C52 when LDO disabled) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R77 | 6.2 kΩ 0603 ±1 % | Feedback divider lower-leg option for 6v8 setpoint | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R78 | 20 kΩ 0603 ±1 % | Feedback divider lower-leg main resistor (always present) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R79 | 0 Ω 0805 | Factory voltage-select alternative to JP1 (bypasses R77 → hard-wires 8v4) | — |
 | C48 | 100 pF / 50 V C0G 0603 | LP2951 feedforward across upper feedback resistor (820 pF candidate pending InvenTree part) | — |
 | C51 | 4.7 µF / 25 V X7R 0805 | LP2951 input (VSC) bypass | — |

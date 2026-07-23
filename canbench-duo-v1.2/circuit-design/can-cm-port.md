@@ -149,7 +149,7 @@ See `pcb_review/can-cm-port-layout.md` in the source repository for the per-comp
 | D25, D26 | 1N4148W | Outer bipolar 1-diode clamp at RF_CAN6 (anti-parallel pair to GNDREF) | [DIODES 1N4148W-7-F](https://www.lcsc.com/datasheet/C83528.pdf) |
 | D22, D23 | 1N4148W | Inner bipolar 1-diode clamp at RF_CAN_CM (anti-parallel pair to GNDREF) | [DIODES 1N4148W-7-F](https://www.lcsc.com/datasheet/C83528.pdf) |
 | D24 | TPAZ1023-02F | Integrated multi-channel TVS; only Channel 1 populated (pin 1 = RF_CAN_CM, pin 3 = GNDREF, pins 2/4/5/6 n/c) | [Tech Public TPAZ1023-02F](https://www.lcsc.com/datasheet/C41408050.pdf) |
-| R43 | 1 MΩ ±1 % | DC bleeder from RF_CAN_CM to GNDREF — defined DC reference at the SMA when no instrument is connected | [YAGEO RC0603](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R43 | 1 MΩ ±1 % | DC bleeder from RF_CAN_CM to GNDREF — defined DC reference at the SMA when no instrument is connected | [YAGEO RC0603](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | J6 | SMA Female Vertical, 50 Ω | Panel-mount output to spectrum analyser / disturbance meter at the top extrusion | [HCTL HC-SMA6565-13H-G](https://www.lcsc.com/datasheet/C5723200.pdf) |
 
 ## Gaps & next version
@@ -173,7 +173,7 @@ See `pcb_review/can-cm-port-layout.md` in the source repository for the per-comp
 - muRata, [*GCM21BR72A104KA37L 100 nF / 100 V X7R MLCC* (C25, C26)](https://www.murata.com/en-us/products/productdetail?partno=GCM21BR72A104KA37%23)
 - YAGEO, [*RT0603 thin-film 0.1 % series* (R38, R41, R42, R46, R47)](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RT_1-to-0.01_RoHS_L_5.pdf)
 - YAGEO, [*AC0603 thick-film 1 % series* (R40)](https://www.lcsc.com/datasheet/C227988.pdf)
-- YAGEO, [*RC0603 1 MΩ 1 %* (R43)](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf)
+- YAGEO, [*RC0603 1 MΩ 1 %* (R43)](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L)
 - HCTL, [*HC-SMA6565-13H-G SMA Female Vertical 50 Ω* (J6)](https://www.lcsc.com/datasheet/C5723200.pdf)
 - ISO, *ISO 11898-2 — Road vehicles — Controller area network (CAN) — Part 2: High-speed medium access unit* (the 120 Ω termination requirement this port does not replace)
 - NMEA, *NMEA 2000 Standard* — M12 Micro-C Code A pinout (J10 pin 4 = NET-H, pin 5 = NET-L)

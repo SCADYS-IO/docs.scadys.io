@@ -150,9 +150,9 @@ The power-switch cluster (Q4, FB3, C37, C38, Q5, R31, R34, R35) sits on F.Cu wit
 | FB3 | BLM31KN601SN1L | Murata 1206 ferrite bead, 600 Ω at 100 MHz, 50 mΩ DCR, 3 A rated. Series filter on VDSP between Q4 drain and bypass cluster | [Murata BLM31KN601SN1L](https://www.murata.com/en-us/products/productdetail?partno=BLM31KN601SN1L%40T) |
 | C37 | 10 µF / 25 V 0805 | Murata GRM21BZ71E106KE15L — bulk bypass on VDSP after FB3. Effective capacitance at 5 V bias to be confirmed (V2.10 item) | [Murata GRM21BZ71E106KE15L](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L) |
 | C38 | 100 nF / 50 V X7R 0603 | Murata GRM188R71H104KA93D — HF bypass on VDSP | [Murata GRM188R71H104KA93D](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D) |
-| R34 | 10 kΩ 0603 ±1 % | Yageo — Q4 gate pull-up to VDD (default-off bias) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R31 | 100 kΩ 0603 ±1 % | Yageo — Q5 base pull-down to GNDREF (default-off bias when DISP_EN floats) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R35 | 100 kΩ 0603 ±1 % | Yageo — base series resistor from DISP_EN (ESP32 GPIO21) to Q5 base | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R34 | 10 kΩ 0603 ±1 % | Yageo — Q4 gate pull-up to VDD (default-off bias) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R31 | 100 kΩ 0603 ±1 % | Yageo — Q5 base pull-down to GNDREF (default-off bias when DISP_EN floats) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R35 | 100 kΩ 0603 ±1 % | Yageo — base series resistor from DISP_EN (ESP32 GPIO21) to Q5 base | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 
 ## Testing & Verification
 
@@ -198,7 +198,7 @@ V2.9 is a fabricated prototype in the bench-test phase. DGUS II command issuance
 - Murata, [*GRM21BZ71E106KE15L — 10 µF X7R 0805*](https://www.murata.com/en-us/products/productdetail?partno=GRM21BZ71E106KE15L).
 - Murata, [*GRM188R71H104KA93D — 100 nF X7R 0603*](https://www.murata.com/en-us/products/productdetail?partno=GRM188R71H104KA93D%40D).
 - Xunpu, [*FPC-05FB-50PH20 50-pin FPC Connector*](https://en.xunpu.com.cn/product/388.html).
-- Yageo, [*RC Group Chip Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf).
+- Yageo, [*RC Group Chip Resistor*](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L).
 
 ## Related pages
 

@@ -153,7 +153,7 @@ The two ports are full mirror images. Each row covers both rails (positive-rail 
 | R21 / R30 | 5.1 Ω, 1 % thick-film, 0603 | Inter-stage current limiter between outer and inner clamps | [YAGEO AC0603FR-075R1L](https://www.lcsc.com/datasheet/C227988.pdf) |
 | D8, D9 / D15, D16 | 1N4148W, SOD-123 | Inner bipolar 1-diode clamp (±0.6 V) at RF_LISN_P/RF_LISN_N | [DIODES 1N4148W-7-F](https://www.lcsc.com/datasheet/C83528.pdf) |
 | D10 / D17 | TPAZ1023-02F, DFN1210-6 | Integrated multi-channel TVS at the SMA — only Channel 1 populated | [Tech Public TPAZ1023-02F (LCSC C41408050)](https://www.lcsc.com/datasheet/C41408050.pdf) |
-| R23 / R32 | 1 MΩ, 1 % thick-film, 0603 | DC bleeder from RF_LISN_P/RF_LISN_N to GNDREF | [YAGEO RC0603FR-071ML](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R23 / R32 | 1 MΩ, 1 % thick-film, 0603 | DC bleeder from RF_LISN_P/RF_LISN_N to GNDREF | [YAGEO RC0603FR-071ML](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | J2 / J4 | SMA Female Vertical, 50 Ω THT | RF output to spectrum analyser / disturbance meter | [HCTL HC-SMA6565-13H-G](https://www.lcsc.com/datasheet/C5723200.pdf) |
 
 ## Gaps & next version

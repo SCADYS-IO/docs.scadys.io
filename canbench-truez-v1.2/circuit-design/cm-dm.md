@@ -80,8 +80,8 @@ The CM-25Ω / DM-100Ω semantics assume a 50 Ω analyser input. The transformer 
 | --- | --- | --- | --- |
 | T1 | TC1-1-13M+ | 1:1 (50 Ω) RF balun, 4.5–3000 MHz. **Common-mode** transformer — windings series-connected; the midpoint is the CM tap. | [Mini-Circuits](https://www.minicircuits.com/pdfs/TC1-1-13M+.pdf) |
 | T2 | TC1-1-13M+ | Same part. **Differential-mode** transformer — transforms the LINE+ − LINE− difference to a single-ended output. | [Mini-Circuits](https://www.minicircuits.com/pdfs/TC1-1-13M+.pdf) |
-| R1, R2 | 10 Ω | Series dampers in the CM input legs — reduce transformer/cable parasitic peaking and limit surge / hot-plug energy. | [Yageo RC](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R3, R4 | 10 Ω | Series dampers in the DM input legs. | [Yageo RC](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R1, R2 | 10 Ω | Series dampers in the CM input legs — reduce transformer/cable parasitic peaking and limit surge / hot-plug energy. | [Yageo RC](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R3, R4 | 10 Ω | Series dampers in the DM input legs. | [Yageo RC](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R5 | 49.9 Ω | Thin-film **shunt** at the CM tap to GNDREF (CM-25Ω termination). | [YAGEO RT0603](https://www.lcsc.com/datasheet/C861434.pdf) |
 | R6 | 49.9 Ω | Thin-film **series** element in the DM output path (DM-100Ω termination). | [YAGEO RT0603](https://www.lcsc.com/datasheet/C861434.pdf) |
 | C1, C2 | 100 nF / 100 V | DC-blocking / AC-coupling caps to the CM and DM outputs (muRata GCJ188R72A104KA01D). | [muRata](https://www.lcsc.com/datasheet/C161117.pdf) |

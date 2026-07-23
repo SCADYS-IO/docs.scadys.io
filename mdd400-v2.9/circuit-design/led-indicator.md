@@ -107,9 +107,9 @@ Q1, R8, R15, R14, and D2 are placed as a compact cluster in the "Status LED_EN" 
 |-----|-------|----------|-----------|
 | Q1 | BC807-25 | Nexperia PNP BJT, 45 V / 500 mA, SOT-23; high-side LED switch | [Nexperia BC807 Series](https://assets.nexperia.com/documents/data-sheet/BC807_SER.pdf) |
 | D2 | XL-1608UOC-06 | XINGLIGHT 0603 amber SMD LED; status indicator | [XINGLIGHT XL-1608UOC-06](/assets/datasheets/mdd400-v2.9/XL-1608UOC-06.pdf) |
-| R8 | 6k8 0603 ±1 % | Base-bias resistor (LED_EN → Q1 base) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R8 | 6k8 0603 ±1 % | Base-bias resistor (LED_EN → Q1 base) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R14 | 390 Ω 0603 ±1 % | LED current-limit (Q1 collector → D2 anode); sets I<sub>LED</sub> ≈ 3 mA | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_51_RoHS_P_6.pdf) |
-| R15 | 10 kΩ 0603 ±1 % | Base pull-down to GNDREF — provides the default-on bias when LED_EN floats | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R15 | 10 kΩ 0603 ±1 % | Base pull-down to GNDREF — provides the default-on bias when LED_EN floats | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 
 ## Testing & Verification
 
@@ -137,7 +137,7 @@ V2.9 is a fabricated prototype in the bench-test phase. The Status LED has not y
 
 - Nexperia, [*BC807 Series PNP Transistor*](https://assets.nexperia.com/documents/data-sheet/BC807_SER.pdf).
 - XINGLIGHT, [*XL-1608UOC-06 0603 Amber LED*](/assets/datasheets/mdd400-v2.9/XL-1608UOC-06.pdf).
-- Yageo, [*RC Group Chip Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf).
+- Yageo, [*RC Group Chip Resistor*](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L).
 
 ## Related pages
 

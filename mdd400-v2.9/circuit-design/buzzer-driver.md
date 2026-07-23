@@ -118,11 +118,11 @@ All driver and filter components are tightly grouped in a 16.9 × 7.3 mm region 
 | Q3 | S8050 | NPN BJT, SOT-23, V<sub>CEO</sub> = 25 V, h<sub>FE</sub> ≥ 40 at 100 mA. Gate driver for Q2 | [onsemi SS8050](https://www.onsemi.com/pdf/datasheet/ss8050-d.pdf) |
 | D1 | BAT54 | Nexperia Schottky diode, SOD-323F, 30 V / 200 mA, V<sub>F</sub> ~0.3 V. Inductive-kickback clamp across BZ0 | [Nexperia BAT54 Series](https://assets.nexperia.com/documents/data-sheet/BAT54_SER.pdf) |
 | C12 | 4.7 µF / 16 V X7R 0603 | Murata GRM188Z71C475KE21D — output low-pass filter shunt capacitor | [Murata GRM188Z71C475KE21D](https://www.murata.com/en-us/products/productdetail?partno=GRM188Z71C475KE21D) |
-| R10 | 4.7 Ω 0603 ±1 % | Yageo — output low-pass filter series resistor | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R9 | 10 Ω 0603 ±1 % | Yageo — low-pass filter shunt damping resistor (loosens Q, prevents ringing) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R11 | 10 kΩ 0603 ±1 % | Yageo — Q2 gate pull-up to VDD (holds Q2 OFF by default, V<sub>GS</sub> = 0) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R12 | 2.2 kΩ 0603 ±1 % | Yageo — Q3 base series resistor (AUDIO_PWM to Q3 base) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R13 | 100 kΩ 0603 ±1 % | Yageo — Q3 base pull-down to GND (default-off bias when AUDIO_PWM floats) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R10 | 4.7 Ω 0603 ±1 % | Yageo — output low-pass filter series resistor | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R9 | 10 Ω 0603 ±1 % | Yageo — low-pass filter shunt damping resistor (loosens Q, prevents ringing) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R11 | 10 kΩ 0603 ±1 % | Yageo — Q2 gate pull-up to VDD (holds Q2 OFF by default, V<sub>GS</sub> = 0) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R12 | 2.2 kΩ 0603 ±1 % | Yageo — Q3 base series resistor (AUDIO_PWM to Q3 base) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R13 | 100 kΩ 0603 ±1 % | Yageo — Q3 base pull-down to GND (default-off bias when AUDIO_PWM floats) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 
 ## Testing & Verification
 
@@ -161,7 +161,7 @@ V2.9 is a fabricated prototype in the bench-test phase. PWM tone generation has 
 - AOS (Alpha & Omega Semiconductor), [*AO3407A P-Channel MOSFET*](https://www.aosmd.com/pdfs/datasheet/AO3407A.pdf).
 - onsemi, [*SS8050 NPN Transistor*](https://www.onsemi.com/pdf/datasheet/ss8050-d.pdf).
 - Nexperia, [*BAT54 Series Schottky Diode*](https://assets.nexperia.com/documents/data-sheet/BAT54_SER.pdf).
-- Yageo, [*RC Group Chip Resistor*](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf).
+- Yageo, [*RC Group Chip Resistor*](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L).
 - Murata, [*GRM188Z71C475KE21D — 4.7 µF / 16 V X7R 0603*](https://www.murata.com/en-us/products/productdetail?partno=GRM188Z71C475KE21D).
 - Espressif Systems, [*ESP-IDF LEDC Peripheral Reference*](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-reference/peripherals/ledc.html).
 

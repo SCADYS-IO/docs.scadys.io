@@ -293,9 +293,9 @@ The feedback divider lower-leg GND return (R1 pad 2), the input cap GND returns 
 | C13 | 100 pF / 50 V C0G 0603 | High-frequency 3v3 rail bypass close to L1 output | — |
 | C14 | 10 µF / 50 V X7R 1210 | 3v3 output bulk capacitor — **left flank** of L1 (intentional EMI layout) | [Murata GRM32ER71H106KA12L](https://www.lcsc.com/datasheet/C77102.pdf) |
 | C15 | 10 µF / 50 V X7R 1210 | 3v3 output bulk capacitor — **right flank** of L1 (symmetric with C14) | [Murata GRM32ER71H106KA12L](https://www.lcsc.com/datasheet/C77102.pdf) |
-| R1 | 32 kΩ 0603 thin film ±0.1 % | Feedback divider lower resistor (sets 3.30 V with R2) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R2 | 100 kΩ 0603 thick film ±1 % | Feedback divider upper resistor (3v3 → FB pin) | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R13 | 22 Ω 0603 thick film ±1 % | SW-node snubber resistor in series with C10 — **DNP** by default | [Yageo RC Group](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R1 | 32 kΩ 0603 thin film ±0.1 % | Feedback divider lower resistor (sets 3.30 V with R2) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R2 | 100 kΩ 0603 thick film ±1 % | Feedback divider upper resistor (3v3 → FB pin) | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R13 | 22 Ω 0603 thick film ±1 % | SW-node snubber resistor in series with C10 — **DNP** by default | [Yageo RC Group](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | TP1 | — | VCC test point — **DNP** | — |
 
 ## Testing & Verification

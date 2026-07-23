@@ -56,28 +56,28 @@ MDD400 **v2.9** — Fabricated prototype — testing phase
 | Q7, Q12 | MMBTA56LT1G | 2 | PNP 80 V 500 mA SOT-23 | [Onsemi MMBTA56LT1G](https://www.onsemi.com/products/discrete-power-modules/general-purpose-transistors/mmbta56) |
 | Q8, Q11 | BC847BS | 2 | NPN 45 V 100 mA SOT-363 dual | [Nexperia BC847BS](https://assets.nexperia.com/documents/data-sheet/BC847BS.pdf) |
 | Q10 | 2N7002 | 1 | N-channel 60 V 300 mA SOT-23 MOSFET | [Nexperia 2N7002](https://assets.nexperia.com/documents/data-sheet/2N7002.pdf) |
-| R1–R4, R11, R15, R17, R20, R21, R24, R26, R34, R61, R62 | 10 kΩ | 14 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R1–R4, R11, R15, R17, R20, R21, R24, R26, R34, R61, R62 | 10 kΩ | 14 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R5 | 32 kΩ | 1 | 0603 thin-film 0.1% | [Yageo Thin Film](https://www.lcsc.com/product-detail/C861839.html) |
-| R6, R13, R19, R28, R31, R35, R38, R54 | 100 kΩ | 8 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R8 | 6.8 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R9, R51 | 10 Ω | 2 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R10, R39 | 4.7 Ω | 2 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R12, R25, R32, R50, R58 | 2.2 kΩ | 5 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R6, R13, R19, R28, R31, R35, R38, R54 | 100 kΩ | 8 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R8 | 6.8 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R9, R51 | 10 Ω | 2 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R10, R39 | 4.7 Ω | 2 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R12, R25, R32, R50, R58 | 2.2 kΩ | 5 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R14, R27, R29, R36, R55 | 390 Ω | 5 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_51_RoHS_P_6.pdf) |
 | R16 | 47 Ω | 1 | 0603 thick-film 1% | [Yageo RC Series](https://www.lcsc.com/product-detail/C114623.html) |
 | R18 | 19.1 kΩ | 1 | 0603 thin-film 0.1% | [Yageo Thin Film](https://www.lcsc.com/product-detail/C855669.html) |
-| R30, R37, R44, R47 | 22 kΩ | 4 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R30, R37, R44, R47 | 22 kΩ | 4 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R33 | 330 mΩ | 1 | 0603 shunt resistor 1% | [Yageo PT0603FR-070R33L](https://www.yageo.com/en/Product-Line/Resistors/Chip-Resistors/Thick-Film/PT/PT0603FR-070R33L) |
-| R40 | 56 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R41, R43 | 1 MΩ | 2 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R42 | 30.9 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R45 | 68 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R46 | 2.4 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
-| R48, R49, R56 | 39 kΩ | 3 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R40 | 56 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R41, R43 | 1 MΩ | 2 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R42 | 30.9 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R45 | 68 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R46 | 2.4 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R48, R49, R56 | 39 kΩ | 3 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R52 | 1 kΩ | 1 | 0603 thin-film 0.1% | [Yageo Thin Film](https://www.lcsc.com/product-detail/C110776.html) |
 | R53 | 220 mΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://www.lcsc.com/product-detail/C326952.html) |
 | R57 | 47 Ω | 1 | 1210 thick-film 5% 500 mW | [Yageo RC Series](https://www.lcsc.com/product-detail/C230466.html) |
-| R59 | 12 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf) |
+| R59 | 12 kΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R60 | 100 mΩ | 1 | 0603 thick-film 1% | [Yageo RC Series](https://www.lcsc.com/product-detail/C326946.html) |
 | U1, U6 | LMR51610 | 2 | 4–65 V 1 A synchronous buck converter, SOT-23 | [TI LMR51610](https://www.ti.com/lit/ds/symlink/lmr51610.pdf) |
 | U2 | INA219 | 1 | Current/power monitor with I²C, SOT-23-8 | [TI INA219](https://www.ti.com/lit/ds/symlink/ina219.pdf) |
