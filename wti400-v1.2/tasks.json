@@ -1919,5 +1919,22 @@
     "assignee": null,
     "kind": "next-version",
     "target_version": "v2.0"
+  },
+  {
+    "id": "wind-interface-next-wind-y-adc1-relocation",
+    "circuit": "wind-interface",
+    "circuit_label": "Wind Interface",
+    "title": "Move WIND_Y off ADC2 to a free ADC1 pin",
+    "description": "WIND_Y is on GPIO11 = ADC2_CH0. The ESP32-S3 Wi-Fi driver seizes ADC2 whenever the radio is active, so wind direction and Wi-Fi are mutually exclusive on V1.2 and atan2(Y,X) reconstruction fails with Signal-K running. WIND_X (GPIO10 = ADC1_CH9) is unaffected. Relocate WIND_Y to a free ADC1 pin so both channels sit on ADC1, which also enables continuous simultaneous sampling. Candidate pins are GPIO2, GPIO4, GPIO5, GPIO6 and GPIO9 &mdash; GPIO1 is ST_EN, GPIO7 is LED_BLU and GPIO8 is I2C_SCL, and GPIO3 is a strapping pin. Hard prerequisite for the Wi-Fi / Signal-K path.",
+    "status": "todo",
+    "date_completed": null,
+    "result": null,
+    "notes": null,
+    "evidence": [],
+    "category": "hardware",
+    "dependencies": [],
+    "assignee": null,
+    "kind": "next-version",
+    "target_version": "v1.3"
   }
 ]

@@ -10,9 +10,16 @@
 
 # MkDocs
 site/
+
+# Archived snapshots of the retired MkDocs site. These are kept on disk for
+# reference and must never be tracked: this is a PUBLIC repository, and the
+# archive carries the test-vessel name, the old commercial-in-confidence
+# licence text and the FTP deploy host, user and server path.
 .assets/docs_old/
 .assets/.olddocs/
+.assets/olddocs/
 .assets/archive/
+.assets/docs.scadys.io.*/
 
 # Docusaurus
 node_modules/
