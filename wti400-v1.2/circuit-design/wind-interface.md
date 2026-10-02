@@ -246,6 +246,12 @@ Together they supplement the FL2 common-mode filtering with a local energy reser
 
 The two analog wind angle channels are functionally and electrically identical — exact mirrors of each other, so that the firmware `atan2(WIND_Y, WIND_X)` direction reconstruction sees a symmetric pair. The pair occupies the top half of the schematic with X on the left and Y on the right; the PCB layout mirrors trace lengths and component orientations around U12's vertical centreline. Any systematic offset or gain mismatch between the two would appear as a fixed angular error in atan2 output, so symmetry is a first-class requirement.
 
+:::caution[ADC channel allocation]
+
+WIND_Y is routed to GPIO11, which is ADC2 channel 0 on the ESP32-S3. The ESP32-S3 Wi-Fi driver takes ADC2 whenever the radio is active, so on V1.2 a wind-direction reading and Wi-Fi, including a Signal K connection, cannot run at the same time. WIND_X is on GPIO10, which is ADC1 channel 9, and is not affected. The V1.2 firmware reads wind direction correctly only because Wi-Fi is never enabled. V1.3 moves WIND_Y to a free ADC1 pin. The pin map is on the [Pin Assignments](/wti400/v1.2/quick-reference/pin-assignments) page.
+
+:::
+
 ### How it works
 
 #### Designator map (X ↔ Y)
@@ -509,7 +515,7 @@ The V1.2 prototype on the test vessel has accumulated ~1,000 sea miles with basi
 - **VAS rail voltage** — Confirm 8.65 V (8v4) / 6.89 V (6v8) at the LP2951 output pad under each load condition.
 - **LP2951 thermal soak** — 30 min run at VSC = 14.8 V, JP1 6v8, 30 mA load. Record package temperature. Pass if estimated Tj stays below 110 °C at 40 °C ambient.
 - **VSENSE voltage at P HIGH** — Reed switch open, transducer connected. Expected ~3.0–3.3 V.
-- **WND_EN / WND_ERR handshake** — Verify VAS is off at boot, enables when WND_EN is driven low, asserts WND_ERR low when the cable is disconnected (transducer absent).
+- **WND_EN / WND_ERR handshake** — Verify VAS is off at boot, enables when WND_EN is driven low, and asserts WND_ERR low on a short or overcurrent at the VAS output. A disconnected transducer does not assert WND_ERR, because an open circuit draws no load current. Firmware detects a missing transducer from the collapse of the vane signal instead.
 - **ADC range characterisation** — Rotate vane through full 360°, log raw WIND_X / WIND_Y ADC counts. Identify clipping bearings and quantify atan2 reconstruction error. Decision point: if clipping is unacceptable, reduce R50/R51 (Rf) in a V2.0 spin; if acceptable, document the angular error budget for firmware compensation.
 - **atan2 zero-angle calibration** — Hold vane at 0°, 90°, 180°, 270° (referenced to a marked heading). Record firmware-reported angle. Document zero offset and maximum reconstruction error across all four quadrants.
 - **Speed pulse PPR calibration** — Drive anemometer at measured RPM, log WIND_SPD ISR rate, confirm 2 PPR (Raymarine spec), derive firmware calibration constant.
