@@ -16,7 +16,9 @@ MDD400 **v2.9** — Prototype — under test
 :::note[`ST_EN` polarity corrected 2026-07-07 — active-HIGH]
 This page previously described `ST_EN` as active-LOW. It has been corrected against the fabricated MDD400 V2.9 board and its KiCad netlist: **`ST_EN` is active-HIGH** — drive the GPIO HIGH to enable the transmitter; LOW or undriven disables it. R28 (100 kΩ) is a pull-down from `ST_EN` to GNDREF (default-disable on reset, boot, and GPIO float); R29 (390 Ω) is the U9 enable-LED series resistor.
 
-A broader netlist re-review of the TX-isolator legacy-side output network (the R28 / R37 / R38 refdes roles in the U8 and U9 sections) remains pending under the legacy-serial re-author task; it does not affect the `ST_EN` polarity corrected here.
+The transmit path's legacy-side output network was re-authored on 2026-10-02 against the same netlist and the validated design record of the transmit driver, which was bench-validated on 2026-06-17. R37 (22 kΩ) is the U8 output pull-up to VST on the `TX` net, not a pull-up on ST_SIG. R38 (100 kΩ) is the U9 output pull-up to VST that holds the Q9 enable switch off. The line driver is a Q11B sink with Q10 as a cascode above it, not a Q10 open-drain switch, and Q11A provides a foldback current limit sensed across R51.
+
+The rise-time-assist subsection (its designator roles and time constants) and the C48 820 pF rework recommendation have not yet been reconciled with the validated design record, which reports the as-built 2.2 nF value as adequate on the bench. They remain pending under the legacy-serial re-author task.
 :::
 
 ## Overview
@@ -70,7 +72,7 @@ In Legacy Serial Protocol mode all three pins are used as supplied by the bus:
 - pin 2 is the bus ground reference; and
 - pin 3 carries the single-wire, idle-HIGH, active-LOW serial signal at 4800 baud.
 
-The MDD400 can both listen to and transmit on the bus. During transmit, Q10 (2N7002) pulls pin 3 LOW; during idle and receive, pin 3 is held HIGH by R37 (22 kΩ pull-up to VST). The protocol is half-duplex: the MCU must not transmit while another device is holding the bus LOW.
+The MDD400 can both listen to and transmit on the bus. During transmit, Q11B pulls pin 3 LOW through the Q10 (2N7002) cascode and D11. During idle and receive the driver releases the line, and pin 3 is held HIGH by the bus pull-up and, on the board, by R30 (22 kΩ from VST through D6). The protocol is half-duplex: the MCU must not transmit while another device is holding the bus LOW.
 
 Legacy Serial Protocol uses 9-bit framing: 4800 baud, 1 start bit, 8 data bits, 1 attribute bit (transmitted as the 9th data bit, conventionally mapped to the UART parity position), 1 stop bit. The attribute bit distinguishes command bytes from data bytes in a multi-byte message.
 
@@ -87,7 +89,7 @@ For NMEA 0183 single-ended receive, connect the talker output as follows:
 :::note[12 V supply — when required]
 - **Legacy Serial Protocol** — always required; bus power on pin 1 is the only supply source;
 - **NMEA 0183 listener only** — not required; the RX buffer draws its LED drive current passively from the talker signal;
-- **NMEA 0183 talker** — required; the TX line driver (Q10, VST pull-up R37) needs VST to assert the bus LOW. Connect a 9–16 V supply to pin 1.
+- **NMEA 0183 talker**: required. The TX line driver (Q11B and the Q10 cascode, powered from VST through Q9) needs VST to assert the bus LOW. Connect a 9 V to 16 V supply to pin 1.
 :::
 
 The receive circuit draws approximately 0.36 mA from the line at 2.0 V input, within the NMEA 0183 listener limit of 2.0 mA. The TLP2309 propagation delay (≤ 1 µs) and signal filter cut-off (723 kHz) both support NMEA 0183 at 4800 baud and at 38400 baud (high-speed).
@@ -98,7 +100,7 @@ The receive circuit draws approximately 0.36 mA from the line at 2.0 V input, wi
 
 **Receive (listener) — compatible.** The receive circuit meets the NMEA 0183 listener electrical specification at 4800 baud and 38400 baud. The connection is single-ended (TALK-A referenced to GND_ST); it is not a true RS-422 differential receiver. In installations with a shared, low-impedance ground between the MDD400 and the NMEA 0183 talker, this is functionally equivalent. In installations with floating or noisy grounds, common-mode noise rejection will be lower than a proper RS-422 differential front-end.
 
-**Transmit (talker) — not RS-422 compliant.** The TX output is a single-wire open-drain signal: pin 3 is pulled to GND_ST (≈ 0 V) by Q10 during a logic 0, and pulled to VST (≈ 12 V) by R37 during idle and logic 1. Standard RS-422 NMEA 0183 talkers produce a differential signal of ≥ ±2 V between TALK-A and TALK-B. When this circuit's output is connected to a strict RS-422 receiver (TALK-A = pin 3, TALK-B = GND_ST), the logic 0 state produces a differential of ≈ 0 V — outside the RS-422 mark/space threshold — and the receiver will not detect it correctly.
+**Transmit (talker), not RS-422 compliant.** The TX output is a single-wire open-drain signal. During a logic 0, Q11B pulls pin 3 towards GND_ST (≈ 0 V) through the Q10 cascode. During idle and logic 1 the driver releases the line, which the bus pull-up and R30 hold near VST (≈ 12 V). Standard RS-422 NMEA 0183 talkers produce a differential signal of ≥ ±2 V between TALK-A and TALK-B. When this circuit's output is connected to a strict RS-422 receiver (TALK-A = pin 3, TALK-B = GND_ST), the logic 0 state produces a differential of ≈ 0 V, which is outside the RS-422 mark/space threshold, and the receiver will not detect it correctly.
 
 The transmit path is not NMEA 0183 compliant. The single-ended open-drain output can drive some non-standard NMEA 0183 inputs that accept single-ended 12 V logic (for example older Garmin, B&G, and Furuno equipment, and chartplotters with TTL-level NMEA 0183 inputs), but this is not a supported mode; confirm the receiver's input specification before relying on it. In normal operation the firmware transmits on the Legacy Serial Protocol (SeaTalk) only.
 
@@ -242,7 +244,7 @@ Input load at 2.0 V: I = (2.0 V − V_LED_F) / R32 = (2.0 − 1.20) / 2200 = **0
 
 ### How it works
 
-The TX circuit has four functional stages: an enable opto-isolator (U9) that gates the transmitter by default, a TX opto-isolator (U8) that transfers the UART data signal across the isolation barrier, a two-transistor push-pull gate driver (Q8, Q11) with a PMOS high-side switch (Q9) that drives the NMOS line driver (Q10), and a rise-time assist stage (Q12) that accelerates bus rising edges.
+The TX circuit has four functional stages: an enable opto-isolator (U9) that switches the driver supply rail on through a P-channel MOSFET (Q9) and holds it off by default, a TX opto-isolator (U8) that transfers the UART data signal across the isolation barrier, a pull-only-low line driver in which Q11B sinks the line through a Q10 cascode under the control of the Q8 pre-driver, and a rise-time assist stage (Q12) that accelerates bus rising edges.
 
 #### Enable isolator — U9 (TLP2309), default-disable
 
@@ -250,23 +252,31 @@ U9 is a TLP2309 opto-isolator that transfers the `ST_EN` enable signal across th
 
 The MCU side of U9 has R29 (390 Ω) in series with the LED, and R28 (100 kΩ) as a pull-down from `ST_EN` to GNDREF. When the MCU drives `ST_EN` **HIGH**, current flows through R29 into the U9 LED, turning it on and asserting the enable signal on the legacy side. When `ST_EN` is **LOW or undriven**, no LED current flows and the transmitter is disabled.
 
+On the legacy side, the U9 output is pulled up to VST by R38 (100 kΩ) and drives the gate of Q9 (AO3407A P-channel MOSFET) through R36 (390 Ω). Q9 has its source at VST and its drain on the `TX_EN` rail that powers the line driver. With the U9 LED on, the U9 output pulls the Q9 gate LOW, Q9 turns on and `TX_EN` rises to VST. With the LED off, R38 holds the Q9 gate at VST, Q9 is off and R49 (39 kΩ) bleeds `TX_EN` to GND_ST, so the driver is unpowered and the line is released.
+
 R28 holds `ST_EN` LOW so the TX line driver is off during MCU boot, reset, any firmware fault, and any GPIO-float condition. The transmitter can only be enabled by an explicit firmware action — driving `ST_EN` HIGH.
 
 #### TX isolator — U8 (TLP2309)
 
-U8 transfers `ST_TX` across the isolation barrier. The input side has a 10 kΩ pull-up (R26) from VCC to the LED anode and a 390 Ω series resistor (R27). The LED is off when `ST_TX` is HIGH (bus idle); when the MCU drives `ST_TX` LOW, the LED conducts at approximately 5.6 mA. The output side (in the VST / GND_ST legacy domain) reproduces the TX signal and feeds the gate-driver chain. *(The precise refdes assignments of the U8/U9 legacy-side pull-up/pull-down network are pending the netlist re-review noted at the top of this page.)*
+U8 transfers `ST_TX` across the isolation barrier. On the input side, R27 (390 Ω) runs from VCC to the LED anode, the LED cathode sits on `ST_TX`, and R26 (10 kΩ) pulls `ST_TX` up to VCC so the LED stays off while the GPIO floats at boot. The LED is off when `ST_TX` is HIGH (bus idle). When the MCU drives `ST_TX` LOW, the LED conducts at approximately 5.6 mA.
 
-#### Gate driver — Q8, Q11 (BC847BS), Q9 (AO3407A), Q10 (2N7002)
+On the legacy side, the U8 output drives the `TX` net, which R37 (22 kΩ) pulls up to VST. Because the TLP2309 output inverts and the LED is switched from its cathode, the `TX` net follows `ST_TX` without inversion. `ST_TX` HIGH leaves the LED off and the `TX` net HIGH, and `ST_TX` LOW turns the LED on and pulls the `TX` net LOW. The `TX` net feeds both halves of the Q8 pre-driver through base dividers, R42 (30.9 kΩ) with R43 (1 MΩ) to the Q8A base and R40 (56 kΩ) with R41 (1 MΩ) to the Q8B base.
 
-The gate driver takes the U8 output and drives Q10 (2N7002, 60 V / 300 mA N-channel MOSFET), the open-drain line driver.
+#### Line driver, Q8 and Q11 (BC847BS), Q10 (2N7002)
 
-Q8 and Q11 are two transistors from a BC847BS dual NPN pair (SOT363), forming a push-pull pre-driver. Q9 (AO3407A P-channel MOSFET, 30 V / 4.2 A) is the high-side element of the gate driver chain; D11 (BAT54S dual Schottky) clamps gate nodes against transient overvoltage.
+The line driver is a pull-only-low output. It pulls ST_SIG LOW for a logic 0 (space) and releases it for a logic 1 (mark), which matches the wired-OR bus on which no talker ever drives the line HIGH. It is powered from the `TX_EN` rail, so it can only act while Q9 is on.
 
-When the bus is idle (`ST_TX` HIGH): U8 output is HIGH, Q10 gate is pulled LOW, Q10 is off, and ST_SIG floats HIGH through R37 (22 kΩ to VST).
+Q8 and Q11 are BC847BS dual NPN pairs (SOT363). Q8B is the input stage of the main path. Its collector is the control node N_C1, which R47 (22 kΩ) pulls up from `TX_EN` and which is also the Q11B base.
 
-When the MCU transmits a logic 0 (`ST_TX` LOW): U8 output goes LOW, the gate driver asserts Q10 gate HIGH through R55 (390 Ω gate resistor), Q10 conducts, and ST_SIG is pulled to GND_ST. Q10 R_DS(on) ≈ 2.8–5 Ω produces a bus LOW voltage of &lt; 10 mV at pull-up current levels — negligible.
+When the bus is idle or a mark is sent (`ST_TX` HIGH), the `TX` net is HIGH, Q8B is on and pulls N_C1 LOW. Q11B is off and the line is released.
 
-D9 (BZT52C15S, 15 V zener, SOD-323) clamps ST_SIG against positive transients. The 3 V headroom above VST = 12 V ensures D9 does not conduct under normal operating conditions.
+When the MCU transmits a logic 0 (`ST_TX` LOW), the `TX` net is LOW and Q8B turns off. R47 pulls N_C1 up, Q11B turns on and sinks current from ST_SIG through D11 and the Q10 cascode, then through R51 (10 Ω) to GND_ST. The SPICE golden model places ST_SIG at 0.48 V in this state, with the Q11B collector at 0.15 V.
+
+Q10 (2N7002, 60 V / 300 mA N-channel MOSFET) is a cascode, not the switch. Its gate is held at VST through R52 (1 kΩ), its source is the Q11B collector and its drain connects to ST_SIG through D11. Q10 takes up the line voltage so that Q11B never sees more than a few volts, which lets a small-signal NPN switch a 12 V line. D9 (BZT52C15S, 15 V zener, SOD-323) and R48 (39 kΩ) sit between the Q10 gate and source, where D9 clamps and R48 bleeds the gate-source voltage.
+
+D11 (BAT54S dual series Schottky) has its common pin on ST_SIG. One diode steers the sink current from ST_SIG into the Q10 drain and blocks reverse current. The other is the injection path for the rise-time assist.
+
+*(The designator roles and time constants in the rise-time assist subsection below are pending reconciliation against the netlist, as noted at the top of this page. In the netlist the assist is driven from the Q8A collector, which R59 pulls up to VST, through C48 and R61 into the Q12 base, and Q12 sources current into ST_SIG through R55 and D11. R51 is the line-driver current-sense resistor.)*
 
 #### Rise-time assist — Q12 (MMBTA56LT1G), C48, R59
 
@@ -295,7 +305,7 @@ This is a component value change only. C48 is a 0603 C0G capacitor; the footprin
 
 #### Feedback current-limiting loop — Q11 (BC847BS TR2)
 
-The second transistor of the Q11 BC847BS package monitors current through Q10. When Q10 sinks significant drain current, the voltage across R51 rises and turns on Q11 TR2, which steals base drive from the push-pull stage, limiting Q10 gate voltage and preventing excessive drain current. This protects the gate driver chain during output shorts or bus faults.
+Q11A, the other half of the Q11 pair, provides a foldback current limit. R51 (10 Ω) senses the Q11B emitter current, and R50 (2.2 kΩ) couples the voltage at the top of R51 into the Q11A base. Q11A has its emitter on GND_ST and its collector on N_C1. When the sink current brings the R51 drop close to one base-emitter voltage (about 0.7 V, or about 70 mA), Q11A turns on and pulls N_C1 down, robbing Q11B of base drive. This limits the sink current to about 70 mA and protects the driver during output shorts or bus faults.
 
 ### Performance
 
@@ -328,7 +338,7 @@ Recommended rework values (C48 = 820 pF, R59 = 12 kΩ unchanged):
 | Signal | Formula | Result |
 |--------|---------|--------|
 | U8 / U9 LED current | (VCC − V_LED_F) / R_series = (3.3 − 1.1) / 390 Ω | **5.6 mA** — well above the TLP2309 1 mA minimum I_F for CTR; opto saturates reliably |
-| Q10 V_DS(on) at pull-up current | 12 V / 22 kΩ × 2.8 Ω R_DS(on) | **&lt; 1.5 mV** — negligible bus LOW voltage |
+| ST_SIG space level | SPICE golden model, `ST_EN` HIGH, `ST_TX` LOW, VST = 11.9 V | 0.48 V, with the line actively sunk by Q11B through the Q10 cascode |
 
 </details>
 
@@ -453,29 +463,29 @@ The protection chain is built connector-first: J3 → R57 → D13-anode (with D1
 | R26 | 10 kΩ / 0603 | Yageo RC Series — ST_TX pull-up to VCC; holds LED off at default | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R27, R29 | 390 Ω / 0603 | Yageo RC Series — LED current-limiting (R27 = U8 TX; R29 = U9 EN) | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R28 | 100 kΩ / 0603 | Yageo RC Series — pull-down from `ST_EN` to GNDREF; holds TX default-disabled on reset / boot / GPIO float | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R36 | 390 Ω / 0603 | Yageo RC Series — U9 EN opto secondary bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R37 | 22 kΩ / 0603 | Yageo RC Series — ST_SIG pull-up to VST; sets bus idle-HIGH | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R38 | 100 kΩ / 0603 | Yageo RC Series — EN opto output pull-down on legacy side | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R40 | 56 kΩ / 0603 | Yageo RC Series — gate driver bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R41, R43 | 1 MΩ / 0603 | Yageo RC Series — high-impedance bias, driver chain | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R42 | 30.9 kΩ / 0603 | Yageo RC Series — gate driver bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R47 | 22 kΩ / 0603 | Yageo RC Series — base/gate pull-down | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R48, R49, R56 | 39 kΩ / 0603 | Yageo RC Series — timing / bias network | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R50, R58 | 2.2 kΩ / 0603 | Yageo RC Series — output and legacy-side base resistors | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R51 | 10 Ω / 0603 | Yageo RC0603FR-0710RL — series resistor, Q12 rise-time assist output | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R52 | 1 kΩ / 0603 | Yageo RC0603FR-071KL, thick-film, ±1% — driver chain bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R55 | 390 Ω / 0603 | Yageo RC Series — Q10 gate drive resistor | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R59 | 12 kΩ / 0603 | Yageo RC Series — C48 discharge path, rise-time assist RC | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R61 | 10 kΩ / 0603 | Yageo RC Series — feedback current-limit bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R36 | 390 Ω / 0603 | Yageo RC Series, Q9 gate series resistor from the U9 enable-opto output | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R37 | 22 kΩ / 0603 | Yageo RC Series, U8 output pull-up to VST on the `TX` net | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R38 | 100 kΩ / 0603 | Yageo RC Series, U9 output pull-up to VST that holds Q9 off while the enable LED is off | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R40 | 56 kΩ / 0603 | Yageo RC Series, Q8B base resistor from the `TX` net | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R41, R43 | 1 MΩ / 0603 | Yageo RC Series, base-to-GND_ST resistors in the Q8B (R41) and Q8A (R43) base dividers | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R42 | 30.9 kΩ / 0603 | Yageo RC Series, Q8A base resistor from the `TX` net | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R47 | 22 kΩ / 0603 | Yageo RC Series, N_C1 pull-up from `TX_EN` that turns Q11B on when Q8B is off | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R48, R49, R56 | 39 kΩ / 0603 | Yageo RC Series, Q10 gate-source bleed (R48), `TX_EN` bleed to GND_ST (R49) and Q12 collector load to VST (R56) | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R50, R58 | 2.2 kΩ / 0603 | Yageo RC Series, couples the R51 sense voltage into the Q11A base (R50) and pulls the Q12 base up to VST (R58) | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R51 | 10 Ω / 0603 | Yageo RC0603FR-0710RL, Q11B emitter current-sense resistor for the foldback current limit | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R52 | 1 kΩ / 0603 | Yageo RC0603FR-071KL, thick-film, ±1%, holds the Q10 cascode gate at VST | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R55 | 390 Ω / 0603 | Yageo RC Series, Q12 rise-time assist output resistor into D11 | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R59 | 12 kΩ / 0603 | Yageo RC Series, Q8A collector pull-up to VST in the rise-time assist path | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R61 | 10 kΩ / 0603 | Yageo RC Series, couples C48 into the Q12 base in the rise-time assist path | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | C39 | 100 nF / 50 V / 0603 / X7R | Murata GCM188R71H104KA57D — VST bypass at U8 | [GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C40 | 100 nF / 50 V / 0603 / X7R | Murata GCM188R71H104KA57D — VCC bypass at U9 | [GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C48 | **820 pF** / 50 V / 0603 / C0G | Murata GRM1885C1H821JA01D (or equivalent) — rise-time assist timing capacitor (**updated from 2.2 nF; rework required**) | — |
-| Q8, Q11 | BC847BS | Nexperia BC847BS NPN dual, SOT363 — gate driver push-pull pre-driver (both units used) | [BC847BS](https://assets.nexperia.com/documents/data-sheet/BC847BS.pdf) |
-| Q9 | AO3407A | AOS AO3407A P-channel MOSFET, SOT-23, 30 V / 4.2 A — high-side gate driver | [AO3407A](https://aosmd.com/res/data_sheets/AO3407A.pdf) |
-| Q10 | 2N7002 | Nexperia 2N7002 N-channel MOSFET, SOT-23, 60 V / 300 mA — open-drain line driver | [2N7002](https://assets.nexperia.com/documents/data-sheet/2N7002.pdf) |
+| Q8, Q11 | BC847BS | Nexperia BC847BS NPN dual, SOT363, both units used. Q8 is the pre-driver (Q8B main path, Q8A rise-time assist). Q11 is the line sink (Q11B) with its foldback current limit (Q11A) | [BC847BS](https://assets.nexperia.com/documents/data-sheet/BC847BS.pdf) |
+| Q9 | AO3407A | AOS AO3407A P-channel MOSFET, SOT-23, 30 V / 4.2 A, enable high-side switch that powers the `TX_EN` rail | [AO3407A](https://aosmd.com/res/data_sheets/AO3407A.pdf) |
+| Q10 | 2N7002 | Nexperia 2N7002 N-channel MOSFET, SOT-23, 60 V / 300 mA, line-driver cascode above Q11B | [2N7002](https://assets.nexperia.com/documents/data-sheet/2N7002.pdf) |
 | Q12 | MMBTA56LT1G | onsemi MMBTA56LT1G PNP, SOT-23, 80 V / 500 mA — rise-time assist high-side source | [MMBTA56LT1G](https://www.onsemi.com/pdf/datasheet/mmbta56lt1g-d.pdf) |
-| D9 | BZT52C15S | Diodes Inc. BZT52C15S 15 V zener, SOD-323 — ST_SIG line clamp | [BZT52C15S](https://www.diodes.com/assets/Datasheets/BZT52C.pdf) |
-| D11 | BAT54S | Nexperia BAT54S dual series Schottky, SOT-23, 30 V — gate circuit protection | [BAT54S](https://assets.nexperia.com/documents/data-sheet/BAT54_SER.pdf) |
+| D9 | BZT52C15S | Diodes Inc. BZT52C15S 15 V zener, SOD-323, Q10 cascode gate-source clamp | [BZT52C15S](https://www.diodes.com/assets/Datasheets/BZT52C.pdf) |
+| D11 | BAT54S | Nexperia BAT54S dual series Schottky, SOT-23, 30 V, steers the sink current from ST_SIG into Q10 and carries the rise-time assist current onto ST_SIG | [BAT54S](https://assets.nexperia.com/documents/data-sheet/BAT54_SER.pdf) |
 
 ## Testing & Verification
 
@@ -501,9 +511,9 @@ V2.9 is a prototype under test. The galvanically isolated legacy-serial interfac
 
 **Hardware bring-up (rig at the bench) — transmit (after C48 rework to 820 pF):**
 
-- **ST_EN LOW (or undriven)** — Pass if ST_SIG sits at VST (~12 V via R37) and the transmitter is off.
-- **ST_EN HIGH, ST_TX HIGH** — Pass if ST_SIG = VST and Q10 is not conducting.
-- **ST_EN HIGH, ST_TX LOW** — Pass if ST_SIG &lt; 50 mV (Q10 conducting and bus pulled LOW).
+- **ST_EN LOW (or undriven)**: pass if ST_SIG sits at VST (about 12 V) and the transmitter is off.
+- **ST_EN HIGH, ST_TX HIGH**: pass if ST_SIG = VST, Q11B is off and ST_RX reads HIGH.
+- **ST_EN HIGH, ST_TX LOW**: pass if ST_SIG is about 0.5 V (SPICE golden value 0.48 V), with Q11B sinking the line through the Q10 cascode, and ST_RX reads LOW.
 - **4800 baud rising edge** — Pass if ST_SIG reaches ≥ 80 % VST within 50 µs (rise-time assist functioning).
 - **9600 baud rising edge** — Pass if ST_SIG reaches ≥ 80 % VST within 30 µs (assist effective after C48 rework).
 - **VST = 16 V** — Pass if D9 (V_Z = 15 V) zener leakage / dissipation stays ≤ 200 mW.

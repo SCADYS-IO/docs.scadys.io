@@ -13,20 +13,10 @@ import SchematicViewer from '@site/src/components/SchematicViewer';
 WTI400 **v1.2** — In service — installed on test vessel
 :::
 
-:::warning[Correction — `ST_EN` is active-HIGH (bench-validated 2026-06-17)]
-The statements below that describe `ST_EN` as **active-LOW are incorrect.** The fabricated WTI400
-V1.2 board — verified against the kicad-cli netlist and confirmed on the bench — establishes:
+:::note[`ST_EN` polarity corrected 2026-10-02 (active-HIGH)]
+This page previously described `ST_EN` as active-LOW. It has been corrected against the fabricated WTI400 V1.2 board, its KiCad netlist and the bench validation of the transmit driver on 2026-06-17. `ST_EN` is active-HIGH. Drive the GPIO HIGH to enable the transmitter, and drive it LOW or leave it undriven to disable it. R22 (100 kΩ) is a pull-down from `ST_EN` to `GNDREF`, which holds the transmitter disabled on reset, boot and GPIO float. R23 (390 Ω) is the U8 enable-LED series resistor.
 
-- **`ST_EN` is active-HIGH:** drive the GPIO **HIGH to enable** the transmitter; **LOW or undriven
-  disables** it.
-- **R22 (100 kΩ) is a pull-DOWN from `ST_EN` to GNDREF** (not a pull-up), so the transmitter is
-  default-disabled on reset, boot, and GPIO float. **R23 (390 Ω)** is the U8 enable-LED series
-  resistor; driving `ST_EN` HIGH lights the U8 LED and asserts enable.
-
-The active-LOW wording in *Transmit path → Enable isolator*, *Firmware integration*, and *Bench
-validation* predates this board revision and is pending a full re-review of this page against the
-V1.2 netlist. Validated on WTI400 V1.2 and MDD400 V2.9 with the `legacy_serial_troubleshooting/`
-bench-test app.
+A broader netlist re-review of the transmit path's legacy-side output network (the `TX` net pull-up, the line-driver narrative and the rise-time-assist designator roles) remains pending under the legacy-serial re-author task. It does not affect the `ST_EN` polarity corrected here.
 :::
 
 ## Overview
@@ -198,15 +188,17 @@ The TX circuit has four functional stages: an enable opto-isolator (U8) that gat
 
 #### Enable isolator — U8 (TLP2309), default-disable
 
-U8 is a TLP2309 opto-isolator that transfers the `ST_EN` signal across the isolation barrier with inverted, default-disable logic.
+U8 is a TLP2309 opto-isolator that transfers the `ST_EN` enable signal across the isolation barrier. `ST_EN` is active-HIGH.
 
-The MCU side of U8 has R23 (390 Ω) in series with the LED. When `ST_EN` is undriven or HIGH, no LED current flows and the transmitter is disabled. When the MCU drives `ST_EN` LOW, current flows through R23 into the U8 LED, asserting the EN signal on the legacy side.
+The MCU side of U8 has R23 (390 Ω) in series with the LED, and R22 (100 kΩ) as a pull-down from `ST_EN` to `GNDREF`. When the MCU drives `ST_EN` HIGH, current flows through R23 into the U8 LED, turning it on and asserting the enable signal on the legacy side. When `ST_EN` is LOW or undriven, no LED current flows and the transmitter is disabled.
 
-This arrangement ensures the TX line driver is off during MCU boot, reset, any firmware fault, and any GPIO float condition. The transmitter can only be enabled by an explicit firmware action.
+On the legacy side, the U8 output is pulled up to VST by R34 (100 kΩ) and drives the gate of Q5 (AO3407A P-channel MOSFET) through R32 (390 Ω). Q5 has its source at VST and its drain on the `TX_EN` rail that powers the line driver. With the U8 LED on, the U8 output pulls the Q5 gate LOW, Q5 turns on and `TX_EN` rises to VST. With the LED off, R34 holds the Q5 gate at VST, Q5 is off and R46 (39 kΩ) bleeds `TX_EN` to GND_ST, so the driver is unpowered and the line is released.
+
+R22 holds `ST_EN` LOW so the TX line driver is off during MCU boot, reset, any firmware fault and any GPIO float condition. The transmitter can only be enabled by an explicit firmware action, which is driving `ST_EN` HIGH.
 
 #### TX isolator — U7 (TLP2309)
 
-U7 transfers `ST_TX` across the isolation barrier. The input side has a 10 kΩ pull-up (R20) from VCC to the LED anode and a 390 Ω series resistor (R21). The LED is off when `ST_TX` is HIGH (bus idle); when the MCU drives `ST_TX` LOW, the LED conducts at approximately 5.6 mA. The output side has a 100 kΩ pull-up (R22) from VST, producing a buffered replica of the bus signal on the legacy domain side.
+U7 transfers `ST_TX` across the isolation barrier. The input side has a 10 kΩ pull-up (R20) from VCC to the LED anode and a 390 Ω series resistor (R21). The LED is off when `ST_TX` is HIGH (bus idle). When the MCU drives `ST_TX` LOW, the LED conducts at approximately 5.6 mA. The output side (in the VST / GND_ST legacy domain) reproduces the TX signal and feeds the gate-driver chain. (R22 is not part of this network. It is the `ST_EN` pull-down described above. The output-side pull-up assignment is pending the netlist re-review noted at the top of this page.)
 
 #### Gate driver — Q4, Q7 (BC847BS), Q5 (AO3407A), Q6 (2N7002)
 
@@ -280,17 +272,17 @@ For NMEA 0183: 4800 baud or 38400 baud, 8N1, no parity.
 
 | Signal | Direction | Active level | Description |
 |--------|-----------|--------------|-------------|
-| `ST_EN` | Output | LOW | Drive LOW to enable TX. Leave HIGH (or undriven) to disable. Pull-up on MCU side ensures TX disabled on reset. |
+| `ST_EN` | Output | HIGH | Drive HIGH to enable TX. Drive LOW (or leave undriven) to disable. The R22 pull-down on the MCU side keeps TX disabled on reset, boot and GPIO float. |
 | `ST_TX` | Output | — | UART TX signal. HIGH = bus idle; LOW = bus asserted. Same polarity as standard UART TX — connect directly to UART TX peripheral, no inversion needed. |
 
 **Transmit sequence:**
 1. Monitor `ST_RX`; wait for bus idle (HIGH for ≥ 1 bit period).
-2. Drive `ST_EN` LOW to enable the TX path.
+2. Drive `ST_EN` HIGH to enable the TX path.
 3. Transmit via `ST_TX` using the UART peripheral at 4800 baud, 8E1 (Legacy Serial Protocol) or 8N1 (NMEA 0183).
-4. After the last stop bit, return `ST_EN` HIGH to tri-state the line driver.
+4. After the last stop bit, return `ST_EN` LOW to disable the line driver.
 5. Resume monitoring `ST_RX`.
 
-**Collision detection:** while transmitting, compare `ST_RX` against the expected `ST_TX` state. If `ST_RX` is LOW when `ST_TX` is HIGH, another device is driving the bus simultaneously. Abort transmission, release `ST_EN`, and implement a random back-off before retrying (consistent with Legacy Serial Protocol bus arbitration practice).
+**Collision detection:** while transmitting, compare `ST_RX` against the expected `ST_TX` state. If `ST_RX` is LOW when `ST_TX` is HIGH, another device is driving the bus simultaneously. Abort transmission, drive `ST_EN` LOW, and implement a random back-off before retrying (consistent with Legacy Serial Protocol bus arbitration practice).
 
 ## Design Calculations
 
@@ -472,10 +464,10 @@ The minimum 0.5 mm trace width on the surge-carrying LDO_VIN entry segment (R69 
 | U8 | TLP2309 | Toshiba TLP2309, SO-6, 3750 Vrms — TX enable isolator (default-disable) | [TLP2309](/assets/datasheets/wti400-v1.2/TLP2309.pdf) |
 | R20 | 10 kΩ / 0603 | Yageo RC Series — ST_TX pull-up to VCC; holds LED off at default | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R21, R23 | 390 Ω / 0603 | Yageo RC Series — LED current-limiting (R21 = U7 TX; R23 = U8 EN) | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R22 | 100 kΩ / 0603 | Yageo RC Series — U7 TX opto output pull-up to VST | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R32 | 390 Ω / 0603 | Yageo RC Series — U8 EN opto secondary bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R22 | 100 kΩ / 0603 | Yageo RC Series, pull-down from `ST_EN` to `GNDREF` that holds the transmitter disabled on reset, boot and GPIO float | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R32 | 390 Ω / 0603 | Yageo RC Series, Q5 gate series resistor from the U8 enable-opto output | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R33 | 22 kΩ / 0603 | Yageo RC Series — ST_SIG pull-up to VST; sets bus idle-HIGH | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
-| R34 | 100 kΩ / 0603 | Yageo RC Series — EN opto output pull-down on legacy side | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
+| R34 | 100 kΩ / 0603 | Yageo RC Series, U8 enable-opto output pull-up to VST that holds Q5 off while the enable LED is off | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R35 | 56 kΩ / 0603 | Yageo RC Series — gate driver bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R36, R38 | 1 MΩ / 0603 | Yageo RC Series — high-impedance bias, driver chain | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
 | R37 | 30.9 kΩ / 0603 | Yageo RC Series — gate driver bias | [RC Series](https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L) |
@@ -491,7 +483,7 @@ The minimum 0.5 mm trace width on the surge-carrying LDO_VIN entry segment (R69 
 | C31 | 100 nF / 50 V / 0603 / X7R | Murata GCM188R71H104KA57D — VCC bypass at U8 | [GCM188R71H104KA57D](https://www.murata.com/en-us/products/productdetail?partno=GCM188R71H104KA57D) |
 | C47 | **820 pF** / 50 V / 0603 / C0G | Murata GRM1885C1H821JA01D (or equivalent) — rise-time assist timing capacitor (**updated from 2.2 nF; rework required**) | — |
 | Q4, Q7 | BC847BS | Nexperia BC847BS NPN dual, SOT363 — gate driver push-pull pre-driver (both units used) | [BC847BS](/assets/datasheets/wti400-v1.2/BC847BS.pdf) |
-| Q5 | AO3407A | AOS AO3407A P-channel MOSFET, SOT-23, 30 V / 4.2 A — high-side gate driver | [AO3407A](/assets/datasheets/wti400-v1.2/AO3407A.pdf) |
+| Q5 | AO3407A | AOS AO3407A P-channel MOSFET, SOT-23, 30 V / 4.2 A, enable high-side switch that powers the `TX_EN` rail | [AO3407A](/assets/datasheets/wti400-v1.2/AO3407A.pdf) |
 | Q6 | 2N7002 | Nexperia 2N7002 N-channel MOSFET, SOT-23, 60 V / 300 mA — open-drain line driver | [2N7002](/assets/datasheets/wti400-v1.2/2N7002.pdf) |
 | Q8 | MMBTA56LT1G | onsemi MMBTA56LT1G PNP, SOT-23, 80 V / 500 mA — rise-time assist high-side source | [MMBTA56LT1G](/assets/datasheets/wti400-v1.2/MMBTA56LT1G.pdf) |
 | D8 | BZT52C15S | Diodes Inc. BZT52C15S 15 V zener, SOD-323 — ST_SIG line clamp | [BZT52C15S](/assets/datasheets/wti400-v1.2/BZT52C15S.pdf) |
@@ -502,6 +494,8 @@ The minimum 0.5 mm trace width on the surge-carrying LDO_VIN entry segment (R69 
 :::caution
 
 The V1.2 prototype on the test vessel uses the legacy serial interface as a Legacy Serial Protocol drop-in replacement for an ST60 wind instrument, transmitting apparent wind data onto the Legacy Serial Protocol bus at 4800 baud. RX and TX have been exercised across approximately 1,000 sea miles of in-service use. **The C47 rise-time-assist capacitor on V1.2 prototypes is the original 2.2 nF value &mdash; a rework to 820 pF is required.** No quantitative bench measurements have been performed on isolation behaviour, NMEA 0183 listener compliance, U14 thermal at the top of the bus-voltage range, D8 leakage at 16 V, surge survivability, or rise-time-assist effectiveness at 4800 / 9600 baud after the rework. The following are required.
+
+The transmit driver was validated on the bench on 2026-06-17 against a SPICE golden model of the circuit, after assembly solder bridges on Q4 and Q7 were reworked. With `ST_EN` HIGH, the on-board receive path read HIGH for a mark and LOW for a space, a 2.4 kHz square on `ST_TX` produced 480 receive edges per 200 ms, and driving `ST_EN` LOW mid-square released the line HIGH. A DMM reading of 6.18 V on ST_SIG during the 50 % square is consistent with a swing between about 11.8 V (mark) and about 0.5 V (space).
 
 **Hardware bring-up (rig at the bench, after C47 rework to 820 pF):**
 
@@ -521,9 +515,9 @@ Receive:
 - **Dropout LED current** &mdash; Measure VST and I_LED at V_bus = 9 V. Pass if I_LED &ge; 2.0 mA and no missed transitions.
 
 Transmit:
-- **Default-disabled** &mdash; Assert ST_EN HIGH (or leave undriven), measure ST_SIG. Pass if ST_SIG = VST (&asymp; 12 V via R33).
-- **Enable, idle** &mdash; Assert ST_EN LOW, ST_TX HIGH. Pass if ST_SIG = VST and Q6 not conducting.
-- **Enable, asserted** &mdash; Assert ST_EN LOW, ST_TX LOW. Pass if ST_SIG &lt; 50 mV.
+- **Default-disabled**: drive ST_EN LOW (or leave it undriven) and measure ST_SIG. Pass if ST_SIG sits at VST (about 12 V) and the transmitter is off.
+- **Enable, idle**: drive ST_EN HIGH and ST_TX HIGH. Pass if ST_SIG = VST, Q6 is not conducting and ST_RX reads HIGH.
+- **Enable, asserted**: drive ST_EN HIGH and ST_TX LOW. Pass if ST_SIG is about 0.5 V (SPICE golden value 0.48 V) and ST_RX reads LOW.
 - **Rise time at 4800 baud** &mdash; Toggle ST_TX at 4800 baud and scope the rising edge at ST_SIG. Pass if edge reaches &ge; 80 % of VST within 50 &micro;s.
 - **Rise time at 9600 baud** &mdash; Toggle ST_TX at 9600 baud after the C47 rework. Pass if edge reaches &ge; 80 % of VST within 30 &micro;s.
 - **D8 static current at 16 V** &mdash; Measure D8 zener leakage and continuous dissipation at V_bus = 16 V. Pass if dissipation &le; 200 mW.
