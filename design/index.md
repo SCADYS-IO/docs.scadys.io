@@ -38,7 +38,7 @@ An open question, with the specification or record that tracks it.
 | Section | Covers | Status |
 |---|---|---|
 | [Foundations](./foundations/index.md) | Legibility, colour, typography, layout, materials and depth, motion, night use and touch accessibility | Draft |
-| Patterns | Data states, alerts, gestures, page navigation, settings and confirmation, and auto-lock | Not yet written |
+| [Patterns](./patterns/index.md) | Data states, alerts, gestures, page navigation, settings and confirmation, and lock and wake | Draft |
 | Components | Dials and rings, needles and pointers, readouts and units, windows, badges, labels and buttons, sector arcs and the vessel outline | Not yet written |
 | Platforms | The MDD400, MDD410 and MDD500, and a placeholder for the SCADYS mobile app | Not yet written |
 | Resources | The palette, the fonts, the VectorCraft master template and the layer scheme | Not yet written |
