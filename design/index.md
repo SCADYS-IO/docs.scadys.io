@@ -21,7 +21,7 @@ The guidelines are written for the people who design and build the display pages
 Each guideline states the rule, the reason for it and the source it comes from.
 
 - *The rule* is a heading and one or two sentences, written as an instruction.
-- *The reason* says what goes wrong without the rule, so a reader can judge a case the rule did not foresee.
+- *The reason* says what goes wrong without the rule, so a reader can judge a case the rule did not foresee. A guideline whose ruling recorded no reason gives none, rather than an invented one.
 - *The source* names the specification or the design record that holds the ruling, so a reader can check it and a later change can be traced.
 - *A figure* shows a correct example beside an incorrect one where a picture makes the rule clearer. Every figure is drawn in VectorCraft and kept with the guidelines.
 
@@ -39,7 +39,7 @@ An open question, with the specification or record that tracks it.
 |---|---|---|
 | [Foundations](./foundations/index.md) | Legibility, colour, typography, layout, materials and depth, motion, night use and touch accessibility | Draft |
 | [Patterns](./patterns/index.md) | Data states, alerts, gestures, page navigation, settings and confirmation, and lock and wake | Draft |
-| Components | Dials and rings, needles and pointers, readouts and units, windows, badges, labels and buttons, sector arcs and the vessel outline | Not yet written |
+| [Components](./components/index.md) | Dials, rings and sector arcs, needles and pointers, readouts and windows, labels, units and buttons, badges and markers, and the vessel outline | Draft |
 | Platforms | The MDD400, MDD410 and MDD500, and a placeholder for the SCADYS mobile app | Not yet written |
 | Resources | The palette, the fonts, the VectorCraft master template and the layer scheme | Not yet written |
 
