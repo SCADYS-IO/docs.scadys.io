@@ -41,7 +41,7 @@ An open question, with the specification or record that tracks it.
 | [Patterns](./patterns/index.md) | Data states, alerts, gestures, page navigation, settings and confirmation, and lock and wake | Draft |
 | [Components](./components/index.md) | Dials, rings and sector arcs, needles and pointers, readouts and windows, labels, units and buttons, badges and markers, and the vessel outline | Draft |
 | [Platforms](./platforms/index.md) | The MDD400, MDD410 and MDD500, and a placeholder for the SCADYS mobile app | Draft |
-| Resources | The palette, the fonts, the VectorCraft master template and the layer scheme | Not yet written |
+| [Resources](./resources/index.md) | The palette, the fonts, the master files and templates, and the layer scheme | Draft |
 
 ## Products
 
