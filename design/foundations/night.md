@@ -37,7 +37,7 @@ The night background is `#000000` on every surface, including dialogs, panels an
 Every start begins with the backlight at zero. The display reads its light sensor, sets day or night from it and fades the backlight in to the brightness the sensor calls for. Neither the mode nor the brightness is restored from storage. The splash page shows during the fade-in by day and by night, so the display never flashes bright.
 
 - *Reason.* Full brightness at start-up dazzles a dark-adapted eye at the one moment nobody expects it. A brightness restored from the last use can bring the display up at full brightness at night, a fault Gerhard has met on other marine displays, while the MDD400 always started dark and faded in.
-- *Source.* SCY-SW-DECISION-DARKSTART-001. `ux/specs/pages/splash.md`, night, ruled by Gerhard on 12 October 2026. `ux/tokens/palette.json`, rules.
+- *Source.* SCY-SW-DECISION-DARKSTART-002. `ux/specs/pages/splash.md`, night, ruled by Gerhard on 12 October 2026. `ux/tokens/palette.json`, rules.
 
 ## Dim with the backlight, not with the colours
 
