@@ -32,12 +32,12 @@ The night background is `#000000` on every surface, including dialogs, panels an
 - *Reason.* Contrast at night is already scarce. The in-service night background `#292728` cost about 25 times the contrast of black behind the numerals at the backlight floor.
 - *Source.* `ux/tokens/palette.json`, rules. Palette derivation, SCY-SW-NOTE-PALETTE-001, night legibility critic.
 
-## Boot to black at night
+## Start dark and fade in
 
-A display that starts at night shows no splash. It shows black at the stored brightness until the first page is ready.
+Every start begins with the backlight at zero. The display reads its light sensor, sets day or night from it and fades the backlight in to the brightness the sensor calls for. Neither the mode nor the brightness is restored from storage. The splash page shows during the fade-in by day and by night, so the display never flashes bright.
 
-- *Reason.* A splash image or a white frame at start-up dazzles a dark-adapted eye at the one moment nobody expects it.
-- *Source.* `ux/specs/pages/splash.md`, night. `ux/tokens/palette.json`, rules.
+- *Reason.* Full brightness at start-up dazzles a dark-adapted eye at the one moment nobody expects it. A brightness restored from the last use can bring the display up at full brightness at night, a fault Gerhard has met on other marine displays, while the MDD400 always started dark and faded in.
+- *Source.* SCY-SW-DECISION-DARKSTART-001. `ux/specs/pages/splash.md`, night, ruled by Gerhard on 12 October 2026. `ux/tokens/palette.json`, rules.
 
 ## Dim with the backlight, not with the colours
 
@@ -64,7 +64,7 @@ At night, as by day, the data is the brightest element that is not an alert. An 
 :::note[Not yet ruled]
 
 - The night colours of the needle, the vessel outline and the cross-track indicator, described under [Colour](./colour.md#the-palette).
-- How the display knows that it is starting at night, such as from the light sensor or from the last mode used, and whether a dusk mode sits between day and night. Tracked in `ux/specs/pages/splash.md`.
+- Whether a dusk mode sits between day and night, and a dedicated night splash. Tracked in `ux/specs/pages/splash.md`.
 - Whether the 2.3 cd/m² backlight floor is dark enough, which depends on measuring it on a MIPI board.
 
 :::
