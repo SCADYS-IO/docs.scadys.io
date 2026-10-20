@@ -119,10 +119,10 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'design',
-        path: 'design',
-        routeBasePath: 'design',
-        sidebarPath: './sidebars-design.js',
+        id: 'ux-guide',
+        path: 'ux-guide',
+        routeBasePath: 'ux-guide',
+        sidebarPath: './sidebars-ux-guide.js',
       },
     ],
     [
@@ -183,7 +183,7 @@ const config = {
               {label: 'v1.2 — schematic refresh (next version)', to: '/canbench-truez/v1.2'},
             ],
           },
-          {label: 'Design', to: '/design', position: 'right'},
+          {label: 'UX Guide', to: '/ux-guide', position: 'right'},
           {label: 'Engineering', to: '/engineering', position: 'right'},
           {label: 'About', to: '/about', position: 'right'},
         ],

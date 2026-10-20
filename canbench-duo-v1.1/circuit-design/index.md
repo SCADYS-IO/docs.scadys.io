@@ -94,7 +94,7 @@ what the steady load is.
 :::note[Design standard]
 
 The reasoning behind the capacitor land patterns, including the manufacturers' own statements on solder volume and
-cracking, is set out in the engineering note **[MLCC Land Patterns and Flex Cracking](/engineering/mlcc-land-patterns)**.
+cracking, is set out in the engineering note **[MLCC Land Patterns and Flex Cracking](/engineering/circuit-design/parts/mlcc-land-patterns)**.
 
 :::
 

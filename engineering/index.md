@@ -1,37 +1,29 @@
 ---
 sidebar_position: 1
-title: Engineering Notes
+title: Engineering
 sidebar_label: Overview
 ---
 
-# Engineering Notes
+# Engineering
 
-These pages describe design rules that Scadys applies across every product, rather than to one board. They are
-referenced from the Circuit Design section of each product, in the **Part selection and design for reliability**
-section.
+These pages hold the engineering practice that Scadys applies across every product, rather than to one board. The product pages describe what each board is. These pages describe how a Scadys board is designed so that it can be built and tested by hand, and how a new prototype is brought up, checked for emissions and repaired.
 
-A design rule earns a page here when three things are true:
+## Sections
+
+| Section | Covers |
+|---|---|
+| [Circuit design principles](./circuit-design/principles/index.md) | Design for prototyping: test points, isolating circuit blocks with DNP parts, part sizes for hand assembly, double-sided boards, bed-of-nails interfaces, programming connectors and thermal relief. |
+| [Parts](./circuit-design/parts/index.md) | Rules for particular part families, starting with MLCC land patterns and flex cracking. |
+| [Bring-up and verification](./bring-up/index.md) | The general method for bringing up a new prototype: core steps for every board, function modules chosen per board, the in-house EMC pre-scan and fault-finding. |
+
+## What earns a page here
+
+A rule or a method earns a page here when three things are true:
 
 - it applies to more than one product;
-- getting it wrong has a consequence that is disproportionate to the cost of getting it right; and
-- the reason is not obvious from the schematic, so it would be lost if it were not written down.
-
-## Design standards
-
-| Note | Covers | Why it exists |
-|---|---|---|
-| [MLCC Land Patterns and Flex Cracking](./mlcc-land-patterns.md) | Ceramic capacitor land patterns; solder volume; flex-crack short circuits; soft-termination parts; capacitor placement | A cracked ceramic capacitor fails as a short circuit. On a supply rail that stops the instrument working. The land pattern that prevents it costs nothing. |
+- getting it wrong costs far more than getting it right; and
+- the reason is not obvious from the schematic or the board, so it would be lost if it were not written down.
 
 ## Why these are published
 
-Scadys documentation is written first for the engineer who has to maintain the boards, and second for anyone
-evaluating them. A design rule that lives only in a footprint file or in someone's memory is a rule that will be
-undone by the next person who does not know it is there.
-
-Publishing the reasoning is the only reliable way to keep it.
-
-:::note[These are design rules, not marketing]
-
-Where a rule exists because Scadys got something wrong first, the page says so. That is the useful part.
-
-:::
+Scadys documentation is written first for the engineer who has to maintain the boards, and second for anyone evaluating them or building one. A rule that lives only in a footprint file, or in one person's memory, is undone by the next person who does not know it is there.
