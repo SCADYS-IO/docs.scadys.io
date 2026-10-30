@@ -47,33 +47,6 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'mdd400-v30',
-        path: 'mdd400-v3.0',
-        routeBasePath: 'mdd400/v3.0',
-        sidebarPath: './sidebars-mdd400-v3.0.js',
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'mdd400-v29',
-        path: 'mdd400-v2.9',
-        routeBasePath: 'mdd400/v2.9',
-        sidebarPath: './sidebars-mdd400-v2.9.js',
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'wti400-v12',
-        path: 'wti400-v1.2',
-        routeBasePath: 'wti400/v1.2',
-        sidebarPath: './sidebars-wti400-v1.2.js',
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
         id: 'canbench-duo-v11',
         path: 'canbench-duo-v1.1',
         routeBasePath: 'canbench-duo/v1.1',
@@ -152,17 +125,6 @@ const config = {
           src: 'img/logo.svg',
         },
         items: [
-          {
-            type: 'dropdown',
-            label: 'MDD400',
-            to: '/mdd400/v3.0',
-            position: 'left',
-            items: [
-              {label: 'v3.0 — ESP32-P4 platform re-base (next version)', to: '/mdd400/v3.0'},
-              {label: 'v2.9 — fabricated prototype (current)', to: '/mdd400/v2.9'},
-            ],
-          },
-          {label: 'WTI400', to: '/wti400/v1.2', position: 'left'},
           {
             type: 'dropdown',
             label: 'CANBench Duo',

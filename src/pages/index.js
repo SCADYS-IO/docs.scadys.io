@@ -4,19 +4,6 @@ import styles from './index.module.css';
 
 const products = [
   {
-    name: 'MDD400',
-    full: 'Marine Data Display',
-    description: 'NMEA 2000 and Legacy Serial data display for marine applications.',
-    to: '/mdd400/v2.9',
-    hero: true,
-  },
-  {
-    name: 'WTI400',
-    full: 'Analog Wind Transducer Interface',
-    description: 'Converts analog wind transducer signals to NMEA 2000.',
-    to: '/wti400/v1.2',
-  },
-  {
     name: 'CANBench Duo',
     full: 'CANBench Duo',
     description: 'Dual-channel CAN bus development and testing tool.',
