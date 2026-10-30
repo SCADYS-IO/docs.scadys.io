@@ -40,7 +40,7 @@ An open question, with the specification or record that tracks it.
 | [Foundations](./foundations/index.md) | Legibility, colour, typography, layout, materials and depth, motion, night use and touch accessibility | Draft |
 | [Patterns](./patterns/index.md) | Data states, alerts, gestures, page navigation, settings and confirmation, and lock and wake | Draft |
 | [Components](./components/index.md) | Dials, rings and sector arcs, needles and pointers, readouts and windows, labels, units and buttons, badges and markers, and the vessel outline | Draft |
-| [Platforms](./platforms/index.md) | The MDD400, MDD410 and MDD500, and a placeholder for the SCADYS mobile app | Draft |
+| [Platforms](./platforms/index.md) | The MDD400 and MDD500, and a placeholder for the SCADYS mobile app | Draft |
 | [Resources](./resources/index.md) | The palette, the fonts, the master files and templates, and the layer scheme | Draft |
 
 ## Products
@@ -48,7 +48,6 @@ An open question, with the specification or record that tracks it.
 The guidelines cover three products. They share one design at 720 × 720 pixels, and each shows it on its own panel.
 
 - *MDD400.* A DWIN smart display with an ESP32-S3 host, 480 × 480 pixels, which takes the design at two-thirds scale.
-- *MDD410.* An ESP32-P4 with a 4 in MIPI-DSI panel at 720 × 720 pixels, which is the design reference.
 - *MDD500.* An ESP32-P4 with a 5 in MIPI-DSI panel at 720 × 720 pixels, which shows the same pixels larger and hides the corners behind a rounded window.
 
 A SCADYS mobile app is planned. The Foundations are written so that they hold for it too, wherever the rulings allow. A value that belongs to one display, such as a pixel position, says which display it belongs to.

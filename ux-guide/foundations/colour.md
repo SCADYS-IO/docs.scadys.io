@@ -107,7 +107,7 @@ The table below is generated from `ux/tokens/palette.json` by `guidelines/tools/
 - The night colour of the cross-track indicator, `cdi`, which uses the data amber in the draft.
 - The colour of the true wind pointer, because the night palette allows no neutral grey.
 - The colour of the compass cardinal letters, now that red means port.
-- Every night value, until it is judged on the MDD410 and MDD500 panels in the dark.
+- Every night value, until it is judged on the 4 in and MDD500 panels in the dark.
 
 These are tracked in `ux/tokens/palette.json`, open items and in the page specs.
 

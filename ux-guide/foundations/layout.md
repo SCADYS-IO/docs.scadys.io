@@ -15,7 +15,7 @@ Every MDD page is designed once, on a square canvas of 720 × 720 pixels, and ea
 
 A page is designed at 720 × 720 pixels, with the origin at the top left and the centre at (360, 360).
 
-- *MDD410.* The 4 in panel shows the canvas pixel for pixel, at 0.0999 mm per pixel. It is the design reference, because a layout that works at 4 in works at least as well at 5 in.
+- *The 4 in panel.* It shows the canvas pixel for pixel, at 0.0999 mm per pixel. It is the design reference, because a layout that works at 4 in works at least as well at 5 in.
 - *MDD500.* The 5 in panel shows the same pixels larger, at 0.1269 mm per pixel, behind a window with rounded corners.
 - *MDD400.* The 480 × 480 panel takes every size and position at two-thirds scale.
 - *Source.* `ux/specs/README.md`, conventions. `ux/specs/pages/common.md`, canvas and safe area.
@@ -32,7 +32,7 @@ Every position, width, height and stroke is a whole pixel, and an edge that must
 Text and touch targets stay inside the MDD500 corner arcs, with a margin of at least 8 px. One layout serves both MIPI products, so every layout follows the MDD500 corners.
 
 - *The arcs.* The MDD500 window is the black print on its cover glass, 91.77 mm square with 7.34 mm corner radii. On the canvas each visible corner is an arc of 58 px radius centred 56 px in from both edges, and about 22 px of panel is hidden along each corner diagonal.
-- *The MDD410.* Its window is square and shows the whole canvas, so its corners may carry background artwork that has no meaning.
+- *The 4 in display.* Its window is square and shows the whole canvas, so its corners may carry background artwork that has no meaning.
 - *Reason.* A label or a control in a corner is cut off on the MDD500. The wind page had to move its corner touch labels inboard for this reason.
 - *Template.* `ux/design/_template/safe_area_720.svg` draws the safe area for placing on a reference layer.
 - *Source.* `ux/specs/pages/common.md`, safe area.

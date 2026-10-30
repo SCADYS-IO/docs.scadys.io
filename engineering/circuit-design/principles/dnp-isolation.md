@@ -12,7 +12,7 @@ A prototype carries every option the product might need, because a prototype tha
 
 Where a block has a fallback, the fallback's parts are fitted on the prototype, and a DNP 0 Ω link disconnects its output. A fallback is then enabled by fitting one link on an assembled board, rather than by placing a regulator and its capacitors by hand on a board that is already built.
 
-On the MDD410 and MDD500 prototypes, the panel's 1.8 V IO rail normally comes from the processor's internal LDO. A separate 1.8 V regulator, `U3` with `C13` and `C24`, is fitted as the fallback, but its output is isolated by the DNP link `R104`. The regulator costs a few cents. Retrofitting a SOT-23-5 regulator and two 0603 capacitors onto a populated board costs far more, and risks the board.
+On the MDD500 prototype, the panel's 1.8 V IO rail normally comes from the processor's internal LDO. A separate 1.8 V regulator, `U3` with `C13` and `C24`, is fitted as the fallback, but its output is isolated by the DNP link `R104`. The regulator costs a few cents. Retrofitting a SOT-23-5 regulator and two 0603 capacitors onto a populated board costs far more, and risks the board.
 
 ## Exactly one link in a select group
 

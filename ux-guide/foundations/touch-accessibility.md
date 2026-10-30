@@ -29,7 +29,7 @@ A tap acts when the finger lifts. Sliding off the control before lifting cancels
 
 A touch target is about 9 mm across, and targets are at least 8 mm apart from centre to centre. Controls used while under way are larger than that, not smaller.
 
-- *On the canvas.* 9 mm is 90 px and 8 mm is 80 px on the MDD410. The MDD500 shows the same pixels about 27 % larger, so a target sized for the MDD410 is larger still on the MDD500.
+- *On the canvas.* 9 mm is 90 px and 8 mm is 80 px on the 4 in panel. The MDD500 shows the same pixels about 27 % larger, so a target sized for the 4 in panel is larger still on the MDD500.
 - *Reason.* [Parhi and others](https://doi.org/10.1145/1152215.1152260) found that tap errors stop improving at about 9.6 mm, and [Google recommends](https://support.google.com/accessibility/android/answer/7101858) 7 to 10 mm. Errors rise with motion and vibration, which a boat has in abundance.
 - *Source.* `ux/specs/interaction/touch.md`, touch targets.
 
@@ -65,7 +65,7 @@ Every touch gives visual feedback, as a pressed fill behind the control. The buz
 
 While a single-finger gesture is in progress, the firmware ignores frames with more than one contact. It also ignores large contacts, such as a palm or a sheet of water. In heavy spray the lock is the user's defence.
 
-- *Reason.* Water on the glass is the main source of error for self-capacitance sensing, and the GT911 controller on the MDD410 has no water setting, so wet handling comes from tuning and firmware filtering.
+- *Reason.* Water on the glass is the main source of error for self-capacitance sensing, and the GT911 controller on the 4 in panel has no water setting, so wet handling comes from tuning and firmware filtering.
 - *Source.* `ux/specs/interaction/touch.md`, water and spray. `ux/specs/interaction/research/harsh-environment-and-buttonless.md`.
 
 ## Avoid keypads

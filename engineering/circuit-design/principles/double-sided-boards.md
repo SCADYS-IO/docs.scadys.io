@@ -11,7 +11,7 @@ A double-sided board places parts on both faces. It saves area and lets a connec
 
 The Scadys display boards put almost everything on one face and keep the other face light.
 
-- *The heavy and fine-pitch parts share one face.* On the MDD410 board, 282 of 331 placements are on the rear face, including the processor, the radio module, the power MOSFET, the TVS diodes, the wound inductors, the large capacitors and the external connectors.
+- *The heavy and fine-pitch parts share one face.* On one SCADYS display board, 282 of 331 placements are on the rear face, including the processor, the radio module, the power MOSFET, the TVS diodes, the wound inductors, the large capacitors and the external connectors.
 - *The other face carries small, light parts.* The display face holds 0402 and 0603 passives, two small sensors, the display and touch flat-flex connectors and the programming pogo pads. Its finest pitch is the 0.5 mm of the 40-pin display connector.
 - *A part goes on the second face for a reason.* The display connectors must face the display, and the ambient light sensor must face the window. A part is not moved to the second face only to save space.
 
