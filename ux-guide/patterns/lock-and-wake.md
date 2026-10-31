@@ -22,7 +22,7 @@ The display runs whenever it has power. It can be switched off by touch only fro
 
 Auto-lock is on by default and locks the display after 30 s without a touch. The timeout can be changed in settings, and auto-lock can be turned off, for example on a display mounted below deck.
 
-- *Reason.* In normal use nobody touches the display, so locking costs nothing and protects against accidental touches. An indoor display that is never splashed does not need it.
+- *Reason.* In normal use nobody touches the display for long spells, so locking costs little and protects against accidental touches. An indoor display that is never splashed does not need it.
 - *Source.* `ux/specs/interaction/touch.md`, lock and wake. UX concept register, SCY-SW-NOTE-UXCONCEPTS-001, "Auto-lock on by default".
 
 ## Lock by hand from the control panel
