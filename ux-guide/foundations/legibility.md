@@ -5,7 +5,7 @@ title: Legibility
 
 # Legibility
 
-An MDD display is an instrument first. Most of its pages show for days, usually with nobody touching them, and they are read in a glance from a helm or a bunk. Every other rule in these guidelines serves that glance. A page built to be studied at arm's length and worked by touch still opens in a state that reads at a glance, and it returns to that state by itself when the touching stops.
+An MDD display is an instrument first, with instrument pages that can carry a chart background. It is not a chart plotter. Its pages show for days, usually with nobody touching them, and they are read in a glance from a helm or a bunk. Every other rule in these guidelines serves that glance, and a chart background sits behind the data without competing with it.
 
 ![Do: port and starboard told apart by position, and the needle by its letter. Don't: two needles told apart by colour alone.](./img/legibility-colour-cue.png)
 
