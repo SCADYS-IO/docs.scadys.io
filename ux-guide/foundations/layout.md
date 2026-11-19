@@ -31,7 +31,7 @@ Every position, width, height and stroke is a whole pixel, and an edge that must
 
 Text and touch targets stay inside the MDD500 corner arcs, with a margin of at least 8 px. One layout serves both MIPI products, so every layout follows the MDD500 corners.
 
-- *The arcs.* The MDD500 window is the black print on its cover glass, 91.77 mm square with 7.34 mm corner radii. On the canvas each visible corner is an arc of 58 px radius centred 56 px in from both edges, and about 22 px of panel is hidden along each corner diagonal.
+- *The arcs.* The MDD500 window is the print on its cover glass, 90.86 mm square with 7.25 mm corner radii. The print covers 2 px along each canvas edge. On the canvas each visible corner is an arc of 57 px radius centred 59 px in from both edges, and about 26 px of panel is hidden along each corner diagonal.
 - *The 4 in display.* Its window is square and shows the whole canvas, so its corners may carry background artwork that has no meaning.
 - *Reason.* A label or a control in a corner is cut off on the MDD500. The wind page had to move its corner touch labels inboard for this reason.
 - *Template.* `ux/design/_template/safe_area_720.svg` draws the safe area for placing on a reference layer.

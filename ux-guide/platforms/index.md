@@ -20,10 +20,10 @@ The Foundations, Patterns and Components hold on every SCADYS display. The Platf
 | Pixels | 480 × 480 | 720 × 720 |
 | Design scale | Two-thirds | As drawn |
 | Pixel pitch | Not recorded here | 0.1269 mm |
-| Visible window | Not recorded here | 72.13 mm square, square corners | 91.77 mm square, 7.34 mm corner radii |
-| Brightness | Lower | 1,000 nit | 1,100 cd/m² typical |
-| Touch | DWIN touchscreen | Goodix GT911 | Jadard JD9365TX in-cell |
-| Rendering | DGUS pages and images | LVGL | LVGL |
+| Visible window | Not recorded here | 90.86 mm square, 7.25 mm corner radii |
+| Brightness | Lower | 1,100 cd/m² typical |
+| Touch | DWIN touchscreen | Jadard JD9365TX in-cell |
+| Rendering | DGUS pages and images | LVGL |
 
 - *Source.* MDD400 and MDD500 product identity, SCY-PROD-NOTE-MDD400-001 and SCY-PROD-NOTE-MDD500-001. `ux/specs/README.md` and `ux/specs/pages/common.md`, canvas and safe area. `ux/specs/interaction/touch.md`, water and spray.
 
